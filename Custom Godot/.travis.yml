@@ -1,0 +1,107 @@
+language: cpp
+
+# OS config, depends on actual 'os' in build matrix
+dist: trusty
+sudo: false
+
+env:
+  global:
+    - SCONS_CACHE=$HOME/.scons_cache
+    - SCONS_CACHE_LIMIT=1024
+    - OPTIONS="debug_symbols=no verbose=yes progress=no gdnative_wrapper=yes"
+    - secure: "uch9QszCgsl1qVbuzY41P7S2hWL2IiNFV4SbAYRCdi0oJ9MIu+pVyrQdpf3+jG4rH6j4Rffl+sN17Zz4dIDDioFL1JwqyCqyCyswR8uACC0Rr8gr4Mi3+HIRbv+2s2P4cIQq41JM8FJe84k9jLEMGCGh69w+ibCWoWs74CokYVA="
+
+cache:
+  directories:
+    - $SCONS_CACHE
+
+matrix:
+  include:
+    - env: STATIC_CHECKS=yes
+      os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-trusty-6.0
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang-format-6.0
+            - libstdc++6 # >= 4.9 needed for clang-format-6.0
+
+    - env: PLATFORM=x11 TOOLS=yes TARGET=debug CACHE_NAME=${PLATFORM}-tools-mono-gcc EXTRA_ARGS="module_mono_enabled=yes mono_glue=no"
+      os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - mono
+          packages:
+            - &linux_deps [libasound2-dev, libfreetype6-dev, libgl1-mesa-dev, libglu1-mesa-dev, libx11-dev, libxcursor-dev, libxi-dev, libxinerama-dev, libxrandr-dev]
+            - &linux_mono_deps [mono-devel, msbuild]
+
+        coverity_scan:
+          project:
+            name: "godotengine/godot"
+            description: "Godot Engine Coverity scans"
+          notification_email: coverity@godotengine.org
+          build_command_prepend: ""
+          build_command: "scons p=x11 -j2 $OPTIONS"
+          branch_pattern: coverity_scan
+
+    - env: PLATFORM=x11 TOOLS=no TARGET=release CACHE_NAME=${PLATFORM}-clang
+      os: linux
+      compiler: clang
+      addons:
+        apt:
+          packages:
+            - *linux_deps
+
+    - env: PLATFORM=android TOOLS=no TARGET=release_debug CACHE_NAME=${PLATFORM}-clang
+      os: linux
+      compiler: clang
+
+    - env: PLATFORM=osx TOOLS=yes TARGET=debug CACHE_NAME=${PLATFORM}-tools-clang
+      os: osx
+      compiler: clang
+
+    - env: PLATFORM=iphone TOOLS=no TARGET=debug CACHE_NAME=${PLATFORM}-clang
+      os: osx
+      compiler: clang
+
+    - env: PLATFORM=server TOOLS=yes TARGET=release_debug CACHE_NAME=${PLATFORM}-tools-gcc
+      os: linux
+      compiler: gcc
+      addons:
+        apt:
+          packages:
+            - *linux_deps
+
+before_install:
+  - if [ "$STATIC_CHECKS" = "yes" ]; then
+      unset SCONS_CACHE;
+    fi
+
+install:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$PLATFORM" = "android" ]; then
+      misc/travis/android-tools-linux.sh;
+    fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+      misc/travis/scons-local-osx.sh;
+    fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ] && [ "$PLATFORM" = "android" ]; then
+      misc/travis/android-tools-osx.sh;
+    fi
+
+before_script:
+  - if [ "$PLATFORM" = "android" ]; then
+      export ANDROID_HOME=$TRAVIS_BUILD_DIR/godot-dev/build-tools/android-sdk;
+      export ANDROID_NDK_ROOT=$TRAVIS_BUILD_DIR/godot-dev/build-tools/android-ndk;
+    fi
+
+script:
+  - if [ "$STATIC_CHECKS" = "yes" ]; then
+      sh ./misc/travis/clang-format.sh;
+    else
+      scons -j2 CC=$CC CXX=$CXX platform=$PLATFORM tools=$TOOLS target=$TARGET $EXTRA_ARGS $OPTIONS;
+    fi
