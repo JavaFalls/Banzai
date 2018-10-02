@@ -31,7 +31,7 @@
 #ifndef MONODEVELOP_INSTANCE_H
 #define MONODEVELOP_INSTANCE_H
 
-#include "core/reference.h"
+#include "reference.h"
 
 #include "../mono_gc_handle.h"
 #include "../mono_gd/gd_mono_method.h"
@@ -42,15 +42,10 @@ class MonoDevelopInstance {
 	GDMonoMethod *execute_method;
 
 public:
-	enum EditorId {
-		MONODEVELOP = 0,
-		VISUALSTUDIO_FOR_MAC = 1
-	};
-
 	void execute(const Vector<String> &p_files);
 	void execute(const String &p_file);
 
-	MonoDevelopInstance(const String &p_solution, EditorId p_editor_id);
+	MonoDevelopInstance(const String &p_solution);
 };
 
 #endif // MONODEVELOP_INSTANCE_H

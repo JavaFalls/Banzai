@@ -29,11 +29,9 @@
 /*************************************************************************/
 
 #include "marshalls.h"
-
-#include "core/os/keyboard.h"
-#include "core/print_string.h"
-#include "core/reference.h"
-
+#include "os/keyboard.h"
+#include "print_string.h"
+#include "reference.h"
 #include <limits.h>
 #include <stdio.h>
 
@@ -1188,9 +1186,7 @@ Error encode_variant(const Variant &p_variant, uint8_t *r_buffer, int &r_len, bo
 				r_len += len;
 				if (buf)
 					buf += len;
-				Variant *v = d.getptr(E->get());
-				ERR_FAIL_COND_V(!v, ERR_BUG);
-				encode_variant(*v, buf, len, p_object_as_id);
+				encode_variant(d[E->get()], buf, len, p_object_as_id);
 				ERR_FAIL_COND_V(len % 4, ERR_BUG);
 				r_len += len;
 				if (buf)

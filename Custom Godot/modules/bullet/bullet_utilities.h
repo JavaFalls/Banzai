@@ -35,6 +35,8 @@
 	@author AndreaCatania
 */
 
+#pragma once
+
 #define bulletnew(cl) \
 	new cl
 

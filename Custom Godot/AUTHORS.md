@@ -27,7 +27,6 @@ name is available.
 
 (in alphabetical order, with 10 commits or more excluding merges)
 
-    Aaron Franke (aaronfranke)
     Alexander Holland (AlexHolly)
     Alexey Velikiy (jonyrock)
     Alket Rexhepi (alketii)
@@ -49,7 +48,6 @@ name is available.
     Daniel J. Ramirez (djrm)
     Dmitry Koteroff (Krakean)
     Emmanuel Leblond (touilleMan)
-    Eric Lasota (elasota)
     est31
     Fabio Alessandrelli (Faless)
     Ferenc Arn (tagcup)
@@ -79,15 +77,12 @@ name is available.
     Justo Delgado (mrcdk)
     Kelly Thomas (KellyThomas)
     Kostadin Damyanov (Max-Might)
-    K. S. Ernest (iFire) Lee (fire)
     Leon Krause (eska014)
     m4nu3lf
     Marcelo Fernandez (marcelofg55)
     Marc Gilleron (Zylann)
-    Marcin Zawiejski (dragmz)
     Mariano Javier Suligoy (MarianoGnu)
     Mario Schlack (hurikhan)
-    Martin Capitanio (capnm)
     Martin Sjursen (binbitten)
     marynate
     Masoud BH (masoudbh3)

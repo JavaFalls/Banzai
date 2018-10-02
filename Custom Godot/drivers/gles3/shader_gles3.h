@@ -31,10 +31,7 @@
 #ifndef SHADER_GLES3_H
 #define SHADER_GLES3_H
 
-#include "core/hash_map.h"
-#include "core/map.h"
-#include "core/math/camera_matrix.h"
-#include "core/variant.h"
+#include <stdio.h>
 
 #include "platform_config.h"
 #ifndef GLES3_INCLUDE_H
@@ -43,7 +40,10 @@
 #include GLES3_INCLUDE_H
 #endif
 
-#include <stdio.h>
+#include "camera_matrix.h"
+#include "hash_map.h"
+#include "map.h"
+#include "variant.h"
 
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
@@ -336,7 +336,6 @@ public:
 	}
 
 	uint32_t get_version() const { return new_conditional_version.version; }
-	_FORCE_INLINE_ bool is_version_valid() const { return version && version->ok; }
 
 	void set_uniform_camera(int p_idx, const CameraMatrix &p_mat) {
 

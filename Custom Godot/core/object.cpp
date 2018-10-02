@@ -30,14 +30,14 @@
 
 #include "object.h"
 
-#include "core/class_db.h"
-#include "core/core_string_names.h"
-#include "core/message_queue.h"
-#include "core/os/os.h"
-#include "core/print_string.h"
-#include "core/resource.h"
-#include "core/script_language.h"
-#include "core/translation.h"
+#include "class_db.h"
+#include "core_string_names.h"
+#include "message_queue.h"
+#include "os/os.h"
+#include "print_string.h"
+#include "resource.h"
+#include "script_language.h"
+#include "translation.h"
 
 #ifdef DEBUG_ENABLED
 
@@ -450,41 +450,16 @@ void Object::set(const StringName &p_name, const Variant &p_value, bool *r_valid
 			*r_valid = true;
 		return;
 #endif
-	}
-
-	//something inside the object... :|
-	bool success = _setv(p_name, p_value);
-	if (success) {
-		if (r_valid)
-			*r_valid = true;
-		return;
-	}
-
-	{
-		bool valid;
-		setvar(p_name, p_value, &valid);
-		if (valid) {
+	} else {
+		//something inside the object... :|
+		bool success = _setv(p_name, p_value);
+		if (success) {
 			if (r_valid)
 				*r_valid = true;
 			return;
 		}
+		setvar(p_name, p_value, r_valid);
 	}
-
-#ifdef TOOLS_ENABLED
-	if (script_instance) {
-		bool valid;
-		script_instance->property_set_fallback(p_name, p_value, &valid);
-		if (valid) {
-			if (r_valid)
-				*r_valid = true;
-			return;
-		}
-	}
-#endif
-
-	if (r_valid)
-		*r_valid = false;
-	return;
 }
 
 Variant Object::get(const StringName &p_name, bool *r_valid) const {
@@ -538,33 +513,8 @@ Variant Object::get(const StringName &p_name, bool *r_valid) const {
 				*r_valid = true;
 			return ret;
 		}
-
 		//if nothing else, use getvar
-		{
-			bool valid;
-			ret = getvar(p_name, &valid);
-			if (valid) {
-				if (r_valid)
-					*r_valid = true;
-				return ret;
-			}
-		}
-
-#ifdef TOOLS_ENABLED
-		if (script_instance) {
-			bool valid;
-			ret = script_instance->property_get_fallback(p_name, &valid);
-			if (valid) {
-				if (r_valid)
-					*r_valid = true;
-				return ret;
-			}
-		}
-#endif
-
-		if (r_valid)
-			*r_valid = false;
-		return Variant();
+		return getvar(p_name, r_valid);
 	}
 }
 
@@ -651,12 +601,8 @@ void Object::get_property_list(List<PropertyInfo> *p_list, bool p_reversed) cons
 
 	_get_property_listv(p_list, p_reversed);
 
-	if (!is_class("Script")) { // can still be set, but this is for userfriendlyness
-#ifdef TOOLS_ENABLED
-		p_list->push_back(PropertyInfo(Variant::NIL, "Script", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_GROUP));
-#endif
+	if (!is_class("Script")) // can still be set, but this is for userfriendlyness
 		p_list->push_back(PropertyInfo(Variant::OBJECT, "script", PROPERTY_HINT_RESOURCE_TYPE, "Script", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_STORE_IF_NONZERO));
-	}
 #ifdef TOOLS_ENABLED
 	if (editor_section_folding.size()) {
 		p_list->push_back(PropertyInfo(Variant::ARRAY, CoreStringNames::get_singleton()->_sections_unfolded, PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
@@ -868,8 +814,8 @@ Variant Object::callv(const StringName &p_method, const Array &p_args) {
 	argptrs.resize(p_args.size());
 
 	for (int i = 0; i < p_args.size(); i++) {
-		args.write[i] = p_args[i];
-		argptrs.write[i] = &args[i];
+		args[i] = p_args[i];
+		argptrs[i] = &args[i];
 	}
 
 	Variant::CallError ce;
@@ -1029,14 +975,9 @@ void Object::set_script(const RefPtr &p_script) {
 	script = p_script;
 	Ref<Script> s(script);
 
-	if (!s.is_null()) {
-		if (s->can_instance()) {
-			OBJ_DEBUG_LOCK
-			script_instance = s->instance_create(this);
-		} else if (Engine::get_singleton()->is_editor_hint()) {
-			OBJ_DEBUG_LOCK
-			script_instance = s->placeholder_instance_create(this);
-		}
+	if (!s.is_null() && s->can_instance()) {
+		OBJ_DEBUG_LOCK
+		script_instance = s->instance_create(this);
 	}
 
 	_change_notify("script");
@@ -1237,10 +1178,10 @@ Error Object::emit_signal(const StringName &p_name, const Variant **p_args, int 
 			bind_mem.resize(p_argcount + c.binds.size());
 
 			for (int j = 0; j < p_argcount; j++) {
-				bind_mem.write[j] = p_args[j];
+				bind_mem[j] = p_args[j];
 			}
 			for (int j = 0; j < c.binds.size(); j++) {
-				bind_mem.write[p_argcount + j] = &c.binds[j];
+				bind_mem[p_argcount + j] = &c.binds[j];
 			}
 
 			args = (const Variant **)bind_mem.ptr();
@@ -1264,15 +1205,7 @@ Error Object::emit_signal(const StringName &p_name, const Variant **p_args, int 
 			}
 		}
 
-		bool disconnect = c.flags & CONNECT_ONESHOT;
-#ifdef TOOLS_ENABLED
-		if (disconnect && (c.flags & CONNECT_PERSIST) && Engine::get_singleton()->is_editor_hint()) {
-			//this signal was connected from the editor, and is being edited. just dont disconnect for now
-			disconnect = false;
-		}
-#endif
-		if (disconnect) {
-
+		if (c.flags & CONNECT_ONESHOT) {
 			_ObjectSignalDisconnectData dd;
 			dd.signal = p_name;
 			dd.target = target;
@@ -1476,13 +1409,8 @@ Error Object::connect(const StringName &p_signal, Object *p_to_object, const Str
 
 	Signal::Target target(p_to_object->get_instance_id(), p_to_method);
 	if (s->slot_map.has(target)) {
-		if (p_flags & CONNECT_REFERENCE_COUNTED) {
-			s->slot_map[target].reference_count++;
-			return OK;
-		} else {
-			ERR_EXPLAIN("Signal '" + p_signal + "' is already connected to given method '" + p_to_method + "' in that object.");
-			ERR_FAIL_COND_V(s->slot_map.has(target), ERR_INVALID_PARAMETER);
-		}
+		ERR_EXPLAIN("Signal '" + p_signal + "' is already connected to given method '" + p_to_method + "' in that object.");
+		ERR_FAIL_COND_V(s->slot_map.has(target), ERR_INVALID_PARAMETER);
 	}
 
 	Signal::Slot slot;
@@ -1496,10 +1424,6 @@ Error Object::connect(const StringName &p_signal, Object *p_to_object, const Str
 	conn.binds = p_binds;
 	slot.conn = conn;
 	slot.cE = p_to_object->connections.push_back(conn);
-	if (p_flags & CONNECT_REFERENCE_COUNTED) {
-		slot.reference_count = 1;
-	}
-
 	s->slot_map[target] = slot;
 
 	return OK;
@@ -1530,10 +1454,6 @@ bool Object::is_connected(const StringName &p_signal, Object *p_to_object, const
 
 void Object::disconnect(const StringName &p_signal, Object *p_to_object, const StringName &p_to_method) {
 
-	_disconnect(p_signal, p_to_object, p_to_method);
-}
-void Object::_disconnect(const StringName &p_signal, Object *p_to_object, const StringName &p_to_method, bool p_force) {
-
 	ERR_FAIL_NULL(p_to_object);
 	Signal *s = signal_map.getptr(p_signal);
 	if (!s) {
@@ -1552,16 +1472,7 @@ void Object::_disconnect(const StringName &p_signal, Object *p_to_object, const 
 		ERR_FAIL();
 	}
 
-	Signal::Slot *slot = &s->slot_map[target];
-
-	if (!p_force) {
-		slot->reference_count--; // by default is zero, if it was not referenced it will go below it
-		if (slot->reference_count >= 0) {
-			return;
-		}
-	}
-
-	p_to_object->connections.erase(slot->cE);
+	p_to_object->connections.erase(s->slot_map[target].cE);
 	s->slot_map.erase(target);
 
 	if (s->slot_map.empty() && ClassDB::has_signal(get_class_name(), p_signal)) {
@@ -1766,7 +1677,6 @@ void Object::_bind_methods() {
 #ifdef TOOLS_ENABLED
 	MethodInfo miget("_get", PropertyInfo(Variant::STRING, "property"));
 	miget.return_val.name = "Variant";
-	miget.return_val.usage |= PROPERTY_USAGE_NIL_IS_VARIANT;
 	BIND_VMETHOD(miget);
 
 	MethodInfo plget("_get_property_list");
@@ -1783,7 +1693,6 @@ void Object::_bind_methods() {
 	BIND_ENUM_CONSTANT(CONNECT_DEFERRED);
 	BIND_ENUM_CONSTANT(CONNECT_PERSIST);
 	BIND_ENUM_CONSTANT(CONNECT_ONESHOT);
-	BIND_ENUM_CONSTANT(CONNECT_REFERENCE_COUNTED);
 }
 
 void Object::call_deferred(const StringName &p_method, VARIANT_ARG_DECLARE) {
@@ -1916,11 +1825,7 @@ void *Object::get_script_instance_binding(int p_script_language_index) {
 	//as it should not really affect performance much (won't be called too often), as in far most caes the condition below will be false afterwards
 
 	if (!_script_instance_bindings[p_script_language_index]) {
-		void *script_data = ScriptServer::get_language(p_script_language_index)->alloc_instance_binding_data(this);
-		if (script_data) {
-			atomic_increment(&instance_binding_count);
-			_script_instance_bindings[p_script_language_index] = script_data;
-		}
+		_script_instance_bindings[p_script_language_index] = ScriptServer::get_language(p_script_language_index)->alloc_instance_binding_data(this);
 	}
 
 	return _script_instance_bindings[p_script_language_index];
@@ -1935,7 +1840,6 @@ Object::Object() {
 	_instance_ID = ObjectDB::add_instance(this);
 	_can_translate = true;
 	_is_queued_for_deletion = false;
-	instance_binding_count = 0;
 	memset(_script_instance_bindings, 0, sizeof(void *) * MAX_SCRIPT_INSTANCE_BINDINGS);
 	script_instance = NULL;
 #ifdef TOOLS_ENABLED
@@ -1976,13 +1880,13 @@ Object::~Object() {
 		Connection &c = E->get();
 		ERR_CONTINUE(c.source != this); //bug?
 
-		this->_disconnect(c.signal, c.target, c.method, true);
+		this->disconnect(c.signal, c.target, c.method);
 	}
 
 	while (connections.size()) {
 
 		Connection c = connections.front()->get();
-		c.source->_disconnect(c.signal, c.target, c.method, true);
+		c.source->disconnect(c.signal, c.target, c.method);
 	}
 
 	ObjectDB::remove_instance(this);
@@ -2015,7 +1919,9 @@ ObjectID ObjectDB::add_instance(Object *p_object) {
 
 	rw_lock->write_lock();
 	instances[++instance_counter] = p_object;
+#ifdef DEBUG_ENABLED
 	instance_checks[p_object] = instance_counter;
+#endif
 	rw_lock->write_unlock();
 
 	return instance_counter;
@@ -2026,7 +1932,9 @@ void ObjectDB::remove_instance(Object *p_object) {
 	rw_lock->write_lock();
 
 	instances.erase(p_object->get_instance_id());
+#ifdef DEBUG_ENABLED
 	instance_checks.erase(p_object);
+#endif
 
 	rw_lock->write_unlock();
 }
@@ -2085,10 +1993,10 @@ void ObjectDB::cleanup() {
 
 				String node_name;
 				if (instances[*K]->is_class("Node"))
-					node_name = " - Node name: " + String(instances[*K]->call("get_name"));
+					node_name = " - Node Name: " + String(instances[*K]->call("get_name"));
 				if (instances[*K]->is_class("Resource"))
-					node_name = " - Resource name: " + String(instances[*K]->call("get_name")) + " Path: " + String(instances[*K]->call("get_path"));
-				print_line("Leaked instance: " + String(instances[*K]->get_class()) + ":" + itos(*K) + node_name);
+					node_name = " - Resource Name: " + String(instances[*K]->call("get_name")) + " Path: " + String(instances[*K]->call("get_path"));
+				print_line("Leaked Instance: " + String(instances[*K]->get_class()) + ":" + itos(*K) + node_name);
 			}
 		}
 	}

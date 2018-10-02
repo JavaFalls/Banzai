@@ -31,9 +31,9 @@
 #ifndef ORDERED_HASH_MAP_H
 #define ORDERED_HASH_MAP_H
 
-#include "core/hash_map.h"
-#include "core/list.h"
-#include "core/pair.h"
+#include "hash_map.h"
+#include "list.h"
+#include "pair.h"
 
 /**
  * A hash map which allows to iterate elements in insertion order.

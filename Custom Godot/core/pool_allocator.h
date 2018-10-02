@@ -31,7 +31,7 @@
 #ifndef POOL_ALLOCATOR_H
 #define POOL_ALLOCATOR_H
 
-#include "core/typedefs.h"
+#include "typedefs.h"
 
 /**
 	@author Juan Linietsky <reduzio@gmail.com>

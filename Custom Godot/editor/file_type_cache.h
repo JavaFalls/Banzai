@@ -31,7 +31,7 @@
 #ifndef FILE_TYPE_CACHE_H
 #define FILE_TYPE_CACHE_H
 
-#include "core/object.h"
+#include "object.h"
 
 class FileTypeCache : Object {
 

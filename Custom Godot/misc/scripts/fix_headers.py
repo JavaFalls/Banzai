@@ -92,11 +92,9 @@ while (fname != ""):
     fileread.close()
 
     # Write
-    filewrite = open(fname.strip(), "wb")
-    filewrite.write(text)
-    filewrite.close()
+    fileread = open(fname.strip(), "wb")
+    fileread.write(text)
+    fileread.close()
 
     # Next file
     fname = files.readline()
-
-files.close()

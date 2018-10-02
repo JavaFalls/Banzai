@@ -31,7 +31,7 @@
 #ifndef TEXTURE_LOADER_PKM_H
 #define TEXTURE_LOADER_PKM_H
 
-#include "core/io/resource_loader.h"
+#include "io/resource_loader.h"
 #include "scene/resources/texture.h"
 
 class ResourceFormatPKM : public ResourceFormatLoader {

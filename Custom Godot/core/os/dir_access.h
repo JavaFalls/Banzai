@@ -31,14 +31,14 @@
 #ifndef DIR_ACCESS_H
 #define DIR_ACCESS_H
 
-#include "core/typedefs.h"
-#include "core/ustring.h"
+#include "typedefs.h"
+#include "ustring.h"
 
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
 
-//@ TODO, excellent candidate for THREAD_SAFE MACRO, should go through all these and add THREAD_SAFE where it applies
+//@ TOOD, excellent candidate for THREAD_SAFE MACRO, should go through all these and add THREAD_SAFE where it applies
 class DirAccess {
 public:
 	enum AccessType {

@@ -31,15 +31,14 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
-#include "core/dvector.h"
-#include "core/math/face3.h"
-#include "core/math/rect2.h"
-#include "core/math/triangulate.h"
-#include "core/math/vector3.h"
-#include "core/object.h"
-#include "core/print_string.h"
-#include "core/vector.h"
-
+#include "dvector.h"
+#include "face3.h"
+#include "math_2d.h"
+#include "object.h"
+#include "print_string.h"
+#include "triangulate.h"
+#include "vector.h"
+#include "vector3.h"
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
@@ -503,15 +502,16 @@ public:
 	}
 
 	static bool is_point_in_triangle(const Vector2 &s, const Vector2 &a, const Vector2 &b, const Vector2 &c) {
-		Vector2 an = a - s;
-		Vector2 bn = b - s;
-		Vector2 cn = c - s;
+		int as_x = s.x - a.x;
+		int as_y = s.y - a.y;
 
-		bool orientation = an.cross(bn) > 0;
+		bool s_ab = (b.x - a.x) * as_y - (b.y - a.y) * as_x > 0;
 
-		if ((bn.cross(cn) > 0) != orientation) return false;
+		if (((c.x - a.x) * as_y - (c.y - a.y) * as_x > 0) == s_ab) return false;
 
-		return (cn.cross(an) > 0) == orientation;
+		if (((c.x - b.x) * (s.y - b.y) - (c.y - b.y) * (s.x - b.x) > 0) != s_ab) return false;
+
+		return true;
 	}
 
 	static bool is_point_in_polygon(const Vector2 &p_point, const Vector<Vector2> &p_polygon);
@@ -528,21 +528,6 @@ public:
 		real_t d = n.dot(p);
 
 		return p_segment[0] + n * d; // inside
-	}
-
-	static bool line_intersects_line_2d(const Vector2 &p_from_a, const Vector2 &p_dir_a, const Vector2 &p_from_b, const Vector2 &p_dir_b, Vector2 &r_result) {
-
-		// see http://paulbourke.net/geometry/pointlineplane/
-
-		const real_t denom = p_dir_b.y * p_dir_a.x - p_dir_b.x * p_dir_a.y;
-		if (Math::abs(denom) < CMP_EPSILON) { // parallel?
-			return false;
-		}
-
-		const Vector2 v = p_from_a - p_from_b;
-		const real_t t = (p_dir_b.x * v.y - p_dir_b.y * v.x) / denom;
-		r_result = p_from_a + t * p_dir_a;
-		return true;
 	}
 
 	static bool segment_intersects_segment_2d(const Vector2 &p_from_a, const Vector2 &p_to_a, const Vector2 &p_from_b, const Vector2 &p_to_b, Vector2 *r_result) {
@@ -891,14 +876,14 @@ public:
 		for (int i = 0; i < n; ++i) {
 			while (k >= 2 && vec2_cross(H[k - 2], H[k - 1], P[i]) <= 0)
 				k--;
-			H.write[k++] = P[i];
+			H[k++] = P[i];
 		}
 
 		// Build upper hull
 		for (int i = n - 2, t = k + 1; i >= 0; i--) {
 			while (k >= t && vec2_cross(H[k - 2], H[k - 1], P[i]) <= 0)
 				k--;
-			H.write[k++] = P[i];
+			H[k++] = P[i];
 		}
 
 		H.resize(k);

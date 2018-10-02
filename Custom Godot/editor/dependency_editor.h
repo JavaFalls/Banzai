@@ -102,8 +102,7 @@ class DependencyRemoveDialog : public ConfirmationDialog {
 	Tree *owners;
 
 	Map<String, String> all_remove_files;
-	Vector<String> dirs_to_delete;
-	Vector<String> files_to_delete;
+	Vector<String> to_delete;
 
 	struct RemovedDependency {
 		String file;

@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "spin_box.h"
-#include "core/os/input.h"
+#include "os/input.h"
 
 Size2 SpinBox::get_minimum_size() const {
 

@@ -30,7 +30,7 @@
 
 #include "parallax_layer.h"
 
-#include "core/engine.h"
+#include "engine.h"
 #include "parallax_background.h"
 
 void ParallaxLayer::set_motion_scale(const Size2 &p_scale) {
@@ -72,7 +72,7 @@ void ParallaxLayer::_update_mirroring() {
 	ParallaxBackground *pb = Object::cast_to<ParallaxBackground>(get_parent());
 	if (pb) {
 
-		RID c = pb->get_canvas();
+		RID c = pb->get_world_2d()->get_canvas();
 		RID ci = get_canvas_item();
 		Point2 mirrorScale = mirroring * get_scale();
 		VisualServer::get_singleton()->canvas_set_item_mirroring(c, ci, mirrorScale);
@@ -120,6 +120,7 @@ void ParallaxLayer::set_base_offset_and_scale(const Point2 &p_offset, float p_sc
 
 	if (mirroring.x) {
 		double den = mirroring.x * p_scale;
+		double before = new_ofs.x;
 		new_ofs.x -= den * ceil(new_ofs.x / den);
 	}
 

@@ -102,15 +102,16 @@ private:
 	volatile bool active;
 	volatile float setplay;
 
+#ifdef TOOLS_ENABLED
+	volatile bool fake_active;
+#endif
+
 	AttenuationModel attenuation_model;
 	float unit_db;
 	float unit_size;
 	float max_db;
 	float pitch_scale;
 	bool autoplay;
-	bool stream_paused;
-	bool stream_paused_fade_in;
-	bool stream_paused_fade_out;
 	StringName bus;
 
 	void _mix_audio();
@@ -201,9 +202,6 @@ public:
 
 	void set_doppler_tracking(DopplerTracking p_tracking);
 	DopplerTracking get_doppler_tracking() const;
-
-	void set_stream_paused(bool p_pause);
-	bool get_stream_paused() const;
 
 	AudioStreamPlayer3D();
 	~AudioStreamPlayer3D();

@@ -31,7 +31,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "core/set.h"
+#include "set.h"
 
 /**
 	@author Juan Linietsky <reduzio@gmail.com>

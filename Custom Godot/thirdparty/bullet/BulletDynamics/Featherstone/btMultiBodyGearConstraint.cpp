@@ -45,18 +45,16 @@ btMultiBodyGearConstraint::~btMultiBodyGearConstraint()
 
 int btMultiBodyGearConstraint::getIslandIdA() const
 {
+
 	if (m_bodyA)
 	{
-		if (m_linkA < 0)
+		btMultiBodyLinkCollider* col = m_bodyA->getBaseCollider();
+		if (col)
+			return col->getIslandTag();
+		for (int i=0;i<m_bodyA->getNumLinks();i++)
 		{
-			btMultiBodyLinkCollider* col = m_bodyA->getBaseCollider();
-			if (col)
-				return col->getIslandTag();
-		}
-		else
-		{
-			if (m_bodyA->getLink(m_linkA).m_collider)
-				return m_bodyA->getLink(m_linkA).m_collider->getIslandTag();
+			if (m_bodyA->getLink(i).m_collider)
+				return m_bodyA->getLink(i).m_collider->getIslandTag();
 		}
 	}
 	return -1;
@@ -66,16 +64,15 @@ int btMultiBodyGearConstraint::getIslandIdB() const
 {
 	if (m_bodyB)
 	{
-		if (m_linkB < 0)
+		btMultiBodyLinkCollider* col = m_bodyB->getBaseCollider();
+		if (col)
+			return col->getIslandTag();
+
+		for (int i=0;i<m_bodyB->getNumLinks();i++)
 		{
-			btMultiBodyLinkCollider* col = m_bodyB->getBaseCollider();
+			col = m_bodyB->getLink(i).m_collider;
 			if (col)
 				return col->getIslandTag();
-		}
-		else
-		{
-			if (m_bodyB->getLink(m_linkB).m_collider)
-				return m_bodyB->getLink(m_linkB).m_collider->getIslandTag();
 		}
 	}
 	return -1;
@@ -137,10 +134,6 @@ void btMultiBodyGearConstraint::createConstraintRows(btMultiBodyConstraintArray&
 		if (m_erp!=0)
 		{
 			btScalar currentPositionA = m_bodyA->getJointPosMultiDof(m_linkA)[dof];
-			if (m_gearAuxLink >= 0)
-			{
-				currentPositionA -= m_bodyA->getJointPosMultiDof(m_gearAuxLink)[dof];
-			}
 			btScalar currentPositionB = m_gearRatio*m_bodyA->getJointPosMultiDof(m_linkB)[dof];
 			btScalar diff = currentPositionB+currentPositionA;
 			btScalar desiredPositionDiff = this->m_relativePositionTarget;

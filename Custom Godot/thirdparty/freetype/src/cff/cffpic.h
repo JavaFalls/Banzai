@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    The FreeType position independent code services for cff module.      */
 /*                                                                         */
-/*  Copyright 2009-2018 by                                                 */
+/*  Copyright 2009-2017 by                                                 */
 /*  Oran Agra and Mickey Gabel.                                            */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
@@ -22,6 +22,7 @@
 
 #include FT_INTERNAL_PIC_H
 
+
 #ifndef FT_CONFIG_OPTION_PIC
 
 #define CFF_SERVICE_PS_INFO_GET          cff_service_ps_info
@@ -33,7 +34,6 @@
 #define CFF_SERVICES_GET                 cff_services
 #define CFF_SERVICE_MULTI_MASTERS_GET    cff_service_multi_masters
 #define CFF_SERVICE_METRICS_VAR_GET      cff_service_metrics_variations
-#define CFF_SERVICE_CFF_LOAD_GET         cff_service_cff_load
 #define CFF_CMAP_ENCODING_CLASS_REC_GET  cff_cmap_encoding_class_rec
 #define CFF_CMAP_UNICODE_CLASS_REC_GET   cff_cmap_unicode_class_rec
 #define CFF_FIELD_HANDLERS_GET           cff_field_handlers
@@ -65,7 +65,6 @@ FT_BEGIN_HEADER
     FT_Service_PropertiesRec         cff_service_properties;
     FT_Service_MultiMastersRec       cff_service_multi_masters;
     FT_Service_MetricsVariationsRec  cff_service_metrics_variations;
-    FT_Service_CFFLoadRec            cff_service_cff_load;
     FT_CMap_ClassRec                 cff_cmap_encoding_class_rec;
     FT_CMap_ClassRec                 cff_cmap_unicode_class_rec;
 
@@ -93,8 +92,6 @@ FT_BEGIN_HEADER
           ( GET_PIC( library )->cff_service_multi_masters )
 #define CFF_SERVICE_METRICS_VAR_GET                              \
           ( GET_PIC( library )->cff_service_metrics_variations )
-#define CFF_SERVICE_CFF_LOAD_GET                       \
-          ( GET_PIC( library )->cff_service_cff_load )
 #define CFF_CMAP_ENCODING_CLASS_REC_GET                       \
           ( GET_PIC( library )->cff_cmap_encoding_class_rec )
 #define CFF_CMAP_UNICODE_CLASS_REC_GET                       \

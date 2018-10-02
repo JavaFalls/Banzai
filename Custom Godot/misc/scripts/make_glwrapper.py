@@ -16,7 +16,9 @@ READ_CONSTANTS = 2
 
 read_what = READ_TYPES
 
-def read_file(f):
+for x in (range(len(sys.argv) - 1)):
+    f = open(sys.argv[x + 1], "r")
+
     while(True):
 
         line = f.readline()
@@ -84,9 +86,6 @@ def read_file(f):
             functions.append(funcdata)
             print(funcdata)
 
-for path in sys.argv[1:]:
-    with open(path, "r") as f:
-        read_file(f)
 
 # print(types)
 # print(constants)
@@ -157,7 +156,6 @@ f.write("void glWrapperInit( GLWrapperFuncPtr (*wrapperFunc)(const char*) );\n")
 f.write("#ifdef __cplusplus\n}\n#endif\n")
 
 f.write("#endif\n\n")
-f.close()
 
 f = open("glwrapper.c", "w")
 
@@ -178,4 +176,3 @@ for x in functions:
 f.write("\n\n")
 f.write("}\n")
 f.write("\n\n")
-f.close()

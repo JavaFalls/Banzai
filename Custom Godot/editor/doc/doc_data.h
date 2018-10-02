@@ -31,9 +31,9 @@
 #ifndef DOC_DATA_H
 #define DOC_DATA_H
 
-#include "core/io/xml_parser.h"
-#include "core/map.h"
-#include "core/variant.h"
+#include "io/xml_parser.h"
+#include "map.h"
+#include "variant.h"
 
 class DocData {
 public:
@@ -85,7 +85,7 @@ public:
 		String category;
 		String brief_description;
 		String description;
-		Vector<String> tutorials;
+		String tutorials;
 		String demos;
 		Vector<MethodDoc> methods;
 		Vector<MethodDoc> signals;

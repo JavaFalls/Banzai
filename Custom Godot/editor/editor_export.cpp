@@ -30,20 +30,20 @@
 
 #include "editor_export.h"
 
-#include "core/io/config_file.h"
-#include "core/io/resource_loader.h"
-#include "core/io/resource_saver.h"
-#include "core/io/zip_io.h"
-#include "core/os/file_access.h"
-#include "core/project_settings.h"
-#include "core/script_language.h"
-#include "core/version.h"
 #include "editor/editor_file_system.h"
 #include "editor/plugins/script_editor_plugin.h"
 #include "editor_node.h"
 #include "editor_settings.h"
+#include "io/config_file.h"
+#include "io/resource_loader.h"
+#include "io/resource_saver.h"
+#include "io/zip_io.h"
+#include "os/file_access.h"
+#include "project_settings.h"
 #include "scene/resources/scene_format_text.h"
+#include "script_language.h"
 #include "thirdparty/misc/md5.h"
+#include "version.h"
 
 static int _get_pad(int p_alignment, int p_n) {
 
@@ -187,7 +187,7 @@ void EditorExportPreset::remove_patch(int p_idx) {
 
 void EditorExportPreset::set_patch(int p_index, const String &p_path) {
 	ERR_FAIL_INDEX(p_index, patches.size());
-	patches.write[p_index] = p_path;
+	patches[p_index] = p_path;
 	EditorExport::singleton->save_presets();
 }
 String EditorExportPreset::get_patch(int p_index) {
@@ -295,7 +295,7 @@ Error EditorExportPlatform::_save_pack_file(void *p_userdata, const String &p_pa
 		MD5Final(&ctx);
 		sd.md5.resize(16);
 		for (int i = 0; i < 16; i++) {
-			sd.md5.write[i] = ctx.digest[i];
+			sd.md5[i] = ctx.digest[i];
 		}
 	}
 
@@ -409,7 +409,6 @@ void EditorExportPlatform::_edit_files_with_filter(DirAccess *da, const Vector<S
 	String cur_dir = da->get_current_dir().replace("\\", "/");
 	if (!cur_dir.ends_with("/"))
 		cur_dir += "/";
-	String cur_dir_no_prefix = cur_dir.replace("res://", "");
 
 	Vector<String> dirs;
 	String f;
@@ -418,10 +417,8 @@ void EditorExportPlatform::_edit_files_with_filter(DirAccess *da, const Vector<S
 			dirs.push_back(f);
 		else {
 			String fullpath = cur_dir + f;
-			// Test also against path without res:// so that filters like `file.txt` can work.
-			String fullpath_no_prefix = cur_dir_no_prefix + f;
 			for (int i = 0; i < p_filters.size(); ++i) {
-				if (fullpath.matchn(p_filters[i]) || fullpath_no_prefix.matchn(p_filters[i])) {
+				if (fullpath.matchn(p_filters[i])) {
 					if (!exclude) {
 						r_list.insert(fullpath);
 					} else {
@@ -584,9 +581,9 @@ EditorExportPlatform::ExportNotifier::ExportNotifier(EditorExportPlatform &p_pla
 	//initial export plugin callback
 	for (int i = 0; i < export_plugins.size(); i++) {
 		if (export_plugins[i]->get_script_instance()) { //script based
-			export_plugins.write[i]->_export_begin_script(features.features_pv, p_debug, p_path, p_flags);
+			export_plugins[i]->_export_begin_script(features.features_pv, p_debug, p_path, p_flags);
 		} else {
-			export_plugins.write[i]->_export_begin(features.features, p_debug, p_path, p_flags);
+			export_plugins[i]->_export_begin(features.features, p_debug, p_path, p_flags);
 		}
 	}
 }
@@ -594,7 +591,7 @@ EditorExportPlatform::ExportNotifier::ExportNotifier(EditorExportPlatform &p_pla
 EditorExportPlatform::ExportNotifier::~ExportNotifier() {
 	Vector<Ref<EditorExportPlugin> > export_plugins = EditorExport::get_singleton()->get_export_plugins();
 	for (int i = 0; i < export_plugins.size(); i++) {
-		export_plugins.write[i]->_export_end();
+		export_plugins[i]->_export_end();
 	}
 }
 
@@ -632,7 +629,7 @@ Error EditorExportPlatform::export_project_files(const Ref<EditorExportPreset> &
 			p_func(p_udata, export_plugins[i]->extra_files[j].path, export_plugins[i]->extra_files[j].data, 0, paths.size());
 		}
 
-		export_plugins.write[i]->_clear();
+		export_plugins[i]->_clear();
 	}
 
 	FeatureContainers feature_containers = get_feature_containers(p_preset);
@@ -661,21 +658,6 @@ Error EditorExportPlatform::export_project_files(const Ref<EditorExportPreset> &
 			List<String> remaps;
 			config->get_section_keys("remap", &remaps);
 
-			Set<String> remap_features;
-
-			for (List<String>::Element *F = remaps.front(); F; F = F->next()) {
-
-				String remap = F->get();
-				String feature = remap.get_slice(".", 1);
-				if (features.has(feature)) {
-					remap_features.insert(feature);
-				}
-			}
-
-			if (remap_features.size() > 1) {
-				this->resolve_platform_feature_priorities(p_preset, remap_features);
-			}
-
 			for (List<String>::Element *F = remaps.front(); F; F = F->next()) {
 
 				String remap = F->get();
@@ -685,8 +667,7 @@ Error EditorExportPlatform::export_project_files(const Ref<EditorExportPreset> &
 					p_func(p_udata, remapped_path, array, idx, total);
 				} else if (remap.begins_with("path.")) {
 					String feature = remap.get_slice(".", 1);
-
-					if (remap_features.has(feature)) {
+					if (features.has(feature)) {
 						String remapped_path = config->get_value("remap", remap);
 						Vector<uint8_t> array = FileAccess::get_file_as_array(remapped_path);
 						p_func(p_udata, remapped_path, array, idx, total);
@@ -703,9 +684,9 @@ Error EditorExportPlatform::export_project_files(const Ref<EditorExportPreset> &
 			bool do_export = true;
 			for (int i = 0; i < export_plugins.size(); i++) {
 				if (export_plugins[i]->get_script_instance()) { //script based
-					export_plugins.write[i]->_export_file_script(path, type, features_pv);
+					export_plugins[i]->_export_file_script(path, type, features_pv);
 				} else {
-					export_plugins.write[i]->_export_file(path, type, features);
+					export_plugins[i]->_export_file(path, type, features);
 				}
 				if (p_so_func) {
 					for (int j = 0; j < export_plugins[i]->shared_objects.size(); j++) {
@@ -725,7 +706,7 @@ Error EditorExportPlatform::export_project_files(const Ref<EditorExportPreset> &
 				if (export_plugins[i]->skipped) {
 					do_export = false;
 				}
-				export_plugins.write[i]->_clear();
+				export_plugins[i]->_clear();
 
 				if (!do_export)
 					break; //apologies, not exporting
@@ -767,7 +748,7 @@ Error EditorExportPlatform::export_project_files(const Ref<EditorExportPreset> &
 				Vector<uint8_t> new_file;
 				new_file.resize(utf8.length());
 				for (int j = 0; j < utf8.length(); j++) {
-					new_file.write[j] = utf8[j];
+					new_file[j] = utf8[j];
 				}
 
 				p_func(p_udata, from + ".remap", new_file, idx, total);
@@ -1146,7 +1127,7 @@ void EditorExport::load_config() {
 
 		for (int i = 0; i < export_platforms.size(); i++) {
 			if (export_platforms[i]->get_name() == platform) {
-				preset = export_platforms.write[i]->create_preset();
+				preset = export_platforms[i]->create_preset();
 				break;
 			}
 		}
@@ -1219,7 +1200,7 @@ bool EditorExport::poll_export_platforms() {
 
 	bool changed = false;
 	for (int i = 0; i < export_platforms.size(); i++) {
-		if (export_platforms.write[i]->poll_devices()) {
+		if (export_platforms[i]->poll_devices()) {
 			changed = true;
 		}
 	}
@@ -1265,11 +1246,9 @@ void EditorExportPlatformPC::get_preset_features(const Ref<EditorExportPreset> &
 
 void EditorExportPlatformPC::get_export_options(List<ExportOption> *r_options) {
 
-	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/bptc"), false));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/s3tc"), true));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/etc"), false));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/etc2"), false));
-	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/no_bptc_fallbacks"), true));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "binary_format/64_bits"), true));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "custom_template/release", PROPERTY_HINT_GLOBAL_FILE), ""));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "custom_template/debug", PROPERTY_HINT_GLOBAL_FILE), ""));
@@ -1452,15 +1431,6 @@ void EditorExportPlatformPC::get_platform_features(List<String> *r_features) {
 	}
 }
 
-void EditorExportPlatformPC::resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features) {
-
-	if (p_features.has("bptc")) {
-		if (p_preset->has("texture_format/no_bptc_fallbacks")) {
-			p_features.erase("s3tc");
-		}
-	}
-}
-
 int EditorExportPlatformPC::get_chmod_flags() const {
 
 	return chmod_flags;
@@ -1484,6 +1454,8 @@ void EditorExportTextSceneToBinaryPlugin::_export_file(const String &p_path, con
 	if (extension != "tres" && extension != "tscn") {
 		return;
 	}
+
+	print_line("exporting " + p_path);
 
 	bool convert = GLOBAL_GET("editor/convert_text_resources_to_binary_on_export");
 	if (!convert)

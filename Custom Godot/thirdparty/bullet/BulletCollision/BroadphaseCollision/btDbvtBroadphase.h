@@ -29,8 +29,7 @@ subject to the following restrictions:
 #define DBVT_BP_PREVENTFALSEUPDATE		0
 #define DBVT_BP_ACCURATESLEEPING		0
 #define DBVT_BP_ENABLE_BENCHMARK		0
-//#define DBVT_BP_MARGIN					(btScalar)0.05
-extern btScalar gDbvtMargin;
+#define DBVT_BP_MARGIN					(btScalar)0.05
 
 #if DBVT_BP_PROFILE
 #define	DBVT_BP_PROFILING_RATE	256

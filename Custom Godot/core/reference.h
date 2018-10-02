@@ -31,10 +31,10 @@
 #ifndef REFERENCE_H
 #define REFERENCE_H
 
-#include "core/class_db.h"
-#include "core/object.h"
-#include "core/ref_ptr.h"
-#include "core/safe_refcount.h"
+#include "class_db.h"
+#include "object.h"
+#include "ref_ptr.h"
+#include "safe_refcount.h"
 
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
@@ -63,7 +63,7 @@ public:
 template <class T>
 class Ref {
 
-	T *reference;
+	T *reference = NULL;
 
 	void ref(const Ref &p_from) {
 
@@ -87,13 +87,6 @@ class Ref {
 
 	//virtual Reference * get_reference() const { return reference; }
 public:
-	_FORCE_INLINE_ bool operator==(const T *p_ptr) const {
-		return reference == p_ptr;
-	}
-	_FORCE_INLINE_ bool operator!=(const T *p_ptr) const {
-		return reference != p_ptr;
-	}
-
 	_FORCE_INLINE_ bool operator<(const Ref<T> &p_r) const {
 
 		return reference < p_r.reference;
@@ -220,9 +213,10 @@ public:
 
 	Ref(T *p_reference) {
 
-		reference = NULL;
 		if (p_reference)
 			ref_pointer(p_reference);
+		else
+			reference = NULL;
 	}
 
 	Ref(const Variant &p_variant) {

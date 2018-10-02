@@ -31,7 +31,7 @@
 #ifndef KEY_MAPPING_WINDOWS_H
 #define KEY_MAPPING_WINDOWS_H
 
-#include "core/os/keyboard.h"
+#include "os/keyboard.h"
 
 #include <windows.h>
 

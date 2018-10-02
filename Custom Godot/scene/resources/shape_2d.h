@@ -31,7 +31,7 @@
 #ifndef SHAPE_2D_H
 #define SHAPE_2D_H
 
-#include "core/resource.h"
+#include "resource.h"
 
 class Shape2D : public Resource {
 	GDCLASS(Shape2D, Resource);

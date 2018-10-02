@@ -34,13 +34,13 @@
 #include "bullet_utilities.h"
 #include "rigid_body_bullet.h"
 
-#include <BulletDynamics/ConstraintSolver/btGeneric6DofSpring2Constraint.h>
+#include <BulletDynamics/ConstraintSolver/btGeneric6DofConstraint.h>
 
 /**
 	@author AndreaCatania
 */
 
-Generic6DOFJointBullet::Generic6DOFJointBullet(RigidBodyBullet *rbA, RigidBodyBullet *rbB, const Transform &frameInA, const Transform &frameInB) :
+Generic6DOFJointBullet::Generic6DOFJointBullet(RigidBodyBullet *rbA, RigidBodyBullet *rbB, const Transform &frameInA, const Transform &frameInB, bool useLinearReferenceFrameA) :
 		JointBullet() {
 
 	Transform scaled_AFrame(frameInA.scaled(rbA->get_body_scale()));
@@ -58,9 +58,9 @@ Generic6DOFJointBullet::Generic6DOFJointBullet(RigidBodyBullet *rbA, RigidBodyBu
 		btTransform btFrameB;
 		G_TO_B(scaled_BFrame, btFrameB);
 
-		sixDOFConstraint = bulletnew(btGeneric6DofSpring2Constraint(*rbA->get_bt_rigid_body(), *rbB->get_bt_rigid_body(), btFrameA, btFrameB));
+		sixDOFConstraint = bulletnew(btGeneric6DofConstraint(*rbA->get_bt_rigid_body(), *rbB->get_bt_rigid_body(), btFrameA, btFrameB, useLinearReferenceFrameA));
 	} else {
-		sixDOFConstraint = bulletnew(btGeneric6DofSpring2Constraint(*rbA->get_bt_rigid_body(), btFrameA));
+		sixDOFConstraint = bulletnew(btGeneric6DofConstraint(*rbA->get_bt_rigid_body(), btFrameA, useLinearReferenceFrameA));
 	}
 
 	setup(sixDOFConstraint);
@@ -123,25 +123,40 @@ void Generic6DOFJointBullet::set_param(Vector3::Axis p_axis, PhysicsServer::G6DO
 	switch (p_param) {
 		case PhysicsServer::G6DOF_JOINT_LINEAR_LOWER_LIMIT:
 			limits_lower[0][p_axis] = p_value;
-			set_flag(p_axis, PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_LIMIT, flags[p_axis][PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_LIMIT]); // Reload bullet parameter
+			set_flag(p_axis, PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_LIMIT, flags[p_axis][p_param]); // Reload bullet parameter
 			break;
 		case PhysicsServer::G6DOF_JOINT_LINEAR_UPPER_LIMIT:
 			limits_upper[0][p_axis] = p_value;
-			set_flag(p_axis, PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_LIMIT, flags[p_axis][PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_LIMIT]); // Reload bullet parameter
+			set_flag(p_axis, PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_LIMIT, flags[p_axis][p_param]); // Reload bullet parameter
 			break;
-		case PhysicsServer::G6DOF_JOINT_LINEAR_MOTOR_TARGET_VELOCITY:
-			sixDOFConstraint->getTranslationalLimitMotor()->m_targetVelocity.m_floats[p_axis] = p_value;
+		case PhysicsServer::G6DOF_JOINT_LINEAR_LIMIT_SOFTNESS:
+			sixDOFConstraint->getTranslationalLimitMotor()->m_limitSoftness = p_value;
 			break;
-		case PhysicsServer::G6DOF_JOINT_LINEAR_MOTOR_FORCE_LIMIT:
-			sixDOFConstraint->getTranslationalLimitMotor()->m_maxMotorForce.m_floats[p_axis] = p_value;
+		case PhysicsServer::G6DOF_JOINT_LINEAR_RESTITUTION:
+			sixDOFConstraint->getTranslationalLimitMotor()->m_restitution = p_value;
+			break;
+		case PhysicsServer::G6DOF_JOINT_LINEAR_DAMPING:
+			sixDOFConstraint->getTranslationalLimitMotor()->m_damping = p_value;
 			break;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_LOWER_LIMIT:
 			limits_lower[1][p_axis] = p_value;
-			set_flag(p_axis, PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_ANGULAR_LIMIT, flags[p_axis][PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_ANGULAR_LIMIT]); // Reload bullet parameter
+			set_flag(p_axis, PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_ANGULAR_LIMIT, flags[p_axis][p_param]); // Reload bullet parameter
 			break;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_UPPER_LIMIT:
 			limits_upper[1][p_axis] = p_value;
-			set_flag(p_axis, PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_ANGULAR_LIMIT, flags[p_axis][PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_ANGULAR_LIMIT]); // Reload bullet parameter
+			set_flag(p_axis, PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_LIMIT, flags[p_axis][p_param]); // Reload bullet parameter
+			break;
+		case PhysicsServer::G6DOF_JOINT_ANGULAR_LIMIT_SOFTNESS:
+			sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_limitSoftness = p_value;
+			break;
+		case PhysicsServer::G6DOF_JOINT_ANGULAR_DAMPING:
+			sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_damping = p_value;
+			break;
+		case PhysicsServer::G6DOF_JOINT_ANGULAR_RESTITUTION:
+			sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_bounce = p_value;
+			break;
+		case PhysicsServer::G6DOF_JOINT_ANGULAR_FORCE_LIMIT:
+			sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_maxLimitForce = p_value;
 			break;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_ERP:
 			sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_stopERP = p_value;
@@ -150,12 +165,10 @@ void Generic6DOFJointBullet::set_param(Vector3::Axis p_axis, PhysicsServer::G6DO
 			sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_targetVelocity = p_value;
 			break;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_MOTOR_FORCE_LIMIT:
-			sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_maxMotorForce = p_value;
+			sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_maxLimitForce = p_value;
 			break;
 		default:
-			ERR_EXPLAIN("This parameter " + itos(p_param) + " is deprecated");
-			WARN_DEPRECATED
-			break;
+			WARN_PRINT("This parameter is not supported");
 	}
 }
 
@@ -166,26 +179,33 @@ real_t Generic6DOFJointBullet::get_param(Vector3::Axis p_axis, PhysicsServer::G6
 			return limits_lower[0][p_axis];
 		case PhysicsServer::G6DOF_JOINT_LINEAR_UPPER_LIMIT:
 			return limits_upper[0][p_axis];
-		case PhysicsServer::G6DOF_JOINT_LINEAR_MOTOR_TARGET_VELOCITY:
-			return sixDOFConstraint->getTranslationalLimitMotor()->m_targetVelocity.m_floats[p_axis];
-		case PhysicsServer::G6DOF_JOINT_LINEAR_MOTOR_FORCE_LIMIT:
-			return sixDOFConstraint->getTranslationalLimitMotor()->m_maxMotorForce.m_floats[p_axis];
+		case PhysicsServer::G6DOF_JOINT_LINEAR_LIMIT_SOFTNESS:
+			return sixDOFConstraint->getTranslationalLimitMotor()->m_limitSoftness;
+		case PhysicsServer::G6DOF_JOINT_LINEAR_RESTITUTION:
+			return sixDOFConstraint->getTranslationalLimitMotor()->m_restitution;
+		case PhysicsServer::G6DOF_JOINT_LINEAR_DAMPING:
+			return sixDOFConstraint->getTranslationalLimitMotor()->m_damping;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_LOWER_LIMIT:
 			return limits_lower[1][p_axis];
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_UPPER_LIMIT:
 			return limits_upper[1][p_axis];
+		case PhysicsServer::G6DOF_JOINT_ANGULAR_LIMIT_SOFTNESS:
+			return sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_limitSoftness;
+		case PhysicsServer::G6DOF_JOINT_ANGULAR_DAMPING:
+			return sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_damping;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_RESTITUTION:
 			return sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_bounce;
+		case PhysicsServer::G6DOF_JOINT_ANGULAR_FORCE_LIMIT:
+			return sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_maxLimitForce;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_ERP:
 			return sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_stopERP;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_MOTOR_TARGET_VELOCITY:
 			return sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_targetVelocity;
 		case PhysicsServer::G6DOF_JOINT_ANGULAR_MOTOR_FORCE_LIMIT:
-			return sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_maxMotorForce;
+			return sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_maxLimitForce;
 		default:
-			ERR_EXPLAIN("This parameter " + itos(p_param) + " is deprecated");
-			WARN_DEPRECATED;
-			return 0;
+			WARN_PRINT("This parameter is not supported");
+			return 0.;
 	}
 }
 
@@ -212,13 +232,9 @@ void Generic6DOFJointBullet::set_flag(Vector3::Axis p_axis, PhysicsServer::G6DOF
 		case PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_MOTOR:
 			sixDOFConstraint->getRotationalLimitMotor(p_axis)->m_enableMotor = flags[p_axis][p_flag];
 			break;
-		case PhysicsServer::G6DOF_JOINT_FLAG_ENABLE_LINEAR_MOTOR:
-			sixDOFConstraint->getTranslationalLimitMotor()->m_enableMotor[p_axis] = flags[p_axis][p_flag];
-			break;
 		default:
-			ERR_EXPLAIN("This flag " + itos(p_flag) + " is deprecated");
-			WARN_DEPRECATED
-			break;
+			WARN_PRINT("This flag is not supported by Bullet engine");
+			return;
 	}
 }
 

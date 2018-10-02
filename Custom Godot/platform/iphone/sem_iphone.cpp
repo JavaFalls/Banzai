@@ -70,7 +70,7 @@ void cgsem_destroy(cgsem_t *cgsem) {
 	close(cgsem->pipefd[0]);
 }
 
-#include "core/os/memory.h"
+#include "os/memory.h"
 #include <errno.h>
 
 Error SemaphoreIphone::wait() {

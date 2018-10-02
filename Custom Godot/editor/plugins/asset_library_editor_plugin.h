@@ -194,7 +194,6 @@ class EditorAssetLibrary : public PanelContainer {
 	Button *search;
 	ProgressBar *load_status;
 	HBoxContainer *error_hb;
-	TextureRect *error_tr;
 	Label *error_label;
 	MenuButton *support;
 
@@ -241,6 +240,7 @@ class EditorAssetLibrary : public PanelContainer {
 
 		bool active;
 		int queue_id;
+		int asset_id;
 		ImageType image_type;
 		int image_index;
 		String image_url;

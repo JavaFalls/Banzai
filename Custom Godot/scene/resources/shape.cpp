@@ -30,7 +30,7 @@
 
 #include "shape.h"
 
-#include "core/os/os.h"
+#include "os/os.h"
 #include "scene/main/scene_tree.h"
 #include "scene/resources/mesh.h"
 #include "servers/physics_server.h"
@@ -48,15 +48,6 @@ void Shape::add_vertices_to_array(PoolVector<Vector3> &array, const Transform &p
 			w[i + base] = p_xform.xform(toadd[i]);
 		}
 	}
-}
-
-real_t Shape::get_margin() const {
-	return margin;
-}
-
-void Shape::set_margin(real_t p_margin) {
-	margin = p_margin;
-	PhysicsServer::get_singleton()->shape_set_margin(shape, margin);
 }
 
 Ref<ArrayMesh> Shape::get_debug_mesh() {
@@ -96,22 +87,12 @@ Ref<ArrayMesh> Shape::get_debug_mesh() {
 	return debug_mesh_cache;
 }
 
-void Shape::_bind_methods() {
-
-	ClassDB::bind_method(D_METHOD("set_margin", "margin"), &Shape::set_margin);
-	ClassDB::bind_method(D_METHOD("get_margin"), &Shape::get_margin);
-
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "margin", PROPERTY_HINT_RANGE, "0.04,10,0.01"), "set_margin", "get_margin");
-}
-
-Shape::Shape() :
-		margin(0.04) {
+Shape::Shape() {
 
 	ERR_PRINT("Constructor must not be called!");
 }
 
-Shape::Shape(RID p_shape) :
-		margin(0.04) {
+Shape::Shape(RID p_shape) {
 
 	shape = p_shape;
 }

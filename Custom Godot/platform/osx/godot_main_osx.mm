@@ -101,5 +101,5 @@ int main(int argc, char **argv) {
 
 	Main::cleanup();
 
-	return os.get_exit_code();
+	return 0;
 };

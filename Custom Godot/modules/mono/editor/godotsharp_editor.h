@@ -50,10 +50,7 @@ class GodotSharpEditor : public Node {
 
 	GodotSharpBuilds *godotsharp_builds;
 
-	MonoDevelopInstance *monodevelop_instance;
-#ifdef OSX_ENABLED
-	MonoDevelopInstance *visualstudio_mac_instance;
-#endif
+	MonoDevelopInstance *monodevel_instance;
 
 	bool _create_project_solution();
 
@@ -77,23 +74,11 @@ public:
 
 	enum ExternalEditor {
 		EDITOR_NONE,
-#ifdef WINDOWS_ENABLED
-		//EDITOR_VISUALSTUDIO, // TODO
 		EDITOR_MONODEVELOP,
-		EDITOR_VSCODE
-#elif OSX_ENABLED
-		EDITOR_VISUALSTUDIO_MAC,
-		EDITOR_MONODEVELOP,
-		EDITOR_VSCODE
-#elif UNIX_ENABLED
-		EDITOR_MONODEVELOP,
-		EDITOR_VSCODE
-#endif
+		EDITOR_CODE,
 	};
 
 	_FORCE_INLINE_ static GodotSharpEditor *get_singleton() { return singleton; }
-
-	static void register_internal_calls();
 
 	void show_error_dialog(const String &p_message, const String &p_title = "Error");
 

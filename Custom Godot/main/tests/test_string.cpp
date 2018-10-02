@@ -28,11 +28,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/ustring.h"
+#include "ustring.h"
 #include <wchar.h>
-//#include "core/math/math_funcs.h"
+//#include "math_funcs.h"
 #include "core/io/ip_address.h"
-#include "core/os/os.h"
+#include "os/os.h"
 #include <stdio.h>
 
 #include "test_string.h"

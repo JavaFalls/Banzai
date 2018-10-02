@@ -30,7 +30,7 @@
 
 #include "reference_rect.h"
 
-#include "core/engine.h"
+#include "engine.h"
 
 void ReferenceRect::_notification(int p_what) {
 
@@ -39,25 +39,9 @@ void ReferenceRect::_notification(int p_what) {
 		if (!is_inside_tree())
 			return;
 		if (Engine::get_singleton()->is_editor_hint())
-			draw_rect(Rect2(Point2(), get_size()), border_color, false);
+			draw_style_box(get_stylebox("border"), Rect2(Point2(), get_size()));
 	}
 }
 
-void ReferenceRect::set_border_color(const Color &color) {
-	border_color = color;
-}
-
-Color ReferenceRect::get_border_color() const {
-	return border_color;
-}
-
-void ReferenceRect::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_border_color"), &ReferenceRect::get_border_color);
-	ClassDB::bind_method(D_METHOD("set_border_color", "color"), &ReferenceRect::set_border_color);
-
-	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "border_color"), "set_border_color", "get_border_color");
-}
-
 ReferenceRect::ReferenceRect() {
-	border_color = Color(1, 0, 0);
 }

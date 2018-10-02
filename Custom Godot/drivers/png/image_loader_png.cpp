@@ -30,8 +30,8 @@
 
 #include "image_loader_png.h"
 
-#include "core/os/os.h"
-#include "core/print_string.h"
+#include "os/os.h"
+#include "print_string.h"
 
 #include <string.h>
 
@@ -271,6 +271,7 @@ static void _write_png_data(png_structp png_ptr, png_bytep data, png_size_t p_le
 	v.resize(vs + p_length);
 	PoolVector<uint8_t>::Write w = v.write();
 	copymem(&w[vs], data, p_length);
+	//print_line("png write: "+itos(p_length));
 }
 
 static PoolVector<uint8_t> _lossless_pack_png(const Ref<Image> &p_image) {

@@ -31,8 +31,8 @@
 #ifndef ROOM_BOUNDS_H
 #define ROOM_BOUNDS_H
 
-#include "core/math/bsp_tree.h"
-#include "core/resource.h"
+#include "bsp_tree.h"
+#include "resource.h"
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */

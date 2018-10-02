@@ -31,7 +31,7 @@
 #ifndef RESOURCE_SAVER_H
 #define RESOURCE_SAVER_H
 
-#include "core/resource.h"
+#include "resource.h"
 
 /**
 	@author Juan Linietsky <reduzio@gmail.com>

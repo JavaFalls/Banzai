@@ -31,7 +31,7 @@
 #ifndef NETWORKED_MULTIPLAYER_PEER_H
 #define NETWORKED_MULTIPLAYER_PEER_H
 
-#include "core/io/packet_peer.h"
+#include "io/packet_peer.h"
 
 class NetworkedMultiplayerPeer : public PacketPeer {
 

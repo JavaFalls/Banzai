@@ -31,14 +31,9 @@
 #ifndef SETTINGS_CONFIG_DIALOG_H
 #define SETTINGS_CONFIG_DIALOG_H
 
-#include "editor/editor_sectioned_inspector.h"
-#include "editor_inspector.h"
-#include "scene/gui/dialogs.h"
-#include "scene/gui/panel_container.h"
+#include "property_editor.h"
 #include "scene/gui/rich_text_label.h"
 #include "scene/gui/tab_container.h"
-#include "scene/gui/texture_rect.h"
-#include "scene/gui/tool_button.h"
 
 class EditorSettingsDialog : public AcceptDialog {
 
@@ -52,7 +47,9 @@ class EditorSettingsDialog : public AcceptDialog {
 
 	LineEdit *search_box;
 	LineEdit *shortcut_search_box;
-	SectionedInspector *inspector;
+	ToolButton *clear_button;
+	ToolButton *shortcut_clear_button;
+	SectionedPropertyEditor *property_editor;
 
 	Timer *timer;
 
@@ -91,15 +88,6 @@ class EditorSettingsDialog : public AcceptDialog {
 	void _shortcut_button_pressed(Object *p_item, int p_column, int p_idx);
 
 	static void _undo_redo_callback(void *p_self, const String &p_name);
-
-	Label *restart_label;
-	TextureRect *restart_icon;
-	PanelContainer *restart_container;
-	ToolButton *restart_close_button;
-
-	void _editor_restart_request();
-	void _editor_restart();
-	void _editor_restart_close();
 
 protected:
 	static void _bind_methods();

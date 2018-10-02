@@ -28,10 +28,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "drivers/gles3/rasterizer_gles3.h"
-
 #include "os_haiku.h"
 
+#include "drivers/gles3/rasterizer_gles3.h"
 #include "main/main.h"
 #include "servers/physics/physics_server_sw.h"
 #include "servers/visual/visual_server_raster.h"
@@ -81,10 +80,6 @@ const char *OS_Haiku::get_video_driver_name(int p_driver) const {
 	return "GLES3";
 }
 
-int OS_Haiku::get_current_video_driver() const {
-	return video_driver_index;
-}
-
 Error OS_Haiku::initialize(const VideoMode &p_desired, int p_video_driver, int p_audio_driver) {
 	main_loop = NULL;
 	current_video_mode = p_desired;
@@ -112,12 +107,13 @@ Error OS_Haiku::initialize(const VideoMode &p_desired, int p_video_driver, int p
 	context_gl->initialize();
 	context_gl->make_current();
 	context_gl->set_use_vsync(current_video_mode.use_vsync);
-	RasterizerGLES3::register_config();
-	RasterizerGLES3::make_current();
+
+	/* Port to GLES 3 rasterizer */
+	//rasterizer = memnew(RasterizerGLES2);
 
 #endif
 
-	visual_server = memnew(VisualServerRaster());
+	visual_server = memnew(VisualServerRaster(rasterizer));
 
 	ERR_FAIL_COND_V(!visual_server, ERR_UNAVAILABLE);
 
@@ -128,8 +124,6 @@ Error OS_Haiku::initialize(const VideoMode &p_desired, int p_video_driver, int p
 	}
 	*/
 
-	video_driver_index = p_video_driver;
-
 	input = memnew(InputDefault);
 	window->SetInput(input);
 
@@ -137,6 +131,8 @@ Error OS_Haiku::initialize(const VideoMode &p_desired, int p_video_driver, int p
 	visual_server->init();
 
 	AudioDriverManager::initialize(p_audio_driver);
+
+	power_manager = memnew(PowerHaiku);
 
 	return OK;
 }
@@ -150,6 +146,7 @@ void OS_Haiku::finalize() {
 
 	visual_server->finish();
 	memdelete(visual_server);
+	memdelete(rasterizer);
 
 	memdelete(input);
 
@@ -333,7 +330,7 @@ String OS_Haiku::get_config_path() const {
 	if (has_environment("XDG_CONFIG_HOME")) {
 		return get_environment("XDG_CONFIG_HOME");
 	} else if (has_environment("HOME")) {
-		return get_environment("HOME").plus_file("config/settings");
+		return get_environment("HOME").plus_file(".config");
 	} else {
 		return ".";
 	}
@@ -344,7 +341,7 @@ String OS_Haiku::get_data_path() const {
 	if (has_environment("XDG_DATA_HOME")) {
 		return get_environment("XDG_DATA_HOME");
 	} else if (has_environment("HOME")) {
-		return get_environment("HOME").plus_file("config/data");
+		return get_environment("HOME").plus_file(".local/share");
 	} else {
 		return get_config_path();
 	}
@@ -355,23 +352,8 @@ String OS_Haiku::get_cache_path() const {
 	if (has_environment("XDG_CACHE_HOME")) {
 		return get_environment("XDG_CACHE_HOME");
 	} else if (has_environment("HOME")) {
-		return get_environment("HOME").plus_file("config/cache");
+		return get_environment("HOME").plus_file(".cache");
 	} else {
 		return get_config_path();
 	}
-}
-
-OS::PowerState OS_Haiku::get_power_state() {
-	WARN_PRINT("Power management is not implemented on this platform, defaulting to POWERSTATE_UNKNOWN");
-	return OS::POWERSTATE_UNKNOWN;
-}
-
-int OS_Haiku::get_power_seconds_left() {
-	WARN_PRINT("Power management is not implemented on this platform, defaulting to -1");
-	return -1;
-}
-
-int OS_Haiku::get_power_percent_left() {
-	WARN_PRINT("Power management is not implemented on this platform, defaulting to -1");
-	return -1;
 }

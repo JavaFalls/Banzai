@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ScriptEditor" inherits="PanelContainer" category="Core" version="3.1">
+<class name="ScriptEditor" inherits="PanelContainer" category="Core" version="3.0.6">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -70,14 +70,14 @@
 	</methods>
 	<signals>
 		<signal name="editor_script_changed">
-			<argument index="0" name="script" type="Script">
+			<argument index="0" name="script" type="Object">
 			</argument>
 			<description>
 				Emitted when user changed active script. Argument is a freshly activated [Script].
 			</description>
 		</signal>
 		<signal name="script_close">
-			<argument index="0" name="script" type="Script">
+			<argument index="0" name="script" type="Object">
 			</argument>
 			<description>
 				Emitted when editor is about to close the active script. Argument is a [Script] that is going to be closed.

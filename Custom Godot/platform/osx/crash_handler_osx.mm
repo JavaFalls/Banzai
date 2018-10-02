@@ -28,14 +28,15 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/project_settings.h"
 #include "main/main.h"
 #include "os_osx.h"
+#include "project_settings.h"
 
 #include <string.h>
 #include <unistd.h>
 
-#if defined(DEBUG_ENABLED)
+// Note: Dump backtrace in 32bit mode is getting a bus error on the fgets by the ->execute, so enable only on 64bit
+#if defined(DEBUG_ENABLED) && defined(__x86_64__)
 #define CRASH_HANDLER_ENABLED 1
 #endif
 
@@ -49,8 +50,13 @@
 #include <mach-o/dyld.h>
 #include <mach-o/getsect.h>
 
+#ifdef __x86_64__
 static uint64_t load_address() {
 	const struct segment_command_64 *cmd = getsegbyname("__TEXT");
+#else
+static uint32_t load_address() {
+	const struct segment_command *cmd = getsegbyname("__TEXT");
+#endif
 	char full_path[1024];
 	uint32_t size = sizeof(full_path);
 
@@ -68,9 +74,8 @@ static uint64_t load_address() {
 }
 
 static void handle_crash(int sig) {
-	if (OS::get_singleton() == NULL) {
-		abort();
-	}
+	if (OS::get_singleton() == NULL)
+		return;
 
 	void *bt_buffer[256];
 	size_t size = backtrace(bt_buffer, 256);
@@ -79,10 +84,6 @@ static void handle_crash(int sig) {
 
 	// Dump the backtrace to stderr with a message to the user
 	fprintf(stderr, "%s: Program crashed with signal %d\n", __FUNCTION__, sig);
-
-	if (OS::get_singleton()->get_main_loop())
-		OS::get_singleton()->get_main_loop()->notification(MainLoop::NOTIFICATION_CRASH);
-
 	fprintf(stderr, "Dumping the backtrace. %ls\n", msg.c_str());
 	char **strings = backtrace_symbols(bt_buffer, size);
 	if (strings) {
@@ -119,7 +120,11 @@ static void handle_crash(int sig) {
 				args.push_back("-o");
 				args.push_back(_execpath);
 				args.push_back("-arch");
+#ifdef __x86_64__
 				args.push_back("x86_64");
+#else
+				args.push_back("i386");
+#endif
 				args.push_back("-l");
 				snprintf(str, 1024, "%p", load_addr);
 				args.push_back(str);
@@ -152,7 +157,6 @@ CrashHandler::CrashHandler() {
 }
 
 CrashHandler::~CrashHandler() {
-	disable();
 }
 
 void CrashHandler::disable() {

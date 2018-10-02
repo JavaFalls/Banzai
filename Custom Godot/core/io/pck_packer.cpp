@@ -29,9 +29,8 @@
 /*************************************************************************/
 
 #include "pck_packer.h"
-
 #include "core/os/file_access.h"
-#include "core/version.h"
+#include "version.h"
 
 static uint64_t _align(uint64_t p_n, int p_alignment) {
 
@@ -121,7 +120,7 @@ Error PCKPacker::flush(bool p_verbose) {
 	for (int i = 0; i < files.size(); i++) {
 
 		file->store_pascal_string(files[i].path);
-		files.write[i].offset_offset = file->get_position();
+		files[i].offset_offset = file->get_position();
 		file->store_64(0); // offset
 		file->store_64(files[i].size); // size
 

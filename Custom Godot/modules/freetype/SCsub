@@ -62,7 +62,7 @@ if env['builtin_freetype']:
             env.Append(CCFLAGS=['/FI', '"modules/freetype/uwpdef.h"'])
         elif env['platform'] == 'javascript':
             # Forcibly undefine this macro so SIMD is not used in this file,
-            # since currently unsupported in WASM
+            # since currently unsuported in WASM
             sfnt = env.Object(sfnt, CPPFLAGS=['-U__OPTIMIZE__'])
 
     thirdparty_sources += [sfnt]
@@ -92,6 +92,6 @@ if env['builtin_freetype']:
 
 # Godot source files
 env.add_source_files(env.modules_sources, "*.cpp")
-env.Append(CCFLAGS=['-DFREETYPE_ENABLED', '-DFT_CONFIG_OPTION_USE_PNG'])
+env.Append(CCFLAGS=['-DFREETYPE_ENABLED'])
 
 Export('env')

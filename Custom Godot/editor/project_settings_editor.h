@@ -35,7 +35,7 @@
 #include "editor/editor_autoload_settings.h"
 #include "editor/editor_data.h"
 #include "editor/editor_plugin_settings.h"
-#include "editor/editor_sectioned_inspector.h"
+#include "editor/property_editor.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/tab_container.h"
 
@@ -64,11 +64,12 @@ class ProjectSettingsEditor : public AcceptDialog {
 
 	EditorData *data;
 	UndoRedo *undo_redo;
-	SectionedInspector *globals_editor;
+	SectionedPropertyEditor *globals_editor;
 
 	HBoxContainer *search_bar;
 	Button *search_button;
 	LineEdit *search_box;
+	ToolButton *clear_button;
 
 	HBoxContainer *add_prop_bar;
 	AcceptDialog *message;
@@ -79,7 +80,7 @@ class ProjectSettingsEditor : public AcceptDialog {
 	ConfirmationDialog *press_a_key;
 	Label *press_a_key_label;
 	ConfirmationDialog *device_input;
-	OptionButton *device_id;
+	SpinBox *device_id;
 	OptionButton *device_index;
 	Label *device_index_label;
 	MenuButton *popup_copy_to_feature;
@@ -111,7 +112,7 @@ class ProjectSettingsEditor : public AcceptDialog {
 
 	EditorPluginSettings *plugin_settings;
 
-	void _item_selected(const String &);
+	void _item_selected();
 	void _item_adds(String);
 	void _item_add();
 	void _item_del();
@@ -157,6 +158,7 @@ class ProjectSettingsEditor : public AcceptDialog {
 	void _translation_filter_mode_changed(int p_mode);
 
 	void _toggle_search_bar(bool p_pressed);
+	void _clear_search_box();
 
 	void _copy_to_platform_about_to_show();
 
@@ -164,31 +166,15 @@ class ProjectSettingsEditor : public AcceptDialog {
 
 	static ProjectSettingsEditor *singleton;
 
-	Label *restart_label;
-	TextureRect *restart_icon;
-	PanelContainer *restart_container;
-	ToolButton *restart_close_button;
-
-	void _editor_restart_request();
-	void _editor_restart();
-	void _editor_restart_close();
-
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
-
-	int _get_current_device();
-	void _set_current_device(int i_device);
-	String _get_device_string(int i_device);
 
 public:
 	void add_translation(const String &p_translation);
 	static ProjectSettingsEditor *get_singleton() { return singleton; }
 	void popup_project_settings();
 	void set_plugins_page();
-	void update_plugins();
-
-	EditorAutoloadSettings *get_autoload_settings() { return autoload_settings; }
 
 	TabContainer *get_tabs();
 

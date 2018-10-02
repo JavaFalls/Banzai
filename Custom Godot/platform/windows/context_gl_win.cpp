@@ -68,6 +68,20 @@ void ContextGL_Win::swap_buffers() {
 	SwapBuffers(hDC);
 }
 
+/*
+static GLWrapperFuncPtr wrapper_get_proc_address(const char* p_function) {
+
+	print_line(String()+"getting proc of: "+p_function);
+	GLWrapperFuncPtr func=(GLWrapperFuncPtr)get_gl_proc_address(p_function);
+	if (!func) {
+		print_line("Couldn't find function: "+String(p_function));
+		print_line("error: "+itos(GetLastError()));
+	}
+	return func;
+
+}
+*/
+
 void ContextGL_Win::set_use_vsync(bool p_use) {
 
 	if (wglSwapIntervalEXT) {
@@ -92,9 +106,9 @@ Error ContextGL_Win::initialize() {
 				PFD_SUPPORT_OPENGL | // Format Must Support OpenGL
 				PFD_DOUBLEBUFFER,
 		PFD_TYPE_RGBA,
-		OS::get_singleton()->is_layered_allowed() ? 32 : 24,
+		24,
 		0, 0, 0, 0, 0, 0, // Color Bits Ignored
-		OS::get_singleton()->is_layered_allowed() ? 8 : 0, // Alpha Buffer
+		0, // No Alpha Buffer
 		0, // Shift Bit Ignored
 		0, // No Accumulation Buffer
 		0, 0, 0, 0, // Accumulation Bits Ignored
@@ -108,24 +122,28 @@ Error ContextGL_Win::initialize() {
 
 	hDC = GetDC(hWnd);
 	if (!hDC) {
+		MessageBox(NULL, "Can't Create A GL Device Context.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 		return ERR_CANT_CREATE; // Return FALSE
 	}
 
 	pixel_format = ChoosePixelFormat(hDC, &pfd);
 	if (!pixel_format) // Did Windows Find A Matching Pixel Format?
 	{
+		MessageBox(NULL, "Can't Find A Suitable pixel_format.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 		return ERR_CANT_CREATE; // Return FALSE
 	}
 
 	BOOL ret = SetPixelFormat(hDC, pixel_format, &pfd);
 	if (!ret) // Are We Able To Set The Pixel Format?
 	{
+		MessageBox(NULL, "Can't Set The pixel_format.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 		return ERR_CANT_CREATE; // Return FALSE
 	}
 
 	hRC = wglCreateContext(hDC);
 	if (!hRC) // Are We Able To Get A Rendering Context?
 	{
+		MessageBox(NULL, "Can't Create A Temporary GL Rendering Context.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 		return ERR_CANT_CREATE; // Return FALSE
 	}
 
@@ -147,6 +165,7 @@ Error ContextGL_Win::initialize() {
 
 		if (wglCreateContextAttribsARB == NULL) //OpenGL 3.0 is not supported
 		{
+			MessageBox(NULL, "Cannot get Proc Address for CreateContextAttribs", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 			wglDeleteContext(hRC);
 			return ERR_CANT_CREATE;
 		}
@@ -154,6 +173,7 @@ Error ContextGL_Win::initialize() {
 		HGLRC new_hRC = wglCreateContextAttribsARB(hDC, 0, attribs);
 		if (!new_hRC) {
 			wglDeleteContext(hRC);
+			MessageBox(NULL, "Can't Create An OpenGL 3.3 Rendering Context.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 			return ERR_CANT_CREATE; // Return false
 		}
 		wglMakeCurrent(hDC, NULL);
@@ -162,6 +182,7 @@ Error ContextGL_Win::initialize() {
 
 		if (!wglMakeCurrent(hDC, hRC)) // Try To Activate The Rendering Context
 		{
+			MessageBox(NULL, "Can't Activate The GL 3.3 Rendering Context.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 			return ERR_CANT_CREATE; // Return FALSE
 		}
 	}

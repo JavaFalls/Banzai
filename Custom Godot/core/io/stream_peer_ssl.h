@@ -31,7 +31,7 @@
 #ifndef STREAM_PEER_SSL_H
 #define STREAM_PEER_SSL_H
 
-#include "core/io/stream_peer.h"
+#include "io/stream_peer.h"
 
 class StreamPeerSSL : public StreamPeer {
 	GDCLASS(StreamPeerSSL, StreamPeer);
@@ -46,21 +46,17 @@ protected:
 	static LoadCertsFromMemory load_certs_func;
 	static bool available;
 
-	bool blocking_handshake;
+	friend class Main;
+	static bool initialize_certs;
 
 public:
 	enum Status {
 		STATUS_DISCONNECTED,
-		STATUS_HANDSHAKING,
 		STATUS_CONNECTED,
-		STATUS_ERROR,
+		STATUS_ERROR_NO_CERTIFICATE,
 		STATUS_ERROR_HOSTNAME_MISMATCH
 	};
 
-	void set_blocking_handshake_enabled(bool p_enabled);
-	bool is_blocking_handshake_enabled() const;
-
-	virtual void poll() = 0;
 	virtual Error accept_stream(Ref<StreamPeer> p_base) = 0;
 	virtual Error connect_to_stream(Ref<StreamPeer> p_base, bool p_validate_certs = false, const String &p_for_hostname = String()) = 0;
 	virtual Status get_status() const = 0;
@@ -69,9 +65,6 @@ public:
 
 	static StreamPeerSSL *create();
 
-	static PoolByteArray get_cert_file_as_array(String p_path);
-	static PoolByteArray get_project_cert_array();
-	static void load_certs_from_file(String p_path);
 	static void load_certs_from_memory(const PoolByteArray &p_memory);
 	static bool is_available();
 

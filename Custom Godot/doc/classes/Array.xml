@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Array" category="Built-In Types" version="3.1">
+<class name="Array" category="Built-In Types" version="3.0.6">
 	<brief_description>
 		Generic array datatype.
 	</brief_description>
 	<description>
-		Generic array, contains several elements of any type, accessible by a numerical index starting at 0. Negative indices can be used to count from the back, like in Python (-1 is the last element, -2 the second to last, etc.). Example:
-		[codeblock]
-		var array = ["One", 2, 3, "Four"]
-		print(array[0])   # One
-		print(array[2])   # 3
-		print(array[-1])  # Four
-		array[2] = "Three"
-		print(array[-2])  # Three
-		[/codeblock]
-		Arrays are always passed by reference.
+		Generic array, contains several elements of any type, accessible by numerical index starting at 0. Negative indices can be used to count from the right, like in Python. Arrays are always passed by reference.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -84,14 +75,14 @@
 			</description>
 		</method>
 		<method name="append">
-			<argument index="0" name="value" type="Variant">
+			<argument index="0" name="value" type="var">
 			</argument>
 			<description>
 				Append an element at the end of the array (alias of [method push_back]).
 			</description>
 		</method>
 		<method name="back">
-			<return type="Variant">
+			<return type="var">
 			</return>
 			<description>
 				Returns the last element of the array if the array is not empty (size&gt;0).
@@ -100,7 +91,7 @@
 		<method name="bsearch">
 			<return type="int">
 			</return>
-			<argument index="0" name="value" type="Variant">
+			<argument index="0" name="value" type="var">
 			</argument>
 			<argument index="1" name="before" type="bool" default="True">
 			</argument>
@@ -111,7 +102,7 @@
 		<method name="bsearch_custom">
 			<return type="int">
 			</return>
-			<argument index="0" name="value" type="Variant">
+			<argument index="0" name="value" type="var">
 			</argument>
 			<argument index="1" name="obj" type="Object">
 			</argument>
@@ -131,7 +122,7 @@
 		<method name="count">
 			<return type="int">
 			</return>
-			<argument index="0" name="value" type="Variant">
+			<argument index="0" name="value" type="var">
 			</argument>
 			<description>
 				Return the amount of times an element is in the array.
@@ -140,11 +131,8 @@
 		<method name="duplicate">
 			<return type="Array">
 			</return>
-			<argument index="0" name="deep" type="bool" default="False">
-			</argument>
 			<description>
-				Returns a copy of the array.
-				If [code]deep[/code] is [code]true[/code], a deep copy is be performed: all nested arrays and dictionaries are duplicated and will not be shared with the original array. If [code]false[/code], a shallow copy is made and references to the original nested arrays and dictionaries are kept, so that modifying a sub-array or dictionary in the copy will also impact those referenced in the source array.
+				Returns a copy of this [code]Array[/code].
 			</description>
 		</method>
 		<method name="empty">
@@ -155,7 +143,7 @@
 			</description>
 		</method>
 		<method name="erase">
-			<argument index="0" name="value" type="Variant">
+			<argument index="0" name="value" type="var">
 			</argument>
 			<description>
 				Remove the first occurrence of a value from the array.
@@ -164,7 +152,7 @@
 		<method name="find">
 			<return type="int">
 			</return>
-			<argument index="0" name="what" type="Variant">
+			<argument index="0" name="what" type="var">
 			</argument>
 			<argument index="1" name="from" type="int" default="0">
 			</argument>
@@ -175,14 +163,14 @@
 		<method name="find_last">
 			<return type="int">
 			</return>
-			<argument index="0" name="value" type="Variant">
+			<argument index="0" name="value" type="var">
 			</argument>
 			<description>
 				Searches the array in reverse order for a value and returns its index or -1 if not found.
 			</description>
 		</method>
 		<method name="front">
-			<return type="Variant">
+			<return type="var">
 			</return>
 			<description>
 				Returns the first element of the array if the array is not empty (size&gt;0).
@@ -191,7 +179,7 @@
 		<method name="has">
 			<return type="bool">
 			</return>
-			<argument index="0" name="value" type="Variant">
+			<argument index="0" name="value" type="var">
 			</argument>
 			<description>
 				Return true if the array contains given value.
@@ -213,54 +201,40 @@
 		<method name="insert">
 			<argument index="0" name="position" type="int">
 			</argument>
-			<argument index="1" name="value" type="Variant">
+			<argument index="1" name="value" type="var">
 			</argument>
 			<description>
-				Insert a new element at a given position in the array. The position must be valid, or at the end of the array ([code]pos == size()[/code]).
+				Insert a new element at a given position in the array. The position must be valid, or at the end of the array (pos==size()).
 			</description>
 		</method>
 		<method name="invert">
 			<description>
-				Reverse the order of the elements in the array.
-			</description>
-		</method>
-		<method name="max">
-			<return type="Variant">
-			</return>
-			<description>
-				Return maximum value contained in the array if all elements are of comparable types. If the elements can't be compared, [code]null[/code] is returned.
-			</description>
-		</method>
-		<method name="min">
-			<return type="Variant">
-			</return>
-			<description>
-				Return minimum value contained in the array if all elements are of comparable types. If the elements can't be compared, [code]null[/code] is returned.
+				Reverse the order of the elements in the array (so first element will now be the last) and return reference to the array.
 			</description>
 		</method>
 		<method name="pop_back">
-			<return type="Variant">
+			<return type="var">
 			</return>
 			<description>
 				Remove the last element of the array.
 			</description>
 		</method>
 		<method name="pop_front">
-			<return type="Variant">
+			<return type="var">
 			</return>
 			<description>
 				Remove the first element of the array.
 			</description>
 		</method>
 		<method name="push_back">
-			<argument index="0" name="value" type="Variant">
+			<argument index="0" name="value" type="var">
 			</argument>
 			<description>
 				Append an element at the end of the array.
 			</description>
 		</method>
 		<method name="push_front">
-			<argument index="0" name="value" type="Variant">
+			<argument index="0" name="value" type="var">
 			</argument>
 			<description>
 				Add an element at the beginning of the array.
@@ -283,17 +257,12 @@
 		<method name="rfind">
 			<return type="int">
 			</return>
-			<argument index="0" name="what" type="Variant">
+			<argument index="0" name="what" type="var">
 			</argument>
 			<argument index="1" name="from" type="int" default="-1">
 			</argument>
 			<description>
 				Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
-			</description>
-		</method>
-		<method name="shuffle">
-			<description>
-				Shuffle the array such that the items will have a random order.
 			</description>
 		</method>
 		<method name="size">
@@ -314,14 +283,13 @@
 			<argument index="1" name="func" type="String">
 			</argument>
 			<description>
-				Sort the array using a custom method. The arguments are an object that holds the method and the name of such method. The custom method receives two arguments (a pair of elements from the array) and must return true if the first argument is less than the second, and return false otherwise.
-				[b]Note:[/b] you cannot randomize the return value as the heapsort algorithm expects a deterministic result. Doing so will result in unexpected behavior.
+				Sort the array using a custom method. The arguments are an object that holds the method and the name of such method. The custom method receives two arguments (a pair of elements from the array) and must return true if the first argument is less than the second, and return false otherwise. Note: you cannot randomize the return value as the heapsort algorithm expects a deterministic result. Doing so will result in unexpected behavior.
 				[codeblock]
 				class MyCustomSorter:
 				    static func sort(a, b):
 				        if a[0] &lt; b[0]:
 				            return true
-				        return false
+				    return false
 
 				var my_items = [[5, "Potato"], [9, "Rice"], [4, "Tomato"]]
 				my_items.sort_custom(MyCustomSorter, "sort")

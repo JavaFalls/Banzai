@@ -30,37 +30,32 @@
 
 #include "input_map.h"
 
-#include "core/os/keyboard.h"
-#include "core/project_settings.h"
+#include "os/keyboard.h"
+#include "project_settings.h"
 
 InputMap *InputMap::singleton = NULL;
-
-int InputMap::ALL_DEVICES = -1;
 
 void InputMap::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("has_action", "action"), &InputMap::has_action);
 	ClassDB::bind_method(D_METHOD("get_actions"), &InputMap::_get_actions);
-	ClassDB::bind_method(D_METHOD("add_action", "action", "deadzone"), &InputMap::add_action, DEFVAL(0.5f));
+	ClassDB::bind_method(D_METHOD("add_action", "action"), &InputMap::add_action);
 	ClassDB::bind_method(D_METHOD("erase_action", "action"), &InputMap::erase_action);
 
-	ClassDB::bind_method(D_METHOD("action_set_deadzone", "action", "deadzone"), &InputMap::action_set_deadzone);
 	ClassDB::bind_method(D_METHOD("action_add_event", "action", "event"), &InputMap::action_add_event);
 	ClassDB::bind_method(D_METHOD("action_has_event", "action", "event"), &InputMap::action_has_event);
 	ClassDB::bind_method(D_METHOD("action_erase_event", "action", "event"), &InputMap::action_erase_event);
-	ClassDB::bind_method(D_METHOD("action_erase_events", "action"), &InputMap::action_erase_events);
 	ClassDB::bind_method(D_METHOD("get_action_list", "action"), &InputMap::_get_action_list);
 	ClassDB::bind_method(D_METHOD("event_is_action", "event", "action"), &InputMap::event_is_action);
 	ClassDB::bind_method(D_METHOD("load_from_globals"), &InputMap::load_from_globals);
 }
 
-void InputMap::add_action(const StringName &p_action, float p_deadzone) {
+void InputMap::add_action(const StringName &p_action) {
 
 	ERR_FAIL_COND(input_map.has(p_action));
 	input_map[p_action] = Action();
 	static int last_id = 1;
 	input_map[p_action].id = last_id;
-	input_map[p_action].deadzone = p_deadzone;
 	last_id++;
 }
 
@@ -99,21 +94,19 @@ List<StringName> InputMap::get_actions() const {
 	return actions;
 }
 
-List<Ref<InputEvent> >::Element *InputMap::_find_event(Action &p_action, const Ref<InputEvent> &p_event, bool *p_pressed, float *p_strength) const {
+List<Ref<InputEvent> >::Element *InputMap::_find_event(List<Ref<InputEvent> > &p_list, const Ref<InputEvent> &p_event, bool p_action_test) const {
 
-	for (List<Ref<InputEvent> >::Element *E = p_action.inputs.front(); E; E = E->next()) {
+	for (List<Ref<InputEvent> >::Element *E = p_list.front(); E; E = E->next()) {
 
 		const Ref<InputEvent> e = E->get();
 
 		//if (e.type != Ref<InputEvent>::KEY && e.device != p_event.device) -- unsure about the KEY comparison, why is this here?
 		//	continue;
 
-		int device = e->get_device();
-		if (device == ALL_DEVICES || device == p_event->get_device()) {
-			if (e->action_match(p_event, p_pressed, p_strength, p_action.deadzone)) {
-				return E;
-			}
-		}
+		if (e->get_device() != p_event->get_device())
+			continue;
+		if (e->action_match(p_event))
+			return E;
 	}
 
 	return NULL;
@@ -124,18 +117,11 @@ bool InputMap::has_action(const StringName &p_action) const {
 	return input_map.has(p_action);
 }
 
-void InputMap::action_set_deadzone(const StringName &p_action, float p_deadzone) {
-
-	ERR_FAIL_COND(!input_map.has(p_action));
-
-	input_map[p_action].deadzone = p_deadzone;
-}
-
 void InputMap::action_add_event(const StringName &p_action, const Ref<InputEvent> &p_event) {
 
 	ERR_FAIL_COND(p_event.is_null());
 	ERR_FAIL_COND(!input_map.has(p_action));
-	if (_find_event(input_map[p_action], p_event))
+	if (_find_event(input_map[p_action].inputs, p_event))
 		return; //already gots
 
 	input_map[p_action].inputs.push_back(p_event);
@@ -144,23 +130,16 @@ void InputMap::action_add_event(const StringName &p_action, const Ref<InputEvent
 bool InputMap::action_has_event(const StringName &p_action, const Ref<InputEvent> &p_event) {
 
 	ERR_FAIL_COND_V(!input_map.has(p_action), false);
-	return (_find_event(input_map[p_action], p_event) != NULL);
+	return (_find_event(input_map[p_action].inputs, p_event) != NULL);
 }
 
 void InputMap::action_erase_event(const StringName &p_action, const Ref<InputEvent> &p_event) {
 
 	ERR_FAIL_COND(!input_map.has(p_action));
 
-	List<Ref<InputEvent> >::Element *E = _find_event(input_map[p_action], p_event);
+	List<Ref<InputEvent> >::Element *E = _find_event(input_map[p_action].inputs, p_event);
 	if (E)
 		input_map[p_action].inputs.erase(E);
-}
-
-void InputMap::action_erase_events(const StringName &p_action) {
-
-	ERR_FAIL_COND(!input_map.has(p_action));
-
-	input_map[p_action].inputs.clear();
 }
 
 Array InputMap::_get_action_list(const StringName &p_action) {
@@ -187,37 +166,19 @@ const List<Ref<InputEvent> > *InputMap::get_action_list(const StringName &p_acti
 }
 
 bool InputMap::event_is_action(const Ref<InputEvent> &p_event, const StringName &p_action) const {
-	return event_get_action_status(p_event, p_action);
-}
 
-bool InputMap::event_get_action_status(const Ref<InputEvent> &p_event, const StringName &p_action, bool *p_pressed, float *p_strength) const {
 	Map<StringName, Action>::Element *E = input_map.find(p_action);
 	if (!E) {
 		ERR_EXPLAIN("Request for nonexistent InputMap action: " + String(p_action));
 		ERR_FAIL_COND_V(!E, false);
 	}
 
-	Ref<InputEventAction> input_event_action = p_event;
-	if (input_event_action.is_valid()) {
-		if (p_pressed != NULL)
-			*p_pressed = input_event_action->is_pressed();
-		if (p_strength != NULL)
-			*p_strength = (*p_pressed) ? 1.0f : 0.0f;
-		return input_event_action->get_action() == p_action;
+	Ref<InputEventAction> iea = p_event;
+	if (iea.is_valid()) {
+		return iea->get_action() == p_action;
 	}
 
-	bool pressed;
-	float strength;
-	List<Ref<InputEvent> >::Element *event = _find_event(E->get(), p_event, &pressed, &strength);
-	if (event != NULL) {
-		if (p_pressed != NULL)
-			*p_pressed = pressed;
-		if (p_strength != NULL)
-			*p_strength = strength;
-		return true;
-	} else {
-		return false;
-	}
+	return _find_event(E->get().inputs, p_event, true) != NULL;
 }
 
 const Map<StringName, InputMap::Action> &InputMap::get_action_map() const {
@@ -239,16 +200,16 @@ void InputMap::load_from_globals() {
 
 		String name = pi.name.substr(pi.name.find("/") + 1, pi.name.length());
 
-		Dictionary action = ProjectSettings::get_singleton()->get(pi.name);
-		float deadzone = action.has("deadzone") ? (float)action["deadzone"] : 0.5f;
-		Array events = action["events"];
+		add_action(name);
 
-		add_action(name, deadzone);
-		for (int i = 0; i < events.size(); i++) {
-			Ref<InputEvent> event = events[i];
-			if (event.is_null())
+		Array va = ProjectSettings::get_singleton()->get(pi.name);
+
+		for (int i = 0; i < va.size(); i++) {
+
+			Ref<InputEvent> ie = va[i];
+			if (ie.is_null())
 				continue;
-			action_add_event(name, event);
+			action_add_event(name, ie);
 		}
 	}
 }
@@ -320,16 +281,6 @@ void InputMap::load_default() {
 	key.instance();
 	key->set_scancode(KEY_PAGEDOWN);
 	action_add_event("ui_page_down", key);
-
-	add_action("ui_home");
-	key.instance();
-	key->set_scancode(KEY_HOME);
-	action_add_event("ui_home", key);
-
-	add_action("ui_end");
-	key.instance();
-	key->set_scancode(KEY_END);
-	action_add_event("ui_end", key);
 
 	//set("display/window/handheld/orientation", "landscape");
 }

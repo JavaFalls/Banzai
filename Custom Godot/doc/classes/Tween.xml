@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Tween" inherits="Node" category="Core" version="3.1">
+<class name="Tween" inherits="Node" category="Core" version="3.0.6">
 	<brief_description>
 		Smoothly animates a node's properties over time.
 	</brief_description>
@@ -170,7 +170,7 @@
 			<argument index="7" name="delay" type="float" default="0">
 			</argument>
 			<description>
-				Animates [code]property[/code] of [code]object[/code] from [code]initial_val[/code] to [code]final_val[/code] for [code]duration[/code] seconds, [code]delay[/code] seconds later. Setting the initial value to [code]null[/code] uses the current value of the property.
+				Animates [code]property[/code] of [code]object[/code] from [code]initial_val[/code] to [code]final_val[/code] for [code]duration[/code] seconds, [code]delay[/code] seconds later.
                 Use [enum TransitionType] for [code]trans_type[/code] and [enum EaseType] for [code]ease_type[/code] parameters. These values control the timing and direction of the interpolation. See the class description for more information
 			</description>
 		</method>

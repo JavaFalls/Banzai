@@ -31,7 +31,7 @@
 #ifndef AUDIOFRAME_H
 #define AUDIOFRAME_H
 
-#include "core/typedefs.h"
+#include "typedefs.h"
 
 static inline float undenormalise(volatile float f) {
 	union {

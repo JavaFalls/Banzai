@@ -32,7 +32,7 @@
 #define FILE_DIALOG_H
 
 #include "box_container.h"
-#include "core/os/dir_access.h"
+#include "os/dir_access.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/option_button.h"
@@ -104,11 +104,10 @@ private:
 	void update_file_list();
 	void update_filters();
 
-	void _tree_multi_selected(Object *p_object, int p_cell, bool p_selected);
 	void _tree_selected();
 
 	void _select_drive(int p_idx);
-	void _tree_item_activated();
+	void _tree_dc_selected();
 	void _dir_entered(String p_dir);
 	void _file_entered(const String &p_file);
 	void _action_pressed();

@@ -29,9 +29,7 @@
 /*************************************************************************/
 
 #include "xml_parser.h"
-
-#include "core/print_string.h"
-
+#include "print_string.h"
 //#define DEBUG_XML
 
 VARIANT_ENUM_CAST(XMLParser::NodeType);

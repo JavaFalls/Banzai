@@ -57,7 +57,7 @@ uint32_t Math::rand() {
 }
 
 int Math::step_decimals(double p_step) {
-	static const int maxn = 10;
+	static const int maxn = 9;
 	static const double sd[maxn] = {
 		0.9999, // somehow compensate for floating point error
 		0.09999,
@@ -67,19 +67,17 @@ int Math::step_decimals(double p_step) {
 		0.000009999,
 		0.0000009999,
 		0.00000009999,
-		0.000000009999,
-		0.0000000009999
+		0.000000009999
 	};
 
-	double abs = Math::abs(p_step);
-	double decs = abs - (int)abs; // Strip away integer part
+	double as = Math::abs(p_step);
 	for (int i = 0; i < maxn; i++) {
-		if (decs >= sd[i]) {
+		if (as >= sd[i]) {
 			return i;
 		}
 	}
 
-	return 0;
+	return maxn;
 }
 
 double Math::dectime(double p_value, double p_amount, double p_step) {
@@ -178,4 +176,19 @@ float Math::random(float from, float to) {
 	unsigned int r = Math::rand();
 	float ret = (float)r / (float)RANDOM_MAX;
 	return (ret) * (to - from) + from;
+}
+
+int Math::wrapi(int value, int min, int max) {
+	--max;
+	int rng = max - min + 1;
+	value = ((value - min) % rng);
+	if (value < 0)
+		return max + 1 + value;
+	else
+		return min + value;
+}
+
+float Math::wrapf(float value, float min, float max) {
+	float rng = max - min;
+	return min + (value - min) - (rng * floor((value - min) / rng));
 }

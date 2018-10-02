@@ -30,7 +30,7 @@
 
 #include "interpolated_camera.h"
 
-#include "core/engine.h"
+#include "engine.h"
 
 void InterpolatedCamera::_notification(int p_what) {
 
@@ -38,10 +38,10 @@ void InterpolatedCamera::_notification(int p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 
 			if (Engine::get_singleton()->is_editor_hint() && enabled)
-				set_process_internal(false);
+				set_physics_process(false);
 
 		} break;
-		case NOTIFICATION_INTERNAL_PROCESS: {
+		case NOTIFICATION_PROCESS: {
 
 			if (!enabled)
 				break;
@@ -111,9 +111,9 @@ void InterpolatedCamera::set_interpolation_enabled(bool p_enable) {
 	if (p_enable) {
 		if (is_inside_tree() && Engine::get_singleton()->is_editor_hint())
 			return;
-		set_process_internal(true);
+		set_process(true);
 	} else
-		set_process_internal(false);
+		set_process(false);
 }
 
 bool InterpolatedCamera::is_interpolation_enabled() const {

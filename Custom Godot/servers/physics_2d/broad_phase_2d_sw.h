@@ -31,8 +31,8 @@
 #ifndef BROAD_PHASE_2D_SW_H
 #define BROAD_PHASE_2D_SW_H
 
-#include "core/math/math_funcs.h"
-#include "core/math/rect2.h"
+#include "math_2d.h"
+#include "math_funcs.h"
 
 class CollisionObject2DSW;
 

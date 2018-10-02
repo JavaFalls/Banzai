@@ -30,7 +30,7 @@
 
 #include "compressed_translation.h"
 
-#include "core/pair.h"
+#include "pair.h"
 
 extern "C" {
 #include "thirdparty/misc/smaz.h"
@@ -50,6 +50,7 @@ void PHashTranslation::generate(const Ref<Translation> &p_from) {
 
 	int size = Math::larger_prime(keys.size());
 
+	print_line("compressing keys: " + itos(keys.size()));
 	Vector<Vector<Pair<int, CharString> > > buckets;
 	Vector<Map<uint32_t, int> > table;
 	Vector<uint32_t> hfunc_table;
@@ -72,7 +73,7 @@ void PHashTranslation::generate(const Ref<Translation> &p_from) {
 		Pair<int, CharString> p;
 		p.first = idx;
 		p.second = cs;
-		buckets.write[h % size].push_back(p);
+		buckets[h % size].push_back(p);
 
 		//compress string
 		CharString src_s = p_from->get_message(E->get()).operator String().utf8();
@@ -99,21 +100,24 @@ void PHashTranslation::generate(const Ref<Translation> &p_from) {
 			ps.compressed[0] = 0;
 		}
 
-		compressed.write[idx] = ps;
+		compressed[idx] = ps;
 		total_compression_size += ps.compressed.size();
 		total_string_size += src_s.size();
 		idx++;
 	}
 
 	int bucket_table_size = 0;
+	print_line("total compressed string size: " + itos(total_compression_size) + " (" + itos(total_string_size) + " uncompressed).");
 
 	for (int i = 0; i < size; i++) {
 
-		const Vector<Pair<int, CharString> > &b = buckets[i];
-		Map<uint32_t, int> &t = table.write[i];
+		Vector<Pair<int, CharString> > &b = buckets[i];
+		Map<uint32_t, int> &t = table[i];
 
 		if (b.size() == 0)
 			continue;
+
+		//print_line("bucket: "+itos(i)+" - elements: "+itos(b.size()));
 
 		int d = 1;
 		int item = 0;
@@ -132,9 +136,12 @@ void PHashTranslation::generate(const Ref<Translation> &p_from) {
 			}
 		}
 
-		hfunc_table.write[i] = d;
+		hfunc_table[i] = d;
 		bucket_table_size += 2 + b.size() * 4;
 	}
+
+	print_line("bucket table size: " + itos(bucket_table_size * 4));
+	print_line("hash table size: " + itos(size * 4));
 
 	hash_table.resize(size);
 	bucket_table.resize(bucket_table_size);
@@ -150,7 +157,7 @@ void PHashTranslation::generate(const Ref<Translation> &p_from) {
 
 	for (int i = 0; i < size; i++) {
 
-		const Map<uint32_t, int> &t = table[i];
+		Map<uint32_t, int> &t = table[i];
 		if (t.size() == 0) {
 			htw[i] = 0xFFFFFFFF; //nothing
 			continue;
@@ -171,6 +178,8 @@ void PHashTranslation::generate(const Ref<Translation> &p_from) {
 		}
 	}
 
+	print_line("total collisions: " + itos(collisions));
+
 	strings.resize(total_compression_size);
 	PoolVector<uint8_t>::Write cw = strings.write();
 
@@ -189,11 +198,15 @@ bool PHashTranslation::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name.operator String();
 	if (name == "hash_table") {
 		hash_table = p_value;
+		//print_line("translation: loaded hash table of size: "+itos(hash_table.size()));
 	} else if (name == "bucket_table") {
 		bucket_table = p_value;
+		//print_line("translation: loaded bucket table of size: "+itos(bucket_table.size()));
 	} else if (name == "strings") {
 		strings = p_value;
+		//print_line("translation: loaded string table of size: "+itos(strings.size()));
 	} else if (name == "load_from") {
+		//print_line("generating");
 		generate(p_value);
 	} else
 		return false;
@@ -235,7 +248,11 @@ StringName PHashTranslation::get_message(const StringName &p_src_text) const {
 
 	uint32_t p = htptr[h % htsize];
 
+	//print_line("String: "+p_src_text.operator String());
+	//print_line("Hash: "+itos(p));
+
 	if (p == 0xFFFFFFFF) {
+		//print_line("GETMSG: Nothing!");
 		return StringName(); //nothing
 	}
 
@@ -254,7 +271,9 @@ StringName PHashTranslation::get_message(const StringName &p_src_text) const {
 		}
 	}
 
+	//print_line("bucket pos: "+itos(idx));
 	if (idx == -1) {
+		//print_line("GETMSG: Not in Bucket!");
 		return StringName();
 	}
 
@@ -262,6 +281,8 @@ StringName PHashTranslation::get_message(const StringName &p_src_text) const {
 
 		String rstr;
 		rstr.parse_utf8(&sptr[bucket.elem[idx].str_offset], bucket.elem[idx].uncomp_size);
+		//print_line("Uncompressed, size: "+itos(bucket.elem[idx].comp_size));
+		//print_line("Return: "+rstr);
 
 		return rstr;
 	} else {
@@ -271,6 +292,8 @@ StringName PHashTranslation::get_message(const StringName &p_src_text) const {
 		smaz_decompress(&sptr[bucket.elem[idx].str_offset], bucket.elem[idx].comp_size, uncomp.ptrw(), bucket.elem[idx].uncomp_size);
 		String rstr;
 		rstr.parse_utf8(uncomp.get_data());
+		//print_line("Compressed, size: "+itos(bucket.elem[idx].comp_size));
+		//print_line("Return: "+rstr);
 		return rstr;
 	}
 }

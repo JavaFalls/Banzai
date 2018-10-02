@@ -29,8 +29,7 @@
 /*************************************************************************/
 
 #include "vector3.h"
-
-#include "core/math/matrix3.h"
+#include "matrix3.h"
 
 void Vector3::rotate(const Vector3 &p_axis, real_t p_phi) {
 

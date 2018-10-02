@@ -28,9 +28,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/io/zip_io.h"
 #include "editor/editor_node.h"
 #include "editor_export.h"
+#include "io/zip_io.h"
 #include "main/splash.gen.h"
 #include "platform/javascript/logo.gen.h"
 #include "platform/javascript/run_icon.gen.h"
@@ -74,9 +74,6 @@ public:
 		r_features->push_back(get_os_name());
 	}
 
-	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features) {
-	}
-
 	EditorExportPlatformJavaScript();
 };
 
@@ -98,7 +95,7 @@ void EditorExportPlatformJavaScript::_fix_html(Vector<uint8_t> &p_html, const Re
 	CharString cs = str_export.utf8();
 	p_html.resize(cs.length());
 	for (int i = 0; i < cs.length(); i++) {
-		p_html.write[i] = cs[i];
+		p_html[i] = cs[i];
 	}
 }
 
@@ -120,10 +117,10 @@ void EditorExportPlatformJavaScript::get_export_options(List<ExportOption> *r_op
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/s3tc"), true));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/etc"), false));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/etc2"), true));
-	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "html/custom_html_shell", PROPERTY_HINT_FILE, "*.html"), ""));
+	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "html/custom_html_shell", PROPERTY_HINT_GLOBAL_FILE, "html"), ""));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "html/head_include", PROPERTY_HINT_MULTILINE_TEXT), ""));
-	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "custom_template/release", PROPERTY_HINT_GLOBAL_FILE, "*.zip"), ""));
-	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "custom_template/debug", PROPERTY_HINT_GLOBAL_FILE, "*.zip"), ""));
+	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "custom_template/release", PROPERTY_HINT_GLOBAL_FILE, "zip"), ""));
+	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "custom_template/debug", PROPERTY_HINT_GLOBAL_FILE, "zip"), ""));
 }
 
 String EditorExportPlatformJavaScript::get_name() const {
@@ -143,35 +140,14 @@ Ref<Texture> EditorExportPlatformJavaScript::get_logo() const {
 
 bool EditorExportPlatformJavaScript::can_export(const Ref<EditorExportPreset> &p_preset, String &r_error, bool &r_missing_templates) const {
 
-	bool valid = false;
-	String err;
+	r_missing_templates = false;
 
-	if (find_export_template(EXPORT_TEMPLATE_WEBASSEMBLY_RELEASE) != "")
-		valid = true;
-	else if (find_export_template(EXPORT_TEMPLATE_WEBASSEMBLY_DEBUG) != "")
-		valid = true;
+	if (find_export_template(EXPORT_TEMPLATE_WEBASSEMBLY_RELEASE) == String())
+		r_missing_templates = true;
+	else if (find_export_template(EXPORT_TEMPLATE_WEBASSEMBLY_DEBUG) == String())
+		r_missing_templates = true;
 
-	if (p_preset->get("custom_template/debug") != "") {
-		if (FileAccess::exists(p_preset->get("custom_template/debug"))) {
-			valid = true;
-		} else {
-			err += "Custom debug template not found.\n";
-		}
-	}
-
-	if (p_preset->get("custom_template/release") != "") {
-		if (FileAccess::exists(p_preset->get("custom_template/release"))) {
-			valid = true;
-		} else {
-			err += "Custom release template not found.\n";
-		}
-	}
-
-	if (!err.empty())
-		r_error = err;
-
-	r_missing_templates = !valid;
-	return valid;
+	return !r_missing_templates;
 }
 
 String EditorExportPlatformJavaScript::get_binary_extension(const Ref<EditorExportPreset> &p_preset) const {

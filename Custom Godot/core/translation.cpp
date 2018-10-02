@@ -30,9 +30,9 @@
 
 #include "translation.h"
 
-#include "core/io/resource_loader.h"
-#include "core/os/os.h"
-#include "core/project_settings.h"
+#include "io/resource_loader.h"
+#include "os/os.h"
+#include "project_settings.h"
 
 // ISO 639-1 language codes, with the addition of glibc locales with their
 // regional identifiers. This list must match the language names (in English)
@@ -938,14 +938,11 @@ void TranslationServer::set_locale(const String &p_locale) {
 
 	if (!is_locale_valid(univ_locale)) {
 		String trimmed_locale = get_trimmed_locale(univ_locale);
-		print_verbose(vformat("Unsupported locale '%s', falling back to '%s'.", p_locale, trimmed_locale));
 
-		if (!is_locale_valid(trimmed_locale)) {
-			ERR_PRINTS(vformat("Unsupported locale '%s', falling back to 'en'.", trimmed_locale));
-			locale = "en";
-		} else {
-			locale = trimmed_locale;
-		}
+		ERR_EXPLAIN("Invalid locale: " + trimmed_locale);
+		ERR_FAIL_COND(!is_locale_valid(trimmed_locale));
+
+		locale = trimmed_locale;
 	} else {
 		locale = univ_locale;
 	}
@@ -1101,6 +1098,7 @@ bool TranslationServer::_load_translations(const String &p_from) {
 
 			for (int i = 0; i < tcount; i++) {
 
+				//print_line( "Loading translation from " + r[i] );
 				Ref<Translation> tr = ResourceLoader::load(r[i]);
 				if (tr.is_valid())
 					add_translation(tr);
@@ -1173,11 +1171,13 @@ void TranslationServer::_bind_methods() {
 void TranslationServer::load_translations() {
 
 	String locale = get_locale();
-	_load_translations("locale/translations"); //all
-	_load_translations("locale/translations_" + locale.substr(0, 2));
+	bool found = _load_translations("locale/translations"); //all
 
+	if (_load_translations("locale/translations_" + locale.substr(0, 2)))
+		found = true;
 	if (locale.substr(0, 2) != locale) {
-		_load_translations("locale/translations_" + locale);
+		if (_load_translations("locale/translations_" + locale))
+			found = true;
 	}
 }
 

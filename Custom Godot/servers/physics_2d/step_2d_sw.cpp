@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "step_2d_sw.h"
-#include "core/os/os.h"
+#include "os/os.h"
 
 void Step2DSW::_populate_island(Body2DSW *p_body, Body2DSW **p_island, Constraint2DSW **p_constraint_island) {
 
@@ -208,6 +208,8 @@ void Step2DSW::step(Space2DSW *p_space, real_t p_delta, int p_iterations) {
 		}
 		p_space->area_remove_from_moved_list((SelfList<Area2DSW> *)aml.first()); //faster to remove here
 	}
+
+	//print_line("island count: "+itos(island_count)+" active count: "+itos(active_count));
 
 	{ //profile
 		profile_endtime = OS::get_singleton()->get_ticks_usec();

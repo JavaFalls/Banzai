@@ -46,7 +46,6 @@ class ScriptCreateDialog : public ConfirmationDialog {
 	LineEdit *class_name;
 	Label *error_label;
 	Label *path_error_label;
-	PanelContainer *status_panel;
 	LineEdit *parent_name;
 	Button *parent_browse_button;
 	OptionButton *language_menu;
@@ -69,13 +68,11 @@ class ScriptCreateDialog : public ConfirmationDialog {
 	bool is_parent_name_valid;
 	bool is_class_name_valid;
 	bool is_built_in;
-	bool built_in_enabled;
 	int current_language;
 	bool re_check_path;
 	String script_template;
 	Vector<String> template_list;
 
-	bool _can_be_built_in();
 	void _path_changed(const String &p_path = String());
 	void _path_entered(const String &p_path = String());
 	void _lang_changed(int l = 0);
@@ -84,7 +81,7 @@ class ScriptCreateDialog : public ConfirmationDialog {
 	void _class_name_changed(const String &p_name);
 	void _parent_name_changed(const String &p_parent);
 	void _template_changed(int p_template = 0);
-	void _browse_path(bool browse_parent, bool p_save);
+	void _browse_path(bool browse_parent);
 	void _file_selected(const String &p_file);
 	virtual void ok_pressed();
 	void _create_new();
@@ -98,7 +95,8 @@ protected:
 	static void _bind_methods();
 
 public:
-	void config(const String &p_base_name, const String &p_base_path, bool p_built_in_enabled = true);
+	void config(const String &p_base_name, const String &p_base_path);
+
 	ScriptCreateDialog();
 };
 

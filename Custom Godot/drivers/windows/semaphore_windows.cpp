@@ -32,7 +32,7 @@
 
 #if defined(WINDOWS_ENABLED)
 
-#include "core/os/memory.h"
+#include "os/memory.h"
 
 Error SemaphoreWindows::wait() {
 

@@ -31,8 +31,8 @@
 #ifndef EDITOR_EXPORT_H
 #define EDITOR_EXPORT_H
 
-#include "core/os/dir_access.h"
-#include "core/resource.h"
+#include "os/dir_access.h"
+#include "resource.h"
 #include "scene/main/node.h"
 #include "scene/main/timer.h"
 #include "scene/resources/texture.h"
@@ -246,7 +246,6 @@ public:
 	virtual Error export_pack(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags = 0);
 	virtual Error export_zip(const Ref<EditorExportPreset> &p_preset, bool p_debug, const String &p_path, int p_flags = 0);
 	virtual void get_platform_features(List<String> *r_features) = 0;
-	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features) = 0;
 
 	EditorExportPlatform();
 };
@@ -404,7 +403,6 @@ public:
 
 	void add_platform_feature(const String &p_feature);
 	virtual void get_platform_features(List<String> *r_features);
-	virtual void resolve_platform_feature_priorities(const Ref<EditorExportPreset> &p_preset, Set<String> &p_features);
 
 	int get_chmod_flags() const;
 	void set_chmod_flags(int p_flags);

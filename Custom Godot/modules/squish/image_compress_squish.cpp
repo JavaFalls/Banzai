@@ -30,7 +30,13 @@
 
 #include "image_compress_squish.h"
 
-#include "core/print_string.h"
+#include "print_string.h"
+
+#if defined(__SSE2__)
+#define SQUISH_USE_SSE 2
+#elif defined(__SSE__)
+#define SQUISH_USE_SSE 1
+#endif
 
 #include <squish.h>
 
@@ -40,7 +46,7 @@ void image_decompress_squish(Image *p_image) {
 
 	Image::Format target_format = Image::FORMAT_RGBA8;
 	PoolVector<uint8_t> data;
-	int target_size = Image::get_image_data_size(w, h, target_format, p_image->has_mipmaps());
+	int target_size = Image::get_image_data_size(w, h, target_format, p_image->has_mipmaps() ? -1 : 0);
 	int mm_count = p_image->get_mipmap_count();
 	data.resize(target_size);
 
@@ -59,7 +65,7 @@ void image_decompress_squish(Image *p_image) {
 	} else if (p_image->get_format() == Image::FORMAT_RGTC_RG) {
 		squish_flags = squish::kBc5;
 	} else {
-		ERR_EXPLAIN("Squish: Can't decompress unknown format: " + itos(p_image->get_format()));
+		print_line("Can't decompress unknown format: " + itos(p_image->get_format()));
 		ERR_FAIL_COND(true);
 		return;
 	}
@@ -75,7 +81,7 @@ void image_decompress_squish(Image *p_image) {
 	p_image->create(p_image->get_width(), p_image->get_height(), p_image->has_mipmaps(), target_format, data);
 }
 
-void image_compress_squish(Image *p_image, float p_lossy_quality, Image::CompressSource p_source) {
+void image_compress_squish(Image *p_image, Image::CompressSource p_source) {
 
 	if (p_image->get_format() >= Image::FORMAT_DXT1)
 		return; //do not compress, already compressed
@@ -86,42 +92,9 @@ void image_compress_squish(Image *p_image, float p_lossy_quality, Image::Compres
 	if (p_image->get_format() <= Image::FORMAT_RGBA8) {
 
 		int squish_comp = squish::kColourRangeFit;
-
-		if (p_lossy_quality > 0.85)
-			squish_comp = squish::kColourIterativeClusterFit;
-		else if (p_lossy_quality > 0.75)
-			squish_comp = squish::kColourClusterFit;
-
 		Image::Format target_format = Image::FORMAT_RGBA8;
 
 		Image::DetectChannels dc = p_image->get_detected_channels();
-
-		if (p_source == Image::COMPRESS_SOURCE_LAYERED) {
-			//keep what comes in
-			switch (p_image->get_format()) {
-				case Image::FORMAT_L8: {
-					dc = Image::DETECTED_L;
-				} break;
-				case Image::FORMAT_LA8: {
-					dc = Image::DETECTED_LA;
-				} break;
-				case Image::FORMAT_R8: {
-					dc = Image::DETECTED_R;
-				} break;
-				case Image::FORMAT_RG8: {
-					dc = Image::DETECTED_RG;
-				} break;
-				case Image::FORMAT_RGB8: {
-					dc = Image::DETECTED_RGB;
-				} break;
-				case Image::FORMAT_RGBA8:
-				case Image::FORMAT_RGBA4444:
-				case Image::FORMAT_RGBA5551: {
-					dc = Image::DETECTED_RGBA;
-				} break;
-				default: {}
-			}
-		}
 
 		p_image->convert(Image::FORMAT_RGBA8); //still uses RGBA to convert
 
@@ -175,7 +148,7 @@ void image_compress_squish(Image *p_image, float p_lossy_quality, Image::Compres
 		}
 
 		PoolVector<uint8_t> data;
-		int target_size = Image::get_image_data_size(w, h, target_format, p_image->has_mipmaps());
+		int target_size = Image::get_image_data_size(w, h, target_format, p_image->has_mipmaps() ? -1 : 0);
 		int mm_count = p_image->has_mipmaps() ? Image::get_image_required_mipmaps(w, h, target_format) : 0;
 		data.resize(target_size);
 		int shift = Image::get_format_pixel_rshift(target_format);
@@ -193,8 +166,8 @@ void image_compress_squish(Image *p_image, float p_lossy_quality, Image::Compres
 			int src_ofs = p_image->get_mipmap_offset(i);
 			squish::CompressImage(&rb[src_ofs], w, h, &wb[dst_ofs], squish_comp);
 			dst_ofs += (MAX(4, bw) * MAX(4, bh)) >> shift;
-			w = MAX(w / 2, 1);
-			h = MAX(h / 2, 1);
+			w >>= 1;
+			h >>= 1;
 		}
 
 		rb = PoolVector<uint8_t>::Read();

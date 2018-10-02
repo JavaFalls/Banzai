@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Object" category="Core" version="3.1">
+<class name="Object" category="Core" version="3.0.6">
 	<brief_description>
 		Base class for all non built-in types.
 	</brief_description>
@@ -16,7 +16,7 @@
 	</demos>
 	<methods>
 		<method name="_get" qualifiers="virtual">
-			<return type="Variant">
+			<return type="void">
 			</return>
 			<argument index="0" name="property" type="String">
 			</argument>
@@ -184,8 +184,6 @@
 			<argument index="0" name="property" type="NodePath">
 			</argument>
 			<description>
-				Get indexed object property by String.
-				Property indices get accessed with colon separation, for example: [code]position:x[/code]
 			</description>
 		</method>
 		<method name="get_instance_id" qualifiers="const">
@@ -419,8 +417,6 @@
 		</constant>
 		<constant name="CONNECT_ONESHOT" value="4" enum="ConnectFlags">
 			One shot connections disconnect themselves after emission.
-		</constant>
-		<constant name="CONNECT_REFERENCE_COUNTED" value="8" enum="ConnectFlags">
 		</constant>
 	</constants>
 </class>

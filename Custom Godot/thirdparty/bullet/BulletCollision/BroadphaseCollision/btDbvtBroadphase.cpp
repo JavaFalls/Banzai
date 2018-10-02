@@ -17,7 +17,7 @@ subject to the following restrictions:
 
 #include "btDbvtBroadphase.h"
 #include "LinearMath/btThreads.h"
-btScalar gDbvtMargin = btScalar(0.05);
+
 //
 // Profiling
 //
@@ -332,9 +332,12 @@ void							btDbvtBroadphase::setAabb(		btBroadphaseProxy* absproxy,
 				if(delta[0]<0) velocity[0]=-velocity[0];
 				if(delta[1]<0) velocity[1]=-velocity[1];
 				if(delta[2]<0) velocity[2]=-velocity[2];
-				if (
-					m_sets[0].update(proxy->leaf, aabb, velocity, gDbvtMargin)
-
+				if	(
+#ifdef DBVT_BP_MARGIN				
+					m_sets[0].update(proxy->leaf,aabb,velocity,DBVT_BP_MARGIN)
+#else
+					m_sets[0].update(proxy->leaf,aabb,velocity)
+#endif
 					)
 				{
 					++m_updates_done;

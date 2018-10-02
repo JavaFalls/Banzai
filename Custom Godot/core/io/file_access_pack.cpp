@@ -29,8 +29,7 @@
 /*************************************************************************/
 
 #include "file_access_pack.h"
-
-#include "core/version.h"
+#include "version.h"
 
 #include <stdio.h>
 

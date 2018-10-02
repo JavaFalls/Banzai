@@ -30,7 +30,7 @@
 
 #include "joints_2d.h"
 
-#include "core/engine.h"
+#include "engine.h"
 #include "physics_body_2d.h"
 #include "servers/physics_2d_server.h"
 
@@ -75,7 +75,8 @@ void Joint2D::_update_joint(bool p_only_free) {
 	ba = body_a->get_rid();
 	bb = body_b->get_rid();
 
-	Physics2DServer::get_singleton()->joint_disable_collisions_between_bodies(joint, exclude_from_collision);
+	if (exclude_from_collision)
+		Physics2DServer::get_singleton()->body_add_collision_exception(body_a->get_rid(), body_b->get_rid());
 }
 
 void Joint2D::set_node_a(const NodePath &p_node_a) {
@@ -158,8 +159,8 @@ void Joint2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_exclude_nodes_from_collision", "enable"), &Joint2D::set_exclude_nodes_from_collision);
 	ClassDB::bind_method(D_METHOD("get_exclude_nodes_from_collision"), &Joint2D::get_exclude_nodes_from_collision);
 
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "node_a", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "CollisionObject2D"), "set_node_a", "get_node_a");
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "node_b", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "CollisionObject2D"), "set_node_b", "get_node_b");
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "node_a"), "set_node_a", "get_node_a");
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "node_b"), "set_node_b", "get_node_b");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "bias", PROPERTY_HINT_RANGE, "0,0.9,0.001"), "set_bias", "get_bias");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "disable_collision"), "set_exclude_nodes_from_collision", "get_exclude_nodes_from_collision");
 }

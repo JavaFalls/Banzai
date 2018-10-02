@@ -30,11 +30,11 @@
 
 #include "test_shader_lang.h"
 
-#include "core/os/file_access.h"
-#include "core/os/main_loop.h"
-#include "core/os/os.h"
+#include "os/file_access.h"
+#include "os/main_loop.h"
+#include "os/os.h"
 
-#include "core/print_string.h"
+#include "print_string.h"
 #include "scene/gui/control.h"
 #include "scene/gui/text_edit.h"
 #include "servers/visual/shader_language.h"
@@ -321,8 +321,8 @@ MainLoop *test() {
 	dt["fragment"].built_ins["ALBEDO"] = SL::TYPE_VEC3;
 	dt["fragment"].can_discard = true;
 
-	Vector<StringName> rm;
-	rm.push_back("popo");
+	Set<String> rm;
+	rm.insert("popo");
 	Set<String> types;
 	types.insert("spatial");
 

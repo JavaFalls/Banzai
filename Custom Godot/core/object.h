@@ -31,13 +31,12 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include "core/hash_map.h"
-#include "core/list.h"
-#include "core/map.h"
-#include "core/os/rw_lock.h"
-#include "core/set.h"
-#include "core/variant.h"
-#include "core/vmap.h"
+#include "list.h"
+#include "map.h"
+#include "os/rw_lock.h"
+#include "set.h"
+#include "variant.h"
+#include "vmap.h"
 
 #define VARIANT_ARG_LIST const Variant &p_arg1 = Variant(), const Variant &p_arg2 = Variant(), const Variant &p_arg3 = Variant(), const Variant &p_arg4 = Variant(), const Variant &p_arg5 = Variant()
 #define VARIANT_ARG_PASS p_arg1, p_arg2, p_arg3, p_arg4, p_arg5
@@ -56,7 +55,7 @@ enum PropertyHint {
 	PROPERTY_HINT_RANGE, ///< hint_text = "min,max,step,slider; //slider is optional"
 	PROPERTY_HINT_EXP_RANGE, ///< hint_text = "min,max,step", exponential edit
 	PROPERTY_HINT_ENUM, ///< hint_text= "val1,val2,val3,etc"
-	PROPERTY_HINT_EXP_EASING, /// exponential easing function (Math::ease) use "attenuation" hint string to revert (flip h), "full" to also include in/out. (ie: "attenuation,inout")
+	PROPERTY_HINT_EXP_EASING, /// exponential easing function (Math::ease)
 	PROPERTY_HINT_LENGTH, ///< hint_text= "length" (as integer)
 	PROPERTY_HINT_SPRITE_FRAME,
 	PROPERTY_HINT_KEY_ACCEL, ///< hint_text= "length" (as integer)
@@ -71,7 +70,6 @@ enum PropertyHint {
 	PROPERTY_HINT_GLOBAL_DIR, ///< a directory path must be passed
 	PROPERTY_HINT_RESOURCE_TYPE, ///< a resource object type
 	PROPERTY_HINT_MULTILINE_TEXT, ///< used for string properties that can contain multiple lines
-	PROPERTY_HINT_PLACEHOLDER_TEXT, ///< used to set a placeholder text for string properties
 	PROPERTY_HINT_COLOR_NO_ALPHA, ///< used for ignoring alpha component when editing a color
 	PROPERTY_HINT_IMAGE_COMPRESS_LOSSY,
 	PROPERTY_HINT_IMAGE_COMPRESS_LOSSLESS,
@@ -87,7 +85,6 @@ enum PropertyHint {
 	PROPERTY_HINT_PROPERTY_OF_INSTANCE, ///< a property of an instance
 	PROPERTY_HINT_PROPERTY_OF_SCRIPT, ///< a property of a script & base
 	PROPERTY_HINT_OBJECT_TOO_BIG, ///< object is too big to send
-	PROPERTY_HINT_NODE_PATH_VALID_TYPES,
 	PROPERTY_HINT_MAX,
 	// When updating PropertyHint, also sync the hardcoded list in VisualScriptEditorVariableEdit
 };
@@ -392,8 +389,7 @@ public:
 
 		CONNECT_DEFERRED = 1,
 		CONNECT_PERSIST = 2, // hint for scene to save this connection
-		CONNECT_ONESHOT = 4,
-		CONNECT_REFERENCE_COUNTED = 8,
+		CONNECT_ONESHOT = 4
 	};
 
 	struct Connection {
@@ -444,10 +440,8 @@ private:
 
 		struct Slot {
 
-			int reference_count;
 			Connection conn;
 			List<Connection>::Element *cE;
-			Slot() { reference_count = 0; }
 		};
 
 		MethodInfo user;
@@ -456,7 +450,7 @@ private:
 		Signal() { lock = 0; }
 	};
 
-	HashMap<StringName, Signal> signal_map;
+	HashMap<StringName, Signal, StringNameHasher> signal_map;
 	List<Connection> connections;
 #ifdef DEBUG_ENABLED
 	SafeRefCount _lock_index;
@@ -490,11 +484,9 @@ private:
 	void _set_indexed_bind(const NodePath &p_name, const Variant &p_value);
 	Variant _get_indexed_bind(const NodePath &p_name) const;
 
-	void property_list_changed_notify();
-
-	friend class Reference;
-	uint32_t instance_binding_count;
 	void *_script_instance_bindings[MAX_SCRIPT_INSTANCE_BINDINGS];
+
+	void property_list_changed_notify();
 
 protected:
 	virtual void _initialize_classv() { initialize_class(); }
@@ -552,8 +544,6 @@ protected:
 
 	friend class ClassDB;
 	virtual void _validate_property(PropertyInfo &property) const;
-
-	void _disconnect(const StringName &p_signal, Object *p_to_object, const StringName &p_to_method, bool p_force = false);
 
 public: //should be protected, but bug in clang++
 	static void initialize_class();
@@ -772,13 +762,18 @@ public:
 	static void debug_objects(DebugFunc p_func);
 	static int get_object_count();
 
+#ifdef DEBUG_ENABLED
 	_FORCE_INLINE_ static bool instance_validate(Object *p_ptr) {
 
 		return instance_checks.has(p_ptr);
 	}
+#else
+	_FORCE_INLINE_ static bool instance_validate(Object *p_ptr) { return true; }
+
+#endif
 };
 
 //needed by macros
-#include "core/class_db.h"
+#include "class_db.h"
 
 #endif

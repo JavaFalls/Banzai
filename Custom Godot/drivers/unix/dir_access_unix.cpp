@@ -32,18 +32,17 @@
 
 #if defined(UNIX_ENABLED) || defined(LIBC_FILEIO_ENABLED)
 
-#include "core/list.h"
-#include "core/os/memory.h"
-#include "core/print_string.h"
+#ifndef ANDROID_ENABLED
+#include <sys/statvfs.h>
+#endif
 
+#include "core/list.h"
+#include "os/memory.h"
+#include "print_string.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifndef ANDROID_ENABLED
-#include <sys/statvfs.h>
-#endif
 
 #ifdef HAVE_MNTENT
 #include <mntent.h>
@@ -60,7 +59,7 @@ Error DirAccessUnix::list_dir_begin() {
 
 	//char real_current_dir_name[2048]; //is this enough?!
 	//getcwd(real_current_dir_name,2048);
-	//chdir(current_path.utf8().get_data());
+	//chdir(curent_path.utf8().get_data());
 	dir_stream = opendir(current_dir.utf8().get_data());
 	//chdir(real_current_dir_name);
 	if (!dir_stream)

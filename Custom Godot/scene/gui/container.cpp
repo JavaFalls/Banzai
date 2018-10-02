@@ -29,14 +29,14 @@
 /*************************************************************************/
 
 #include "container.h"
-#include "core/message_queue.h"
+#include "message_queue.h"
 #include "scene/scene_string_names.h"
 
 void Container::_child_minsize_changed() {
 
-	//Size2 ms = get_combined_minimum_size();
-	//if (ms.width > get_size().width || ms.height > get_size().height) {
-	minimum_size_changed();
+	Size2 ms = get_combined_minimum_size();
+	if (ms.width > get_size().width || ms.height > get_size().height)
+		minimum_size_changed();
 	queue_sort();
 }
 
@@ -51,8 +51,6 @@ void Container::add_child_notify(Node *p_child) {
 	control->connect("size_flags_changed", this, "queue_sort");
 	control->connect("minimum_size_changed", this, "_child_minsize_changed");
 	control->connect("visibility_changed", this, "_child_minsize_changed");
-
-	minimum_size_changed();
 	queue_sort();
 }
 
@@ -63,7 +61,6 @@ void Container::move_child_notify(Node *p_child) {
 	if (!Object::cast_to<Control>(p_child))
 		return;
 
-	minimum_size_changed();
 	queue_sort();
 }
 
@@ -78,8 +75,6 @@ void Container::remove_child_notify(Node *p_child) {
 	control->disconnect("size_flags_changed", this, "queue_sort");
 	control->disconnect("minimum_size_changed", this, "_child_minsize_changed");
 	control->disconnect("visibility_changed", this, "_child_minsize_changed");
-
-	minimum_size_changed();
 	queue_sort();
 }
 

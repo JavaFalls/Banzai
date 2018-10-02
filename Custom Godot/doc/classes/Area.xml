@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Area" inherits="CollisionObject" category="Core" version="3.1">
+<class name="Area" inherits="CollisionObject" category="Core" version="3.0.6">
 	<brief_description>
 		General purpose area node for detection and 3D physics influence.
 	</brief_description>
@@ -142,14 +142,14 @@
 	</members>
 	<signals>
 		<signal name="area_entered">
-			<argument index="0" name="area" type="Area">
+			<argument index="0" name="area" type="Object">
 			</argument>
 			<description>
 				Emitted when another area enters.
 			</description>
 		</signal>
 		<signal name="area_exited">
-			<argument index="0" name="area" type="Area">
+			<argument index="0" name="area" type="Object">
 			</argument>
 			<description>
 				Emitted when another area exits.
@@ -158,7 +158,7 @@
 		<signal name="area_shape_entered">
 			<argument index="0" name="area_id" type="int">
 			</argument>
-			<argument index="1" name="area" type="Area">
+			<argument index="1" name="area" type="Object">
 			</argument>
 			<argument index="2" name="area_shape" type="int">
 			</argument>
@@ -171,7 +171,7 @@
 		<signal name="area_shape_exited">
 			<argument index="0" name="area_id" type="int">
 			</argument>
-			<argument index="1" name="area" type="Area">
+			<argument index="1" name="area" type="Object">
 			</argument>
 			<argument index="2" name="area_shape" type="int">
 			</argument>
@@ -182,14 +182,14 @@
 			</description>
 		</signal>
 		<signal name="body_entered">
-			<argument index="0" name="body" type="Node">
+			<argument index="0" name="body" type="Object">
 			</argument>
 			<description>
 				Emitted when a [PhysicsBody] object enters.
 			</description>
 		</signal>
 		<signal name="body_exited">
-			<argument index="0" name="body" type="Node">
+			<argument index="0" name="body" type="Object">
 			</argument>
 			<description>
 				Emitted when a [PhysicsBody] object exits.
@@ -198,7 +198,7 @@
 		<signal name="body_shape_entered">
 			<argument index="0" name="body_id" type="int">
 			</argument>
-			<argument index="1" name="body" type="Node">
+			<argument index="1" name="body" type="Object">
 			</argument>
 			<argument index="2" name="body_shape" type="int">
 			</argument>
@@ -211,7 +211,7 @@
 		<signal name="body_shape_exited">
 			<argument index="0" name="body_id" type="int">
 			</argument>
-			<argument index="1" name="body" type="Node">
+			<argument index="1" name="body" type="Object">
 			</argument>
 			<argument index="2" name="body_shape" type="int">
 			</argument>

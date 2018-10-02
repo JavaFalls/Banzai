@@ -32,13 +32,12 @@
 #define OS_X11_H
 
 #include "context_gl_x11.h"
-#include "core/os/input.h"
 #include "crash_handler_x11.h"
 #include "drivers/unix/os_unix.h"
+#include "os/input.h"
 #include "servers/visual_server.h"
 //#include "servers/visual/visual_server_wrap_mt.h"
 #include "drivers/alsa/audio_driver_alsa.h"
-#include "drivers/alsamidi/alsa_midi.h"
 #include "drivers/pulseaudio/audio_driver_pulseaudio.h"
 #include "joypad_linux.h"
 #include "main/input_default.h"
@@ -117,10 +116,6 @@ class OS_X11 : public OS_Unix {
 	static void xim_destroy_callback(::XIM im, ::XPointer client_data,
 			::XPointer call_data);
 
-	// IME
-	bool im_active;
-	Vector2 im_position;
-
 	Point2i last_mouse_pos;
 	bool last_mouse_pos_valid;
 	Point2i last_click_pos;
@@ -169,10 +164,6 @@ class OS_X11 : public OS_Unix {
 	AudioDriverALSA driver_alsa;
 #endif
 
-#ifdef ALSAMIDI_ENABLED
-	MIDIDriverALSAMidi driver_alsamidi;
-#endif
-
 #ifdef PULSEAUDIO_ENABLED
 	AudioDriverPulseAudio driver_pulseaudio;
 #endif
@@ -181,11 +172,8 @@ class OS_X11 : public OS_Unix {
 
 	PowerX11 *power_manager;
 
-	bool layered_window;
-
 	CrashHandler crash_handler;
 
-	int video_driver_index;
 	int audio_driver_index;
 	unsigned int capture_idle;
 	bool maximized;
@@ -201,7 +189,11 @@ class OS_X11 : public OS_Unix {
 	Bool xrandr_ext_ok;
 
 protected:
-	virtual int get_current_video_driver() const;
+	virtual int get_video_driver_count() const;
+	virtual const char *get_video_driver_name(int p_driver) const;
+
+	virtual int get_audio_driver_count() const;
+	virtual const char *get_audio_driver_name(int p_driver) const;
 
 	virtual void initialize_core();
 	virtual Error initialize(const VideoMode &p_desired, int p_video_driver, int p_audio_driver);
@@ -277,14 +269,7 @@ public:
 
 	virtual void set_borderless_window(bool p_borderless);
 	virtual bool get_borderless_window();
-
-	virtual bool get_window_per_pixel_transparency_enabled() const;
-	virtual void set_window_per_pixel_transparency_enabled(bool p_enabled);
-
-	virtual void set_ime_active(const bool p_active);
 	virtual void set_ime_position(const Point2 &p_pos);
-
-	virtual String get_unique_id() const;
 
 	virtual void move_window_to_foreground();
 	virtual void alert(const String &p_alert, const String &p_title = "ALERT!");
@@ -313,7 +298,6 @@ public:
 
 	virtual LatinKeyboardVariant get_latin_keyboard_variant() const;
 
-	void update_real_mouse_position();
 	OS_X11();
 };
 

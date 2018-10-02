@@ -30,7 +30,7 @@
 
 #include "reference.h"
 
-#include "core/script_language.h"
+#include "script_language.h"
 
 bool Reference::init_ref() {
 
@@ -66,17 +66,8 @@ int Reference::reference_get_count() const {
 bool Reference::reference() {
 	bool success = refcount.ref();
 
-	if (success && refcount.get() <= 2 /* higher is not relevant */) {
-		if (get_script_instance()) {
-			get_script_instance()->refcount_incremented();
-		}
-		if (instance_binding_count > 0) {
-			for (int i = 0; i < MAX_SCRIPT_INSTANCE_BINDINGS; i++) {
-				if (_script_instance_bindings[i]) {
-					ScriptServer::get_language(i)->refcount_incremented_instance_binding(this);
-				}
-			}
-		}
+	if (success && get_script_instance()) {
+		get_script_instance()->refcount_incremented();
 	}
 
 	return success;
@@ -86,19 +77,9 @@ bool Reference::unreference() {
 
 	bool die = refcount.unref();
 
-	if (refcount.get() <= 1 /* higher is not relevant */) {
-		if (get_script_instance()) {
-			bool script_ret = get_script_instance()->refcount_decremented();
-			die = die && script_ret;
-		}
-		if (instance_binding_count > 0) {
-			for (int i = 0; i < MAX_SCRIPT_INSTANCE_BINDINGS; i++) {
-				if (_script_instance_bindings[i]) {
-					bool script_ret = ScriptServer::get_language(i)->refcount_decremented_instance_binding(this);
-					die = die && script_ret;
-				}
-			}
-		}
+	if (get_script_instance()) {
+		bool script_ret = get_script_instance()->refcount_decremented();
+		die = die && script_ret;
 	}
 
 	return die;

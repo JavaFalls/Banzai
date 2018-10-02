@@ -29,8 +29,7 @@
 /*************************************************************************/
 
 #include "semaphore.h"
-
-#include "core/error_macros.h"
+#include "error_macros.h"
 
 Semaphore *(*Semaphore::create_func)() = 0;
 

@@ -49,7 +49,6 @@ public:
 	};
 
 private:
-	int button_mask;
 	bool toggle_mode;
 	FocusMode enabled_focus_mode;
 	Ref<ShortCut> shortcut;
@@ -104,9 +103,6 @@ public:
 
 	void set_action_mode(ActionMode p_mode);
 	ActionMode get_action_mode() const;
-
-	void set_button_mask(int p_mask);
-	int get_button_mask() const;
 
 	void set_enabled_focus_mode(FocusMode p_mode);
 	FocusMode get_enabled_focus_mode() const;

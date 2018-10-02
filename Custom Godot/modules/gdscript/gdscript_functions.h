@@ -31,7 +31,7 @@
 #ifndef GDSCRIPT_FUNCTIONS_H
 #define GDSCRIPT_FUNCTIONS_H
 
-#include "core/variant.h"
+#include "variant.h"
 
 class GDScriptFunctions {
 public:
@@ -96,7 +96,6 @@ public:
 		TEXT_PRINT_SPACED,
 		TEXT_PRINTERR,
 		TEXT_PRINTRAW,
-		TEXT_PRINT_DEBUG,
 		VAR_TO_STR,
 		STR_TO_VAR,
 		VAR_TO_BYTES,
@@ -112,10 +111,8 @@ public:
 		COLOR8,
 		COLORN,
 		PRINT_STACK,
-		GET_STACK,
 		INSTANCE_FROM_ID,
 		LEN,
-		IS_INSTANCE_VALID,
 		FUNC_MAX
 
 	};

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ResourceSaver" inherits="Object" category="Core" version="3.1">
+<class name="ResourceSaver" inherits="Object" category="Core" version="3.0.6">
 	<brief_description>
-		Resource saving interface.
+		Resource Saving Interface.
 	</brief_description>
 	<description>
-		Resource saving interface, used for saving resources to disk.
+		Resource Saving Interface. This interface is used for saving resources to disk.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -17,7 +17,7 @@
 			<argument index="0" name="type" type="Resource">
 			</argument>
 			<description>
-				Returns the list of extensions available for saving a resource of a given type.
+				Return the list of extensions available for saving a resource of a given type.
 			</description>
 		</method>
 		<method name="save">
@@ -30,7 +30,7 @@
 			<argument index="2" name="flags" type="int" default="0">
 			</argument>
 			<description>
-				Saves a resource to disk.
+				Save a resource to disk, to a given path.
 			</description>
 		</method>
 	</methods>

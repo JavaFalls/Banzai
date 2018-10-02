@@ -31,11 +31,11 @@
 #ifndef VIDEO_STREAM_THEORA_H
 #define VIDEO_STREAM_THEORA_H
 
-#include "core/io/resource_loader.h"
-#include "core/os/file_access.h"
-#include "core/os/semaphore.h"
-#include "core/os/thread.h"
-#include "core/ring_buffer.h"
+#include "io/resource_loader.h"
+#include "os/file_access.h"
+#include "os/semaphore.h"
+#include "os/thread.h"
+#include "ring_buffer.h"
 #include "scene/resources/video_stream.h"
 #include "servers/audio_server.h"
 
@@ -163,6 +163,7 @@ public:
 class VideoStreamTheora : public VideoStream {
 
 	GDCLASS(VideoStreamTheora, VideoStream);
+	RES_BASE_EXTENSION("ogvstr");
 
 	String file;
 	int audio_track;
@@ -183,14 +184,6 @@ public:
 	void set_audio_track(int p_track) { audio_track = p_track; }
 
 	VideoStreamTheora() { audio_track = 0; }
-};
-
-class ResourceFormatLoaderTheora : public ResourceFormatLoader {
-public:
-	virtual RES load(const String &p_path, const String &p_original_path = "", Error *r_error = NULL);
-	virtual void get_recognized_extensions(List<String> *p_extensions) const;
-	virtual bool handles_type(const String &p_type) const;
-	virtual String get_resource_type(const String &p_path) const;
 };
 
 #endif

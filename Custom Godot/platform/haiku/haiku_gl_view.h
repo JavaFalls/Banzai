@@ -31,9 +31,8 @@
 #ifndef HAIKU_GL_VIEW_H
 #define HAIKU_GL_VIEW_H
 
-#include <kernel/image.h> // needed for image_id
-
 #include <GLView.h>
+#include <kernel/image.h> // needed for image_id
 
 class HaikuGLView : public BGLView {
 public:

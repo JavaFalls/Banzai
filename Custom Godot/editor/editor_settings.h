@@ -31,13 +31,13 @@
 #ifndef EDITOR_SETTINGS_H
 #define EDITOR_SETTINGS_H
 
-#include "core/object.h"
+#include "object.h"
 
 #include "core/io/config_file.h"
-#include "core/os/thread_safe.h"
-#include "core/resource.h"
-#include "core/translation.h"
+#include "os/thread_safe.h"
+#include "resource.h"
 #include "scene/gui/shortcut.h"
+#include "translation.h"
 
 class EditorPlugin;
 
@@ -70,7 +70,6 @@ private:
 		bool has_default_value;
 		bool hide_from_editor;
 		bool save;
-		bool restart_if_changed;
 		VariantContainer() {
 			variant = Variant();
 			initial = Variant();
@@ -78,7 +77,6 @@ private:
 			hide_from_editor = false;
 			has_default_value = false;
 			save = false;
-			restart_if_changed = false;
 		}
 		VariantContainer(const Variant &p_variant, int p_order) {
 			variant = p_variant;
@@ -87,7 +85,6 @@ private:
 			hide_from_editor = false;
 			has_default_value = false;
 			save = false;
-			restart_if_changed = false;
 		}
 	};
 
@@ -98,6 +95,7 @@ private:
 	int last_order;
 
 	Ref<Resource> clipboard;
+	Vector<Ref<Translation> > translations;
 	Map<String, Ref<ShortCut> > shortcuts;
 
 	String resource_path;
@@ -107,7 +105,7 @@ private:
 	String config_file_path;
 	String project_config_dir;
 
-	Vector<String> favorites;
+	Vector<String> favorite_dirs;
 	Vector<String> recent_dirs;
 
 	bool save_changed_setting;
@@ -148,7 +146,6 @@ public:
 	void erase(const String &p_setting);
 	void raise_order(const String &p_setting);
 	void set_initial_value(const StringName &p_setting, const Variant &p_value, bool p_update_current = false);
-	void set_restart_if_changed(const StringName &p_setting, bool p_restart);
 	void set_manually(const StringName &p_setting, const Variant &p_value, bool p_emit_signal = false) {
 		if (p_emit_signal)
 			_set(p_setting, p_value);
@@ -171,15 +168,13 @@ public:
 	String get_cache_dir() const;
 
 	void set_project_metadata(const String &p_section, const String &p_key, Variant p_data);
-	Variant get_project_metadata(const String &p_section, const String &p_key, Variant p_default) const;
+	Variant get_project_metadata(const String &p_section, const String &p_key, Variant p_default);
 
-	void set_favorites(const Vector<String> &p_favorites);
-	Vector<String> get_favorites() const;
+	void set_favorite_dirs(const Vector<String> &p_favorites_dirs);
+	Vector<String> get_favorite_dirs() const;
 	void set_recent_dirs(const Vector<String> &p_recent_dirs);
 	Vector<String> get_recent_dirs() const;
 	void load_favorites();
-
-	bool is_dark_theme();
 
 	void list_text_editor_themes();
 	void load_text_editor_theme();
@@ -204,8 +199,7 @@ public:
 //not a macro any longer
 
 #define EDITOR_DEF(m_var, m_val) _EDITOR_DEF(m_var, Variant(m_val))
-#define EDITOR_DEF_RST(m_var, m_val) _EDITOR_DEF(m_var, Variant(m_val), true)
-Variant _EDITOR_DEF(const String &p_setting, const Variant &p_default, bool p_restart_if_changed = false);
+Variant _EDITOR_DEF(const String &p_setting, const Variant &p_default);
 
 #define EDITOR_GET(m_var) _EDITOR_GET(m_var)
 Variant _EDITOR_GET(const String &p_setting);

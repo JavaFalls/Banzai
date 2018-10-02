@@ -31,9 +31,8 @@
 #ifndef NODE_PATH_H
 #define NODE_PATH_H
 
-#include "core/string_db.h"
-#include "core/ustring.h"
-
+#include "string_db.h"
+#include "ustring.h"
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
@@ -48,14 +47,10 @@ class NodePath {
 		StringName concatenated_subpath;
 		bool absolute;
 		bool has_slashes;
-		mutable bool hash_cache_valid;
-		mutable uint32_t hash_cache;
 	};
 
-	mutable Data *data;
+	Data *data;
 	void unref();
-
-	void _update_hash_cache() const;
 
 public:
 	_FORCE_INLINE_ StringName get_sname() const {
@@ -83,14 +78,7 @@ public:
 
 	NodePath get_parent() const;
 
-	_FORCE_INLINE_ uint32_t hash() const {
-		if (!data)
-			return 0;
-		if (!data->hash_cache_valid) {
-			_update_hash_cache();
-		}
-		return data->hash_cache;
-	}
+	uint32_t hash() const;
 
 	operator String() const;
 	bool is_empty() const;

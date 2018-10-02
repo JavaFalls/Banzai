@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ImageTexture" inherits="Texture" category="Core" version="3.1">
+<class name="ImageTexture" inherits="Texture" category="Core" version="3.0.6">
 	<brief_description>
 		A [Texture] based on an [Image].
 	</brief_description>
@@ -36,7 +36,7 @@
 			<argument index="1" name="flags" type="int" default="7">
 			</argument>
 			<description>
-				Create a new [code]ImageTexture[/code] from an [Image] with "flags" from [Texture].FLAG_*. An sRGB to linear color space conversion can take place, according to [Image].FORMAT_*.
+				Create a new [code]ImageTexture[/code] from an [Image] with "flags" from [Texture].FLAG_*.
 			</description>
 		</method>
 		<method name="get_format" qualifiers="const">
@@ -47,12 +47,12 @@
 			</description>
 		</method>
 		<method name="load">
-			<return type="int" enum="Error">
+			<return type="void">
 			</return>
 			<argument index="0" name="path" type="String">
 			</argument>
 			<description>
-				Load an [code]ImageTexture[/code] from a file path.
+				Load an [code]ImageTexture[/code].
 			</description>
 		</method>
 		<method name="set_data">

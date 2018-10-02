@@ -31,9 +31,9 @@
 #ifndef VARIANT_PARSER_H
 #define VARIANT_PARSER_H
 
-#include "core/os/file_access.h"
-#include "core/resource.h"
-#include "core/variant.h"
+#include "os/file_access.h"
+#include "resource.h"
+#include "variant.h"
 
 class VariantParser {
 public:

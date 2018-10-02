@@ -31,7 +31,7 @@
 #ifndef PVRTC_COMPRESS_H
 #define PVRTC_COMPRESS_H
 
-#include "core/image.h"
+#include "image.h"
 
 void _pvrtc_register_compressors();
 

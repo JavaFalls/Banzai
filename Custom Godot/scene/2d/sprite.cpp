@@ -30,76 +30,51 @@
 
 #include "sprite.h"
 #include "core/core_string_names.h"
-#include "core/os/os.h"
+#include "os/os.h"
 #include "scene/main/viewport.h"
 #include "scene/scene_string_names.h"
 
-Dictionary Sprite::_edit_get_state() const {
-	Dictionary state = Node2D::_edit_get_state();
-	state["offset"] = offset;
-	return state;
-}
-
-void Sprite::_edit_set_state(const Dictionary &p_state) {
-	Node2D::_edit_set_state(p_state);
-	set_offset(p_state["offset"]);
-}
-
 void Sprite::_edit_set_pivot(const Point2 &p_pivot) {
-	set_offset(get_offset() - p_pivot);
-	set_position(get_transform().xform(p_pivot));
+
+	set_offset(p_pivot);
 }
 
 Point2 Sprite::_edit_get_pivot() const {
-	return Vector2();
-}
 
+	return get_offset();
+}
 bool Sprite::_edit_use_pivot() const {
-	return true;
-}
-
-Rect2 Sprite::_edit_get_rect() const {
-	return get_rect();
-}
-
-bool Sprite::_edit_use_rect() const {
-	if (texture.is_null())
-		return false;
 
 	return true;
-}
-
-Rect2 Sprite::get_anchorable_rect() const {
-	return get_rect();
 }
 
 void Sprite::_get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_clip) const {
 
-	Rect2 base_rect;
+	Size2 s;
+	r_filter_clip = false;
 
 	if (region) {
+
+		s = region_rect.size;
+		r_src_rect = region_rect;
 		r_filter_clip = region_filter_clip;
-		base_rect = region_rect;
 	} else {
-		r_filter_clip = false;
-		base_rect = Rect2(0, 0, texture->get_width(), texture->get_height());
+		s = Size2(texture->get_size());
+		s = s / Size2(hframes, vframes);
+
+		r_src_rect.size = s;
+		r_src_rect.position.x = float(frame % hframes) * s.x;
+		r_src_rect.position.y = float(frame / hframes) * s.y;
 	}
 
-	Size2 frame_size = base_rect.size / Size2(hframes, vframes);
-	Point2 frame_offset = Point2(frame % hframes, frame / hframes);
-	frame_offset *= frame_size;
-
-	r_src_rect.size = frame_size;
-	r_src_rect.position = base_rect.position + frame_offset;
-
-	Point2 dest_offset = offset;
+	Point2 ofs = offset;
 	if (centered)
-		dest_offset -= frame_size / 2;
+		ofs -= s / 2;
 	if (Engine::get_singleton()->get_use_pixel_snap()) {
-		dest_offset = dest_offset.floor();
+		ofs = ofs.floor();
 	}
 
-	r_dst_rect = Rect2(dest_offset, frame_size);
+	r_dst_rect = Rect2(ofs, s);
 
 	if (hflip)
 		r_dst_rect.size.x = -r_dst_rect.size.x;
@@ -298,28 +273,43 @@ int Sprite::get_hframes() const {
 
 bool Sprite::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
 
-	return is_pixel_opaque(p_point);
-}
-
-bool Sprite::is_pixel_opaque(const Point2 &p_point) const {
-
 	if (texture.is_null())
 		return false;
 
 	Rect2 src_rect, dst_rect;
 	bool filter_clip;
 	_get_rects(src_rect, dst_rect, filter_clip);
-	dst_rect.size = dst_rect.size.abs();
 
 	if (!dst_rect.has_point(p_point))
 		return false;
 
-	Vector2 q = (p_point - dst_rect.position) / dst_rect.size;
-	if (hflip)
-		q.x = 1.0f - q.x;
-	if (vflip)
-		q.y = 1.0f - q.y;
-	q = q * src_rect.size + src_rect.position;
+	Vector2 q = ((p_point - dst_rect.position) / dst_rect.size) * src_rect.size + src_rect.position;
+
+	Ref<Image> image;
+	Ref<AtlasTexture> atlasTexture = texture;
+	if (atlasTexture.is_null()) {
+		image = texture->get_data();
+	} else {
+		ERR_FAIL_COND_V(atlasTexture->get_atlas().is_null(), false);
+
+		image = atlasTexture->get_atlas()->get_data();
+
+		Rect2 region = atlasTexture->get_region();
+		Rect2 margin = atlasTexture->get_margin();
+
+		q -= margin.position;
+
+		if ((q.x > region.size.width) || (q.y > region.size.height)) {
+			return false;
+		}
+
+		q += region.position;
+	}
+
+	ERR_FAIL_COND_V(image.is_null(), false);
+	if (image->is_compressed()) {
+		return dst_rect.has_point(p_point);
+	}
 
 	bool is_repeat = texture->get_flags() & Texture::FLAG_REPEAT;
 	bool is_mirrored_repeat = texture->get_flags() & Texture::FLAG_MIRRORED_REPEAT;
@@ -342,24 +332,31 @@ bool Sprite::is_pixel_opaque(const Point2 &p_point) const {
 		q.x = MIN(q.x, texture->get_size().width - 1);
 		q.y = MIN(q.y, texture->get_size().height - 1);
 	}
+	image->lock();
+	const Color c = image->get_pixel((int)q.x, (int)q.y);
+	image->unlock();
 
-	return texture->is_pixel_opaque((int)q.x, (int)q.y);
+	return c.a > 0.01;
 }
 
-Rect2 Sprite::get_rect() const {
+Rect2 Sprite::_edit_get_rect() const {
 
 	if (texture.is_null())
 		return Rect2(0, 0, 1, 1);
+	/*
+	if (texture.is_null())
+		return CanvasItem::_edit_get_rect();
+	*/
 
 	Size2i s;
 
 	if (region) {
+
 		s = region_rect.size;
 	} else {
 		s = texture->get_size();
+		s = s / Point2(hframes, vframes);
 	}
-
-	s = s / Point2(hframes, vframes);
 
 	Point2 ofs = offset;
 	if (centered)
@@ -413,8 +410,6 @@ void Sprite::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_region", "enabled"), &Sprite::set_region);
 	ClassDB::bind_method(D_METHOD("is_region"), &Sprite::is_region);
 
-	ClassDB::bind_method(D_METHOD("is_pixel_opaque", "pos"), &Sprite::is_pixel_opaque);
-
 	ClassDB::bind_method(D_METHOD("set_region_rect", "rect"), &Sprite::set_region_rect);
 	ClassDB::bind_method(D_METHOD("get_region_rect"), &Sprite::get_region_rect);
 
@@ -429,8 +424,6 @@ void Sprite::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_hframes", "hframes"), &Sprite::set_hframes);
 	ClassDB::bind_method(D_METHOD("get_hframes"), &Sprite::get_hframes);
-
-	ClassDB::bind_method(D_METHOD("get_rect"), &Sprite::get_rect);
 
 	ADD_SIGNAL(MethodInfo("frame_changed"));
 	ADD_SIGNAL(MethodInfo("texture_changed"));

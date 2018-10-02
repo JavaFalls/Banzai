@@ -30,9 +30,9 @@
 
 #include "scroll_bar.h"
 
-#include "core/os/keyboard.h"
-#include "core/os/os.h"
-#include "core/print_string.h"
+#include "os/keyboard.h"
+#include "os/os.h"
+#include "print_string.h"
 
 bool ScrollBar::focus_by_default = false;
 
@@ -114,7 +114,7 @@ void ScrollBar::_gui_input(Ref<InputEvent> p_event) {
 
 				if (smooth_scroll_enabled) {
 					scrolling = true;
-					set_physics_process_internal(true);
+					set_physics_process(true);
 				} else {
 					set_value(target_scroll);
 				}
@@ -138,7 +138,7 @@ void ScrollBar::_gui_input(Ref<InputEvent> p_event) {
 
 				if (smooth_scroll_enabled) {
 					scrolling = true;
-					set_physics_process_internal(true);
+					set_physics_process(true);
 				} else {
 					set_value(target_scroll);
 				}
@@ -199,40 +199,54 @@ void ScrollBar::_gui_input(Ref<InputEvent> p_event) {
 		}
 	}
 
-	if (p_event->is_pressed()) {
+	Ref<InputEventKey> k = p_event;
 
-		if (p_event->is_action("ui_left")) {
+	if (k.is_valid()) {
 
-			if (orientation != HORIZONTAL)
-				return;
-			set_value(get_value() - (custom_step >= 0 ? custom_step : get_step()));
+		if (!k->is_pressed())
+			return;
 
-		} else if (p_event->is_action("ui_right")) {
+		switch (k->get_scancode()) {
 
-			if (orientation != HORIZONTAL)
-				return;
-			set_value(get_value() + (custom_step >= 0 ? custom_step : get_step()));
+			case KEY_LEFT: {
 
-		} else if (p_event->is_action("ui_up")) {
+				if (orientation != HORIZONTAL)
+					return;
+				set_value(get_value() - (custom_step >= 0 ? custom_step : get_step()));
 
-			if (orientation != VERTICAL)
-				return;
+			} break;
+			case KEY_RIGHT: {
 
-			set_value(get_value() - (custom_step >= 0 ? custom_step : get_step()));
+				if (orientation != HORIZONTAL)
+					return;
+				set_value(get_value() + (custom_step >= 0 ? custom_step : get_step()));
 
-		} else if (p_event->is_action("ui_down")) {
+			} break;
+			case KEY_UP: {
 
-			if (orientation != VERTICAL)
-				return;
-			set_value(get_value() + (custom_step >= 0 ? custom_step : get_step()));
+				if (orientation != VERTICAL)
+					return;
 
-		} else if (p_event->is_action("ui_home")) {
+				set_value(get_value() - (custom_step >= 0 ? custom_step : get_step()));
 
-			set_value(get_min());
+			} break;
+			case KEY_DOWN: {
 
-		} else if (p_event->is_action("ui_end")) {
+				if (orientation != VERTICAL)
+					return;
+				set_value(get_value() + (custom_step >= 0 ? custom_step : get_step()));
 
-			set_value(get_max());
+			} break;
+			case KEY_HOME: {
+
+				set_value(get_min());
+
+			} break;
+			case KEY_END: {
+
+				set_value(get_max());
+
+			} break;
 		}
 	}
 }
@@ -257,7 +271,9 @@ void ScrollBar::_notification(int p_what) {
 
 		Point2 ofs;
 
-		decr->draw(ci, Point2());
+		VisualServer *vs = VisualServer::get_singleton();
+
+		vs->canvas_item_add_texture_rect(ci, Rect2(Point2(), decr->get_size()), decr->get_rid());
 
 		if (orientation == HORIZONTAL)
 			ofs.x += decr->get_width();
@@ -278,7 +294,7 @@ void ScrollBar::_notification(int p_what) {
 		else
 			ofs.height += area.height;
 
-		incr->draw(ci, ofs);
+		vs->canvas_item_add_texture_rect(ci, Rect2(ofs, decr->get_size()), incr->get_rid());
 		Rect2 grabber_rect;
 
 		if (orientation == HORIZONTAL) {
@@ -300,27 +316,27 @@ void ScrollBar::_notification(int p_what) {
 
 	if (p_what == NOTIFICATION_ENTER_TREE) {
 
-		if (has_node(drag_node_path)) {
-			Node *n = get_node(drag_node_path);
-			drag_node = Object::cast_to<Control>(n);
+		if (has_node(drag_slave_path)) {
+			Node *n = get_node(drag_slave_path);
+			drag_slave = Object::cast_to<Control>(n);
 		}
 
-		if (drag_node) {
-			drag_node->connect("gui_input", this, "_drag_node_input");
-			drag_node->connect("tree_exiting", this, "_drag_node_exit", varray(), CONNECT_ONESHOT);
+		if (drag_slave) {
+			drag_slave->connect("gui_input", this, "_drag_slave_input");
+			drag_slave->connect("tree_exiting", this, "_drag_slave_exit", varray(), CONNECT_ONESHOT);
 		}
 	}
 	if (p_what == NOTIFICATION_EXIT_TREE) {
 
-		if (drag_node) {
-			drag_node->disconnect("gui_input", this, "_drag_node_input");
-			drag_node->disconnect("tree_exiting", this, "_drag_node_exit");
+		if (drag_slave) {
+			drag_slave->disconnect("gui_input", this, "_drag_slave_input");
+			drag_slave->disconnect("tree_exiting", this, "_drag_slave_exit");
 		}
 
-		drag_node = NULL;
+		drag_slave = NULL;
 	}
 
-	if (p_what == NOTIFICATION_INTERNAL_PHYSICS_PROCESS) {
+	if (p_what == NOTIFICATION_PHYSICS_PROCESS) {
 
 		if (scrolling) {
 			if (get_value() != target_scroll) {
@@ -335,15 +351,14 @@ void ScrollBar::_notification(int p_what) {
 				}
 			} else {
 				scrolling = false;
-				set_physics_process_internal(false);
+				set_physics_process(false);
 			}
+		} else if (drag_slave_touching) {
 
-		} else if (drag_node_touching) {
-
-			if (drag_node_touching_deaccel) {
+			if (drag_slave_touching_deaccel) {
 
 				Vector2 pos = Vector2(orientation == HORIZONTAL ? get_value() : 0, orientation == VERTICAL ? get_value() : 0);
-				pos += drag_node_speed * get_physics_process_delta_time();
+				pos += drag_slave_speed * get_physics_process_delta_time();
 
 				bool turnoff = false;
 
@@ -361,15 +376,15 @@ void ScrollBar::_notification(int p_what) {
 
 					set_value(pos.x);
 
-					float sgn_x = drag_node_speed.x < 0 ? -1 : 1;
-					float val_x = Math::abs(drag_node_speed.x);
+					float sgn_x = drag_slave_speed.x < 0 ? -1 : 1;
+					float val_x = Math::abs(drag_slave_speed.x);
 					val_x -= 1000 * get_physics_process_delta_time();
 
 					if (val_x < 0) {
 						turnoff = true;
 					}
 
-					drag_node_speed.x = sgn_x * val_x;
+					drag_slave_speed.x = sgn_x * val_x;
 
 				} else {
 
@@ -385,29 +400,29 @@ void ScrollBar::_notification(int p_what) {
 
 					set_value(pos.y);
 
-					float sgn_y = drag_node_speed.y < 0 ? -1 : 1;
-					float val_y = Math::abs(drag_node_speed.y);
+					float sgn_y = drag_slave_speed.y < 0 ? -1 : 1;
+					float val_y = Math::abs(drag_slave_speed.y);
 					val_y -= 1000 * get_physics_process_delta_time();
 
 					if (val_y < 0) {
 						turnoff = true;
 					}
-					drag_node_speed.y = sgn_y * val_y;
+					drag_slave_speed.y = sgn_y * val_y;
 				}
 
 				if (turnoff) {
-					set_physics_process_internal(false);
-					drag_node_touching = false;
-					drag_node_touching_deaccel = false;
+					set_physics_process(false);
+					drag_slave_touching = false;
+					drag_slave_touching_deaccel = false;
 				}
 
 			} else {
 
 				if (time_since_motion == 0 || time_since_motion > 0.1) {
 
-					Vector2 diff = drag_node_accum - last_drag_node_accum;
-					last_drag_node_accum = drag_node_accum;
-					drag_node_speed = diff / get_physics_process_delta_time();
+					Vector2 diff = drag_slave_accum - last_drag_slave_accum;
+					last_drag_slave_accum = drag_slave_accum;
+					drag_slave_speed = diff / get_physics_process_delta_time();
 				}
 
 				time_since_motion += get_physics_process_delta_time();
@@ -545,15 +560,15 @@ float ScrollBar::get_custom_step() const {
 	return custom_step;
 }
 
-void ScrollBar::_drag_node_exit() {
+void ScrollBar::_drag_slave_exit() {
 
-	if (drag_node) {
-		drag_node->disconnect("gui_input", this, "_drag_node_input");
+	if (drag_slave) {
+		drag_slave->disconnect("gui_input", this, "_drag_slave_input");
 	}
-	drag_node = NULL;
+	drag_slave = NULL;
 }
 
-void ScrollBar::_drag_node_input(const Ref<InputEvent> &p_input) {
+void ScrollBar::_drag_slave_input(const Ref<InputEvent> &p_input) {
 
 	Ref<InputEventMouseButton> mb = p_input;
 
@@ -564,30 +579,43 @@ void ScrollBar::_drag_node_input(const Ref<InputEvent> &p_input) {
 
 		if (mb->is_pressed()) {
 
-			drag_node_speed = Vector2();
-			drag_node_accum = Vector2();
-			last_drag_node_accum = Vector2();
-			drag_node_from = Vector2(orientation == HORIZONTAL ? get_value() : 0, orientation == VERTICAL ? get_value() : 0);
+			if (drag_slave_touching) {
+				set_physics_process(false);
+				drag_slave_touching_deaccel = false;
+				drag_slave_touching = false;
+				drag_slave_speed = Vector2();
+				drag_slave_accum = Vector2();
+				last_drag_slave_accum = Vector2();
+				drag_slave_from = Vector2();
+			}
 
-			drag_node_touching = OS::get_singleton()->has_touchscreen_ui_hint();
-			drag_node_touching_deaccel = false;
-			time_since_motion = 0;
+			if (true) {
+				drag_slave_speed = Vector2();
+				drag_slave_accum = Vector2();
+				last_drag_slave_accum = Vector2();
+				//drag_slave_from=Vector2(h_scroll->get_val(),v_scroll->get_val());
+				drag_slave_from = Vector2(orientation == HORIZONTAL ? get_value() : 0, orientation == VERTICAL ? get_value() : 0);
 
-			if (drag_node_touching) {
-				set_physics_process_internal(true);
+				drag_slave_touching = OS::get_singleton()->has_touchscreen_ui_hint();
+				drag_slave_touching_deaccel = false;
 				time_since_motion = 0;
+				if (drag_slave_touching) {
+					set_physics_process(true);
+					time_since_motion = 0;
+				}
 			}
 
 		} else {
 
-			if (drag_node_touching) {
+			if (drag_slave_touching) {
 
-				if (drag_node_speed == Vector2()) {
-					drag_node_touching_deaccel = false;
-					drag_node_touching = false;
-					set_physics_process_internal(false);
+				if (drag_slave_speed == Vector2()) {
+					drag_slave_touching_deaccel = false;
+					drag_slave_touching = false;
+					set_physics_process(false);
 				} else {
-					drag_node_touching_deaccel = true;
+
+					drag_slave_touching_deaccel = true;
 				}
 			}
 		}
@@ -597,54 +625,60 @@ void ScrollBar::_drag_node_input(const Ref<InputEvent> &p_input) {
 
 	if (mm.is_valid()) {
 
-		if (drag_node_touching && !drag_node_touching_deaccel) {
+		if (drag_slave_touching && !drag_slave_touching_deaccel) {
 
 			Vector2 motion = Vector2(mm->get_relative().x, mm->get_relative().y);
 
-			drag_node_accum -= motion;
-			Vector2 diff = drag_node_from + drag_node_accum;
+			drag_slave_accum -= motion;
+			Vector2 diff = drag_slave_from + drag_slave_accum;
 
 			if (orientation == HORIZONTAL)
 				set_value(diff.x);
-
+			/*
+			else
+				drag_slave_accum.x=0;
+			*/
 			if (orientation == VERTICAL)
 				set_value(diff.y);
-
+			/*
+			else
+				drag_slave_accum.y=0;
+			*/
 			time_since_motion = 0;
 		}
 	}
 }
 
-void ScrollBar::set_drag_node(const NodePath &p_path) {
+void ScrollBar::set_drag_slave(const NodePath &p_path) {
 
 	if (is_inside_tree()) {
 
-		if (drag_node) {
-			drag_node->disconnect("gui_input", this, "_drag_node_input");
-			drag_node->disconnect("tree_exiting", this, "_drag_node_exit");
+		if (drag_slave) {
+			drag_slave->disconnect("gui_input", this, "_drag_slave_input");
+			drag_slave->disconnect("tree_exiting", this, "_drag_slave_exit");
 		}
 	}
 
-	drag_node = NULL;
-	drag_node_path = p_path;
+	drag_slave = NULL;
+	drag_slave_path = p_path;
 
 	if (is_inside_tree()) {
 
 		if (has_node(p_path)) {
 			Node *n = get_node(p_path);
-			drag_node = Object::cast_to<Control>(n);
+			drag_slave = Object::cast_to<Control>(n);
 		}
 
-		if (drag_node) {
-			drag_node->connect("gui_input", this, "_drag_node_input");
-			drag_node->connect("tree_exiting", this, "_drag_node_exit", varray(), CONNECT_ONESHOT);
+		if (drag_slave) {
+			drag_slave->connect("gui_input", this, "_drag_slave_input");
+			drag_slave->connect("tree_exiting", this, "_drag_slave_exit", varray(), CONNECT_ONESHOT);
 		}
 	}
 }
 
-NodePath ScrollBar::get_drag_node() const {
+NodePath ScrollBar::get_drag_slave() const {
 
-	return drag_node_path;
+	return drag_slave_path;
 }
 
 void ScrollBar::set_smooth_scroll_enabled(bool p_enable) {
@@ -660,8 +694,8 @@ void ScrollBar::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_gui_input"), &ScrollBar::_gui_input);
 	ClassDB::bind_method(D_METHOD("set_custom_step", "step"), &ScrollBar::set_custom_step);
 	ClassDB::bind_method(D_METHOD("get_custom_step"), &ScrollBar::get_custom_step);
-	ClassDB::bind_method(D_METHOD("_drag_node_input"), &ScrollBar::_drag_node_input);
-	ClassDB::bind_method(D_METHOD("_drag_node_exit"), &ScrollBar::_drag_node_exit);
+	ClassDB::bind_method(D_METHOD("_drag_slave_input"), &ScrollBar::_drag_slave_input);
+	ClassDB::bind_method(D_METHOD("_drag_slave_exit"), &ScrollBar::_drag_slave_exit);
 
 	ADD_SIGNAL(MethodInfo("scrolling"));
 
@@ -673,13 +707,13 @@ ScrollBar::ScrollBar(Orientation p_orientation) {
 	orientation = p_orientation;
 	highlight = HIGHLIGHT_NONE;
 	custom_step = -1;
-	drag_node = NULL;
+	drag_slave = NULL;
 
 	drag.active = false;
 
-	drag_node_speed = Vector2();
-	drag_node_touching = false;
-	drag_node_touching_deaccel = false;
+	drag_slave_speed = Vector2();
+	drag_slave_touching = false;
+	drag_slave_touching_deaccel = false;
 
 	scrolling = false;
 	target_scroll = 0;

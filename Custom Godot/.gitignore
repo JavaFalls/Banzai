@@ -91,15 +91,15 @@ bld/
 *.debug
 *.dSYM
 
-# Visual Studio cache/options directory
-.vs/
-
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
 # Hints for improving IntelliSense, created together with VS project
 cpp.hint
+
+# Visualizers for the VS debugger
+*.natvis
 
 #NUNIT
 *.VisualState.xml
@@ -291,7 +291,6 @@ logo.h
 TAGS
 !TAGS/
 tags
-*.tags
 !tags/
 gtags.files
 GTAGS

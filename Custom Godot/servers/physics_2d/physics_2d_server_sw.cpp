@@ -32,9 +32,9 @@
 #include "broad_phase_2d_basic.h"
 #include "broad_phase_2d_hash_grid.h"
 #include "collision_solver_2d_sw.h"
-#include "core/os/os.h"
-#include "core/project_settings.h"
-#include "core/script_language.h"
+#include "os/os.h"
+#include "project_settings.h"
+#include "script_language.h"
 
 RID Physics2DServerSW::_shape_create(ShapeType p_shape) {
 
@@ -171,14 +171,13 @@ void Physics2DServerSW::_shape_col_cbk(const Vector2 &p_point_A, const Vector2 &
 		}
 		if (cbk->valid_dir.dot((p_point_A - p_point_B).normalized()) < 0.7071) {
 			cbk->invalid_by_dir++;
-
-			/*
-			print_line("A: "+p_point_A);
+			;
+			/*			print_line("A: "+p_point_A);
 			print_line("B: "+p_point_B);
 			print_line("discard too angled "+rtos(cbk->valid_dir.dot((p_point_A-p_point_B))));
 			print_line("resnorm: "+(p_point_A-p_point_B).normalized());
 			print_line("distance: "+rtos(p_point_A.distance_to(p_point_B)));
-			*/
+*/
 			return;
 		}
 	}
@@ -839,21 +838,6 @@ real_t Physics2DServerSW::body_get_applied_torque(RID p_body) const {
 	return body->get_applied_torque();
 };
 
-void Physics2DServerSW::body_apply_central_impulse(RID p_body, const Vector2 &p_impulse) {
-	Body2DSW *body = body_owner.get(p_body);
-	ERR_FAIL_COND(!body);
-
-	body->apply_central_impulse(p_impulse);
-	body->wakeup();
-}
-
-void Physics2DServerSW::body_apply_torque_impulse(RID p_body, real_t p_torque) {
-	Body2DSW *body = body_owner.get(p_body);
-	ERR_FAIL_COND(!body);
-
-	body->apply_torque_impulse(p_torque);
-}
-
 void Physics2DServerSW::body_apply_impulse(RID p_body, const Vector2 &p_pos, const Vector2 &p_impulse) {
 
 	Body2DSW *body = body_owner.get(p_body);
@@ -863,28 +847,12 @@ void Physics2DServerSW::body_apply_impulse(RID p_body, const Vector2 &p_pos, con
 	body->wakeup();
 };
 
-void Physics2DServerSW::body_add_central_force(RID p_body, const Vector2 &p_force) {
-	Body2DSW *body = body_owner.get(p_body);
-	ERR_FAIL_COND(!body);
-
-	body->add_central_force(p_force);
-	body->wakeup();
-};
-
 void Physics2DServerSW::body_add_force(RID p_body, const Vector2 &p_offset, const Vector2 &p_force) {
 
 	Body2DSW *body = body_owner.get(p_body);
 	ERR_FAIL_COND(!body);
 
-	body->add_force(p_offset, p_force);
-	body->wakeup();
-};
-
-void Physics2DServerSW::body_add_torque(RID p_body, real_t p_torque) {
-	Body2DSW *body = body_owner.get(p_body);
-	ERR_FAIL_COND(!body);
-
-	body->add_torque(p_torque);
+	body->add_force(p_force, p_offset);
 	body->wakeup();
 };
 
@@ -994,40 +962,22 @@ void Physics2DServerSW::body_set_pickable(RID p_body, bool p_pickable) {
 	body->set_pickable(p_pickable);
 }
 
-bool Physics2DServerSW::body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, bool p_infinite_inertia, real_t p_margin, MotionResult *r_result, bool p_exclude_raycast_shapes) {
+bool Physics2DServerSW::body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, real_t p_margin, MotionResult *r_result) {
 
 	Body2DSW *body = body_owner.get(p_body);
 	ERR_FAIL_COND_V(!body, false);
 	ERR_FAIL_COND_V(!body->get_space(), false);
 	ERR_FAIL_COND_V(body->get_space()->is_locked(), false);
 
-	return body->get_space()->test_body_motion(body, p_from, p_motion, p_infinite_inertia, p_margin, r_result, p_exclude_raycast_shapes);
-}
-
-int Physics2DServerSW::body_test_ray_separation(RID p_body, const Transform2D &p_transform, bool p_infinite_inertia, Vector2 &r_recover_motion, SeparationResult *r_results, int p_result_max, float p_margin) {
-
-	Body2DSW *body = body_owner.get(p_body);
-	ERR_FAIL_COND_V(!body, false);
-	ERR_FAIL_COND_V(!body->get_space(), false);
-	ERR_FAIL_COND_V(body->get_space()->is_locked(), false);
-
-	return body->get_space()->test_body_ray_separation(body, p_transform, p_infinite_inertia, r_recover_motion, r_results, p_result_max, p_margin);
+	return body->get_space()->test_body_motion(body, p_from, p_motion, p_margin, r_result);
 }
 
 Physics2DDirectBodyState *Physics2DServerSW::body_get_direct_state(RID p_body) {
 
-	if ((using_threads && !doing_sync)) {
-		ERR_EXPLAIN("Body state is inaccessible right now, wait for iteration or physics process notification.");
-		ERR_FAIL_V(NULL);
-	}
-
-	if (!body_owner.owns(p_body))
-		return NULL;
-
 	Body2DSW *body = body_owner.get(p_body);
 	ERR_FAIL_COND_V(!body, NULL);
 
-	if (body->get_space()->is_locked()) {
+	if ((using_threads && !doing_sync) || body->get_space()->is_locked()) {
 
 		ERR_EXPLAIN("Body state is inaccessible right now, wait for iteration or physics process notification.");
 		ERR_FAIL_V(NULL);
@@ -1063,33 +1013,6 @@ real_t Physics2DServerSW::joint_get_param(RID p_joint, JointParam p_param) const
 	}
 
 	return 0;
-}
-
-void Physics2DServerSW::joint_disable_collisions_between_bodies(RID p_joint, const bool p_disable) {
-	Joint2DSW *joint = joint_owner.get(p_joint);
-	ERR_FAIL_COND(!joint);
-
-	joint->disable_collisions_between_bodies(p_disable);
-
-	if (2 == joint->get_body_count()) {
-		Body2DSW *body_a = *joint->get_body_ptr();
-		Body2DSW *body_b = *(joint->get_body_ptr() + 1);
-
-		if (p_disable) {
-			body_add_collision_exception(body_a->get_self(), body_b->get_self());
-			body_add_collision_exception(body_b->get_self(), body_a->get_self());
-		} else {
-			body_remove_collision_exception(body_a->get_self(), body_b->get_self());
-			body_remove_collision_exception(body_b->get_self(), body_a->get_self());
-		}
-	}
-}
-
-bool Physics2DServerSW::joint_is_disabled_collisions_between_bodies(RID p_joint) const {
-	const Joint2DSW *joint = joint_owner.get(p_joint);
-	ERR_FAIL_COND_V(!joint, true);
-
-	return joint->is_disabled_collisions_between_bodies();
 }
 
 RID Physics2DServerSW::pin_joint_create(const Vector2 &p_pos, RID p_body_a, RID p_body_b) {

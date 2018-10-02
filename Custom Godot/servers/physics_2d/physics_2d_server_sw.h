@@ -209,12 +209,8 @@ public:
 	virtual void body_set_applied_torque(RID p_body, real_t p_torque);
 	virtual real_t body_get_applied_torque(RID p_body) const;
 
-	virtual void body_add_central_force(RID p_body, const Vector2 &p_force);
 	virtual void body_add_force(RID p_body, const Vector2 &p_offset, const Vector2 &p_force);
-	virtual void body_add_torque(RID p_body, real_t p_torque);
 
-	virtual void body_apply_central_impulse(RID p_body, const Vector2 &p_impulse);
-	virtual void body_apply_torque_impulse(RID p_body, real_t p_torque);
 	virtual void body_apply_impulse(RID p_body, const Vector2 &p_pos, const Vector2 &p_impulse);
 	virtual void body_set_axis_velocity(RID p_body, const Vector2 &p_axis_velocity);
 
@@ -236,8 +232,7 @@ public:
 
 	virtual void body_set_pickable(RID p_body, bool p_pickable);
 
-	virtual bool body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, bool p_infinite_inertia, real_t p_margin = 0.001, MotionResult *r_result = NULL, bool p_exclude_raycast_shapes = true);
-	virtual int body_test_ray_separation(RID p_body, const Transform2D &p_transform, bool p_infinite_inertia, Vector2 &r_recover_motion, SeparationResult *r_results, int p_result_max, float p_margin = 0.001);
+	virtual bool body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, real_t p_margin = 0.001, MotionResult *r_result = NULL);
 
 	// this function only works on physics process, errors and returns null otherwise
 	virtual Physics2DDirectBodyState *body_get_direct_state(RID p_body);
@@ -246,9 +241,6 @@ public:
 
 	virtual void joint_set_param(RID p_joint, JointParam p_param, real_t p_value);
 	virtual real_t joint_get_param(RID p_joint, JointParam p_param) const;
-
-	virtual void joint_disable_collisions_between_bodies(RID p_joint, const bool p_disabled);
-	virtual bool joint_is_disabled_collisions_between_bodies(RID p_joint) const;
 
 	virtual RID pin_joint_create(const Vector2 &p_pos, RID p_body_a, RID p_body_b = RID());
 	virtual RID groove_joint_create(const Vector2 &p_a_groove1, const Vector2 &p_a_groove2, const Vector2 &p_b_anchor, RID p_body_a, RID p_body_b);

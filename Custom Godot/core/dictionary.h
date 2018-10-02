@@ -31,10 +31,9 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
-#include "core/array.h"
-#include "core/list.h"
-#include "core/ustring.h"
-
+#include "array.h"
+#include "list.h"
+#include "ustring.h"
 class Variant;
 
 struct DictionaryPrivate;
@@ -48,8 +47,6 @@ class Dictionary {
 
 public:
 	void get_key_list(List<Variant> *p_keys) const;
-	Variant get_key_at_index(int p_index) const;
-	Variant get_value_at_index(int p_index) const;
 
 	Variant &operator[](const Variant &p_key);
 	const Variant &operator[](const Variant &p_key) const;
@@ -66,7 +63,8 @@ public:
 	bool has(const Variant &p_key) const;
 	bool has_all(const Array &p_keys) const;
 
-	bool erase(const Variant &p_key);
+	void erase(const Variant &p_key);
+	bool erase_checked(const Variant &p_key);
 
 	bool operator==(const Dictionary &p_dictionary) const;
 
@@ -78,7 +76,7 @@ public:
 	Array keys() const;
 	Array values() const;
 
-	Dictionary duplicate(bool p_deep = false) const;
+	Dictionary duplicate() const;
 
 	Dictionary(const Dictionary &p_from);
 	Dictionary();

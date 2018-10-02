@@ -73,7 +73,6 @@ public:
 	Vector<Point2> get_polygon() const;
 
 	virtual Rect2 _edit_get_rect() const;
-	virtual bool _edit_use_rect() const;
 	virtual bool _edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const;
 
 	virtual String get_configuration_warning() const;

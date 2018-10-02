@@ -29,11 +29,9 @@
 /*************************************************************************/
 
 #include "input.h"
-
-#include "core/input_map.h"
-#include "core/os/os.h"
-#include "core/project_settings.h"
-
+#include "input_map.h"
+#include "os/os.h"
+#include "project_settings.h"
 Input *Input::singleton = NULL;
 
 Input *Input::get_singleton() {
@@ -59,7 +57,6 @@ void Input::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_action_pressed", "action"), &Input::is_action_pressed);
 	ClassDB::bind_method(D_METHOD("is_action_just_pressed", "action"), &Input::is_action_just_pressed);
 	ClassDB::bind_method(D_METHOD("is_action_just_released", "action"), &Input::is_action_just_released);
-	ClassDB::bind_method(D_METHOD("get_action_strength", "action"), &Input::get_action_strength);
 	ClassDB::bind_method(D_METHOD("add_joy_mapping", "mapping", "update_existing"), &Input::add_joy_mapping, DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("remove_joy_mapping", "guid"), &Input::remove_joy_mapping);
 	ClassDB::bind_method(D_METHOD("joy_connection_changed", "device", "connected", "name", "guid"), &Input::joy_connection_changed);
@@ -88,7 +85,6 @@ void Input::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("warp_mouse_position", "to"), &Input::warp_mouse_position);
 	ClassDB::bind_method(D_METHOD("action_press", "action"), &Input::action_press);
 	ClassDB::bind_method(D_METHOD("action_release", "action"), &Input::action_release);
-	ClassDB::bind_method(D_METHOD("set_default_cursor_shape", "shape"), &Input::set_default_cursor_shape, DEFVAL(CURSOR_ARROW));
 	ClassDB::bind_method(D_METHOD("set_custom_mouse_cursor", "image", "shape", "hotspot"), &Input::set_custom_mouse_cursor, DEFVAL(CURSOR_ARROW), DEFVAL(Vector2()));
 	ClassDB::bind_method(D_METHOD("parse_input_event", "event"), &Input::parse_input_event);
 
@@ -115,14 +111,14 @@ void Input::_bind_methods() {
 	BIND_ENUM_CONSTANT(CURSOR_HSPLIT);
 	BIND_ENUM_CONSTANT(CURSOR_HELP);
 
-	ADD_SIGNAL(MethodInfo("joy_connection_changed", PropertyInfo(Variant::INT, "device"), PropertyInfo(Variant::BOOL, "connected")));
+	ADD_SIGNAL(MethodInfo("joy_connection_changed", PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::BOOL, "connected")));
 }
 
 void Input::get_argument_options(const StringName &p_function, int p_idx, List<String> *r_options) const {
 #ifdef TOOLS_ENABLED
 
 	String pf = p_function;
-	if (p_idx == 0 && (pf == "is_action_pressed" || pf == "action_press" || pf == "action_release" || pf == "is_action_just_pressed" || pf == "is_action_just_released" || pf == "get_action_strength")) {
+	if (p_idx == 0 && (pf == "is_action_pressed" || pf == "action_press" || pf == "action_release" || pf == "is_action_just_pressed" || pf == "is_action_just_released")) {
 
 		List<PropertyInfo> pinfo;
 		ProjectSettings::get_singleton()->get_property_list(&pinfo);

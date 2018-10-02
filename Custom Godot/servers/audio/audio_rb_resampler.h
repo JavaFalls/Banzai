@@ -31,9 +31,9 @@
 #ifndef AUDIO_RB_RESAMPLER_H
 #define AUDIO_RB_RESAMPLER_H
 
-#include "core/os/memory.h"
-#include "core/typedefs.h"
+#include "os/memory.h"
 #include "servers/audio_server.h"
+#include "typedefs.h"
 
 struct AudioRBResampler {
 

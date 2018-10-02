@@ -31,9 +31,9 @@
 #ifndef PLATFORM_UWP_POWER_UWP_H_
 #define PLATFORM_UWP_POWER_UWP_H_
 
-#include "core/os/dir_access.h"
-#include "core/os/file_access.h"
-#include "core/os/os.h"
+#include "os/dir_access.h"
+#include "os/file_access.h"
+#include "os/os.h"
 
 class PowerUWP {
 

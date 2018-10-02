@@ -31,16 +31,14 @@
 #ifndef SEMAPHORE_WINDOWS_H
 #define SEMAPHORE_WINDOWS_H
 
-#include "core/os/semaphore.h"
+#include "os/semaphore.h"
 
 #ifdef WINDOWS_ENABLED
 
 #include <windows.h>
-
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
-
 class SemaphoreWindows : public Semaphore {
 
 	mutable HANDLE semaphore;

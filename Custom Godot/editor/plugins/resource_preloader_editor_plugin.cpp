@@ -30,9 +30,9 @@
 
 #include "resource_preloader_editor_plugin.h"
 
-#include "core/io/resource_loader.h"
-#include "core/project_settings.h"
 #include "editor/editor_settings.h"
+#include "io/resource_loader.h"
+#include "project_settings.h"
 
 void ResourcePreloaderEditor::_gui_input(Ref<InputEvent> p_event) {
 }
@@ -238,7 +238,8 @@ void ResourcePreloaderEditor::_update_library() {
 		ti->set_text(2, type);
 		ti->set_selectable(2, false);
 
-		ti->set_icon(2, EditorNode::get_singleton()->get_class_icon(type, ""));
+		if (has_icon(type, "EditorIcons"))
+			ti->set_icon(2, get_icon(type, "EditorIcons"));
 	}
 
 	//player->add_resource("default",resource);

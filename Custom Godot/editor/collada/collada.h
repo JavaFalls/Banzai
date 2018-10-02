@@ -33,9 +33,9 @@
 #ifndef COLLADA_H
 #define COLLADA_H
 
-#include "core/io/xml_parser.h"
-#include "core/map.h"
-#include "core/project_settings.h"
+#include "io/xml_parser.h"
+#include "map.h"
+#include "project_settings.h"
 #include "scene/resources/material.h"
 
 class Collada {
@@ -312,7 +312,7 @@ public:
 					total += weights[i].weight;
 				if (total)
 					for (int i = 0; i < 4; i++)
-						weights.write[i].weight /= total;
+						weights[i].weight /= total;
 			}
 		}
 
@@ -515,7 +515,7 @@ public:
 			Key() { interp_type = INTERP_LINEAR; }
 		};
 
-		Vector<float> get_value_at_time(float p_time) const;
+		Vector<float> get_value_at_time(float p_time);
 
 		Vector<Key> keys;
 

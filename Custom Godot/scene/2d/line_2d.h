@@ -52,14 +52,13 @@ public:
 
 	enum LineTextureMode {
 		LINE_TEXTURE_NONE = 0,
-		LINE_TEXTURE_TILE,
-		LINE_TEXTURE_STRETCH
+		LINE_TEXTURE_TILE
+		// TODO STRETCH mode
 	};
 
 	Line2D();
 
 	virtual Rect2 _edit_get_rect() const;
-	virtual bool _edit_use_rect() const;
 	virtual bool _edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const;
 
 	void set_points(const PoolVector<Vector2> &p_points);

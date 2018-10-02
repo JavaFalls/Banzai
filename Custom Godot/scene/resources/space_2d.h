@@ -31,7 +31,7 @@
 #ifndef SPACE_2D_H
 #define SPACE_2D_H
 
-#include "core/resource.h"
+#include "resource.h"
 #include "servers/physics_2d_server.h"
 
 class Space2D : public Resource {

@@ -29,10 +29,9 @@
 /*************************************************************************/
 
 #include "config_file.h"
-
-#include "core/os/file_access.h"
-#include "core/os/keyboard.h"
-#include "core/variant_parser.h"
+#include "os/file_access.h"
+#include "os/keyboard.h"
+#include "variant_parser.h"
 
 PoolStringArray ConfigFile::_get_sections() const {
 

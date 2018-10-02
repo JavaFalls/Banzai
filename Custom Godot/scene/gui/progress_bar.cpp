@@ -33,16 +33,13 @@
 Size2 ProgressBar::get_minimum_size() const {
 
 	Ref<StyleBox> bg = get_stylebox("bg");
-	Ref<StyleBox> fg = get_stylebox("fg");
 	Ref<Font> font = get_font("font");
 
-	Size2 minimum_size = bg->get_minimum_size();
-	minimum_size.height = MAX(minimum_size.height, fg->get_minimum_size().height);
-	minimum_size.width = MAX(minimum_size.width, fg->get_minimum_size().width);
-	//if (percent_visible) { this is needed, else the progressbar will collapse
-	minimum_size.height = MAX(minimum_size.height, bg->get_minimum_size().height + font->get_height());
-	//}
-	return minimum_size;
+	Size2 ms = bg->get_minimum_size() + bg->get_center_size();
+	if (percent_visible) {
+		ms.height = MAX(ms.height, bg->get_minimum_size().height + font->get_height());
+	}
+	return ms;
 }
 
 void ProgressBar::_notification(int p_what) {

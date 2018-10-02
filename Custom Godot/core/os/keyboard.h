@@ -31,10 +31,13 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
-#include "core/ustring.h"
-
+#include "ustring.h"
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
+*/
+
+/**
+@author Juan Linietsky <reduzio@gmail.com>
 */
 
 /*
@@ -328,5 +331,6 @@ const char *find_keycode_name(int p_keycode);
 int keycode_get_count();
 int keycode_get_value_by_index(int p_index);
 const char *keycode_get_name_by_index(int p_index);
+int latin_keyboard_keycode_convert(int p_keycode);
 
 #endif

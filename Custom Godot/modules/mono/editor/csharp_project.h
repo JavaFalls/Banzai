@@ -31,7 +31,7 @@
 #ifndef CSHARP_PROJECT_H
 #define CSHARP_PROJECT_H
 
-#include "core/ustring.h"
+#include "ustring.h"
 
 namespace CSharpProject {
 

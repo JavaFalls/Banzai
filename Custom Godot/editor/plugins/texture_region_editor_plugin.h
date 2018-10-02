@@ -56,6 +56,7 @@ class TextureRegionEditor : public Control {
 
 	friend class TextureRegionEditorPlugin;
 	MenuButton *snap_mode_button;
+	TextureRect *icon_zoom;
 	ToolButton *zoom_in;
 	ToolButton *zoom_reset;
 	ToolButton *zoom_out;
@@ -92,9 +93,7 @@ class TextureRegionEditor : public Control {
 	Rect2 rect_prev;
 	float prev_margin;
 	int edited_margin;
-	Map<RID, List<Rect2> > cache_map;
 	List<Rect2> autoslice_cache;
-	bool autoslice_is_dirty;
 
 	bool drag;
 	bool creating;
@@ -112,7 +111,6 @@ class TextureRegionEditor : public Control {
 	void _zoom_reset();
 	void _zoom_out();
 	void apply_rect(const Rect2 &rect);
-	void _update_autoslice();
 
 protected:
 	void _notification(int p_what);
@@ -128,10 +126,6 @@ public:
 	void _region_draw();
 	void _region_input(const Ref<InputEvent> &p_input);
 	void _scroll_changed(float);
-	bool is_stylebox();
-	bool is_atlas_texture();
-	bool is_ninepatch();
-	Sprite *get_sprite();
 
 	void edit(Object *p_obj);
 	TextureRegionEditor(EditorNode *p_editor);
@@ -140,7 +134,7 @@ public:
 class TextureRegionEditorPlugin : public EditorPlugin {
 	GDCLASS(TextureRegionEditorPlugin, EditorPlugin);
 
-	Button *texture_region_button;
+	Button *region_button;
 	TextureRegionEditor *region_editor;
 	EditorNode *editor;
 

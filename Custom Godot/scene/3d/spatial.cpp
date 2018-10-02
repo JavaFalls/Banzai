@@ -30,8 +30,8 @@
 
 #include "spatial.h"
 
-#include "core/engine.h"
-#include "core/message_queue.h"
+#include "engine.h"
+#include "message_queue.h"
 #include "scene/main/viewport.h"
 #include "scene/scene_string_names.h"
 
@@ -85,7 +85,9 @@ void Spatial::_notify_dirty() {
 }
 
 void Spatial::_update_local_transform() const {
-	data.local_transform.basis.set_euler_scale(data.rotation, data.scale);
+	data.local_transform.basis = Basis();
+	data.local_transform.basis.scale(data.scale);
+	data.local_transform.basis.rotate(data.rotation);
 
 	data.dirty &= ~DIRTY_LOCAL;
 }
@@ -185,8 +187,10 @@ void Spatial::_notification(int p_what) {
 
 					if (data.gizmo.is_valid()) {
 						data.gizmo->create();
-						if (is_visible_in_tree()) {
-							data.gizmo->redraw();
+						if (data.gizmo->can_draw()) {
+							if (is_visible_in_tree()) {
+								data.gizmo->redraw();
+							}
 						}
 						data.gizmo->transform();
 					}
@@ -200,7 +204,6 @@ void Spatial::_notification(int p_what) {
 #ifdef TOOLS_ENABLED
 			if (data.gizmo.is_valid()) {
 				data.gizmo->free();
-				data.gizmo.unref();
 			}
 #endif
 
@@ -279,25 +282,11 @@ Transform Spatial::get_global_transform() const {
 			data.global_transform = data.local_transform;
 		}
 
-		if (data.disable_scale) {
-			data.global_transform.basis.orthonormalize();
-		}
-
 		data.dirty &= ~DIRTY_GLOBAL;
 	}
 
 	return data.global_transform;
 }
-
-#ifdef TOOLS_ENABLED
-Transform Spatial::get_global_gizmo_transform() const {
-	return get_global_transform();
-}
-
-Transform Spatial::get_local_gizmo_transform() const {
-	return get_transform();
-}
-#endif
 
 Spatial *Spatial::get_parent_spatial() const {
 
@@ -421,8 +410,10 @@ void Spatial::set_gizmo(const Ref<SpatialGizmo> &p_gizmo) {
 	if (data.gizmo.is_valid() && is_inside_world()) {
 
 		data.gizmo->create();
-		if (is_visible_in_tree()) {
-			data.gizmo->redraw();
+		if (data.gizmo->can_draw()) {
+			if (is_visible_in_tree()) {
+				data.gizmo->redraw();
+			}
 		}
 		data.gizmo->transform();
 	}
@@ -448,10 +439,12 @@ void Spatial::_update_gizmo() {
 		return;
 	data.gizmo_dirty = false;
 	if (data.gizmo.is_valid()) {
-		if (is_visible_in_tree())
-			data.gizmo->redraw();
-		else
-			data.gizmo->clear();
+		if (data.gizmo->can_draw()) {
+			if (is_visible_in_tree())
+				data.gizmo->redraw();
+			else
+				data.gizmo->clear();
+		}
 	}
 #endif
 }
@@ -465,15 +458,6 @@ void Spatial::set_disable_gizmo(bool p_enabled) {
 }
 
 #endif
-
-void Spatial::set_disable_scale(bool p_enabled) {
-
-	data.disable_scale = p_enabled;
-}
-
-bool Spatial::is_scale_disabled() const {
-	return data.disable_scale;
-}
 
 void Spatial::set_as_toplevel(bool p_enabled) {
 
@@ -640,15 +624,19 @@ void Spatial::scale_object_local(const Vector3 &p_scale) {
 
 void Spatial::global_rotate(const Vector3 &p_axis, float p_angle) {
 
+	Basis rotation(p_axis, p_angle);
 	Transform t = get_global_transform();
-	t.basis.rotate(p_axis, p_angle);
+	t.basis = rotation * t.basis;
 	set_global_transform(t);
 }
 
 void Spatial::global_scale(const Vector3 &p_scale) {
 
+	Basis s;
+	s.set_scale(p_scale);
+
 	Transform t = get_global_transform();
-	t.basis.scale(p_scale);
+	t.basis = s * t.basis;
 	set_global_transform(t);
 }
 
@@ -721,16 +709,6 @@ bool Spatial::is_local_transform_notification_enabled() const {
 	return data.notify_local_transform;
 }
 
-void Spatial::force_update_transform() {
-	ERR_FAIL_COND(!is_inside_tree());
-	if (!xform_change.in_list()) {
-		return; //nothing to update
-	}
-	get_tree()->xform_change_list.remove(&xform_change);
-
-	notification(NOTIFICATION_TRANSFORM_CHANGED);
-}
-
 void Spatial::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_transform", "local"), &Spatial::set_transform);
@@ -749,11 +727,7 @@ void Spatial::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_ignore_transform_notification", "enabled"), &Spatial::set_ignore_transform_notification);
 	ClassDB::bind_method(D_METHOD("set_as_toplevel", "enable"), &Spatial::set_as_toplevel);
 	ClassDB::bind_method(D_METHOD("is_set_as_toplevel"), &Spatial::is_set_as_toplevel);
-	ClassDB::bind_method(D_METHOD("set_disable_scale", "disable"), &Spatial::set_disable_scale);
-	ClassDB::bind_method(D_METHOD("is_scale_disabled"), &Spatial::is_scale_disabled);
 	ClassDB::bind_method(D_METHOD("get_world"), &Spatial::get_world);
-
-	ClassDB::bind_method(D_METHOD("force_update_transform"), &Spatial::force_update_transform);
 
 	ClassDB::bind_method(D_METHOD("_update_gizmo"), &Spatial::_update_gizmo);
 
@@ -772,6 +746,15 @@ void Spatial::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_notify_transform", "enable"), &Spatial::set_notify_transform);
 	ClassDB::bind_method(D_METHOD("is_transform_notification_enabled"), &Spatial::is_transform_notification_enabled);
+
+	void rotate(const Vector3 &p_axis, float p_angle);
+	void rotate_x(float p_angle);
+	void rotate_y(float p_angle);
+	void rotate_z(float p_angle);
+	void translate(const Vector3 &p_offset);
+	void scale(const Vector3 &p_ratio);
+	void global_rotate(const Vector3 &p_axis, float p_angle);
+	void global_translate(const Vector3 &p_offset);
 
 	ClassDB::bind_method(D_METHOD("rotate", "axis", "angle"), &Spatial::rotate);
 	ClassDB::bind_method(D_METHOD("global_rotate", "axis", "angle"), &Spatial::global_rotate);
@@ -800,13 +783,12 @@ void Spatial::_bind_methods() {
 
 	//ADD_PROPERTY( PropertyInfo(Variant::TRANSFORM,"transform/global",PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR ), "set_global_transform", "get_global_transform") ;
 	ADD_GROUP("Transform", "");
+	ADD_PROPERTYNZ(PropertyInfo(Variant::TRANSFORM, "transform", PROPERTY_HINT_NONE, ""), "set_transform", "get_transform");
 	ADD_PROPERTYNZ(PropertyInfo(Variant::TRANSFORM, "global_transform", PROPERTY_HINT_NONE, "", 0), "set_global_transform", "get_global_transform");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "translation", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "set_translation", "get_translation");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "rotation_degrees", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "set_rotation_degrees", "get_rotation_degrees");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "rotation", PROPERTY_HINT_NONE, "", 0), "set_rotation", "get_rotation");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "scale", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "set_scale", "get_scale");
-	ADD_GROUP("Matrix", "");
-	ADD_PROPERTYNZ(PropertyInfo(Variant::TRANSFORM, "transform", PROPERTY_HINT_NONE, ""), "set_transform", "get_transform");
 	ADD_GROUP("Visibility", "");
 	ADD_PROPERTYNO(PropertyInfo(Variant::BOOL, "visible"), "set_visible", "is_visible");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "gizmo", PROPERTY_HINT_RESOURCE_TYPE, "SpatialGizmo", 0), "set_gizmo", "get_gizmo");
@@ -827,7 +809,6 @@ Spatial::Spatial() :
 	data.viewport = NULL;
 	data.inside_world = false;
 	data.visible = true;
-	data.disable_scale = false;
 
 #ifdef TOOLS_ENABLED
 	data.gizmo_disabled = false;

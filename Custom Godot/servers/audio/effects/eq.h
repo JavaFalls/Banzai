@@ -33,8 +33,8 @@
 #ifndef EQ_FILTER_H
 #define EQ_FILTER_H
 
-#include "core/typedefs.h"
-#include "core/vector.h"
+#include "typedefs.h"
+#include "vector.h"
 
 /**
 @author Juan Linietsky

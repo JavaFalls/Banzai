@@ -32,7 +32,7 @@
 #define BROAD_PHASE_OCTREE_H
 
 #include "broad_phase_sw.h"
-#include "core/math/octree.h"
+#include "octree.h"
 
 class BroadPhaseOctree : public BroadPhaseSW {
 

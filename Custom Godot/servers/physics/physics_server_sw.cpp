@@ -32,13 +32,13 @@
 
 #include "broad_phase_basic.h"
 #include "broad_phase_octree.h"
-#include "core/os/os.h"
-#include "core/script_language.h"
 #include "joints/cone_twist_joint_sw.h"
 #include "joints/generic_6dof_joint_sw.h"
 #include "joints/hinge_joint_sw.h"
 #include "joints/pin_joint_sw.h"
 #include "joints/slider_joint_sw.h"
+#include "os/os.h"
+#include "script_language.h"
 
 RID PhysicsServerSW::shape_create(ShapeType p_shape) {
 
@@ -64,11 +64,6 @@ RID PhysicsServerSW::shape_create(ShapeType p_shape) {
 		case SHAPE_CAPSULE: {
 
 			shape = memnew(CapsuleShapeSW);
-		} break;
-		case SHAPE_CYLINDER: {
-
-			ERR_EXPLAIN("CylinderShape is not supported in GodotPhysics. Please switch to Bullet in the Project Settings.");
-			ERR_FAIL_V(RID());
 		} break;
 		case SHAPE_CONVEX_POLYGON: {
 
@@ -123,13 +118,6 @@ Variant PhysicsServerSW::shape_get_data(RID p_shape) const {
 	ERR_FAIL_COND_V(!shape->is_configured(), Variant());
 	return shape->get_data();
 };
-
-void PhysicsServerSW::shape_set_margin(RID p_shape, real_t p_margin) {
-}
-
-real_t PhysicsServerSW::shape_get_margin(RID p_shape) const {
-	return 0.0;
-}
 
 real_t PhysicsServerSW::shape_get_custom_solver_bias(RID p_shape) const {
 
@@ -299,7 +287,6 @@ void PhysicsServerSW::area_set_shape(RID p_area, int p_shape_idx, RID p_shape) {
 
 	area->set_shape(p_shape_idx, shape);
 }
-
 void PhysicsServerSW::area_set_shape_transform(RID p_area, int p_shape_idx, const Transform &p_transform) {
 
 	AreaSW *area = area_owner.get(p_area);
@@ -771,40 +758,6 @@ Vector3 PhysicsServerSW::body_get_applied_torque(RID p_body) const {
 	return body->get_applied_torque();
 };
 
-void PhysicsServerSW::body_add_central_force(RID p_body, const Vector3 &p_force) {
-	BodySW *body = body_owner.get(p_body);
-	ERR_FAIL_COND(!body);
-
-	body->add_central_force(p_force);
-	body->wakeup();
-}
-
-void PhysicsServerSW::body_add_force(RID p_body, const Vector3 &p_force, const Vector3 &p_pos) {
-	BodySW *body = body_owner.get(p_body);
-	ERR_FAIL_COND(!body);
-
-	body->add_force(p_force, p_pos);
-	body->wakeup();
-};
-
-void PhysicsServerSW::body_add_torque(RID p_body, const Vector3 &p_torque) {
-	BodySW *body = body_owner.get(p_body);
-	ERR_FAIL_COND(!body);
-
-	body->add_torque(p_torque);
-	body->wakeup();
-};
-
-void PhysicsServerSW::body_apply_central_impulse(RID p_body, const Vector3 &p_impulse) {
-	BodySW *body = body_owner.get(p_body);
-	ERR_FAIL_COND(!body);
-
-	_update_shapes();
-
-	body->apply_central_impulse(p_impulse);
-	body->wakeup();
-}
-
 void PhysicsServerSW::body_apply_impulse(RID p_body, const Vector3 &p_pos, const Vector3 &p_impulse) {
 
 	BodySW *body = body_owner.get(p_body);
@@ -949,7 +902,7 @@ bool PhysicsServerSW::body_is_ray_pickable(RID p_body) const {
 	return body->is_ray_pickable();
 }
 
-bool PhysicsServerSW::body_test_motion(RID p_body, const Transform &p_from, const Vector3 &p_motion, bool p_infinite_inertia, MotionResult *r_result, bool p_exclude_raycast_shapes) {
+bool PhysicsServerSW::body_test_motion(RID p_body, const Transform &p_from, const Vector3 &p_motion, MotionResult *r_result) {
 
 	BodySW *body = body_owner.get(p_body);
 	ERR_FAIL_COND_V(!body, false);
@@ -958,19 +911,7 @@ bool PhysicsServerSW::body_test_motion(RID p_body, const Transform &p_from, cons
 
 	_update_shapes();
 
-	return body->get_space()->test_body_motion(body, p_from, p_motion, p_infinite_inertia, body->get_kinematic_margin(), r_result, p_exclude_raycast_shapes);
-}
-
-int PhysicsServerSW::body_test_ray_separation(RID p_body, const Transform &p_transform, bool p_infinite_inertia, Vector3 &r_recover_motion, SeparationResult *r_results, int p_result_max, float p_margin) {
-
-	BodySW *body = body_owner.get(p_body);
-	ERR_FAIL_COND_V(!body, false);
-	ERR_FAIL_COND_V(!body->get_space(), false);
-	ERR_FAIL_COND_V(body->get_space()->is_locked(), false);
-
-	_update_shapes();
-
-	return body->get_space()->test_body_ray_separation(body, p_transform, p_infinite_inertia, r_recover_motion, r_results, p_result_max, p_margin);
+	return body->get_space()->test_body_motion(body, p_from, p_motion, body->get_kinematic_margin(), r_result);
 }
 
 PhysicsDirectBodyState *PhysicsServerSW::body_get_direct_state(RID p_body) {
@@ -1150,33 +1091,6 @@ int PhysicsServerSW::joint_get_solver_priority(RID p_joint) const {
 	JointSW *joint = joint_owner.get(p_joint);
 	ERR_FAIL_COND_V(!joint, 0);
 	return joint->get_priority();
-}
-
-void PhysicsServerSW::joint_disable_collisions_between_bodies(RID p_joint, const bool p_disable) {
-	JointSW *joint = joint_owner.get(p_joint);
-	ERR_FAIL_COND(!joint);
-
-	joint->disable_collisions_between_bodies(p_disable);
-
-	if (2 == joint->get_body_count()) {
-		BodySW *body_a = *joint->get_body_ptr();
-		BodySW *body_b = *(joint->get_body_ptr() + 1);
-
-		if (p_disable) {
-			body_add_collision_exception(body_a->get_self(), body_b->get_self());
-			body_add_collision_exception(body_b->get_self(), body_a->get_self());
-		} else {
-			body_remove_collision_exception(body_a->get_self(), body_b->get_self());
-			body_remove_collision_exception(body_b->get_self(), body_a->get_self());
-		}
-	}
-}
-
-bool PhysicsServerSW::joint_is_disabled_collisions_between_bodies(RID p_joint) const {
-	JointSW *joint = joint_owner.get(p_joint);
-	ERR_FAIL_COND_V(!joint, true);
-
-	return joint->is_disabled_collisions_between_bodies();
 }
 
 PhysicsServerSW::JointType PhysicsServerSW::joint_get_type(RID p_joint) const {
@@ -1421,8 +1335,6 @@ void PhysicsServerSW::init() {
 
 void PhysicsServerSW::step(real_t p_step) {
 
-#ifndef _3D_DISABLED
-
 	if (!active)
 		return;
 
@@ -1443,7 +1355,6 @@ void PhysicsServerSW::step(real_t p_step) {
 		active_objects += E->get()->get_active_objects();
 		collision_pairs += E->get()->get_collision_pairs();
 	}
-#endif
 }
 
 void PhysicsServerSW::sync(){
@@ -1451,8 +1362,6 @@ void PhysicsServerSW::sync(){
 };
 
 void PhysicsServerSW::flush_queries() {
-
-#ifndef _3D_DISABLED
 
 	if (!active)
 		return;
@@ -1500,7 +1409,6 @@ void PhysicsServerSW::flush_queries() {
 
 		ScriptDebugger::get_singleton()->add_profiling_frame_data("physics", values);
 	}
-#endif
 };
 
 void PhysicsServerSW::finish() {

@@ -4,6 +4,7 @@ import os
 import sys
 import subprocess
 
+from SCons.Script import BoolVariable, Dir, Environment, PathVariable, Variables
 from distutils.version import LooseVersion
 from SCons.Script import BoolVariable, Dir, Environment, File, PathVariable, SCons, Variables
 
@@ -11,7 +12,16 @@ from SCons.Script import BoolVariable, Dir, Environment, File, PathVariable, SCo
 monoreg = imp.load_source('mono_reg_utils', 'modules/mono/mono_reg_utils.py')
 
 
-def can_build(env, platform):
+def find_file_in_dir(directory, files, prefix='', extension=''):
+    if not extension.startswith('.'):
+        extension = '.' + extension
+    for curfile in files:
+        if os.path.isfile(os.path.join(directory, prefix + curfile + extension)):
+            return curfile
+    return ''
+
+
+def can_build(platform):
     if platform in ['javascript']:
         return False # Not yet supported
     return True
@@ -55,24 +65,13 @@ def copy_file(src_dir, dst_dir, name):
     copyfile(src_path, dst_path)
 
 
-def custom_path_is_dir_create(key, val, env):
-    """Validator to check if Path is a directory, creating it if it does not exist.
-       Similar to PathIsDirCreate, except it uses SCons.Script.Dir() and
-       SCons.Script.File() in order to support the '#' top level directory token.
-       """
-    # Dir constructor will throw an error if the path points to a file
-    fsDir = Dir(val)
-    if not fsDir.exists:
-        os.makedirs(fsDir.abspath)
-
-
 def configure(env):
     env.use_ptrcall = True
     env.add_module_version_string('mono')
 
     envvars = Variables()
     envvars.Add(BoolVariable('mono_static', 'Statically link mono', False))
-    envvars.Add(PathVariable('mono_assemblies_output_dir', 'Path to the assemblies output directory', '#bin', custom_path_is_dir_create))
+    envvars.Add(PathVariable('mono_assemblies_output_dir', 'Path to the assemblies output directory', '#bin', PathVariable.PathIsDirCreate))
     envvars.Update(env)
 
     bits = env['bits']
@@ -83,8 +82,6 @@ def configure(env):
     mono_lib_names = ['mono-2.0-sgen', 'monosgen-2.0']
 
     if env['platform'] == 'windows':
-        mono_root = ''
-
         if bits == '32':
             if os.getenv('MONO32_PREFIX'):
                 mono_root = os.getenv('MONO32_PREFIX')
@@ -98,8 +95,6 @@ def configure(env):
 
         if not mono_root:
             raise RuntimeError('Mono installation directory not found')
-
-        print('Found Mono root directory: ' + mono_root)
 
         mono_version = mono_root_try_find_mono_version(mono_root)
         configure_for_mono_version(env, mono_version)
@@ -166,14 +161,6 @@ def configure(env):
             if os.getenv('MONO64_PREFIX'):
                 mono_root = os.getenv('MONO64_PREFIX')
 
-        if not mono_root and sys.platform == 'darwin':
-            # Try with some known directories under OSX
-            hint_dirs = ['/Library/Frameworks/Mono.framework/Versions/Current', '/usr/local/var/homebrew/linked/mono']
-            for hint_dir in hint_dirs:
-                if os.path.isdir(hint_dir):
-                    mono_root = hint_dir
-                    break
-
         # We can't use pkg-config to link mono statically,
         # but we can still use it to find the mono root directory
         if not mono_root and mono_static:
@@ -182,8 +169,6 @@ def configure(env):
                 raise RuntimeError('Building with mono_static=yes, but failed to find the mono prefix with pkg-config. Specify one manually')
 
         if mono_root:
-            print('Found Mono root directory: ' + mono_root)
-
             mono_version = mono_root_try_find_mono_version(mono_root)
             configure_for_mono_version(env, mono_version)
 
@@ -226,10 +211,8 @@ def configure(env):
 
             copy_file(os.path.join(mono_lib_path, 'mono', '4.5'), assemblies_output_dir, 'mscorlib.dll')
         else:
-            assert not mono_static
-
-            # TODO: Add option to force using pkg-config
-            print('Mono root directory not found. Using pkg-config instead')
+            if mono_static:
+                raise RuntimeError('mono-static: Not supported with pkg-config. Specify a mono prefix manually')
 
             mono_version = pkgconfig_try_find_mono_version()
             configure_for_mono_version(env, mono_version)
@@ -263,7 +246,7 @@ def configure(env):
 def configure_for_mono_version(env, mono_version):
     if mono_version is None:
         raise RuntimeError('Mono JIT compiler version not found')
-    print('Found Mono JIT compiler version: ' + str(mono_version))
+    print('Mono JIT compiler version: ' + str(mono_version))
     if mono_version >= LooseVersion("5.12.0"):
         env.Append(CPPFLAGS=['-DHAS_PENDING_EXCEPTIONS'])
 
@@ -280,13 +263,11 @@ def pkgconfig_try_find_mono_root(mono_lib_names, sharedlib_ext):
 
 
 def pkgconfig_try_find_mono_version():
-    from compat import decode_utf8
-
     lines = subprocess.check_output(['pkg-config', 'monosgen-2', '--modversion']).splitlines()
     greater_version = None
     for line in lines:
         try:
-            version = LooseVersion(decode_utf8(line))
+            version = LooseVersion(line)
             if greater_version is None or version > greater_version:
                 greater_version = version
         except ValueError:
@@ -295,17 +276,7 @@ def pkgconfig_try_find_mono_version():
 
 
 def mono_root_try_find_mono_version(mono_root):
-    from compat import decode_utf8
-
-    mono_bin = os.path.join(mono_root, 'bin')
-    if os.path.isfile(os.path.join(mono_bin, 'mono')):
-        mono_binary = os.path.join(mono_bin, 'mono')
-    elif os.path.isfile(os.path.join(mono_bin, 'mono.exe')):
-        mono_binary = os.path.join(mono_bin, 'mono.exe')
-    else:
-        return None
-    output = subprocess.check_output([mono_binary, '--version'])
-    first_line = decode_utf8(output.splitlines()[0])
+    first_line = subprocess.check_output([os.path.join(mono_root, 'bin', 'mono'), '--version']).splitlines()[0]
     try:
         return LooseVersion(first_line.split()[len('Mono JIT compiler version'.split())])
     except (ValueError, IndexError):

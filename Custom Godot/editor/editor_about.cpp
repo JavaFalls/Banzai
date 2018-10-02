@@ -31,11 +31,11 @@
 #include "editor_about.h"
 #include "editor_node.h"
 
-#include "core/authors.gen.h"
-#include "core/donors.gen.h"
-#include "core/license.gen.h"
-#include "core/version.h"
-#include "core/version_hash.gen.h"
+#include "authors.gen.h"
+#include "donors.gen.h"
+#include "license.gen.h"
+#include "version.h"
+#include "version_hash.gen.h"
 
 void EditorAbout::_notification(int p_what) {
 
@@ -44,11 +44,9 @@ void EditorAbout::_notification(int p_what) {
 		case NOTIFICATION_ENTER_TREE:
 		case NOTIFICATION_THEME_CHANGED: {
 
-			Control *base = EditorNode::get_singleton()->get_gui_base();
-			Ref<Font> font = base->get_font("source", "EditorFonts");
+			Ref<Font> font = EditorNode::get_singleton()->get_gui_base()->get_font("source", "EditorFonts");
 			_tpl_text->add_font_override("normal_font", font);
 			_license_text->add_font_override("normal_font", font);
-			_logo->set_texture(base->get_icon("Logo", "EditorIcons"));
 		} break;
 	}
 }
@@ -69,7 +67,7 @@ TextureRect *EditorAbout::get_logo() const {
 	return _logo;
 }
 
-ScrollContainer *EditorAbout::_populate_list(const String &p_name, const List<String> &p_sections, const char *const *const p_src[], const int p_flag_single_column) {
+ScrollContainer *EditorAbout::_populate_list(const String &p_name, const List<String> &p_sections, const char **p_src[], const int p_flag_single_column) {
 
 	ScrollContainer *sc = memnew(ScrollContainer);
 	sc->set_name(p_name);
@@ -82,7 +80,7 @@ ScrollContainer *EditorAbout::_populate_list(const String &p_name, const List<St
 	for (int i = 0; i < p_sections.size(); i++) {
 
 		bool single_column = p_flag_single_column & 1 << i;
-		const char *const *names_ptr = p_src[i];
+		const char **names_ptr = p_src[i];
 		if (*names_ptr) {
 
 			Label *lbl = memnew(Label);
@@ -113,6 +111,7 @@ ScrollContainer *EditorAbout::_populate_list(const String &p_name, const List<St
 EditorAbout::EditorAbout() {
 
 	set_title(TTR("Thanks from the Godot community!"));
+	get_ok()->set_text(TTR("Thanks!"));
 	set_hide_on_ok(true);
 	set_resizable(true);
 
@@ -150,8 +149,7 @@ EditorAbout::EditorAbout() {
 	dev_sections.push_back(TTR("Lead Developer"));
 	dev_sections.push_back(TTR("Project Manager ")); // " " appended to distinguish between 'project supervisor' and 'project list'
 	dev_sections.push_back(TTR("Developers"));
-	const char *const *dev_src[] = { AUTHORS_FOUNDERS, AUTHORS_LEAD_DEVELOPERS,
-		AUTHORS_PROJECT_MANAGERS, AUTHORS_DEVELOPERS };
+	const char **dev_src[] = { dev_founders, dev_lead, dev_manager, dev_names };
 	tc->add_child(_populate_list(TTR("Authors"), dev_sections, dev_src, 1));
 
 	// Donors
@@ -163,8 +161,7 @@ EditorAbout::EditorAbout() {
 	donor_sections.push_back(TTR("Gold Donors"));
 	donor_sections.push_back(TTR("Silver Donors"));
 	donor_sections.push_back(TTR("Bronze Donors"));
-	const char *const *donor_src[] = { DONORS_SPONSOR_PLAT, DONORS_SPONSOR_GOLD,
-		DONORS_SPONSOR_MINI, DONORS_GOLD, DONORS_SILVER, DONORS_BRONZE };
+	const char **donor_src[] = { donor_s_plat, donor_s_gold, donor_s_mini, donor_gold, donor_silver, donor_bronze };
 	tc->add_child(_populate_list(TTR("Donors"), donor_sections, donor_src, 3));
 
 	// License
@@ -173,7 +170,7 @@ EditorAbout::EditorAbout() {
 	_license_text->set_name(TTR("License"));
 	_license_text->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	_license_text->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	_license_text->set_text(String::utf8(GODOT_LICENSE_TEXT));
+	_license_text->set_text(String::utf8(about_license));
 	tc->add_child(_license_text);
 
 	// Thirdparty License
@@ -187,7 +184,6 @@ EditorAbout::EditorAbout() {
 	tpl_label->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	tpl_label->set_autowrap(true);
 	tpl_label->set_text(TTR("Godot Engine relies on a number of thirdparty free and open source libraries, all compatible with the terms of its MIT license. The following is an exhaustive list of all such thirdparty components with their respective copyright statements and license terms."));
-	tpl_label->set_size(Size2(630, 1) * EDSCALE);
 	license_thirdparty->add_child(tpl_label);
 
 	HSplitContainer *tpl_hbc = memnew(HSplitContainer);
@@ -209,27 +205,20 @@ EditorAbout::EditorAbout() {
 	tpl_ti_lc->set_selectable(0, false);
 	int read_idx = 0;
 	String long_text = "";
-	for (int component_index = 0; component_index < COPYRIGHT_INFO_COUNT; component_index++) {
+	for (int i = 0; i < THIRDPARTY_COUNT; i++) {
 
-		const ComponentCopyright &component = COPYRIGHT_INFO[component_index];
 		TreeItem *ti = _tpl_tree->create_item(tpl_ti_tp);
-		String component_name = component.name;
-		ti->set_text(0, component_name);
-		String text = component_name + "\n";
-		long_text += "- " + component_name + "\n";
-		for (int part_index = 0; part_index < component.part_count; part_index++) {
-			const ComponentCopyrightPart &part = component.parts[part_index];
-			text += "\n    Files:";
-			for (int file_num = 0; file_num < part.file_count; file_num++) {
-				text += "\n        " + String(part.files[file_num]);
-			}
-			String copyright;
-			for (int copyright_index = 0; copyright_index < part.copyright_count; copyright_index++) {
-				copyright += String::utf8("\n    \xc2\xa9 ") + String::utf8(part.copyright_statements[copyright_index]);
-			}
+		String thirdparty = String(about_thirdparty[i]);
+		ti->set_text(0, thirdparty);
+		String text = thirdparty + "\n";
+		long_text += "- " + thirdparty + "\n\n";
+		for (int j = 0; j < about_tp_copyright_count[i]; j++) {
+
+			text += "\n    Files:\n        " + String(about_tp_file[read_idx]).replace("\n", "\n        ") + "\n";
+			String copyright = String::utf8("    \xc2\xa9 ") + String::utf8(about_tp_copyright[read_idx]).replace("\n", String::utf8("\n    \xc2\xa9 "));
 			text += copyright;
 			long_text += copyright;
-			String license = "\n    License: " + String(part.license) + "\n";
+			String license = "\n    License: " + String(about_tp_license[read_idx]) + "\n";
 			text += license;
 			long_text += license + "\n";
 			read_idx++;
@@ -239,10 +228,10 @@ EditorAbout::EditorAbout() {
 	for (int i = 0; i < LICENSE_COUNT; i++) {
 
 		TreeItem *ti = _tpl_tree->create_item(tpl_ti_lc);
-		String licensename = String(LICENSE_NAMES[i]);
+		String licensename = String(about_license_name[i]);
 		ti->set_text(0, licensename);
 		long_text += "- " + licensename + "\n\n";
-		String licensebody = String(LICENSE_BODIES[i]);
+		String licensebody = String(about_license_body[i]);
 		ti->set_metadata(0, licensebody);
 		long_text += "    " + licensebody.replace("\n", "\n    ") + "\n\n";
 	}

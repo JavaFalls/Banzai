@@ -85,8 +85,7 @@ real_t PinJointBullet::get_param(PhysicsServer::PinJointParam p_param) const {
 		case PhysicsServer::PIN_JOINT_IMPULSE_CLAMP:
 			return p2pConstraint->m_setting.m_impulseClamp;
 		default:
-			ERR_EXPLAIN("This parameter " + itos(p_param) + " is deprecated");
-			WARN_DEPRECATED
+			WARN_PRINTS("This get parameter is not supported");
 			return 0;
 	}
 }

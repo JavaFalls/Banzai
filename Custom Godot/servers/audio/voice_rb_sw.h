@@ -31,7 +31,7 @@
 #ifndef VOICE_RB_SW_H
 #define VOICE_RB_SW_H
 
-#include "core/os/os.h"
+#include "os/os.h"
 #include "servers/audio_server.h"
 class VoiceRBSW {
 public:

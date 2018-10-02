@@ -32,8 +32,8 @@
 
 #ifdef ALSA_ENABLED
 
-#include "core/os/os.h"
-#include "core/project_settings.h"
+#include "os/os.h"
+#include "project_settings.h"
 
 #include <errno.h>
 
@@ -58,10 +58,7 @@ Error AudioDriverALSA::init_device() {
 #define CHECK_FAIL(m_cond)                                       \
 	if (m_cond) {                                                \
 		fprintf(stderr, "ALSA ERR: %s\n", snd_strerror(status)); \
-		if (pcm_handle) {                                        \
-			snd_pcm_close(pcm_handle);                           \
-			pcm_handle = NULL;                                   \
-		}                                                        \
+		snd_pcm_close(pcm_handle);                               \
 		ERR_FAIL_COND_V(m_cond, ERR_CANT_OPEN);                  \
 	}
 
@@ -116,7 +113,9 @@ Error AudioDriverALSA::init_device() {
 	status = snd_pcm_hw_params_set_period_size_near(pcm_handle, hwparams, &period_size, NULL);
 	CHECK_FAIL(status < 0);
 
-	print_verbose("Audio buffer frames: " + itos(period_size) + " calculated latency: " + itos(period_size * 1000 / mix_rate) + "ms");
+	if (OS::get_singleton()->is_stdout_verbose()) {
+		print_line("audio buffer frames: " + itos(period_size) + " calculated latency: " + itos(period_size * 1000 / mix_rate) + "ms");
+	}
 
 	status = snd_pcm_hw_params_set_periods_near(pcm_handle, hwparams, &periods, NULL);
 	CHECK_FAIL(status < 0);
@@ -143,6 +142,8 @@ Error AudioDriverALSA::init_device() {
 	samples_in.resize(period_size * channels);
 	samples_out.resize(period_size * channels);
 
+	snd_pcm_nonblock(pcm_handle, 0);
+
 	return OK;
 }
 
@@ -151,6 +152,7 @@ Error AudioDriverALSA::init() {
 	active = false;
 	thread_exited = false;
 	exit_thread = false;
+	pcm_open = false;
 
 	Error err = init_device();
 	if (err == OK) {
@@ -166,50 +168,54 @@ void AudioDriverALSA::thread_func(void *p_udata) {
 	AudioDriverALSA *ad = (AudioDriverALSA *)p_udata;
 
 	while (!ad->exit_thread) {
-
-		ad->lock();
-		ad->start_counting_ticks();
-
 		if (!ad->active) {
 			for (unsigned int i = 0; i < ad->period_size * ad->channels; i++) {
-				ad->samples_out.write[i] = 0;
-			}
-
+				ad->samples_out[i] = 0;
+			};
 		} else {
+			ad->lock();
+
 			ad->audio_server_process(ad->period_size, ad->samples_in.ptrw());
 
+			ad->unlock();
+
 			for (unsigned int i = 0; i < ad->period_size * ad->channels; i++) {
-				ad->samples_out.write[i] = ad->samples_in[i] >> 16;
+				ad->samples_out[i] = ad->samples_in[i] >> 16;
 			}
-		}
+		};
 
 		int todo = ad->period_size;
 		int total = 0;
 
-		while (todo && !ad->exit_thread) {
+		while (todo) {
+			if (ad->exit_thread)
+				break;
 			uint8_t *src = (uint8_t *)ad->samples_out.ptr();
 			int wrote = snd_pcm_writei(ad->pcm_handle, (void *)(src + (total * ad->channels)), todo);
 
-			if (wrote > 0) {
-				total += wrote;
-				todo -= wrote;
-			} else if (wrote == -EAGAIN) {
-				ad->stop_counting_ticks();
-				ad->unlock();
+			if (wrote < 0) {
+				if (ad->exit_thread)
+					break;
 
-				OS::get_singleton()->delay_usec(1000);
-
-				ad->lock();
-				ad->start_counting_ticks();
-			} else {
+				if (wrote == -EAGAIN) {
+					//can't write yet (though this is blocking..)
+					usleep(1000);
+					continue;
+				}
 				wrote = snd_pcm_recover(ad->pcm_handle, wrote, 0);
 				if (wrote < 0) {
-					ERR_PRINTS("ALSA: Failed and can't recover: " + String(snd_strerror(wrote)));
+					//absolute fail
+					fprintf(stderr, "ALSA failed and can't recover: %s\n", snd_strerror(wrote));
 					ad->active = false;
 					ad->exit_thread = true;
+					break;
 				}
-			}
-		}
+				continue;
+			};
+
+			total += wrote;
+			todo -= wrote;
+		};
 
 		// User selected a new device, finish the current one so we'll init the new device
 		if (ad->device_name != ad->new_device) {
@@ -226,12 +232,10 @@ void AudioDriverALSA::thread_func(void *p_udata) {
 				if (err != OK) {
 					ad->active = false;
 					ad->exit_thread = true;
+					break;
 				}
 			}
 		}
-
-		ad->stop_counting_ticks();
-		ad->unlock();
 	};
 
 	ad->thread_exited = true;
@@ -292,9 +296,7 @@ String AudioDriverALSA::get_device() {
 
 void AudioDriverALSA::set_device(String device) {
 
-	lock();
 	new_device = device;
-	unlock();
 }
 
 void AudioDriverALSA::lock() {
@@ -313,29 +315,29 @@ void AudioDriverALSA::unlock() {
 
 void AudioDriverALSA::finish_device() {
 
-	if (pcm_handle) {
+	if (pcm_open) {
 		snd_pcm_close(pcm_handle);
-		pcm_handle = NULL;
+		pcm_open = NULL;
 	}
 }
 
 void AudioDriverALSA::finish() {
 
-	if (thread) {
-		exit_thread = true;
-		Thread::wait_to_finish(thread);
+	if (!thread)
+		return;
 
-		memdelete(thread);
-		thread = NULL;
-
-		if (mutex) {
-			memdelete(mutex);
-			mutex = NULL;
-		}
-	}
+	exit_thread = true;
+	Thread::wait_to_finish(thread);
 
 	finish_device();
-}
+
+	memdelete(thread);
+	if (mutex) {
+		memdelete(mutex);
+		mutex = NULL;
+	}
+	thread = NULL;
+};
 
 AudioDriverALSA::AudioDriverALSA() {
 

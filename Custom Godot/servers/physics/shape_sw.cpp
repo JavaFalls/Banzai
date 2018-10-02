@@ -30,9 +30,9 @@
 
 #include "shape_sw.h"
 
-#include "core/math/geometry.h"
-#include "core/math/quick_hull.h"
-#include "core/sort.h"
+#include "geometry.h"
+#include "quick_hull.h"
+#include "sort.h"
 
 #define _POINT_SNAP 0.001953125
 #define _EDGE_IS_VALID_SUPPORT_THRESHOLD 0.0002
@@ -165,10 +165,6 @@ real_t RayShapeSW::get_length() const {
 	return length;
 }
 
-bool RayShapeSW::get_slips_on_slope() const {
-	return slips_on_slope;
-}
-
 void RayShapeSW::project_range(const Vector3 &p_normal, const Transform &p_transform, real_t &r_min, real_t &r_max) const {
 
 	// don't think this will be even used
@@ -225,31 +221,25 @@ Vector3 RayShapeSW::get_moment_of_inertia(real_t p_mass) const {
 	return Vector3();
 }
 
-void RayShapeSW::_setup(real_t p_length, bool p_slips_on_slope) {
+void RayShapeSW::_setup(real_t p_length) {
 
 	length = p_length;
-	slips_on_slope = p_slips_on_slope;
 	configure(AABB(Vector3(0, 0, 0), Vector3(0.1, 0.1, length)));
 }
 
 void RayShapeSW::set_data(const Variant &p_data) {
 
-	Dictionary d = p_data;
-	_setup(d["length"], d["slips_on_slope"]);
+	_setup(p_data);
 }
 
 Variant RayShapeSW::get_data() const {
 
-	Dictionary d;
-	d["length"] = length;
-	d["slips_on_slope"] = slips_on_slope;
-	return d;
+	return length;
 }
 
 RayShapeSW::RayShapeSW() {
 
 	length = 1;
-	slips_on_slope = false;
 }
 
 /********** SPHERE *************/

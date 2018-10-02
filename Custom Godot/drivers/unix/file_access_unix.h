@@ -31,9 +31,8 @@
 #ifndef FILE_ACCESS_UNIX_H
 #define FILE_ACCESS_UNIX_H
 
-#include "core/os/file_access.h"
-#include "core/os/memory.h"
-
+#include "os/file_access.h"
+#include "os/memory.h"
 #include <stdio.h>
 
 #if defined(UNIX_ENABLED) || defined(LIBC_FILEIO_ENABLED)

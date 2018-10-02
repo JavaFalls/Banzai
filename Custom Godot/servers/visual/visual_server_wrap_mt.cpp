@@ -29,19 +29,19 @@
 /*************************************************************************/
 
 #include "visual_server_wrap_mt.h"
-#include "core/os/os.h"
-#include "core/project_settings.h"
+#include "os/os.h"
+#include "project_settings.h"
 
 void VisualServerWrapMT::thread_exit() {
 
 	exit = true;
 }
 
-void VisualServerWrapMT::thread_draw(bool p_swap_buffers, double frame_step) {
+void VisualServerWrapMT::thread_draw() {
 
 	if (!atomic_decrement(&draw_pending)) {
 
-		visual_server->draw(p_swap_buffers, frame_step);
+		visual_server->draw();
 	}
 }
 
@@ -91,15 +91,15 @@ void VisualServerWrapMT::sync() {
 	}
 }
 
-void VisualServerWrapMT::draw(bool p_swap_buffers, double frame_step) {
+void VisualServerWrapMT::draw(bool p_swap_buffers) {
 
 	if (create_thread) {
 
 		atomic_increment(&draw_pending);
-		command_queue.push(this, &VisualServerWrapMT::thread_draw, p_swap_buffers, frame_step);
+		command_queue.push(this, &VisualServerWrapMT::thread_draw);
 	} else {
 
-		visual_server->draw(p_swap_buffers, frame_step);
+		visual_server->draw(p_swap_buffers);
 	}
 }
 
@@ -107,16 +107,16 @@ void VisualServerWrapMT::init() {
 
 	if (create_thread) {
 
-		print_verbose("VisualServerWrapMT: Creating render thread");
+		print_line("CREATING RENDER THREAD");
 		OS::get_singleton()->release_rendering_thread();
 		if (create_thread) {
 			thread = Thread::create(_thread_callback, this);
-			print_verbose("VisualServerWrapMT: Starting render thread");
+			print_line("STARTING RENDER THREAD");
 		}
 		while (!draw_thread_up) {
 			OS::get_singleton()->delay_usec(1000);
 		}
-		print_verbose("VisualServerWrapMT: Finished render thread");
+		print_line("DONE RENDER THREAD");
 	} else {
 
 		visual_server->init();

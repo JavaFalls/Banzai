@@ -31,11 +31,11 @@
 #ifndef TAB_CONTAINER_H
 #define TAB_CONTAINER_H
 
-#include "scene/gui/container.h"
+#include "scene/gui/control.h"
 #include "scene/gui/popup.h"
-class TabContainer : public Container {
+class TabContainer : public Control {
 
-	GDCLASS(TabContainer, Container);
+	GDCLASS(TabContainer, Control);
 
 public:
 	enum TabAlign {
@@ -58,8 +58,6 @@ private:
 	Control *_get_tab(int p_idx) const;
 	int _get_top_margin() const;
 	Popup *popup;
-	bool drag_to_rearrange_enabled;
-	int tabs_rearrange_group;
 
 	Vector<Control *> _get_tabs() const;
 	int _get_tab_width(int p_index) const;
@@ -72,11 +70,6 @@ protected:
 	void _notification(int p_what);
 	virtual void add_child_notify(Node *p_child);
 	virtual void remove_child_notify(Node *p_child);
-
-	Variant get_drag_data(const Point2 &p_point);
-	bool can_drop_data(const Point2 &p_point, const Variant &p_data) const;
-	void drop_data(const Point2 &p_point, const Variant &p_data);
-	int get_tab_idx_at_point(const Point2 &p_point) const;
 
 	static void _bind_methods();
 
@@ -110,11 +103,6 @@ public:
 
 	void set_popup(Node *p_popup);
 	Popup *get_popup() const;
-
-	void set_drag_to_rearrange_enabled(bool p_enabled);
-	bool get_drag_to_rearrange_enabled() const;
-	void set_tabs_rearrange_group(int p_group_id);
-	int get_tabs_rearrange_group() const;
 
 	TabContainer();
 };

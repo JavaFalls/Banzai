@@ -29,10 +29,7 @@
 /*************************************************************************/
 
 #include "gradient_edit.h"
-#include "core/os/keyboard.h"
-#include "editor/editor_scale.h"
-
-#define SPACING (3 * EDSCALE)
+#include "os/keyboard.h"
 
 GradientEdit::GradientEdit() {
 	grabbed = -1;
@@ -52,15 +49,11 @@ GradientEdit::GradientEdit() {
 
 int GradientEdit::_get_point_from_pos(int x) {
 	int result = -1;
-	int total_w = get_size().width - get_size().height - SPACING;
-	float min_distance = 1e20;
+	int total_w = get_size().width - get_size().height - 3;
 	for (int i = 0; i < points.size(); i++) {
 		//Check if we clicked at point
-		float distance = ABS(x - points[i].offset * total_w);
-		float min = (POINT_WIDTH / 2 * 1.7); //make it easier to grab
-		if (distance <= min && distance < min_distance) {
+		if (ABS(x - points[i].offset * total_w + 1) < (POINT_WIDTH / 2 + 1)) {
 			result = i;
-			min_distance = distance;
 		}
 	}
 	return result;
@@ -70,16 +63,7 @@ void GradientEdit::_show_color_picker() {
 	if (grabbed == -1)
 		return;
 	picker->set_pick_color(points[grabbed].color);
-	Size2 minsize = popup->get_combined_minimum_size();
-	bool show_above = false;
-	if (get_global_position().y + get_size().y + minsize.y > get_viewport_rect().size.y) {
-		show_above = true;
-	}
-	if (show_above) {
-		popup->set_position(get_global_position() - Vector2(0, minsize.y));
-	} else {
-		popup->set_position(get_global_position() + Vector2(0, get_size().y));
-	}
+	popup->set_position(get_global_position() - popup->get_combined_minimum_size());
 	popup->popup();
 }
 
@@ -128,7 +112,7 @@ void GradientEdit::_gui_input(const Ref<InputEvent> &p_event) {
 		grabbed = _get_point_from_pos(x);
 
 		if (grabbed != -1) {
-			int total_w = get_size().width - get_size().height - SPACING;
+			int total_w = get_size().width - get_size().height - 3;
 			Gradient::Point newPoint = points[grabbed];
 			newPoint.offset = CLAMP(x / float(total_w), 0, 1);
 
@@ -146,15 +130,14 @@ void GradientEdit::_gui_input(const Ref<InputEvent> &p_event) {
 		}
 	}
 
-	//select
 	if (mb.is_valid() && mb->get_button_index() == 1 && mb->is_pressed()) {
 
 		update();
 		int x = mb->get_position().x;
-		int total_w = get_size().width - get_size().height - SPACING;
+		int total_w = get_size().width - get_size().height - 3;
 
 		//Check if color selector was clicked.
-		if (x > total_w + SPACING) {
+		if (x > total_w + 3) {
 			_show_color_picker();
 			return;
 		}
@@ -228,7 +211,7 @@ void GradientEdit::_gui_input(const Ref<InputEvent> &p_event) {
 
 	if (mm.is_valid() && grabbing) {
 
-		int total_w = get_size().width - get_size().height - SPACING;
+		int total_w = get_size().width - get_size().height - 3;
 
 		int x = mm->get_position().x;
 
@@ -272,7 +255,7 @@ void GradientEdit::_gui_input(const Ref<InputEvent> &p_event) {
 		if (!valid)
 			return;
 
-		points.write[grabbed].offset = newofs;
+		points[grabbed].offset = newofs;
 
 		points.sort();
 		for (int i = 0; i < points.size(); i++) {
@@ -303,7 +286,7 @@ void GradientEdit::_notification(int p_what) {
 		if (w == 0 || h == 0)
 			return; //Safety check. We have division by 'h'. And in any case there is nothing to draw with such size
 
-		int total_w = get_size().width - get_size().height - SPACING;
+		int total_w = get_size().width - get_size().height - 3;
 
 		//Draw checker pattern for ramp
 		_draw_checker(0, 0, total_w, h);
@@ -352,36 +335,27 @@ void GradientEdit::_notification(int p_what) {
 		//Draw point markers
 		for (int i = 0; i < points.size(); i++) {
 
-			Color col = points[i].color.contrasted();
+			Color col = i == grabbed ? Color(1, 0.0, 0.0, 0.9) : points[i].color.contrasted();
 			col.a = 0.9;
 
 			draw_line(Vector2(points[i].offset * total_w, 0), Vector2(points[i].offset * total_w, h / 2), col);
-			Rect2 rect = Rect2(points[i].offset * total_w - POINT_WIDTH / 2, h / 2, POINT_WIDTH, h / 2);
-			draw_rect(rect, points[i].color, true);
-			draw_rect(rect, col, false);
-			if (grabbed == i) {
-				rect = rect.grow(-1);
-				if (has_focus()) {
-					draw_rect(rect, Color(1, 0, 0, 0.9), false);
-				} else {
-					draw_rect(rect, Color(0.6, 0, 0, 0.9), false);
-				}
-
-				rect = rect.grow(-1);
-				draw_rect(rect, col, false);
-			}
+			draw_rect(Rect2(points[i].offset * total_w - POINT_WIDTH / 2, h / 2, POINT_WIDTH, h / 2), Color(0.6, 0.6, 0.6, i == grabbed ? 0.9 : 0.4));
+			draw_line(Vector2(points[i].offset * total_w - POINT_WIDTH / 2, h / 2), Vector2(points[i].offset * total_w - POINT_WIDTH / 2, h - 1), col);
+			draw_line(Vector2(points[i].offset * total_w + POINT_WIDTH / 2, h / 2), Vector2(points[i].offset * total_w + POINT_WIDTH / 2, h - 1), col);
+			draw_line(Vector2(points[i].offset * total_w - POINT_WIDTH / 2, h / 2), Vector2(points[i].offset * total_w + POINT_WIDTH / 2, h / 2), col);
+			draw_line(Vector2(points[i].offset * total_w - POINT_WIDTH / 2, h - 1), Vector2(points[i].offset * total_w + POINT_WIDTH / 2, h - 1), col);
 		}
 
 		//Draw "button" for color selector
-		_draw_checker(total_w + SPACING, 0, h, h);
+		_draw_checker(total_w + 3, 0, h, h);
 		if (grabbed != -1) {
 			//Draw with selection color
-			draw_rect(Rect2(total_w + SPACING, 0, h, h), points[grabbed].color);
+			draw_rect(Rect2(total_w + 3, 0, h, h), points[grabbed].color);
 		} else {
 			//if no color selected draw grey color with 'X' on top.
-			draw_rect(Rect2(total_w + SPACING, 0, h, h), Color(0.5, 0.5, 0.5, 1));
-			draw_line(Vector2(total_w + SPACING, 0), Vector2(total_w + SPACING + h, h), Color(1, 1, 1, 0.6));
-			draw_line(Vector2(total_w + SPACING, h), Vector2(total_w + SPACING + h, 0), Color(1, 1, 1, 0.6));
+			draw_rect(Rect2(total_w + 3, 0, h, h), Color(0.5, 0.5, 0.5, 1));
+			draw_line(Vector2(total_w + 3, 0), Vector2(total_w + 3 + h, h), Color(1, 1, 1, 0.6));
+			draw_line(Vector2(total_w + 3, h), Vector2(total_w + 3 + h, 0), Color(1, 1, 1, 0.6));
 		}
 
 		//Draw borders around color ramp if in focus
@@ -432,7 +406,7 @@ void GradientEdit::_color_changed(const Color &p_color) {
 
 	if (grabbed == -1)
 		return;
-	points.write[grabbed].color = p_color;
+	points[grabbed].color = p_color;
 	update();
 	emit_signal("ramp_changed");
 }

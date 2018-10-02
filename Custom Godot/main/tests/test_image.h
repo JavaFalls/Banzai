@@ -35,7 +35,7 @@
 	@author Juan Linietsky <reduzio@gmail.com>
 */
 
-#include "core/os/main_loop.h"
+#include "os/main_loop.h"
 
 namespace TestImage {
 

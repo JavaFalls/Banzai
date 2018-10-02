@@ -32,8 +32,8 @@
 
 #include "core/io/file_access_pack.h"
 #include "core/io/marshalls.h"
-#include "core/os/os.h"
-#include "core/project_settings.h"
+#include "os/os.h"
+#include "project_settings.h"
 
 #include "thirdparty/misc/md5.h"
 #include "thirdparty/misc/sha256.h"
@@ -46,6 +46,7 @@ bool FileAccess::backup_save = false;
 
 FileAccess *FileAccess::create(AccessType p_access) {
 
+	ERR_FAIL_COND_V(!create_func, 0);
 	ERR_FAIL_INDEX_V(p_access, ACCESS_MAX, 0);
 
 	FileAccess *ret = create_func[p_access]();
@@ -261,14 +262,15 @@ String FileAccess::get_token() const {
 	while (!eof_reached()) {
 
 		if (c <= ' ') {
-			if (token.length())
+			if (!token.empty())
 				break;
 		} else {
-			token += c;
+			token.push_back(c);
 		}
 		c = get_8();
 	}
 
+	token.push_back(0);
 	return String::utf8(token.get_data());
 }
 
@@ -291,7 +293,7 @@ class CharBuffer {
 
 			for (int i = 0; i < written; i++) {
 
-				vector.write[i] = stack_buffer[i];
+				vector[i] = stack_buffer[i];
 			}
 		}
 

@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "api.h"
-#include "core/engine.h"
+#include "engine.h"
 #include "javascript_eval.h"
 
 static JavaScript *javascript_eval;

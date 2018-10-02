@@ -30,7 +30,7 @@
 
 #include "btRayShape.h"
 
-#include "core/math/math_funcs.h"
+#include "math/math_funcs.h"
 
 #include <LinearMath/btAabbUtil2.h>
 
@@ -52,11 +52,6 @@ void btRayShape::setLength(btScalar p_length) {
 
 	m_length = p_length;
 	reload_cache();
-}
-
-void btRayShape::setSlipsOnSlope(bool p_slipsOnSlope) {
-
-	slipsOnSlope = p_slipsOnSlope;
 }
 
 btVector3 btRayShape::localGetSupportingVertex(const btVector3 &vec) const {

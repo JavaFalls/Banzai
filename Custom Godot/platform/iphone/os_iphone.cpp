@@ -64,6 +64,11 @@ OSIPhone *OSIPhone::get_singleton() {
 	return (OSIPhone *)OS::get_singleton();
 };
 
+uint8_t OSIPhone::get_orientations() const {
+
+	return supported_orientations;
+};
+
 extern int gl_view_base_fb; // from gl_view.mm
 
 void OSIPhone::set_data_dir(String p_dir) {
@@ -93,17 +98,14 @@ void OSIPhone::initialize_core() {
 	set_data_dir(data_dir);
 };
 
-int OSIPhone::get_current_video_driver() const {
-	return video_driver_index;
-}
-
 Error OSIPhone::initialize(const VideoMode &p_desired, int p_video_driver, int p_audio_driver) {
 
-	video_driver_index = VIDEO_DRIVER_GLES3;
+	supported_orientations = 0;
+	supported_orientations |= ((GLOBAL_DEF("video_mode/allow_horizontal", true) ? 1 : 0) << LandscapeLeft);
+	supported_orientations |= ((GLOBAL_DEF("video_mode/allow_horizontal_flipped", false) ? 1 : 0) << LandscapeRight);
+	supported_orientations |= ((GLOBAL_DEF("video_mode/allow_vertical", false) ? 1 : 0) << PortraitDown);
+	supported_orientations |= ((GLOBAL_DEF("video_mode/allow_vertical_flipped", false) ? 1 : 0) << PortraitUp);
 
-	if (RasterizerGLES3::is_viable() != OK) {
-		return ERR_UNAVAILABLE;
-	}
 	RasterizerGLES3::register_config();
 	RasterizerGLES3::make_current();
 
@@ -121,6 +123,7 @@ Error OSIPhone::initialize(const VideoMode &p_desired, int p_video_driver, int p
 	// reset this to what it should be, it will have been set to 0 after visual_server->init() is called
 	RasterizerStorageGLES3::system_fbo = gl_view_base_fb;
 
+	AudioDriverManager::add_driver(&audio_driver);
 	AudioDriverManager::initialize(p_audio_driver);
 
 	input = memnew(InputDefault);
@@ -341,7 +344,7 @@ Point2 OSIPhone::get_mouse_position() const {
 
 int OSIPhone::get_mouse_button_state() const {
 
-	return 0;
+	return false;
 };
 
 void OSIPhone::set_window_title(const String &p_title){};
@@ -602,8 +605,6 @@ OSIPhone::OSIPhone(int width, int height, String p_data_dir) {
 	loggers.push_back(memnew(StdLogger));
 #endif
 	_set_logger(memnew(CompositeLogger(loggers)));
-
-	AudioDriverManager::add_driver(&audio_driver);
 };
 
 OSIPhone::~OSIPhone() {

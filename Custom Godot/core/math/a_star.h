@@ -31,9 +31,8 @@
 #ifndef ASTAR_H
 #define ASTAR_H
 
-#include "core/reference.h"
-#include "core/self_list.h"
-
+#include "reference.h"
+#include "self_list.h"
 /**
 	A* pathfinding algorithm
 
@@ -55,7 +54,7 @@ class AStar : public Reference {
 		real_t weight_scale;
 		uint64_t last_pass;
 
-		Set<Point *> neighbours;
+		Vector<Point *> neighbours;
 
 		// Used for pathfinding
 		Point *prev_point;

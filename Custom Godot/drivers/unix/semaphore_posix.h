@@ -31,7 +31,7 @@
 #ifndef SEMAPHORE_POSIX_H
 #define SEMAPHORE_POSIX_H
 
-#include "core/os/semaphore.h"
+#include "os/semaphore.h"
 
 #if defined(UNIX_ENABLED) || defined(PTHREAD_ENABLED)
 

@@ -31,7 +31,7 @@
 #include "arvr_server.h"
 #include "arvr/arvr_interface.h"
 #include "arvr/arvr_positional_tracker.h"
-#include "core/project_settings.h"
+#include "project_settings.h"
 
 ARVRServer *ARVRServer::singleton = NULL;
 
@@ -57,8 +57,6 @@ void ARVRServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_primary_interface"), &ARVRServer::get_primary_interface);
 	ClassDB::bind_method(D_METHOD("set_primary_interface", "interface"), &ARVRServer::set_primary_interface);
-
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "primary_interface"), "set_primary_interface", "get_primary_interface");
 
 	ClassDB::bind_method(D_METHOD("get_last_process_usec"), &ARVRServer::get_last_process_usec);
 	ClassDB::bind_method(D_METHOD("get_last_commit_usec"), &ARVRServer::get_last_commit_usec);
@@ -178,7 +176,7 @@ void ARVRServer::remove_interface(const Ref<ARVRInterface> &p_interface) {
 
 	ERR_FAIL_COND(idx == -1);
 
-	print_verbose("ARVR: Removed interface" + p_interface->get_name());
+	print_line("Removed interface" + p_interface->get_name());
 
 	emit_signal("interface_removed", p_interface->get_name());
 	interfaces.remove(idx);
@@ -320,12 +318,12 @@ Ref<ARVRInterface> ARVRServer::get_primary_interface() const {
 void ARVRServer::set_primary_interface(const Ref<ARVRInterface> &p_primary_interface) {
 	primary_interface = p_primary_interface;
 
-	print_verbose("ARVR: Primary interface set to: " + primary_interface->get_name());
+	print_line("Primary interface set to: " + primary_interface->get_name());
 };
 
 void ARVRServer::clear_primary_interface_if(const Ref<ARVRInterface> &p_primary_interface) {
 	if (primary_interface == p_primary_interface) {
-		print_verbose("ARVR: Clearing primary interface");
+		print_line("Clearing primary interface");
 		primary_interface.unref();
 	};
 };
@@ -353,7 +351,7 @@ void ARVRServer::_process() {
 		if (!interfaces[i].is_valid()) {
 			// ignore, not a valid reference
 		} else if (interfaces[i]->is_initialized()) {
-			interfaces.write[i]->process();
+			interfaces[i]->process();
 		};
 	};
 };

@@ -31,8 +31,8 @@
 #ifndef VISUAL_SERVER_WRAP_MT_H
 #define VISUAL_SERVER_WRAP_MT_H
 
-#include "core/command_queue_mt.h"
-#include "core/os/thread.h"
+#include "command_queue_mt.h"
+#include "os/thread.h"
 #include "servers/visual_server.h"
 
 /**
@@ -55,7 +55,7 @@ class VisualServerWrapMT : public VisualServer {
 	bool create_thread;
 
 	uint64_t draw_pending;
-	void thread_draw(bool p_swap_buffers, double frame_step);
+	void thread_draw();
 	void thread_flush();
 
 	void thread_exit();
@@ -82,19 +82,16 @@ public:
 
 	/* EVENT QUEUING */
 	FUNCRID(texture)
-	FUNC7(texture_allocate, RID, int, int, int, Image::Format, TextureType, uint32_t)
-	FUNC3(texture_set_data, RID, const Ref<Image> &, int)
-	FUNC10(texture_set_data_partial, RID, const Ref<Image> &, int, int, int, int, int, int, int, int)
-	FUNC2RC(Ref<Image>, texture_get_data, RID, int)
+	FUNC5(texture_allocate, RID, int, int, Image::Format, uint32_t)
+	FUNC3(texture_set_data, RID, const Ref<Image> &, CubeMapSide)
+	FUNC2RC(Ref<Image>, texture_get_data, RID, CubeMapSide)
 	FUNC2(texture_set_flags, RID, uint32_t)
 	FUNC1RC(uint32_t, texture_get_flags, RID)
 	FUNC1RC(Image::Format, texture_get_format, RID)
-	FUNC1RC(TextureType, texture_get_type, RID)
 	FUNC1RC(uint32_t, texture_get_texid, RID)
 	FUNC1RC(uint32_t, texture_get_width, RID)
 	FUNC1RC(uint32_t, texture_get_height, RID)
-	FUNC1RC(uint32_t, texture_get_depth, RID)
-	FUNC4(texture_set_size_override, RID, int, int, int)
+	FUNC3(texture_set_size_override, RID, int, int)
 
 	FUNC3(texture_set_detect_3d_callback, RID, TextureDetectCallback, void *)
 	FUNC3(texture_set_detect_srgb_callback, RID, TextureDetectCallback, void *)
@@ -108,8 +105,6 @@ public:
 	FUNC1(textures_keep_original, bool)
 
 	FUNC2(texture_set_proxy, RID, RID)
-
-	FUNC2(texture_set_force_redraw_if_visible, RID, bool)
 
 	/* SKY API */
 
@@ -137,7 +132,6 @@ public:
 
 	FUNC3(material_set_param, RID, const StringName &, const Variant &)
 	FUNC2RC(Variant, material_get_param, RID, const StringName &)
-	FUNC2RC(Variant, material_get_param_default, RID, const StringName &)
 
 	FUNC2(material_set_render_priority, RID, int)
 	FUNC2(material_set_line_width, RID, float)
@@ -185,14 +179,13 @@ public:
 
 	FUNCRID(multimesh)
 
-	FUNC5(multimesh_allocate, RID, int, MultimeshTransformFormat, MultimeshColorFormat, MultimeshCustomDataFormat)
+	FUNC4(multimesh_allocate, RID, int, MultimeshTransformFormat, MultimeshColorFormat)
 	FUNC1RC(int, multimesh_get_instance_count, RID)
 
 	FUNC2(multimesh_set_mesh, RID, RID)
 	FUNC3(multimesh_instance_set_transform, RID, int, const Transform &)
 	FUNC3(multimesh_instance_set_transform_2d, RID, int, const Transform2D &)
 	FUNC3(multimesh_instance_set_color, RID, int, const Color &)
-	FUNC3(multimesh_instance_set_custom_data, RID, int, const Color &)
 
 	FUNC1RC(RID, multimesh_get_mesh, RID)
 	FUNC1RC(AABB, multimesh_get_aabb, RID)
@@ -200,9 +193,6 @@ public:
 	FUNC2RC(Transform, multimesh_instance_get_transform, RID, int)
 	FUNC2RC(Transform2D, multimesh_instance_get_transform_2d, RID, int)
 	FUNC2RC(Color, multimesh_instance_get_color, RID, int)
-	FUNC2RC(Color, multimesh_instance_get_custom_data, RID, int)
-
-	FUNC2(multimesh_set_as_bulk_array, RID, const PoolVector<float> &)
 
 	FUNC2(multimesh_set_visible_instances, RID, int)
 	FUNC1RC(int, multimesh_get_visible_instances, RID)
@@ -231,7 +221,6 @@ public:
 	FUNC2RC(Transform, skeleton_bone_get_transform, RID, int)
 	FUNC3(skeleton_bone_set_transform_2d, RID, int, const Transform2D &)
 	FUNC2RC(Transform2D, skeleton_bone_get_transform_2d, RID, int)
-	FUNC2(skeleton_set_base_transform_2d, RID, const Transform2D &)
 
 	/* Light API */
 
@@ -388,7 +377,6 @@ public:
 	FUNC2(viewport_set_hide_canvas, RID, bool)
 	FUNC2(viewport_set_disable_environment, RID, bool)
 	FUNC2(viewport_set_disable_3d, RID, bool)
-	FUNC2(viewport_set_keep_3d_linear, RID, bool)
 
 	FUNC2(viewport_attach_camera, RID, RID)
 	FUNC2(viewport_set_scenario, RID, RID)
@@ -425,7 +413,7 @@ public:
 	FUNC2(environment_set_canvas_max_layer, RID, int)
 	FUNC4(environment_set_ambient_light, RID, const Color &, float, float)
 	FUNC7(environment_set_ssr, RID, bool, int, float, float, float, bool)
-	FUNC13(environment_set_ssao, RID, bool, float, float, float, float, float, float, float, const Color &, EnvironmentSSAOQuality, EnvironmentSSAOBlur, float)
+	FUNC12(environment_set_ssao, RID, bool, float, float, float, float, float, float, const Color &, EnvironmentSSAOQuality, EnvironmentSSAOBlur, float)
 
 	FUNC6(environment_set_dof_blur_near, RID, bool, float, float, float, EnvironmentDOFBlurQuality)
 	FUNC6(environment_set_dof_blur_far, RID, bool, float, float, float, EnvironmentDOFBlurQuality)
@@ -491,8 +479,6 @@ public:
 	FUNC2(canvas_item_set_visible, RID, bool)
 	FUNC2(canvas_item_set_light_mask, RID, int)
 
-	FUNC2(canvas_item_set_update_when_visible, RID, bool)
-
 	FUNC2(canvas_item_set_transform, RID, const Transform2D &)
 	FUNC2(canvas_item_set_clip, RID, bool)
 	FUNC2(canvas_item_set_distance_field_mode, RID, bool)
@@ -512,9 +498,9 @@ public:
 	FUNC11(canvas_item_add_nine_patch, RID, const Rect2 &, const Rect2 &, RID, const Vector2 &, const Vector2 &, NinePatchAxisMode, NinePatchAxisMode, bool, const Color &, RID)
 	FUNC7(canvas_item_add_primitive, RID, const Vector<Point2> &, const Vector<Color> &, const Vector<Point2> &, RID, float, RID)
 	FUNC7(canvas_item_add_polygon, RID, const Vector<Point2> &, const Vector<Color> &, const Vector<Point2> &, RID, RID, bool)
-	FUNC10(canvas_item_add_triangle_array, RID, const Vector<int> &, const Vector<Point2> &, const Vector<Color> &, const Vector<Point2> &, const Vector<int> &, const Vector<float> &, RID, int, RID)
-	FUNC4(canvas_item_add_mesh, RID, const RID &, RID, RID)
-	FUNC4(canvas_item_add_multimesh, RID, RID, RID, RID)
+	FUNC8(canvas_item_add_triangle_array, RID, const Vector<int> &, const Vector<Point2> &, const Vector<Color> &, const Vector<Point2> &, RID, int, RID)
+	FUNC3(canvas_item_add_mesh, RID, const RID &, RID)
+	FUNC3(canvas_item_add_multimesh, RID, RID, RID)
 	FUNC6(canvas_item_add_particles, RID, RID, RID, RID, int, int)
 	FUNC2(canvas_item_add_set_transform, RID, const Transform2D &)
 	FUNC2(canvas_item_add_clip_ignore, RID, bool)
@@ -522,7 +508,6 @@ public:
 	FUNC2(canvas_item_set_z_index, RID, int)
 	FUNC2(canvas_item_set_z_as_relative_to_parent, RID, bool)
 	FUNC3(canvas_item_set_copy_to_backbuffer, RID, bool, const Rect2 &)
-	FUNC2(canvas_item_attach_skeleton, RID, RID)
 
 	FUNC1(canvas_item_clear, RID)
 	FUNC2(canvas_item_set_draw_index, RID, int)
@@ -583,7 +568,7 @@ public:
 
 	virtual void init();
 	virtual void finish();
-	virtual void draw(bool p_swap_buffers, double frame_step);
+	virtual void draw(bool p_swap_buffers);
 	virtual void sync();
 	FUNC0RC(bool, has_changed)
 

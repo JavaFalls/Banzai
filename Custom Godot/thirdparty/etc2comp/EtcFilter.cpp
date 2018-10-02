@@ -228,9 +228,6 @@ int FilterTwoPass( RGBCOLOR *pSrcImage, int srcWidth, int srcHeight,
     pTempImage = (RGBCOLOR *)malloc( destWidth * srcHeight * sizeof(RGBCOLOR) );
     if ( pTempImage == NULL )
     {
-        // -- GODOT start --
-        free( contrib );
-        // -- GODOT end --
         return 0;
     }
 

@@ -5,116 +5,6 @@
       "major": 1,
       "minor": 0
     },
-    "next": {
-      "type": "CORE",
-      "version": {
-        "major": 1,
-        "minor": 1
-      },
-      "next": null,
-      "api": [
-        {
-          "name": "godot_basis_get_quat",
-          "return_type": "godot_quat",
-          "arguments": [
-            ["const godot_basis *", "p_self"]
-          ]
-        },
-        {
-          "name": "godot_basis_set_quat",
-          "return_type": "void",
-          "arguments": [
-            ["godot_basis *", "p_self"],
-            ["const godot_quat *", "p_quat"]
-          ]
-        },
-        {
-          "name": "godot_basis_set_axis_angle_scale",
-          "return_type": "void",
-          "arguments": [
-            ["godot_basis *", "p_self"],
-            ["const godot_vector3 *", "p_axis"],
-            ["godot_real", "p_phi"],
-            ["const godot_vector3 *", "p_scale"]
-          ]
-        },
-        {
-          "name": "godot_basis_set_euler_scale",
-          "return_type": "void",
-          "arguments": [
-            ["godot_basis *", "p_self"],
-            ["const godot_vector3 *", "p_euler"],
-            ["const godot_vector3 *", "p_scale"]
-          ]
-        },
-        {
-          "name": "godot_basis_set_quat_scale",
-          "return_type": "void",
-          "arguments": [
-            ["godot_basis *", "p_self"],
-            ["const godot_quat *", "p_quat"],
-            ["const godot_vector3 *", "p_scale"]
-          ]
-        },
-        {
-          "name": "godot_dictionary_erase_with_return",
-          "return_type": "bool",
-          "arguments": [
-            ["godot_dictionary *", "p_self"],
-            ["const godot_variant *", "p_key"]
-          ]
-        },
-        {
-          "name": "godot_is_instance_valid",
-          "return_type": "bool",
-          "arguments": [
-            ["const godot_object *", "p_object"]
-          ]
-        },
-        {
-          "name": "godot_quat_new_with_basis",
-          "return_type": "void",
-          "arguments": [
-            ["godot_quat *", "r_dest"],
-            ["const godot_basis *", "p_basis"]
-          ]
-        },
-        {
-          "name": "godot_quat_new_with_euler",
-          "return_type": "void",
-          "arguments": [
-            ["godot_quat *", "r_dest"],
-            ["const godot_vector3 *", "p_euler"]
-          ]
-        },
-        {
-          "name": "godot_transform_new_with_quat",
-          "return_type": "void",
-          "arguments": [
-            ["godot_transform *", "r_dest"],
-            ["const godot_quat *", "p_quat"]
-          ]
-        },
-        {
-          "name": "godot_variant_get_operator_name",
-          "return_type": "godot_string",
-          "arguments": [
-            ["godot_variant_operator", "p_op"]
-          ]
-        },
-        {
-          "name": "godot_variant_evaluate",
-          "return_type": "void",
-          "arguments": [
-            ["godot_variant_operator", "p_op"],
-            ["const godot_variant *", "p_a"],
-            ["const godot_variant *", "p_b"],
-            ["godot_variant *", "r_ret"],
-            ["godot_bool *", "r_valid"]
-          ]
-        }
-      ]
-    },
     "api": [
       {
         "name": "godot_color_new_rgba",
@@ -4073,7 +3963,7 @@
         "name": "godot_variant_new_bool",
         "return_type": "void",
         "arguments": [
-          ["godot_variant *", "r_dest"],
+          ["godot_variant *", "p_v"],
           ["const godot_bool", "p_b"]
         ]
       },
@@ -4593,7 +4483,7 @@
         ]
       },
       {
-        "name": "godot_string_wide_str",
+	"name": "godot_string_wide_str",
         "return_type": "const wchar_t *",
         "arguments": [
           ["const godot_string *", "p_self"]
@@ -5362,21 +5252,21 @@
         "name": "godot_string_ascii",
         "return_type": "godot_char_string",
         "arguments": [
-          ["const godot_string *", "p_self"]
+	  ["const godot_string *", "p_self"]
         ]
       },
       {
         "name": "godot_string_ascii_extended",
         "return_type": "godot_char_string",
         "arguments": [
-          ["const godot_string *", "p_self"]
+	  ["const godot_string *", "p_self"]
         ]
       },
       {
         "name": "godot_string_utf8",
         "return_type": "godot_char_string",
         "arguments": [
-          ["const godot_string *", "p_self"]
+	  ["const godot_string *", "p_self"]
         ]
       },
       {
@@ -5865,136 +5755,12 @@
       }
     ]
   },
-  "extensions": [
-    {
-      "name": "nativescript",
+  "extensions": {
+    "nativescript": {
       "type": "NATIVESCRIPT",
       "version": {
         "major": 1,
         "minor": 0
-      },
-      "next": {
-        "type": "NATIVESCRIPT",
-        "version": {
-          "major": 1,
-          "minor": 1
-        },
-        "next": null,
-        "api": [
-          {
-            "name": "godot_nativescript_set_method_argument_information",
-            "return_type": "void",
-            "arguments": [
-              ["void *", "p_gdnative_handle"],
-              ["const char *", "p_name"],
-              ["const char *", "p_function_name"],
-              ["int", "p_num_args"],
-              ["const godot_method_arg *", "p_args"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_set_class_documentation",
-            "return_type": "void",
-            "arguments": [
-              ["void *", "p_gdnative_handle"],
-              ["const char *", "p_name"],
-              ["godot_string", "p_documentation"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_set_method_documentation",
-            "return_type": "void",
-            "arguments": [
-              ["void *", "p_gdnative_handle"],
-              ["const char *", "p_name"],
-              ["const char *", "p_function_name"],
-              ["godot_string", "p_documentation"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_set_property_documentation",
-            "return_type": "void",
-            "arguments": [
-              ["void *", "p_gdnative_handle"],
-              ["const char *", "p_name"],
-              ["const char *", "p_path"],
-              ["godot_string", "p_documentation"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_set_signal_documentation",
-            "return_type": "void",
-            "arguments": [
-              ["void *", "p_gdnative_handle"],
-              ["const char *", "p_name"],
-              ["const char *", "p_signal_name"],
-              ["godot_string", "p_documentation"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_set_global_type_tag",
-            "return_type": "void",
-            "arguments": [
-              ["int", "p_idx"],
-              ["const char *", "p_name"],
-              ["const void *", "p_type_tag"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_get_global_type_tag",
-            "return_type": "const void *",
-            "arguments": [
-              ["int", "p_idx"],
-              ["const char *", "p_name"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_set_type_tag",
-            "return_type": "void",
-            "arguments": [
-              ["void *", "p_gdnative_handle"],
-              ["const char *", "p_name"],
-              ["const void *", "p_type_tag"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_get_type_tag",
-            "return_type": "const void *",
-            "arguments": [
-              ["const godot_object *", "p_object"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_register_instance_binding_data_functions",
-            "return_type": "int",
-            "arguments": [
-              ["godot_instance_binding_functions", "p_binding_functions"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_unregister_instance_binding_data_functions",
-            "return_type": "void",
-            "arguments": [
-              ["int", "p_idx"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_get_instance_binding_data",
-            "return_type": "void *",
-            "arguments": [
-              ["int", "p_idx"],
-              ["godot_object *", "p_object"]
-            ]
-          },
-          {
-            "name": "godot_nativescript_profiling_add_data",
-            "return_type": "void",
-            "arguments": [
-              ["const char *", "p_signature"],
-              ["uint64_t", "p_line"]
-            ]
-          }
-        ]
       },
       "api": [
         {
@@ -6060,14 +5826,12 @@
         }
       ]
     },
-    {
-      "name": "pluginscript",
+    "pluginscript": {
       "type": "PLUGINSCRIPT",
       "version": {
         "major": 1,
         "minor": 0
       },
-      "next": null,
       "api": [
         {
           "name": "godot_pluginscript_register_language",
@@ -6078,37 +5842,12 @@
         }
       ]
     },
-    {
-      "name": "android",
-      "type": "ANDROID",
+    "arvr": {
+      "type": "ARVR",
       "version": {
         "major": 1,
         "minor": 0
       },
-      "next": null,
-      "api": [
-        {
-          "name": "godot_android_get_env",
-          "return_type": "JNIEnv*",
-          "arguments": [
-          ]
-        },
-        {
-          "name": "godot_android_get_activity",
-          "return_type": "jobject",
-          "arguments": [
-          ]
-        }
-      ]
-    },
-    {
-      "name": "arvr",
-      "type": "ARVR",
-      "version": {
-        "major": 1,
-        "minor": 1
-      },
-      "next": null,
       "api": [
         {
           "name": "godot_arvr_register_interface",
@@ -6198,5 +5937,5 @@
         }
       ]
     }
-  ]
+  }
 }

@@ -40,15 +40,14 @@
 	@author Juan Linietsky <reduzio@gmail.com>
 */
 
-class ParticlesEditorBase : public Control {
+class ParticlesEditor : public Control {
 
-	GDCLASS(ParticlesEditorBase, Control)
+	GDCLASS(ParticlesEditor, Control);
 
-protected:
-	Spatial *base_node;
 	Panel *panel;
 	MenuButton *options;
 	HBoxContainer *particles_editor_hb;
+	Particles *node;
 
 	EditorFileDialog *emission_file_dialog;
 	SceneTreeDialog *emission_tree_dialog;
@@ -59,25 +58,8 @@ protected:
 	SpinBox *emission_amount;
 	OptionButton *emission_fill;
 
-	PoolVector<Face3> geometry;
-
-	bool _generate(PoolVector<Vector3> &points, PoolVector<Vector3> &normals);
-	virtual void _generate_emission_points() = 0;
-	void _node_selected(const NodePath &p_path);
-
-	static void _bind_methods();
-
-public:
-	ParticlesEditorBase();
-};
-
-class ParticlesEditor : public ParticlesEditorBase {
-
-	GDCLASS(ParticlesEditor, ParticlesEditorBase);
-
 	ConfirmationDialog *generate_aabb;
 	SpinBox *generate_seconds;
-	Particles *node;
 
 	enum Menu {
 
@@ -85,17 +67,20 @@ class ParticlesEditor : public ParticlesEditorBase {
 		MENU_OPTION_CREATE_EMISSION_VOLUME_FROM_NODE,
 		MENU_OPTION_CREATE_EMISSION_VOLUME_FROM_MESH,
 		MENU_OPTION_CLEAR_EMISSION_VOLUME,
-		MENU_OPTION_CONVERT_TO_CPU_PARTICLES,
 
 	};
 
+	PoolVector<Face3> geometry;
+
 	void _generate_aabb();
+	void _generate_emission_points();
+	void _node_selected(const NodePath &p_path);
 
 	void _menu_option(int);
 
-	friend class ParticlesEditorPlugin;
+	void _populate();
 
-	virtual void _generate_emission_points();
+	friend class ParticlesEditorPlugin;
 
 protected:
 	void _notification(int p_notification);

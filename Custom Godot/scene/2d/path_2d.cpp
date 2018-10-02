@@ -30,7 +30,7 @@
 
 #include "path_2d.h"
 
-#include "core/engine.h"
+#include "engine.h"
 #include "scene/scene_string_names.h"
 
 #ifdef TOOLS_ENABLED
@@ -55,10 +55,6 @@ Rect2 Path2D::_edit_get_rect() const {
 	}
 
 	return aabb;
-}
-
-bool Path2D::_edit_use_rect() const {
-	return true;
 }
 
 bool Path2D::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
@@ -299,7 +295,7 @@ void PathFollow2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_lookahead", "lookahead"), &PathFollow2D::set_lookahead);
 	ClassDB::bind_method(D_METHOD("get_lookahead"), &PathFollow2D::get_lookahead);
 
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "offset", PROPERTY_HINT_EXP_RANGE, "0,10000,0.01,or_greater"), "set_offset", "get_offset");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "offset", PROPERTY_HINT_RANGE, "0,10000,0.01"), "set_offset", "get_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "unit_offset", PROPERTY_HINT_RANGE, "0,1,0.0001", PROPERTY_USAGE_EDITOR), "set_unit_offset", "get_unit_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "h_offset"), "set_h_offset", "get_h_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "v_offset"), "set_v_offset", "get_v_offset");

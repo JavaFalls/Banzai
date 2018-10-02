@@ -31,11 +31,11 @@
 #ifndef RID_H
 #define RID_H
 
-#include "core/list.h"
-#include "core/os/memory.h"
-#include "core/safe_refcount.h"
-#include "core/set.h"
-#include "core/typedefs.h"
+#include "list.h"
+#include "os/memory.h"
+#include "safe_refcount.h"
+#include "set.h"
+#include "typedefs.h"
 
 /**
 	@author Juan Linietsky <reduzio@gmail.com>

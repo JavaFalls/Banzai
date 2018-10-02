@@ -30,20 +30,19 @@
 
 #include "project_settings.h"
 
-#include "core/bind/core_bind.h"
-#include "core/core_string_names.h"
-#include "core/io/file_access_network.h"
-#include "core/io/file_access_pack.h"
-#include "core/io/marshalls.h"
-#include "core/os/dir_access.h"
-#include "core/os/file_access.h"
-#include "core/os/keyboard.h"
-#include "core/os/os.h"
-#include "core/variant_parser.h"
-
+#include "bind/core_bind.h"
+#include "core_string_names.h"
+#include "io/file_access_network.h"
+#include "io/file_access_pack.h"
+#include "io/marshalls.h"
+#include "os/dir_access.h"
+#include "os/file_access.h"
+#include "os/keyboard.h"
+#include "os/os.h"
+#include "variant_parser.h"
 #include <zlib.h>
 
-#define FORMAT_VERSION 4
+#define FORMAT_VERSION 3
 
 ProjectSettings *ProjectSettings::singleton = NULL;
 
@@ -60,7 +59,7 @@ String ProjectSettings::get_resource_path() const {
 String ProjectSettings::localize_path(const String &p_path) const {
 
 	if (resource_path == "")
-		return p_path; //not initialized yet
+		return p_path; //not initialied yet
 
 	if (p_path.begins_with("res://") || p_path.begins_with("user://") ||
 			(p_path.is_abs_path() && !p_path.begins_with(resource_path)))
@@ -106,11 +105,6 @@ void ProjectSettings::set_initial_value(const String &p_name, const Variant &p_v
 	ERR_FAIL_COND(!props.has(p_name));
 	props[p_name].initial = p_value;
 }
-void ProjectSettings::set_restart_if_changed(const String &p_name, bool p_restart) {
-
-	ERR_FAIL_COND(!props.has(p_name));
-	props[p_name].restart_if_changed = p_restart;
-}
 
 String ProjectSettings::globalize_path(const String &p_path) const {
 
@@ -143,7 +137,7 @@ bool ProjectSettings::_set(const StringName &p_name, const Variant &p_value) {
 	else {
 
 		if (p_name == CoreStringNames::get_singleton()->_custom_features) {
-			Vector<String> custom_feature_array = String(p_value).split(",");
+			Vector<String> custom_feature_array = p_value;
 			for (int i = 0; i < custom_feature_array.size(); i++) {
 
 				custom_features.insert(custom_feature_array[i]);
@@ -192,7 +186,7 @@ bool ProjectSettings::_get(const StringName &p_name, Variant &r_ret) const {
 		name = feature_overrides[name];
 	}
 	if (!props.has(name)) {
-		WARN_PRINTS("Property not found: " + String(name));
+		print_line("WARNING: not found: " + String(name));
 		return false;
 	}
 	r_ret = props[name].variant;
@@ -231,9 +225,6 @@ void ProjectSettings::_get_property_list(List<PropertyInfo> *p_list) const {
 		else
 			vc.flags = PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE;
 
-		if (v->restart_if_changed) {
-			vc.flags |= PROPERTY_USAGE_RESTART_IF_CHANGED;
-		}
 		vclist.insert(vc);
 	}
 
@@ -269,23 +260,6 @@ bool ProjectSettings::_load_resource_pack(const String &p_pack) {
 	using_datapack = true;
 
 	return true;
-}
-
-void ProjectSettings::_convert_to_last_version() {
-	if (!has_setting("config_version") || (int)get_setting("config_version") <= 3) {
-
-		// Converts the actions from array to dictionary (array of events to dictionary with deadzone + events)
-		for (Map<StringName, ProjectSettings::VariantContainer>::Element *E = props.front(); E; E = E->next()) {
-			Variant value = E->get().variant;
-			if (String(E->key()).begins_with("input/") && value.get_type() == Variant::ARRAY) {
-				Array array = value;
-				Dictionary action;
-				action["deadzone"] = Variant(0.5f);
-				action["events"] = array;
-				E->get().variant = action;
-			}
-		}
-	}
 }
 
 Error ProjectSettings::setup(const String &p_path, const String &p_main_pack, bool p_upwards) {
@@ -416,8 +390,6 @@ Error ProjectSettings::setup(const String &p_path, const String &p_main_pack, bo
 	if (resource_path.length() && resource_path[resource_path.length() - 1] == '/')
 		resource_path = resource_path.substr(0, resource_path.length() - 1); // chop end
 
-	_convert_to_last_version();
-
 	return OK;
 }
 
@@ -524,11 +496,7 @@ Error ProjectSettings::_load_settings_text(const String p_path) {
 				}
 			} else {
 				// config_version is checked and dropped
-				if (section == String()) {
-					set(assign, value);
-				} else {
-					set(section + "/" + assign, value);
-				}
+				set(section + "/" + assign, value);
 			}
 		} else if (next_tag.name != String()) {
 			section = next_tag.name;
@@ -628,7 +596,7 @@ Error ProjectSettings::_save_settings_binary(const String &p_file, const Map<Str
 		Vector<uint8_t> buff;
 		buff.resize(len);
 
-		err = encode_variant(p_custom_features, buff.ptrw(), len);
+		err = encode_variant(p_custom_features, &buff[0], len);
 		if (err != OK) {
 			memdelete(file);
 			ERR_FAIL_V(err);
@@ -665,7 +633,7 @@ Error ProjectSettings::_save_settings_binary(const String &p_file, const Map<Str
 			Vector<uint8_t> buff;
 			buff.resize(len);
 
-			err = encode_variant(value, buff.ptrw(), len);
+			err = encode_variant(value, &buff[0], len);
 			if (err != OK)
 				memdelete(file);
 			ERR_FAIL_COND_V(err != OK, ERR_INVALID_DATA);
@@ -826,17 +794,17 @@ Error ProjectSettings::save_custom(const String &p_path, const CustomMap &p_cust
 	return OK;
 }
 
-Variant _GLOBAL_DEF(const String &p_var, const Variant &p_default, bool p_restart_if_changed) {
+Variant _GLOBAL_DEF(const String &p_var, const Variant &p_default) {
 
 	Variant ret;
-	if (!ProjectSettings::get_singleton()->has_setting(p_var)) {
+	if (ProjectSettings::get_singleton()->has_setting(p_var)) {
+		ret = ProjectSettings::get_singleton()->get(p_var);
+	} else {
 		ProjectSettings::get_singleton()->set(p_var, p_default);
+		ret = p_default;
 	}
-	ret = ProjectSettings::get_singleton()->get(p_var);
-
 	ProjectSettings::get_singleton()->set_initial_value(p_var, p_default);
 	ProjectSettings::get_singleton()->set_builtin_order(p_var);
-	ProjectSettings::get_singleton()->set_restart_if_changed(p_var, p_restart_if_changed);
 	return ret;
 }
 
@@ -884,10 +852,6 @@ void ProjectSettings::set_custom_property_info(const String &p_prop, const Prope
 	custom_prop_info[p_prop].name = p_prop;
 }
 
-const Map<StringName, PropertyInfo> &ProjectSettings::get_custom_property_info() const {
-	return custom_prop_info;
-}
-
 void ProjectSettings::set_disable_feature_overrides(bool p_disable) {
 
 	disable_feature_overrides = p_disable;
@@ -922,10 +886,6 @@ Variant ProjectSettings::get_setting(const String &p_setting) const {
 	return get(p_setting);
 }
 
-bool ProjectSettings::has_custom_feature(const String &p_feature) const {
-	return custom_features.has(p_feature);
-}
-
 void ProjectSettings::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("has_setting", "name"), &ProjectSettings::has_setting);
@@ -954,176 +914,121 @@ ProjectSettings::ProjectSettings() {
 	disable_feature_overrides = false;
 	registering_order = true;
 
-	Array events;
-	Dictionary action;
+	Array va;
 	Ref<InputEventKey> key;
 	Ref<InputEventJoypadButton> joyb;
 
 	GLOBAL_DEF("application/config/name", "");
 	GLOBAL_DEF("application/run/main_scene", "");
-	custom_prop_info["application/run/main_scene"] = PropertyInfo(Variant::STRING, "application/run/main_scene", PROPERTY_HINT_FILE, "*.tscn,*.scn,*.res");
+	custom_prop_info["application/run/main_scene"] = PropertyInfo(Variant::STRING, "application/run/main_scene", PROPERTY_HINT_FILE, "tscn,scn,res");
 	GLOBAL_DEF("application/run/disable_stdout", false);
 	GLOBAL_DEF("application/run/disable_stderr", false);
 	GLOBAL_DEF("application/config/use_custom_user_dir", false);
 	GLOBAL_DEF("application/config/custom_user_dir_name", "");
 
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
 	key.instance();
 	key->set_scancode(KEY_ENTER);
-	events.push_back(key);
+	va.push_back(key);
 	key.instance();
 	key->set_scancode(KEY_KP_ENTER);
-	events.push_back(key);
+	va.push_back(key);
 	key.instance();
 	key->set_scancode(KEY_SPACE);
-	events.push_back(key);
+	va.push_back(key);
 	joyb.instance();
 	joyb->set_button_index(JOY_BUTTON_0);
-	events.push_back(joyb);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_accept", action);
+	va.push_back(joyb);
+	GLOBAL_DEF("input/ui_accept", va);
 	input_presets.push_back("input/ui_accept");
 
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
+	va = Array();
 	key.instance();
 	key->set_scancode(KEY_SPACE);
-	events.push_back(key);
+	va.push_back(key);
 	joyb.instance();
 	joyb->set_button_index(JOY_BUTTON_3);
-	events.push_back(joyb);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_select", action);
+	va.push_back(joyb);
+	GLOBAL_DEF("input/ui_select", va);
 	input_presets.push_back("input/ui_select");
 
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
+	va = Array();
 	key.instance();
 	key->set_scancode(KEY_ESCAPE);
-	events.push_back(key);
+	va.push_back(key);
 	joyb.instance();
 	joyb->set_button_index(JOY_BUTTON_1);
-	events.push_back(joyb);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_cancel", action);
+	va.push_back(joyb);
+	GLOBAL_DEF("input/ui_cancel", va);
 	input_presets.push_back("input/ui_cancel");
 
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
+	va = Array();
 	key.instance();
 	key->set_scancode(KEY_TAB);
-	events.push_back(key);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_focus_next", action);
+	va.push_back(key);
+	GLOBAL_DEF("input/ui_focus_next", va);
 	input_presets.push_back("input/ui_focus_next");
 
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
+	va = Array();
 	key.instance();
 	key->set_scancode(KEY_TAB);
 	key->set_shift(true);
-	events.push_back(key);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_focus_prev", action);
+	va.push_back(key);
+	GLOBAL_DEF("input/ui_focus_prev", va);
 	input_presets.push_back("input/ui_focus_prev");
 
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
+	va = Array();
 	key.instance();
 	key->set_scancode(KEY_LEFT);
-	events.push_back(key);
+	va.push_back(key);
 	joyb.instance();
 	joyb->set_button_index(JOY_DPAD_LEFT);
-	events.push_back(joyb);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_left", action);
+	va.push_back(joyb);
+	GLOBAL_DEF("input/ui_left", va);
 	input_presets.push_back("input/ui_left");
 
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
+	va = Array();
 	key.instance();
 	key->set_scancode(KEY_RIGHT);
-	events.push_back(key);
+	va.push_back(key);
 	joyb.instance();
 	joyb->set_button_index(JOY_DPAD_RIGHT);
-	events.push_back(joyb);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_right", action);
+	va.push_back(joyb);
+	GLOBAL_DEF("input/ui_right", va);
 	input_presets.push_back("input/ui_right");
 
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
+	va = Array();
 	key.instance();
 	key->set_scancode(KEY_UP);
-	events.push_back(key);
+	va.push_back(key);
 	joyb.instance();
 	joyb->set_button_index(JOY_DPAD_UP);
-	events.push_back(joyb);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_up", action);
+	va.push_back(joyb);
+	GLOBAL_DEF("input/ui_up", va);
 	input_presets.push_back("input/ui_up");
 
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
+	va = Array();
 	key.instance();
 	key->set_scancode(KEY_DOWN);
-	events.push_back(key);
+	va.push_back(key);
 	joyb.instance();
 	joyb->set_button_index(JOY_DPAD_DOWN);
-	events.push_back(joyb);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_down", action);
+	va.push_back(joyb);
+	GLOBAL_DEF("input/ui_down", va);
 	input_presets.push_back("input/ui_down");
 
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
+	va = Array();
 	key.instance();
 	key->set_scancode(KEY_PAGEUP);
-	events.push_back(key);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_page_up", action);
+	va.push_back(key);
+	GLOBAL_DEF("input/ui_page_up", va);
 	input_presets.push_back("input/ui_page_up");
 
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
+	va = Array();
 	key.instance();
 	key->set_scancode(KEY_PAGEDOWN);
-	events.push_back(key);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_page_down", action);
+	va.push_back(key);
+	GLOBAL_DEF("input/ui_page_down", va);
 	input_presets.push_back("input/ui_page_down");
-
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
-	key.instance();
-	key->set_scancode(KEY_HOME);
-	events.push_back(key);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_home", action);
-	input_presets.push_back("input/ui_home");
-
-	action = Dictionary();
-	action["deadzone"] = Variant(0.5f);
-	events = Array();
-	key.instance();
-	key->set_scancode(KEY_END);
-	events.push_back(key);
-	action["events"] = events;
-	GLOBAL_DEF("input/ui_end", action);
-	input_presets.push_back("input/ui_end");
 
 	//GLOBAL_DEF("display/window/handheld/orientation", "landscape");
 
@@ -1131,6 +1036,7 @@ ProjectSettings::ProjectSettings() {
 	custom_prop_info["rendering/threads/thread_model"] = PropertyInfo(Variant::INT, "rendering/threads/thread_model", PROPERTY_HINT_ENUM, "Single-Unsafe,Single-Safe,Multi-Threaded");
 	custom_prop_info["physics/2d/thread_model"] = PropertyInfo(Variant::INT, "physics/2d/thread_model", PROPERTY_HINT_ENUM, "Single-Unsafe,Single-Safe,Multi-Threaded");
 	custom_prop_info["rendering/quality/intended_usage/framebuffer_allocation"] = PropertyInfo(Variant::INT, "rendering/quality/intended_usage/framebuffer_allocation", PROPERTY_HINT_ENUM, "2D,2D Without Sampling,3D,3D Without Effects");
+	GLOBAL_DEF("rendering/quality/intended_usage/framebuffer_mode", 2);
 
 	GLOBAL_DEF("debug/settings/profiler/max_functions", 16384);
 

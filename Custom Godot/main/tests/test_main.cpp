@@ -28,8 +28,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/list.h"
-#include "core/os/main_loop.h"
+#include "list.h"
+#include "os/main_loop.h"
 
 #ifdef DEBUG_ENABLED
 
@@ -50,20 +50,15 @@ const char **tests_get_names() {
 
 	static const char *test_names[] = {
 		"string",
+		"containers",
 		"math",
-		"physics",
-		"physics_2d",
 		"render",
-		"oa_hash_map",
+		"multimesh",
 		"gui",
 		"io",
 		"shaderlang",
-		"gd_tokenizer",
-		"gd_parser",
-		"gd_compiler",
-		"gd_bytecode",
-		"image",
-		"ordered_hash_map",
+		"physics",
+		"oa_hash_map",
 		NULL
 	};
 

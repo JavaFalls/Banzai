@@ -62,7 +62,6 @@ public:
 		ITEM_FONT,
 		ITEM_COLOR,
 		ITEM_UNDERLINE,
-		ITEM_STRIKETHROUGH,
 		ITEM_ALIGN,
 		ITEM_INDENT,
 		ITEM_LIST,
@@ -88,7 +87,6 @@ private:
 		int height_accum_cache;
 		int char_count;
 		int minimum_width;
-		int maximum_width;
 
 		Line() {
 			from = NULL;
@@ -165,11 +163,6 @@ private:
 		ItemUnderline() { type = ITEM_UNDERLINE; }
 	};
 
-	struct ItemStrikethrough : public Item {
-
-		ItemStrikethrough() { type = ITEM_STRIKETHROUGH; }
-	};
-
 	struct ItemMeta : public Item {
 
 		Variant meta;
@@ -196,6 +189,7 @@ private:
 
 	struct ItemNewline : public Item {
 
+		int line; // FIXME: Overriding base's line ?
 		ItemNewline() { type = ITEM_NEWLINE; }
 	};
 
@@ -205,7 +199,6 @@ private:
 			bool expand;
 			int expand_ratio;
 			int min_width;
-			int max_width;
 			int width;
 		};
 
@@ -275,7 +268,7 @@ private:
 	int visible_characters;
 	float percent_visible;
 
-	int _process_line(ItemFrame *p_frame, const Vector2 &p_ofs, int &y, int p_width, int p_line, ProcessMode p_mode, const Ref<Font> &p_base_font, const Color &p_base_color, const Color &p_font_color_shadow, bool p_shadow_as_outline, const Point2 &shadow_ofs, const Point2i &p_click_pos = Point2i(), Item **r_click_item = NULL, int *r_click_char = NULL, bool *r_outside = NULL, int p_char_count = 0);
+	int _process_line(ItemFrame *p_frame, const Vector2 &p_ofs, int &y, int p_width, int p_line, ProcessMode p_mode, const Ref<Font> &p_base_font, const Color &p_base_color, const Point2i &p_click_pos = Point2i(), Item **r_click_item = NULL, int *r_click_char = NULL, bool *r_outside = NULL, int p_char_count = 0);
 	void _find_click(ItemFrame *p_frame, const Point2i &p_click, Item **r_click_item = NULL, int *r_click_char = NULL, bool *r_outside = NULL);
 
 	Ref<Font> _find_font(Item *p_item);
@@ -283,7 +276,6 @@ private:
 	Align _find_align(Item *p_item);
 	Color _find_color(Item *p_item, const Color &p_default_color);
 	bool _find_underline(Item *p_item);
-	bool _find_strikethrough(Item *p_item);
 	bool _find_meta(Item *p_item, Variant *r_meta);
 
 	void _update_scroll();
@@ -291,7 +283,6 @@ private:
 
 	void _gui_input(Ref<InputEvent> p_event);
 	Item *_get_next_item(Item *p_item, bool p_free = false);
-	Item *_get_prev_item(Item *p_item, bool p_free = false);
 
 	Rect2 _get_text_rect();
 
@@ -299,8 +290,6 @@ private:
 	String bbcode;
 
 	void _update_all_lines();
-
-	int fixed_width;
 
 protected:
 	void _notification(int p_what);
@@ -314,7 +303,6 @@ public:
 	void push_font(const Ref<Font> &p_font);
 	void push_color(const Color &p_color);
 	void push_underline();
-	void push_strikethrough();
 	void push_align(Align p_align);
 	void push_indent(int p_level);
 	void push_list(ListType p_list);
@@ -344,13 +332,11 @@ public:
 	void set_tab_size(int p_spaces);
 	int get_tab_size() const;
 
-	bool search(const String &p_string, bool p_from_selection = false, bool p_search_previous = false);
+	bool search(const String &p_string, bool p_from_selection = false);
 
 	void scroll_to_line(int p_line);
 	int get_line_count() const;
 	int get_visible_line_count() const;
-
-	int get_content_height();
 
 	VScrollBar *get_v_scroll() { return vscroll; }
 
@@ -377,9 +363,6 @@ public:
 
 	void set_percent_visible(float p_percent);
 	float get_percent_visible() const;
-
-	void set_fixed_size_to_width(int p_width);
-	virtual Size2 get_minimum_size() const;
 
 	RichTextLabel();
 	~RichTextLabel();

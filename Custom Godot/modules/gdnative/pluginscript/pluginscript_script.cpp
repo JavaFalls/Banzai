@@ -84,19 +84,34 @@ StringName PluginScript::get_instance_base_type() const {
 }
 
 void PluginScript::update_exports() {
+// TODO
 #ifdef TOOLS_ENABLED
+#if 0
 	ASSERT_SCRIPT_VALID();
-	if (placeholders.size()) {
+	if (/*changed &&*/ placeholders.size()) { //hm :(
 
 		//update placeholders if any
 		Map<StringName, Variant> propdefvalues;
 		List<PropertyInfo> propinfos;
-
-		get_script_property_list(&propinfos);
+		const String *props = (const String *)pybind_get_prop_list(_py_exposed_class);
+		for (int i = 0; props[i] != ""; ++i) {
+			const String propname = props[i];
+			pybind_get_prop_default_value(_py_exposed_class, propname.c_str(), (godot_variant *)&propdefvalues[propname]);
+			pybind_prop_info raw_info;
+			pybind_get_prop_info(_py_exposed_class, propname.c_str(), &raw_info);
+			PropertyInfo info;
+			info.type = (Variant::Type)raw_info.type;
+			info.name = propname;
+			info.hint = (PropertyHint)raw_info.hint;
+			info.hint_string = *(String *)&raw_info.hint_string;
+			info.usage = raw_info.usage;
+			propinfos.push_back(info);
+		}
 		for (Set<PlaceHolderScriptInstance *>::Element *E = placeholders.front(); E; E = E->next()) {
-			E->get()->update(propinfos, _properties_default_values);
+			E->get()->update(propinfos, propdefvalues);
 		}
 	}
+#endif
 #endif
 }
 
@@ -230,9 +245,9 @@ Error PluginScript::reload(bool p_keep_state) {
 		// rpc_mode is passed as an optional field and is not part of MethodInfo
 		Variant var = v["rpc_mode"];
 		if (var == Variant()) {
-			_methods_rpc_mode[mi.name] = MultiplayerAPI::RPC_MODE_DISABLED;
+			_methods_rpc_mode[mi.name] = ScriptInstance::RPC_MODE_DISABLED;
 		} else {
-			_methods_rpc_mode[mi.name] = MultiplayerAPI::RPCMode(int(var));
+			_methods_rpc_mode[mi.name] = ScriptInstance::RPCMode(int(var));
 		}
 	}
 	Array *signals = (Array *)&manifest.signals;
@@ -250,9 +265,9 @@ Error PluginScript::reload(bool p_keep_state) {
 		// rset_mode is passed as an optional field and is not part of PropertyInfo
 		Variant var = v["rset_mode"];
 		if (var == Variant()) {
-			_methods_rpc_mode[pi.name] = MultiplayerAPI::RPC_MODE_DISABLED;
+			_methods_rpc_mode[pi.name] = ScriptInstance::RPC_MODE_DISABLED;
 		} else {
-			_methods_rpc_mode[pi.name] = MultiplayerAPI::RPCMode(int(var));
+			_methods_rpc_mode[pi.name] = ScriptInstance::RPCMode(int(var));
 		}
 	}
 	// Manifest's attributes must be explicitly freed
@@ -387,23 +402,23 @@ int PluginScript::get_member_line(const StringName &p_member) const {
 		return -1;
 }
 
-MultiplayerAPI::RPCMode PluginScript::get_rpc_mode(const StringName &p_method) const {
-	ASSERT_SCRIPT_VALID_V(MultiplayerAPI::RPC_MODE_DISABLED);
-	const Map<StringName, MultiplayerAPI::RPCMode>::Element *e = _methods_rpc_mode.find(p_method);
+ScriptInstance::RPCMode PluginScript::get_rpc_mode(const StringName &p_method) const {
+	ASSERT_SCRIPT_VALID_V(ScriptInstance::RPC_MODE_DISABLED);
+	const Map<StringName, ScriptInstance::RPCMode>::Element *e = _methods_rpc_mode.find(p_method);
 	if (e != NULL) {
 		return e->get();
 	} else {
-		return MultiplayerAPI::RPC_MODE_DISABLED;
+		return ScriptInstance::RPC_MODE_DISABLED;
 	}
 }
 
-MultiplayerAPI::RPCMode PluginScript::get_rset_mode(const StringName &p_variable) const {
-	ASSERT_SCRIPT_VALID_V(MultiplayerAPI::RPC_MODE_DISABLED);
-	const Map<StringName, MultiplayerAPI::RPCMode>::Element *e = _variables_rset_mode.find(p_variable);
+ScriptInstance::RPCMode PluginScript::get_rset_mode(const StringName &p_variable) const {
+	ASSERT_SCRIPT_VALID_V(ScriptInstance::RPC_MODE_DISABLED);
+	const Map<StringName, ScriptInstance::RPCMode>::Element *e = _variables_rset_mode.find(p_variable);
 	if (e != NULL) {
 		return e->get();
 	} else {
-		return MultiplayerAPI::RPC_MODE_DISABLED;
+		return ScriptInstance::RPC_MODE_DISABLED;
 	}
 }
 

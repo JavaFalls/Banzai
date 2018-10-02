@@ -31,10 +31,10 @@
 #ifndef HTTP_CLIENT_H
 #define HTTP_CLIENT_H
 
-#include "core/io/ip.h"
-#include "core/io/stream_peer.h"
-#include "core/io/stream_peer_tcp.h"
-#include "core/reference.h"
+#include "io/ip.h"
+#include "io/stream_peer.h"
+#include "io/stream_peer_tcp.h"
+#include "reference.h"
 
 class HTTPClient : public Reference {
 
@@ -165,7 +165,6 @@ private:
 	bool ssl;
 	bool ssl_verify_host;
 	bool blocking;
-	bool handshaking;
 
 	Vector<uint8_t> response_str;
 
@@ -174,7 +173,6 @@ private:
 	int chunk_left;
 	int body_size;
 	int body_left;
-	bool read_until_eof;
 
 	Ref<StreamPeerTCP> tcp_connection;
 	Ref<StreamPeer> connection;

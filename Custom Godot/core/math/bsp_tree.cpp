@@ -29,9 +29,8 @@
 /*************************************************************************/
 
 #include "bsp_tree.h"
-
-#include "core/error_macros.h"
-#include "core/print_string.h"
+#include "error_macros.h"
+#include "print_string.h"
 
 void BSP_Tree::from_aabb(const AABB &p_aabb) {
 
@@ -245,8 +244,10 @@ bool BSP_Tree::point_is_inside(const Vector3 &p_point) const {
 
 	const Node *nodesptr = &nodes[0];
 	const Plane *planesptr = &planes[0];
+	int plane_count = planes.size();
 
 	int idx = node_count - 1;
+	int steps = 0;
 
 	while (true) {
 
@@ -258,19 +259,21 @@ bool BSP_Tree::point_is_inside(const Vector3 &p_point) const {
 			return true;
 		}
 
-#ifdef DEBUG_ENABLED
-		int plane_count = planes.size();
 		uint16_t plane = nodesptr[idx].plane;
+#ifdef DEBUG_ENABLED
+
 		ERR_FAIL_INDEX_V(plane, plane_count, false);
 #endif
-
 		bool over = planesptr[nodesptr[idx].plane].is_point_over(p_point);
 
 		idx = over ? nodes[idx].over : nodes[idx].under;
 
 #ifdef DEBUG_ENABLED
+
 		ERR_FAIL_COND_V(idx < MAX_NODES && idx >= node_count, false);
 #endif
+
+		steps++;
 	}
 
 	return false;
@@ -450,10 +453,10 @@ BSP_Tree::operator Variant() const {
 
 	for (int i = 0; i < planes.size(); i++) {
 
-		plane_values.write[i * 4 + 0] = planes[i].normal.x;
-		plane_values.write[i * 4 + 1] = planes[i].normal.y;
-		plane_values.write[i * 4 + 2] = planes[i].normal.z;
-		plane_values.write[i * 4 + 3] = planes[i].d;
+		plane_values[i * 4 + 0] = planes[i].normal.x;
+		plane_values[i * 4 + 1] = planes[i].normal.y;
+		plane_values[i * 4 + 2] = planes[i].normal.z;
+		plane_values[i * 4 + 3] = planes[i].d;
 	}
 
 	d["planes"] = plane_values;
@@ -499,10 +502,10 @@ BSP_Tree::BSP_Tree(const Variant &p_variant) {
 			PoolVector<real_t>::Read r = src_planes.read();
 			for (int i = 0; i < plane_count / 4; i++) {
 
-				planes.write[i].normal.x = r[i * 4 + 0];
-				planes.write[i].normal.y = r[i * 4 + 1];
-				planes.write[i].normal.z = r[i * 4 + 2];
-				planes.write[i].d = r[i * 4 + 3];
+				planes[i].normal.x = r[i * 4 + 0];
+				planes[i].normal.y = r[i * 4 + 1];
+				planes[i].normal.z = r[i * 4 + 2];
+				planes[i].d = r[i * 4 + 3];
 			}
 		}
 
@@ -521,9 +524,9 @@ BSP_Tree::BSP_Tree(const Variant &p_variant) {
 
 	for (int i = 0; i < nodes.size(); i++) {
 
-		nodes.write[i].over = r[i * 3 + 0];
-		nodes.write[i].under = r[i * 3 + 1];
-		nodes.write[i].plane = r[i * 3 + 2];
+		nodes[i].over = r[i * 3 + 0];
+		nodes[i].under = r[i * 3 + 1];
+		nodes[i].plane = r[i * 3 + 2];
 	}
 }
 

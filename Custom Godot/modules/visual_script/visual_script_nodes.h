@@ -40,15 +40,13 @@ class VisualScriptFunction : public VisualScriptNode {
 	struct Argument {
 		String name;
 		Variant::Type type;
-		PropertyHint hint;
-		String hint_string;
 	};
 
 	Vector<Argument> arguments;
 
 	bool stack_less;
 	int stack_size;
-	MultiplayerAPI::RPCMode rpc_mode;
+	ScriptInstance::RPCMode rpc_mode;
 	bool sequenced;
 
 protected:
@@ -72,7 +70,7 @@ public:
 	virtual String get_text() const;
 	virtual String get_category() const { return "flow_control"; }
 
-	void add_argument(Variant::Type p_type, const String &p_name, int p_index = -1, const PropertyHint p_hint = PROPERTY_HINT_NONE, const String &p_hint_string = String(""));
+	void add_argument(Variant::Type p_type, const String &p_name, int p_index = -1);
 	void set_argument_type(int p_argidx, Variant::Type p_type);
 	Variant::Type get_argument_type(int p_argidx) const;
 	void set_argument_name(int p_argidx, const String &p_name);
@@ -95,8 +93,8 @@ public:
 	void set_return_type(Variant::Type p_type);
 	Variant::Type get_return_type() const;
 
-	void set_rpc_mode(MultiplayerAPI::RPCMode p_mode);
-	MultiplayerAPI::RPCMode get_rpc_mode() const;
+	void set_rpc_mode(ScriptInstance::RPCMode p_mode);
+	ScriptInstance::RPCMode get_rpc_mode() const;
 
 	virtual VisualScriptNodeInstance *instance(VisualScriptInstance *p_instance);
 
@@ -126,6 +124,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "operators"; }
 
 	void set_operator(Variant::Operator p_op);
@@ -195,6 +194,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "data"; }
 
 	void set_variable(StringName p_variable);
@@ -228,6 +228,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "data"; }
 
 	void set_variable(StringName p_variable);
@@ -262,6 +263,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "constants"; }
 
 	void set_constant_type(Variant::Type p_type);
@@ -297,6 +299,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "data"; }
 
 	void set_preload(const Ref<Resource> &p_preload);
@@ -324,6 +327,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "operators"; }
 
 	virtual VisualScriptNodeInstance *instance(VisualScriptInstance *p_instance);
@@ -348,6 +352,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "operators"; }
 
 	virtual VisualScriptNodeInstance *instance(VisualScriptInstance *p_instance);
@@ -376,6 +381,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "constants"; }
 
 	void set_global_constant(int p_which);
@@ -410,6 +416,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "constants"; }
 
 	void set_class_constant(const StringName &p_which);
@@ -498,6 +505,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "constants"; }
 
 	void set_math_constant(MathConstant p_which);
@@ -531,6 +539,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "data"; }
 
 	void set_singleton(const String &p_string);
@@ -566,6 +575,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "data"; }
 
 	void set_node_path(const NodePath &p_path);
@@ -599,6 +609,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "data"; }
 
 	virtual VisualScriptNodeInstance *instance(VisualScriptInstance *p_instance);
@@ -630,6 +641,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "data"; }
 
 	void set_resource_path(const String &p_path);
@@ -660,6 +672,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const { return "data"; }
 
 	virtual VisualScriptNodeInstance *instance(VisualScriptInstance *p_instance);
@@ -809,6 +822,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const;
 
 	void set_constructor_type(Variant::Type p_type);
@@ -845,6 +859,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const;
 
 	void set_var_name(const StringName &p_name);
@@ -927,6 +942,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const;
 
 	void set_action_name(const StringName &p_name);
@@ -977,6 +993,7 @@ public:
 	virtual PropertyInfo get_output_value_port_info(int p_idx) const;
 
 	virtual String get_caption() const;
+	virtual String get_text() const;
 	virtual String get_category() const;
 
 	void set_deconstruct_type(Variant::Type p_type);

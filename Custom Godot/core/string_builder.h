@@ -37,7 +37,7 @@
 
 class StringBuilder {
 
-	uint32_t string_length;
+	uint32_t string_length = 0;
 
 	Vector<String> strings;
 	Vector<const char *> c_strings;
@@ -74,10 +74,6 @@ public:
 
 	_FORCE_INLINE_ operator String() const {
 		return as_string();
-	}
-
-	StringBuilder() {
-		string_length = 0;
 	}
 };
 

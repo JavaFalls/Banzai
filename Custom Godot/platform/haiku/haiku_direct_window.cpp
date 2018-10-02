@@ -30,10 +30,10 @@
 
 #include <UnicodeChar.h>
 
-#include "core/os/keyboard.h"
 #include "haiku_direct_window.h"
 #include "key_mapping_haiku.h"
 #include "main/main.h"
+#include "os/keyboard.h"
 
 HaikuDirectWindow::HaikuDirectWindow(BRect p_frame) :
 		BDirectWindow(p_frame, "Godot", B_TITLED_WINDOW, B_QUIT_ON_WINDOW_CLOSE) {
@@ -41,14 +41,10 @@ HaikuDirectWindow::HaikuDirectWindow(BRect p_frame) :
 	last_buttons_state = 0;
 	last_button_mask = 0;
 	last_key_modifier_state = 0;
-
-	view = NULL;
-	update_runner = NULL;
-	input = NULL;
-	main_loop = NULL;
 }
 
 HaikuDirectWindow::~HaikuDirectWindow() {
+	delete update_runner;
 }
 
 void HaikuDirectWindow::SetHaikuGLView(HaikuGLView *p_view) {
@@ -57,7 +53,7 @@ void HaikuDirectWindow::SetHaikuGLView(HaikuGLView *p_view) {
 
 void HaikuDirectWindow::StartMessageRunner() {
 	update_runner = new BMessageRunner(BMessenger(this),
-			new BMessage(REDRAW_MSG), 1000000 / 60 /* 60 fps */);
+			new BMessage(REDRAW_MSG), 1000000 / 30 /* 30 fps */);
 }
 
 void HaikuDirectWindow::StopMessageRunner() {
@@ -73,7 +69,6 @@ void HaikuDirectWindow::SetMainLoop(MainLoop *p_main_loop) {
 }
 
 bool HaikuDirectWindow::QuitRequested() {
-	StopMessageRunner();
 	main_loop->notification(MainLoop::NOTIFICATION_WM_QUIT_REQUEST);
 	return false;
 }
@@ -157,36 +152,39 @@ void HaikuDirectWindow::HandleMouseButton(BMessage *message) {
 	}
 	*/
 
-	Ref<InputEventMouseButton> mouse_event;
-	mouse_event.instance();
+	Ref<InputEvent> mouse_event;
+	mouse_event.type = Ref<InputEvent>::MOUSE_BUTTON;
+	mouse_event.device = 0;
 
-	mouse_event->set_button_mask(GetMouseButtonState(buttons));
-	mouse_event->set_position({ where.x, where.y });
-	mouse_event->set_global_position({ where.x, where.y });
-	GetKeyModifierState(mouse_event, modifiers);
+	mouse_event.mouse_button.mod = GetKeyModifierState(modifiers);
+	mouse_event->get_button_mask() = GetMouseButtonState(buttons);
+	mouse_event->get_position().x = where.x;
+	mouse_event->get_position().y = where.y;
+	mouse_event.mouse_button.global_x = where.x;
+	mouse_event.mouse_button.global_y = where.y;
 
 	switch (button) {
 		default:
 		case B_PRIMARY_MOUSE_BUTTON:
-			mouse_event->set_button_index(1);
+			mouse_event->get_button_index() = 1;
 			break;
 
 		case B_SECONDARY_MOUSE_BUTTON:
-			mouse_event->set_button_index(2);
+			mouse_event->get_button_index() = 2;
 			break;
 
 		case B_TERTIARY_MOUSE_BUTTON:
-			mouse_event->set_button_index(3);
+			mouse_event->get_button_index() = 3;
 			break;
 	}
 
-	mouse_event->set_pressed(message->what == B_MOUSE_DOWN);
+	mouse_event->is_pressed() = (message->what == B_MOUSE_DOWN);
 
 	if (message->what == B_MOUSE_DOWN && mouse_event->get_button_index() == 1) {
 		int32 clicks = message->FindInt32("clicks");
 
 		if (clicks > 1) {
-			mouse_event->set_doubleclick(true);
+			mouse_event.mouse_button.doubleclick = true;
 		}
 	}
 
@@ -210,18 +208,22 @@ void HaikuDirectWindow::HandleMouseMoved(BMessage *message) {
 
 	Point2i rel = pos - last_mouse_position;
 
-	Ref<InputEventMouseMotion> motion_event;
-	motion_event.instance();
-	GetKeyModifierState(motion_event, modifiers);
+	Ref<InputEvent> motion_event;
+	motion_event.type = Ref<InputEvent>::MOUSE_MOTION;
+	motion_event.device = 0;
 
-	motion_event->set_button_mask(GetMouseButtonState(buttons));
-	motion_event->set_position({ pos.x, pos.y });
+	motion_event.mouse_motion.mod = GetKeyModifierState(modifiers);
+	motion_event->get_button_mask() = GetMouseButtonState(buttons);
+	motion_event.mouse_motion.x = pos.x;
+	motion_event.mouse_motion.y = pos.y;
 	input->set_mouse_position(pos);
-	motion_event->set_global_position({ pos.x, pos.y });
-	motion_event->set_speed({ input->get_last_mouse_speed().x,
-			input->get_last_mouse_speed().y });
+	motion_event.mouse_motion.global_x = pos.x;
+	motion_event.mouse_motion.global_y = pos.y;
+	motion_event.mouse_motion.speed_x = input->get_last_mouse_speed().x;
+	motion_event.mouse_motion.speed_y = input->get_last_mouse_speed().y;
 
-	motion_event->set_relative({ rel.x, rel.y });
+	motion_event->get_relative().x = rel.x;
+	motion_event->get_relative().y = rel.y;
 
 	last_mouse_position = pos;
 
@@ -234,21 +236,22 @@ void HaikuDirectWindow::HandleMouseWheelChanged(BMessage *message) {
 		return;
 	}
 
-	Ref<InputEventMouseButton> mouse_event;
-	mouse_event.instance();
-	//GetKeyModifierState(mouse_event, modifiers);
+	Ref<InputEvent> mouse_event;
+	mouse_event.type = Ref<InputEvent>::MOUSE_BUTTON;
+	mouse_event.device = 0;
 
-	mouse_event->set_button_index(wheel_delta_y < 0 ? 4 : 5);
-	mouse_event->set_button_mask(last_button_mask);
-	mouse_event->set_position({ last_mouse_position.x,
-			last_mouse_position.y });
-	mouse_event->set_global_position({ last_mouse_position.x,
-			last_mouse_position.y });
+	mouse_event->get_button_index() = wheel_delta_y < 0 ? 4 : 5;
+	mouse_event.mouse_button.mod = GetKeyModifierState(last_key_modifier_state);
+	mouse_event->get_button_mask() = last_button_mask;
+	mouse_event->get_position().x = last_mouse_position.x;
+	mouse_event->get_position().y = last_mouse_position.y;
+	mouse_event.mouse_button.global_x = last_mouse_position.x;
+	mouse_event.mouse_button.global_y = last_mouse_position.y;
 
-	mouse_event->set_pressed(true);
+	mouse_event->is_pressed() = true;
 	input->parse_input_event(mouse_event);
 
-	mouse_event->set_pressed(false);
+	mouse_event->is_pressed() = false;
 	input->parse_input_event(mouse_event);
 }
 
@@ -269,23 +272,24 @@ void HaikuDirectWindow::HandleKeyboardEvent(BMessage *message) {
 		return;
 	}
 
-	Ref<InputEventKey> event;
-	event.instance();
-	GetKeyModifierState(event, modifiers);
-	event->set_pressed(message->what == B_KEY_DOWN);
-	event->set_scancode(KeyMappingHaiku::get_keysym(raw_char, key));
-	event->set_echo(message->HasInt32("be:key_repeat"));
-	event->set_unicode(0);
+	Ref<InputEvent> event;
+	event.type = Ref<InputEvent>::KEY;
+	event.device = 0;
+	event.key.mod = GetKeyModifierState(modifiers);
+	event->is_pressed() = (message->what == B_KEY_DOWN);
+	event->get_scancode() = KeyMappingHaiku::get_keysym(raw_char, key);
+	event->is_echo() = message->HasInt32("be:key_repeat");
+	event.key.unicode = 0;
 
 	const char *bytes = NULL;
 	if (message->FindString("bytes", &bytes) == B_OK) {
-		event->set_unicode(BUnicodeChar::FromUTF8(&bytes));
+		event.key.unicode = BUnicodeChar::FromUTF8(&bytes);
 	}
 
 	//make it consistent across platforms.
 	if (event->get_scancode() == KEY_BACKTAB) {
-		event->set_scancode(KEY_TAB);
-		event->set_shift(true);
+		event->get_scancode() = KEY_TAB;
+		event->get_shift() = true;
 	}
 
 	input->parse_input_event(event);
@@ -305,14 +309,14 @@ void HaikuDirectWindow::HandleKeyboardModifierEvent(BMessage *message) {
 
 	int32 key = old_modifiers ^ modifiers;
 
-	Ref<InputEventWithModifiers> event;
-	event.instance();
-	GetKeyModifierState(event, modifiers);
-
-	event->set_shift(key & B_SHIFT_KEY);
-	event->set_alt(key & B_OPTION_KEY);
-	event->set_control(key & B_CONTROL_KEY);
-	event->set_command(key & B_COMMAND_KEY);
+	Ref<InputEvent> event;
+	event.type = Ref<InputEvent>::KEY;
+	event.device = 0;
+	event.key.mod = GetKeyModifierState(modifiers);
+	event->is_pressed() = ((modifiers & key) != 0);
+	event->get_scancode() = KeyMappingHaiku::get_modifier_keysym(key);
+	event->is_echo() = false;
+	event.key.unicode = 0;
 
 	input->parse_input_event(event);
 }
@@ -329,13 +333,14 @@ void HaikuDirectWindow::HandleWindowResized(BMessage *message) {
 	current_video_mode->height = height;
 }
 
-inline void HaikuDirectWindow::GetKeyModifierState(Ref<InputEventWithModifiers> event, uint32 p_state) {
+inline InputModifierState HaikuDirectWindow::GetKeyModifierState(uint32 p_state) {
 	last_key_modifier_state = p_state;
+	InputModifierState state;
 
-	event->set_shift(p_state & B_SHIFT_KEY);
-	event->set_control(p_state & B_CONTROL_KEY);
-	event->set_alt(p_state & B_OPTION_KEY);
-	event->set_metakey(p_state & B_COMMAND_KEY);
+	state.shift = (p_state & B_SHIFT_KEY) != 0;
+	state.control = (p_state & B_CONTROL_KEY) != 0;
+	state.alt = (p_state & B_OPTION_KEY) != 0;
+	state.meta = (p_state & B_COMMAND_KEY) != 0;
 
 	return state;
 }

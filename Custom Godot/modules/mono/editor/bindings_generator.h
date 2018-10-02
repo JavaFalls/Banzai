@@ -31,13 +31,13 @@
 #ifndef BINDINGS_GENERATOR_H
 #define BINDINGS_GENERATOR_H
 
-#include "core/class_db.h"
+#include "class_db.h"
 #include "editor/doc/doc_data.h"
 #include "editor/editor_help.h"
 
 #ifdef DEBUG_METHODS_ENABLED
 
-#include "core/ustring.h"
+#include "ustring.h"
 
 class BindingsGenerator {
 
@@ -192,7 +192,7 @@ class BindingsGenerator {
 
 		/**
 		 * Used only by Object-derived types.
-		 * Determines if this type is not abstract (incomplete).
+		 * Determines if this type is not virtual (incomplete).
 		 * e.g.: CanvasItem cannot be instantiated.
 		 */
 		bool is_instantiable;
@@ -203,6 +203,12 @@ class BindingsGenerator {
 		 * e.g.: Reference types must notify when the C# instance is disposed, for proper refcounting.
 		 */
 		bool memory_own;
+
+		/**
+		 * Determines if the file must have a using directive for System.Collections.Generic
+		 * e.g.: When the generated class makes use of Dictionary
+		 */
+		bool requires_collections;
 
 		// !! The comments of the following fields make reference to other fields via square brackets, e.g.: [field_name]
 		// !! When renaming those fields, make sure to rename their references in the comments
@@ -289,7 +295,7 @@ class BindingsGenerator {
 
 		/**
 		 * Type used for method signatures, both for parameters and the return type.
-		 * Same as [proxy_name] except for variable arguments (VarArg) and collections (which include the namespace).
+		 * Same as [proxy_name] except for variable arguments (VarArg).
 		 */
 		String cs_type;
 
@@ -408,6 +414,7 @@ class BindingsGenerator {
 			is_instantiable = false;
 
 			memory_own = false;
+			requires_collections = false;
 
 			c_arg_in = "%s";
 
@@ -456,7 +463,10 @@ class BindingsGenerator {
 	List<EnumInterface> global_enums;
 	List<ConstantInterface> global_constants;
 
+	Map<StringName, String> extra_members;
+
 	List<InternalCall> method_icalls;
+	List<InternalCall> builtin_method_icalls;
 	Map<const MethodInterface *, const InternalCall *> method_icalls_map;
 
 	List<const InternalCall *> generated_icall_funcs;
@@ -515,12 +525,14 @@ class BindingsGenerator {
 
 	String _determine_enum_prefix(const EnumInterface &p_ienum);
 
+	void _generate_header_icalls();
 	void _generate_method_icalls(const TypeInterface &p_itype);
 
 	const TypeInterface *_get_type_or_null(const TypeReference &p_typeref);
 	const TypeInterface *_get_type_or_placeholder(const TypeReference &p_typeref);
 
 	void _default_argument_from_variant(const Variant &p_val, ArgumentInterface &r_iarg);
+	void _populate_builtin_type(TypeInterface &r_itype, Variant::Type vtype);
 
 	void _populate_object_type_interfaces();
 	void _populate_builtin_type_interfaces();
@@ -552,6 +564,7 @@ public:
 	Error generate_glue(const String &p_output_dir);
 
 	static uint32_t get_version();
+	static uint32_t get_cs_glue_version();
 
 	void initialize();
 

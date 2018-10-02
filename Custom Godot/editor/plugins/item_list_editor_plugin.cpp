@@ -30,7 +30,7 @@
 
 #include "item_list_editor_plugin.h"
 
-#include "core/io/resource_loader.h"
+#include "io/resource_loader.h"
 
 bool ItemListPlugin::_set(const StringName &p_name, const Variant &p_value) {
 
@@ -261,7 +261,7 @@ void ItemListEditor::_node_removed(Node *p_node) {
 
 void ItemListEditor::_notification(int p_notification) {
 
-	if (p_notification == NOTIFICATION_ENTER_TREE || p_notification == NOTIFICATION_THEME_CHANGED) {
+	if (p_notification == NOTIFICATION_ENTER_TREE) {
 
 		add_button->set_icon(get_icon("Add", "EditorIcons"));
 		del_button->set_icon(get_icon("Remove", "EditorIcons"));
@@ -278,27 +278,25 @@ void ItemListEditor::_add_pressed() {
 
 void ItemListEditor::_delete_pressed() {
 
+	TreeItem *ti = tree->get_selected();
+
+	if (!ti)
+		return;
+
+	if (ti->get_parent() != tree->get_root())
+		return;
+
+	int idx = ti->get_text(0).to_int();
+
 	if (selected_idx == -1)
 		return;
-
-	String current_selected = (String)property_editor->get_selected_path();
-
-	if (current_selected == "")
-		return;
-
-	// FIXME: Currently relying on selecting a *property* to derive what item to delete
-	// e.g. you select "1/enabled" to delete item 1.
-	// This should be fixed so that you can delete by selecting the item section header,
-	// or a delete button on that header.
-
-	int idx = current_selected.get_slice("/", 0).to_int();
 
 	item_plugins[selected_idx]->erase(idx);
 }
 
 void ItemListEditor::_edit_items() {
 
-	dialog->popup_centered(Vector2(300, 400) * EDSCALE);
+	dialog->popup_centered(Vector2(300, 400));
 }
 
 void ItemListEditor::edit(Node *p_item_list) {
@@ -317,7 +315,10 @@ void ItemListEditor::edit(Node *p_item_list) {
 			item_plugins[i]->set_object(p_item_list);
 			property_editor->edit(item_plugins[i]);
 
-			toolbar_button->set_icon(EditorNode::get_singleton()->get_object_icon(item_list, ""));
+			if (has_icon(item_list->get_class(), "EditorIcons"))
+				toolbar_button->set_icon(get_icon(item_list->get_class(), "EditorIcons"));
+			else
+				toolbar_button->set_icon(Ref<Texture>());
 
 			selected_idx = i;
 			return;
@@ -381,9 +382,13 @@ ItemListEditor::ItemListEditor() {
 	hbc->add_child(del_button);
 	del_button->connect("pressed", this, "_delete_button");
 
-	property_editor = memnew(EditorInspector);
+	property_editor = memnew(PropertyEditor);
+	property_editor->hide_top_label();
+	property_editor->set_subsection_selectable(true);
 	vbc->add_child(property_editor);
 	property_editor->set_v_size_flags(SIZE_EXPAND_FILL);
+
+	tree = property_editor->get_scene_tree();
 }
 
 ItemListEditor::~ItemListEditor() {

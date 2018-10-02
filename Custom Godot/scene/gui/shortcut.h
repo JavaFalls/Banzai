@@ -31,8 +31,8 @@
 #ifndef SHORTCUT_H
 #define SHORTCUT_H
 
-#include "core/os/input_event.h"
-#include "core/resource.h"
+#include "os/input_event.h"
+#include "resource.h"
 
 class ShortCut : public Resource {
 

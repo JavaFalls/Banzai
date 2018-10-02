@@ -30,10 +30,10 @@
 
 #include "variant_parser.h"
 
-#include "core/io/resource_loader.h"
-#include "core/os/input_event.h"
-#include "core/os/keyboard.h"
 #include "core/string_buffer.h"
+#include "io/resource_loader.h"
+#include "os/input_event.h"
+#include "os/keyboard.h"
 
 CharType VariantParser::StreamFile::get_char() {
 
@@ -178,7 +178,7 @@ Error VariantParser::get_token(Stream *p_stream, Token &r_token, int &line, Stri
 			};
 			case '#': {
 
-				StringBuffer<> color_str;
+				StringBuffer color_str;
 				color_str += '#';
 				while (true) {
 					CharType ch = p_stream->get_char();
@@ -299,7 +299,7 @@ Error VariantParser::get_token(Stream *p_stream, Token &r_token, int &line, Stri
 				if (cchar == '-' || (cchar >= '0' && cchar <= '9')) {
 					//a number
 
-					StringBuffer<> num;
+					StringBuffer num;
 #define READING_SIGN 0
 #define READING_INT 1
 #define READING_DEC 2
@@ -378,7 +378,7 @@ Error VariantParser::get_token(Stream *p_stream, Token &r_token, int &line, Stri
 
 				} else if ((cchar >= 'A' && cchar <= 'Z') || (cchar >= 'a' && cchar <= 'z') || cchar == '_') {
 
-					StringBuffer<> id;
+					StringBuffer id;
 					bool first = true;
 
 					while ((cchar >= 'A' && cchar <= 'Z') || (cchar >= 'a' && cchar <= 'z') || cchar == '_' || (!first && cchar >= '0' && cchar <= '9')) {
@@ -1429,10 +1429,10 @@ Error VariantParser::_parse_tag(Token &token, Stream *p_stream, int &line, Strin
 			break;
 
 		if (parsing_tag && token.type == TK_PERIOD) {
-			r_tag.name += "."; //support tags such as [someprop.Android] for specific platforms
+			r_tag.name += "."; //support tags such as [someprop.Anroid] for specific platforms
 			get_token(p_stream, token, line, r_err_str);
 		} else if (parsing_tag && token.type == TK_COLON) {
-			r_tag.name += ":"; //support tags such as [someprop.Android] for specific platforms
+			r_tag.name += ":"; //support tags such as [someprop.Anroid] for specific platforms
 			get_token(p_stream, token, line, r_err_str);
 		} else {
 			parsing_tag = false;

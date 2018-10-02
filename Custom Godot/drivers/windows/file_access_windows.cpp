@@ -31,13 +31,11 @@
 #ifdef WINDOWS_ENABLED
 
 #include "file_access_windows.h"
-
-#include "core/os/os.h"
-#include "core/print_string.h"
-
-#include <shlwapi.h>
+#include "os/os.h"
+#include "shlwapi.h"
 #include <windows.h>
 
+#include "print_string.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <tchar.h>
@@ -87,31 +85,10 @@ Error FileAccessWindows::_open(const String &p_path, int p_mode_flags) {
 			return ERR_FILE_CANT_OPEN;
 	};
 
-#ifdef TOOLS_ENABLED
-	// Windows is case insensitive, but all other platforms are sensitive to it
-	// To ease cross-platform development, we issue a warning if users try to access
-	// a file using the wrong case (which *works* on Windows, but won't on other
-	// platforms).
-	if (p_mode_flags == READ) {
-		WIN32_FIND_DATAW d = { 0 };
-		HANDLE f = FindFirstFileW(path.c_str(), &d);
-		if (f) {
-			String fname = d.cFileName;
-			if (fname != String()) {
-
-				String base_file = path.get_file();
-				if (base_file != fname && base_file.findn(fname) == 0) {
-					WARN_PRINTS("Case mismatch opening requested file '" + base_file + "', stored as '" + fname + "' in the filesystem. This file will not open when exported to other case-sensitive platforms.");
-				}
-			}
-			FindClose(f);
-		}
-	}
-#endif
-
 	if (is_backup_save_enabled() && p_mode_flags & WRITE && !(p_mode_flags & READ)) {
 		save_path = path;
 		path = path + ".tmp";
+		//print_line("saving instead to "+path);
 	}
 
 	f = _wfopen(path.c_str(), mode_string);
@@ -134,6 +111,11 @@ void FileAccessWindows::close() {
 	f = NULL;
 
 	if (save_path != "") {
+
+		//unlink(save_path.utf8().get_data());
+		//print_line("renaming...");
+		//_wunlink(save_path.c_str()); //unlink if exists
+		//int rename_error = _wrename((save_path+".tmp").c_str(),save_path.c_str());
 
 		bool rename_error = true;
 		int attempts = 4;
@@ -159,7 +141,7 @@ void FileAccessWindows::close() {
 			}
 			if (rename_error) {
 				attempts--;
-				OS::get_singleton()->delay_usec(100000); // wait 100msec and try again
+				OS::get_singleton()->delay_usec(1000000); //wait 100msec and try again
 			}
 		}
 
@@ -302,10 +284,11 @@ uint64_t FileAccessWindows::_get_modified_time(const String &p_file) {
 
 		return st.st_mtime;
 	} else {
-		ERR_EXPLAIN("Failed to get modified time for: " + file);
-		ERR_FAIL_V(0);
+		print_line("no access to " + file);
 	}
-}
+
+	ERR_FAIL_V(0);
+};
 
 FileAccessWindows::FileAccessWindows() {
 

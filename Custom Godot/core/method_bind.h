@@ -31,11 +31,10 @@
 #ifndef METHOD_BIND_H
 #define METHOD_BIND_H
 
-#include "core/list.h"
-#include "core/method_ptrcall.h"
-#include "core/object.h"
-#include "core/variant.h"
-
+#include "list.h"
+#include "method_ptrcall.h"
+#include "object.h"
+#include "variant.h"
 #include <stdio.h>
 
 /**
@@ -46,7 +45,7 @@
 #define DEBUG_METHODS_ENABLED
 #endif
 
-#include "core/type_info.h"
+#include "type_info.h"
 
 enum MethodFlags {
 
@@ -129,36 +128,10 @@ struct VariantCaster<const T &> {
 // Object enum casts must go here
 VARIANT_ENUM_CAST(Object::ConnectFlags);
 
-template <typename T>
-struct VariantObjectClassChecker {
-	static _FORCE_INLINE_ bool check(const Variant &p_variant) {
-		return true;
-	}
-};
-
-template <>
-struct VariantObjectClassChecker<Node *> {
-	static _FORCE_INLINE_ bool check(const Variant &p_variant) {
-		Object *obj = p_variant;
-		Node *node = p_variant;
-		return node || !obj;
-	}
-};
-
-template <>
-struct VariantObjectClassChecker<Control *> {
-	static _FORCE_INLINE_ bool check(const Variant &p_variant) {
-		Object *obj = p_variant;
-		Control *control = p_variant;
-		return control || !obj;
-	}
-};
-
 #define CHECK_ARG(m_arg)                                                            \
 	if ((m_arg - 1) < p_arg_count) {                                                \
 		Variant::Type argtype = get_argument_type(m_arg - 1);                       \
-		if (!Variant::can_convert_strict(p_args[m_arg - 1]->get_type(), argtype) || \
-				!VariantObjectClassChecker<P##m_arg>::check(*p_args[m_arg - 1])) {  \
+		if (!Variant::can_convert_strict(p_args[m_arg - 1]->get_type(), argtype)) { \
 			r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;        \
 			r_error.argument = m_arg - 1;                                           \
 			r_error.expected = argtype;                                             \
@@ -355,7 +328,7 @@ public:
 			for (int i = 0; i < p_info.arguments.size(); i++) {
 
 				at[i + 1] = p_info.arguments[i].type;
-				names.write[i] = p_info.arguments[i].name;
+				names[i] = p_info.arguments[i].name;
 			}
 
 			set_argument_names(names);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Input" inherits="Object" category="Core" version="3.1">
+<class name="Input" inherits="Object" category="Core" version="3.0.6">
 	<brief_description>
 		A Singleton that deals with inputs.
 	</brief_description>
@@ -7,7 +7,7 @@
 		A Singleton that deals with inputs. This includes key presses, mouse buttons and movement, joypads, and input actions. Actions and their events can be set in the Project Settings / Input Map tab. Or be set with [InputMap].
 	</description>
 	<tutorials>
-		<link>http://docs.godotengine.org/en/3.0/tutorials/inputs/index.html</link>
+		http://docs.godotengine.org/en/3.0/tutorials/inputs/index.html
 	</tutorials>
 	<demos>
 	</demos>
@@ -46,15 +46,6 @@
 			</return>
 			<description>
 				If the device has an accelerometer, this will return the acceleration. Otherwise, it returns an empty [Vector3].
-				Note this method returns an empty [Vector3] when running from the editor even when your device has an accelerometer. You must export your project to a supported device to read values from the accelerometer.
-			</description>
-		</method>
-		<method name="get_action_strength" qualifiers="const">
-			<return type="float">
-			</return>
-			<argument index="0" name="action" type="String">
-			</argument>
-			<description>
 			</description>
 		</method>
 		<method name="get_connected_joypads">
@@ -293,19 +284,7 @@
 			<argument index="2" name="hotspot" type="Vector2" default="Vector2( 0, 0 )">
 			</argument>
 			<description>
-				Sets a custom mouse cursor image, which is only visible inside the game window. The hotspot can also be specified. Passing [code]null[/code] to the image parameter resets to the system cursor. See enum [code]CURSOR_*[/code] for the list of shapes.
-				[code]image[/code]'s size must be lower than 256x256.
-				[code]hotspot[/code] must be within [code]image[/code]'s size.
-			</description>
-		</method>
-		<method name="set_default_cursor_shape">
-			<return type="void">
-			</return>
-			<argument index="0" name="shape" type="int" enum="Input.CursorShape" default="0">
-			</argument>
-			<description>
-				Sets the default cursor shape to be used in the viewport instead of [code]CURSOR_ARROW[/code].
-				Note that if you want to change the default cursor shape for [Control]'s nodes, use [member Control.mouse_default_cursor_shape] instead.
+				Set a custom mouse cursor image, which is only visible inside the game window. The hotspot can also be specified. See enum [code]CURSOR_*[/code] for the list of shapes.
 			</description>
 		</method>
 		<method name="set_mouse_mode">
@@ -354,7 +333,7 @@
 	</methods>
 	<signals>
 		<signal name="joy_connection_changed">
-			<argument index="0" name="device" type="int">
+			<argument index="0" name="index" type="int">
 			</argument>
 			<argument index="1" name="connected" type="bool">
 			</argument>

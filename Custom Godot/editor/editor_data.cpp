@@ -30,12 +30,12 @@
 
 #include "editor_data.h"
 
-#include "core/io/resource_loader.h"
-#include "core/os/dir_access.h"
-#include "core/os/file_access.h"
-#include "core/project_settings.h"
 #include "editor_node.h"
 #include "editor_settings.h"
+#include "io/resource_loader.h"
+#include "os/dir_access.h"
+#include "os/file_access.h"
+#include "project_settings.h"
 #include "scene/resources/packed_scene.h"
 
 void EditorHistory::cleanup_history() {
@@ -62,7 +62,7 @@ void EditorHistory::cleanup_history() {
 				fail = true;
 			} else {
 				//after level, clip
-				history.write[i].path.resize(j);
+				history[i].path.resize(j);
 			}
 
 			break;
@@ -78,7 +78,7 @@ void EditorHistory::cleanup_history() {
 		current = history.size() - 1;
 }
 
-void EditorHistory::_add_object(ObjectID p_object, const String &p_property, int p_level_change, bool p_inspector_only) {
+void EditorHistory::_add_object(ObjectID p_object, const String &p_property, int p_level_change) {
 
 	Object *obj = ObjectDB::get_instance(p_object);
 	ERR_FAIL_COND(!obj);
@@ -88,7 +88,6 @@ void EditorHistory::_add_object(ObjectID p_object, const String &p_property, int
 		o.ref = REF(r);
 	o.object = p_object;
 	o.property = p_property;
-	o.inspector_only = p_inspector_only;
 
 	History h;
 
@@ -100,14 +99,14 @@ void EditorHistory::_add_object(ObjectID p_object, const String &p_property, int
 
 	if (p_property != "" && has_prev) {
 		//add a sub property
-		History &pr = history.write[current];
+		History &pr = history[current];
 		h = pr;
 		h.path.resize(h.level + 1);
 		h.path.push_back(o);
 		h.level++;
 	} else if (p_level_change != -1 && has_prev) {
 		//add a sub property
-		History &pr = history.write[current];
+		History &pr = history[current];
 		h = pr;
 		ERR_FAIL_INDEX(p_level_change, h.path.size());
 		h.level = p_level_change;
@@ -119,11 +118,6 @@ void EditorHistory::_add_object(ObjectID p_object, const String &p_property, int
 
 	history.push_back(h);
 	current++;
-}
-
-void EditorHistory::add_object_inspector_only(ObjectID p_object) {
-
-	_add_object(p_object, "", -1, true);
 }
 
 void EditorHistory::add_object(ObjectID p_object) {
@@ -146,13 +140,6 @@ int EditorHistory::get_history_len() {
 }
 int EditorHistory::get_history_pos() {
 	return current;
-}
-
-bool EditorHistory::is_history_obj_inspector_only(int p_obj) const {
-
-	ERR_FAIL_INDEX_V(p_obj, history.size(), false);
-	ERR_FAIL_INDEX_V(history[p_obj].level, history[p_obj].path.size(), false);
-	return history[p_obj].path[history[p_obj].level].inspector_only;
 }
 
 ObjectID EditorHistory::get_history_obj(int p_obj) const {
@@ -193,20 +180,12 @@ bool EditorHistory::previous() {
 	return true;
 }
 
-bool EditorHistory::is_current_inspector_only() const {
-
-	if (current < 0 || current >= history.size())
-		return false;
-
-	const History &h = history[current];
-	return h.path[h.level].inspector_only;
-}
 ObjectID EditorHistory::get_current() {
 
 	if (current < 0 || current >= history.size())
 		return 0;
 
-	History &h = history.write[current];
+	History &h = history[current];
 	Object *obj = ObjectDB::get_instance(h.path[h.level].object);
 	if (!obj)
 		return 0;
@@ -385,14 +364,6 @@ void EditorData::notify_edited_scene_changed() {
 	}
 }
 
-void EditorData::notify_resource_saved(const Ref<Resource> &p_resource) {
-
-	for (int i = 0; i < editor_plugins.size(); i++) {
-
-		editor_plugins[i]->notify_resource_saved(p_resource);
-	}
-}
-
 void EditorData::clear_editor_states() {
 
 	for (int i = 0; i < editor_plugins.size(); i++) {
@@ -441,18 +412,6 @@ void EditorData::paste_object_params(Object *p_object) {
 	}
 }
 
-bool EditorData::call_build() {
-
-	bool result = true;
-
-	for (int i = 0; i < editor_plugins.size() && result; i++) {
-
-		result &= editor_plugins[i]->build();
-	}
-
-	return result;
-}
-
 UndoRedo &EditorData::get_undo_redo() {
 
 	return undo_redo;
@@ -491,31 +450,6 @@ void EditorData::add_custom_type(const String &p_type, const String &p_inherits,
 	}
 
 	custom_types[p_inherits].push_back(ct);
-}
-
-Object *EditorData::instance_custom_type(const String &p_type, const String &p_inherits) {
-
-	if (get_custom_types().has(p_inherits)) {
-
-		for (int i = 0; i < get_custom_types()[p_inherits].size(); i++) {
-			if (get_custom_types()[p_inherits][i].name == p_type) {
-				Ref<Texture> icon = get_custom_types()[p_inherits][i].icon;
-				Ref<Script> script = get_custom_types()[p_inherits][i].script;
-
-				Object *ob = ClassDB::instance(p_inherits);
-				ERR_FAIL_COND_V(!ob, NULL);
-				if (ob->is_class("Node")) {
-					ob->call("set_name", p_type);
-				}
-				ob->set_script(script.get_ref_ptr());
-				if (icon.is_valid())
-					ob->set_meta("_editor_icon", icon);
-				return ob;
-			}
-		}
-	}
-
-	return NULL;
 }
 
 void EditorData::remove_custom_type(const String &p_type) {
@@ -558,7 +492,7 @@ void EditorData::move_edited_scene_index(int p_idx, int p_to_idx) {
 
 	ERR_FAIL_INDEX(p_idx, edited_scene.size());
 	ERR_FAIL_INDEX(p_to_idx, edited_scene.size());
-	SWAP(edited_scene.write[p_idx], edited_scene.write[p_to_idx]);
+	SWAP(edited_scene[p_idx], edited_scene[p_to_idx]);
 }
 void EditorData::remove_scene(int p_idx) {
 	ERR_FAIL_INDEX(p_idx, edited_scene.size());
@@ -644,7 +578,7 @@ bool EditorData::check_and_update_scene(int p_idx) {
 
 		//transfer selection
 		List<Node *> new_selection;
-		for (List<Node *>::Element *E = edited_scene.write[p_idx].selection.front(); E; E = E->next()) {
+		for (List<Node *>::Element *E = edited_scene[p_idx].selection.front(); E; E = E->next()) {
 			NodePath p = edited_scene[p_idx].root->get_path_to(E->get());
 			Node *new_node = new_scene->get_node(p);
 			if (new_node)
@@ -654,8 +588,8 @@ bool EditorData::check_and_update_scene(int p_idx) {
 		new_scene->set_filename(edited_scene[p_idx].root->get_filename());
 
 		memdelete(edited_scene[p_idx].root);
-		edited_scene.write[p_idx].root = new_scene;
-		edited_scene.write[p_idx].selection = new_selection;
+		edited_scene[p_idx].root = new_scene;
+		edited_scene[p_idx].selection = new_selection;
 
 		return true;
 	}
@@ -685,7 +619,7 @@ Node *EditorData::get_edited_scene_root(int p_idx) {
 void EditorData::set_edited_scene_root(Node *p_root) {
 
 	ERR_FAIL_INDEX(current_edited_scene, edited_scene.size());
-	edited_scene.write[current_edited_scene].root = p_root;
+	edited_scene[current_edited_scene].root = p_root;
 }
 
 int EditorData::get_edited_scene_count() const {
@@ -707,10 +641,10 @@ Vector<EditorData::EditedScene> EditorData::get_edited_scenes() const {
 void EditorData::set_edited_scene_version(uint64_t version, int p_scene_idx) {
 	ERR_FAIL_INDEX(current_edited_scene, edited_scene.size());
 	if (p_scene_idx < 0) {
-		edited_scene.write[current_edited_scene].version = version;
+		edited_scene[current_edited_scene].version = version;
 	} else {
 		ERR_FAIL_INDEX(p_scene_idx, edited_scene.size());
-		edited_scene.write[p_scene_idx].version = version;
+		edited_scene[p_scene_idx].version = version;
 	}
 }
 
@@ -793,7 +727,7 @@ String EditorData::get_scene_path(int p_idx) const {
 void EditorData::set_edited_scene_live_edit_root(const NodePath &p_root) {
 	ERR_FAIL_INDEX(current_edited_scene, edited_scene.size());
 
-	edited_scene.write[current_edited_scene].live_edit_root = p_root;
+	edited_scene[current_edited_scene].live_edit_root = p_root;
 }
 NodePath EditorData::get_edited_scene_live_edit_root() {
 
@@ -806,7 +740,7 @@ void EditorData::save_edited_scene_state(EditorSelection *p_selection, EditorHis
 
 	ERR_FAIL_INDEX(current_edited_scene, edited_scene.size());
 
-	EditedScene &es = edited_scene.write[current_edited_scene];
+	EditedScene &es = edited_scene[current_edited_scene];
 	es.selection = p_selection->get_selected_node_list();
 	es.history_current = p_history->current;
 	es.history_stored = p_history->history;
@@ -817,7 +751,7 @@ void EditorData::save_edited_scene_state(EditorSelection *p_selection, EditorHis
 Dictionary EditorData::restore_edited_scene_state(EditorSelection *p_selection, EditorHistory *p_history) {
 	ERR_FAIL_INDEX_V(current_edited_scene, edited_scene.size(), Dictionary());
 
-	EditedScene &es = edited_scene.write[current_edited_scene];
+	EditedScene &es = edited_scene[current_edited_scene];
 
 	p_history->current = es.history_current;
 	p_history->history = es.history_stored;
@@ -853,118 +787,11 @@ void EditorData::get_plugin_window_layout(Ref<ConfigFile> p_layout) {
 	}
 }
 
-bool EditorData::script_class_is_parent(const String &p_class, const String &p_inherits) {
-	if (!ScriptServer::is_global_class(p_class))
-		return false;
-	String base = script_class_get_base(p_class);
-	while (p_inherits != base) {
-		if (ClassDB::class_exists(base)) {
-			return ClassDB::is_parent_class(base, p_inherits);
-		} else if (ScriptServer::is_global_class(base)) {
-			base = script_class_get_base(base);
-		} else {
-			return false;
-		}
-	}
-	return true;
-}
-
-StringName EditorData::script_class_get_base(const String &p_class) const {
-
-	if (!ScriptServer::is_global_class(p_class))
-		return StringName();
-
-	String path = ScriptServer::get_global_class_path(p_class);
-
-	Ref<Script> script = ResourceLoader::load(path, "Script");
-	if (script.is_null())
-		return StringName();
-
-	Ref<Script> base_script = script->get_base_script();
-	if (base_script.is_null()) {
-		return ScriptServer::get_global_class_base(p_class);
-	}
-
-	return script->get_language()->get_global_class_name(base_script->get_path());
-}
-
-Object *EditorData::script_class_instance(const String &p_class) {
-	if (ScriptServer::is_global_class(p_class)) {
-		Object *obj = ClassDB::instance(ScriptServer::get_global_class_base(p_class));
-		if (obj) {
-			RES script = ResourceLoader::load(ScriptServer::get_global_class_path(p_class));
-			if (script.is_valid())
-				obj->set_script(script.get_ref_ptr());
-			return obj;
-		}
-	}
-	return NULL;
-}
-
-void EditorData::script_class_set_icon_path(const String &p_class, const String &p_icon_path) {
-	_script_class_icon_paths[p_class] = p_icon_path;
-}
-
-String EditorData::script_class_get_icon_path(const String &p_class) const {
-	if (!ScriptServer::is_global_class(p_class))
-		return String();
-
-	String current = p_class;
-	String ret = _script_class_icon_paths[current];
-	while (ret.empty()) {
-		current = script_class_get_base(current);
-		if (!ScriptServer::is_global_class(current))
-			return String();
-		ret = _script_class_icon_paths.has(current) ? _script_class_icon_paths[current] : String();
-	}
-
-	return ret;
-}
-
-StringName EditorData::script_class_get_name(const String &p_path) const {
-	return _script_class_file_to_path.has(p_path) ? _script_class_file_to_path[p_path] : StringName();
-}
-
-void EditorData::script_class_set_name(const String &p_path, const StringName &p_class) {
-	_script_class_file_to_path[p_path] = p_class;
-}
-
-void EditorData::script_class_save_icon_paths() {
-	List<StringName> keys;
-	_script_class_icon_paths.get_key_list(&keys);
-
-	Dictionary d;
-	for (List<StringName>::Element *E = keys.front(); E; E = E->next()) {
-		if (ScriptServer::is_global_class(E->get()))
-			d[E->get()] = _script_class_icon_paths[E->get()];
-	}
-
-	ProjectSettings::get_singleton()->set("_global_script_class_icons", d);
-	ProjectSettings::get_singleton()->save();
-}
-
-void EditorData::script_class_load_icon_paths() {
-	script_class_clear_icon_paths();
-
-	Dictionary d = ProjectSettings::get_singleton()->get("_global_script_class_icons");
-	List<Variant> keys;
-	d.get_key_list(&keys);
-
-	for (List<Variant>::Element *E = keys.front(); E; E = E->next()) {
-		String name = E->get().operator String();
-		_script_class_icon_paths[name] = d[name];
-
-		String path = ScriptServer::get_global_class_path(name);
-		script_class_set_name(path, name);
-	}
-}
-
 EditorData::EditorData() {
 
 	current_edited_scene = -1;
 
 	//load_imported_scenes_from_globals();
-	script_class_load_icon_paths();
 }
 
 ///////////
@@ -1038,7 +865,7 @@ Array EditorSelection::_get_transformable_selected_nodes() {
 	return ret;
 }
 
-Array EditorSelection::get_selected_nodes() {
+Array EditorSelection::_get_selected_nodes() {
 
 	Array ret;
 
@@ -1056,7 +883,7 @@ void EditorSelection::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("clear"), &EditorSelection::clear);
 	ClassDB::bind_method(D_METHOD("add_node", "node"), &EditorSelection::add_node);
 	ClassDB::bind_method(D_METHOD("remove_node", "node"), &EditorSelection::remove_node);
-	ClassDB::bind_method(D_METHOD("get_selected_nodes"), &EditorSelection::get_selected_nodes);
+	ClassDB::bind_method(D_METHOD("get_selected_nodes"), &EditorSelection::_get_selected_nodes);
 	ClassDB::bind_method(D_METHOD("get_transformable_selected_nodes"), &EditorSelection::_get_transformable_selected_nodes);
 	ClassDB::bind_method(D_METHOD("_emit_change"), &EditorSelection::_emit_change);
 	ADD_SIGNAL(MethodInfo("selection_changed"));

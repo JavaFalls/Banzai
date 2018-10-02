@@ -41,7 +41,7 @@
 #define XK_XKB_KEYS
 #include <X11/keysymdef.h>
 
-#include "core/os/keyboard.h"
+#include "os/keyboard.h"
 
 class KeyMappingX11 {
 	KeyMappingX11(){};

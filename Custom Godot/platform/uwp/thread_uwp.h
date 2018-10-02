@@ -33,7 +33,7 @@
 
 #ifdef UWP_ENABLED
 
-#include "core/os/thread.h"
+#include "os/thread.h"
 
 #include <thread>
 

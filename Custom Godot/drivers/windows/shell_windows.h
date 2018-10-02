@@ -31,14 +31,12 @@
 #ifndef SHELL_WINDOWS_H
 #define SHELL_WINDOWS_H
 
-#include "core/os/shell.h"
+#include "os/shell.h"
 
 #ifdef WINDOWS_ENABLED
-
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
-
 class ShellWindows : public Shell {
 public:
 	virtual void execute(String p_path);

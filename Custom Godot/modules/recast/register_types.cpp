@@ -30,10 +30,5 @@
 
 #include "register_types.h"
 
-#include "navigation_mesh_editor_plugin.h"
-
-void register_recast_types() {
-	EditorPlugins::add_by_type<NavigationMeshEditorPlugin>();
-}
-
+void register_recast_types() {}
 void unregister_recast_types() {}

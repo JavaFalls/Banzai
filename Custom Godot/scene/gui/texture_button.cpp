@@ -29,8 +29,6 @@
 /*************************************************************************/
 
 #include "texture_button.h"
-#include "core/typedefs.h"
-#include <stdlib.h>
 
 Size2 TextureButton::get_minimum_size() const {
 
@@ -60,50 +58,10 @@ bool TextureButton::has_point(const Point2 &p_point) const {
 
 	if (click_mask.is_valid()) {
 
-		Point2 point = p_point;
-		Rect2 rect = Rect2();
-		Size2 mask_size = click_mask->get_size();
-
-		if (_tile) {
-			// if the stretch mode is tile we offset the point to keep it inside the mask size
-			rect.size = mask_size;
-			if (_position_rect.has_point(point)) {
-				int cols = (int)Math::ceil(_position_rect.size.x / mask_size.x);
-				int rows = (int)Math::ceil(_position_rect.size.y / mask_size.y);
-				int col = (int)(point.x / mask_size.x) % cols;
-				int row = (int)(point.y / mask_size.y) % rows;
-				point.x -= mask_size.x * col;
-				point.y -= mask_size.y * row;
-			}
-		} else {
-			// we need to transform the point from our scaled / translated image back to our mask image
-			Point2 ofs = _position_rect.position;
-			Size2 scale = mask_size / _position_rect.size;
-
-			switch (stretch_mode) {
-				case STRETCH_KEEP_ASPECT_COVERED: {
-					// if the stretch mode is aspect covered the image uses a texture region so we need to take that into account
-					float min = MIN(scale.x, scale.y);
-					scale.x = min;
-					scale.y = min;
-					ofs -= _texture_region.position / min;
-				} break;
-			}
-
-			// offset and scale the new point position to adjust it to the bitmask size
-			point -= ofs;
-			point *= scale;
-
-			// finally, we need to check if the point is inside a rectangle with a position >= 0,0 and a size <= mask_size
-			rect.position = Point2(MAX(0, _texture_region.position.x), MAX(0, _texture_region.position.y));
-			rect.size = Size2(MIN(mask_size.x, _texture_region.size.x), MIN(mask_size.y, _texture_region.size.y));
-		}
-
-		if (!rect.has_point(point)) {
+		Point2i p = p_point;
+		if (p.x < 0 || p.x >= click_mask->get_size().width || p.y < 0 || p.y >= click_mask->get_size().height)
 			return false;
-		}
 
-		Point2i p = point;
 		return click_mask->get_bit(p);
 	}
 
@@ -160,8 +118,8 @@ void TextureButton::_notification(int p_what) {
 			if (texdraw.is_valid()) {
 				Point2 ofs;
 				Size2 size = texdraw->get_size();
-				_texture_region = Rect2(Point2(), texdraw->get_size());
-				_tile = false;
+				Rect2 tex_regin = Rect2(Point2(), texdraw->get_size());
+				bool tile = false;
 				if (expand) {
 					switch (stretch_mode) {
 						case STRETCH_KEEP:
@@ -172,7 +130,7 @@ void TextureButton::_notification(int p_what) {
 							break;
 						case STRETCH_TILE:
 							size = get_size();
-							_tile = true;
+							tile = true;
 							break;
 						case STRETCH_KEEP_CENTERED:
 							ofs = (get_size() - texdraw->get_size()) / 2;
@@ -203,15 +161,14 @@ void TextureButton::_notification(int p_what) {
 							float scale = scaleSize.width > scaleSize.height ? scaleSize.width : scaleSize.height;
 							Size2 scaledTexSize = tex_size * scale;
 							Point2 ofs = ((scaledTexSize - size) / scale).abs() / 2.0f;
-							_texture_region = Rect2(ofs, size / scale);
+							tex_regin = Rect2(ofs, size / scale);
 						} break;
 					}
 				}
-				_position_rect = Rect2(ofs, size);
-				if (_tile)
-					draw_texture_rect(texdraw, _position_rect, _tile);
+				if (tile)
+					draw_texture_rect(texdraw, Rect2(ofs, size), tile);
 				else
-					draw_texture_rect_region(texdraw, _position_rect, _texture_region);
+					draw_texture_rect_region(texdraw, Rect2(ofs, size), tex_regin);
 			}
 			if (has_focus() && focused.is_valid()) {
 
@@ -342,8 +299,4 @@ TextureButton::StretchMode TextureButton::get_stretch_mode() const {
 TextureButton::TextureButton() {
 	expand = false;
 	stretch_mode = STRETCH_SCALE;
-
-	_texture_region = Rect2();
-	_position_rect = Rect2();
-	_tile = false;
 }

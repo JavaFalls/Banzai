@@ -31,7 +31,7 @@
 #ifndef PRINT_STRING_H
 #define PRINT_STRING_H
 
-#include "core/ustring.h"
+#include "ustring.h"
 
 extern void (*_print_func)(String);
 
@@ -58,6 +58,5 @@ extern bool _print_line_enabled;
 extern bool _print_error_enabled;
 extern void print_line(String p_string);
 extern void print_error(String p_string);
-extern void print_verbose(String p_string);
 
 #endif

@@ -29,10 +29,9 @@
 /*************************************************************************/
 
 #include "a_star.h"
-
-#include "core/math/geometry.h"
-#include "core/script_language.h"
+#include "geometry.h"
 #include "scene/scene_string_names.h"
+#include "script_language.h"
 
 int AStar::get_available_point_id() const {
 
@@ -97,11 +96,11 @@ void AStar::remove_point(int p_id) {
 
 	Point *p = points[p_id];
 
-	for (Set<Point *>::Element *E = p->neighbours.front(); E; E = E->next()) {
+	for (int i = 0; i < p->neighbours.size(); i++) {
 
-		Segment s(p_id, E->get()->id);
+		Segment s(p_id, p->neighbours[i]->id);
 		segments.erase(s);
-		E->get()->neighbours.erase(p);
+		p->neighbours[i]->neighbours.erase(p);
 	}
 
 	memdelete(p);
@@ -116,10 +115,10 @@ void AStar::connect_points(int p_id, int p_with_id, bool bidirectional) {
 
 	Point *a = points[p_id];
 	Point *b = points[p_with_id];
-	a->neighbours.insert(b);
+	a->neighbours.push_back(b);
 
 	if (bidirectional)
-		b->neighbours.insert(a);
+		b->neighbours.push_back(a);
 
 	Segment s(p_id, p_with_id);
 	if (s.from == p_id) {
@@ -169,8 +168,8 @@ PoolVector<int> AStar::get_point_connections(int p_id) {
 
 	Point *p = points[p_id];
 
-	for (Set<Point *>::Element *E = p->neighbours.front(); E; E = E->next()) {
-		point_list.push_back(E->get()->id);
+	for (int i = 0; i < p->neighbours.size(); i++) {
+		point_list.push_back(p->neighbours[i]->id);
 	}
 
 	return point_list;
@@ -243,9 +242,9 @@ bool AStar::_solve(Point *begin_point, Point *end_point) {
 
 	bool found_route = false;
 
-	for (Set<Point *>::Element *E = begin_point->neighbours.front(); E; E = E->next()) {
+	for (int i = 0; i < begin_point->neighbours.size(); i++) {
 
-		Point *n = E->get();
+		Point *n = begin_point->neighbours[i];
 		n->prev_point = begin_point;
 		n->distance = _compute_cost(begin_point->id, n->id) * n->weight_scale;
 		n->last_pass = pass;
@@ -284,10 +283,12 @@ bool AStar::_solve(Point *begin_point, Point *end_point) {
 		}
 
 		Point *p = least_cost_point->self();
+		// Open the neighbours for search
+		int es = p->neighbours.size();
 
-		for (Set<Point *>::Element *E = p->neighbours.front(); E; E = E->next()) {
+		for (int i = 0; i < es; i++) {
 
-			Point *e = E->get();
+			Point *e = p->neighbours[i];
 
 			real_t distance = _compute_cost(p->id, e->id) * e->weight_scale + p->distance;
 

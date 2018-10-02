@@ -31,9 +31,9 @@
 #ifndef AUDIO_STREAM_OGG_VORBIS_H
 #define AUDIO_STREAM_OGG_VORBIS_H
 
-#include "core/io/resource_loader.h"
-#include "core/os/file_access.h"
-#include "core/os/thread_safe.h"
+#include "io/resource_loader.h"
+#include "os/file_access.h"
+#include "os/thread_safe.h"
 #include "scene/resources/audio_stream.h"
 
 #include <vorbis/vorbisfile.h>

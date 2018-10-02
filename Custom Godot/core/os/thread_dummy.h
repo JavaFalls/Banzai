@@ -31,10 +31,9 @@
 #ifndef THREAD_DUMMY_H
 #define THREAD_DUMMY_H
 
-#include "core/os/mutex.h"
-#include "core/os/rw_lock.h"
-#include "core/os/semaphore.h"
-#include "core/os/thread.h"
+#include "mutex.h"
+#include "semaphore.h"
+#include "thread.h"
 
 class ThreadDummy : public Thread {
 
@@ -66,22 +65,6 @@ public:
 	virtual Error wait() { return OK; };
 	virtual Error post() { return OK; };
 	virtual int get() const { return 0; }; ///< get semaphore value
-
-	static void make_default();
-};
-
-class RWLockDummy : public RWLock {
-
-	static RWLock *create();
-
-public:
-	virtual void read_lock() {}
-	virtual void read_unlock() {}
-	virtual Error read_try_lock() { return OK; }
-
-	virtual void write_lock() {}
-	virtual void write_unlock() {}
-	virtual Error write_try_lock() { return OK; }
 
 	static void make_default();
 };

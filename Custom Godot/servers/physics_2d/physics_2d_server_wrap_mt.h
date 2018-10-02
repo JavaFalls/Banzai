@@ -31,9 +31,9 @@
 #ifndef PHYSICS2DSERVERWRAPMT_H
 #define PHYSICS2DSERVERWRAPMT_H
 
-#include "core/command_queue_mt.h"
-#include "core/os/thread.h"
-#include "core/project_settings.h"
+#include "command_queue_mt.h"
+#include "os/thread.h"
+#include "project_settings.h"
 #include "servers/physics_2d_server.h"
 
 #ifdef DEBUG_SYNC
@@ -220,11 +220,7 @@ public:
 	FUNC2(body_set_applied_torque, RID, real_t);
 	FUNC1RC(real_t, body_get_applied_torque, RID);
 
-	FUNC2(body_add_central_force, RID, const Vector2 &);
 	FUNC3(body_add_force, RID, const Vector2 &, const Vector2 &);
-	FUNC2(body_add_torque, RID, real_t);
-	FUNC2(body_apply_central_impulse, RID, const Vector2 &);
-	FUNC2(body_apply_torque_impulse, RID, real_t);
 	FUNC3(body_apply_impulse, RID, const Vector2 &, const Vector2 &);
 	FUNC2(body_set_axis_velocity, RID, const Vector2 &);
 
@@ -249,16 +245,10 @@ public:
 
 	FUNC2(body_set_pickable, RID, bool);
 
-	bool body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, bool p_infinite_inertia, real_t p_margin = 0.001, MotionResult *r_result = NULL, bool p_exclude_raycast_shapes = true) {
+	bool body_test_motion(RID p_body, const Transform2D &p_from, const Vector2 &p_motion, real_t p_margin = 0.001, MotionResult *r_result = NULL) {
 
 		ERR_FAIL_COND_V(main_thread != Thread::get_caller_id(), false);
-		return physics_2d_server->body_test_motion(p_body, p_from, p_motion, p_infinite_inertia, p_margin, r_result, p_exclude_raycast_shapes);
-	}
-
-	int body_test_ray_separation(RID p_body, const Transform2D &p_transform, bool p_infinite_inertia, Vector2 &r_recover_motion, SeparationResult *r_results, int p_result_max, float p_margin = 0.001) {
-
-		ERR_FAIL_COND_V(main_thread != Thread::get_caller_id(), false);
-		return physics_2d_server->body_test_ray_separation(p_body, p_transform, p_infinite_inertia, r_recover_motion, r_results, p_result_max, p_margin);
+		return physics_2d_server->body_test_motion(p_body, p_from, p_motion, p_margin, r_result);
 	}
 
 	// this function only works on physics process, errors and returns null otherwise
@@ -272,9 +262,6 @@ public:
 
 	FUNC3(joint_set_param, RID, JointParam, real_t);
 	FUNC2RC(real_t, joint_get_param, RID, JointParam);
-
-	FUNC2(joint_disable_collisions_between_bodies, RID, const bool);
-	FUNC1RC(bool, joint_is_disabled_collisions_between_bodies, RID);
 
 	///FUNC3RID(pin_joint,const Vector2&,RID,RID);
 	///FUNC5RID(groove_joint,const Vector2&,const Vector2&,const Vector2&,RID,RID);

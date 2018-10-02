@@ -16,8 +16,6 @@ if sys.version_info < (3,):
         return x
     def iteritems(d):
         return d.iteritems()
-    def itervalues(d):
-        return d.itervalues()
     def escape_string(s):
         if isinstance(s, unicode):
             s = s.encode('ascii')
@@ -46,8 +44,6 @@ else:
         return codecs.utf_8_decode(x)[0]
     def iteritems(d):
         return iter(d.items())
-    def itervalues(d):
-        return iter(d.values())
     def charcode_to_c_escapes(c):
         rev_result = []
         while c >= 256:

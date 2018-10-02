@@ -30,7 +30,6 @@
 
 #include "editor_sub_scene.h"
 
-#include "editor/editor_node.h"
 #include "scene/gui/margin_container.h"
 #include "scene/resources/packed_scene.h"
 
@@ -85,7 +84,9 @@ void EditorSubScene::_fill_tree(Node *p_node, TreeItem *p_parent) {
 	it->set_text(0, p_node->get_name());
 	it->set_editable(0, false);
 	it->set_selectable(0, true);
-	it->set_icon(0, EditorNode::get_singleton()->get_object_icon(p_node, "Node"));
+	if (has_icon(p_node->get_class(), "EditorIcons")) {
+		it->set_icon(0, get_icon(p_node->get_class(), "EditorIcons"));
+	}
 
 	for (int i = 0; i < p_node->get_child_count(); i++) {
 

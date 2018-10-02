@@ -48,9 +48,9 @@ public:
 	virtual void clear() = 0;
 	virtual void redraw() = 0;
 	virtual void free() = 0;
+	virtual bool can_draw() const = 0;
 
 	SpatialGizmo();
-	virtual ~SpatialGizmo() {}
 };
 
 class Spatial : public Node {
@@ -92,7 +92,6 @@ class Spatial : public Node {
 		bool notify_transform;
 
 		bool visible;
-		bool disable_scale;
 
 #ifdef TOOLS_ENABLED
 		Ref<SpatialGizmo> gizmo;
@@ -146,16 +145,8 @@ public:
 	Transform get_transform() const;
 	Transform get_global_transform() const;
 
-#ifdef TOOLS_ENABLED
-	virtual Transform get_global_gizmo_transform() const;
-	virtual Transform get_local_gizmo_transform() const;
-#endif
-
 	void set_as_toplevel(bool p_enabled);
 	bool is_set_as_toplevel() const;
-
-	void set_disable_scale(bool p_enabled);
-	bool is_scale_disabled() const;
 
 	void set_disable_gizmo(bool p_enabled);
 	void update_gizmo();
@@ -201,8 +192,6 @@ public:
 	void show();
 	void hide();
 	bool is_visible_in_tree() const;
-
-	void force_update_transform();
 
 	Spatial();
 	~Spatial();

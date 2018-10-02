@@ -31,8 +31,8 @@
 #ifndef VISUALSERVERVIEWPORT_H
 #define VISUALSERVERVIEWPORT_H
 
-#include "core/self_list.h"
 #include "rasterizer.h"
+#include "self_list.h"
 #include "servers/arvr/arvr_interface.h"
 #include "servers/visual_server.h"
 
@@ -64,7 +64,6 @@ public:
 		bool disable_environment;
 		bool disable_3d;
 		bool disable_3d_by_usage;
-		bool keep_3d_linear;
 
 		RID shadow_atlas;
 		int shadow_atlas_size;
@@ -111,7 +110,6 @@ public:
 			shadow_atlas_size = 0;
 			disable_3d = false;
 			disable_3d_by_usage = false;
-			keep_3d_linear = false;
 			debug_draw = VS::VIEWPORT_DEBUG_DRAW_DISABLED;
 			for (int i = 0; i < VS::VIEWPORT_RENDER_INFO_MAX; i++) {
 				render_info[i] = 0;
@@ -166,7 +164,6 @@ public:
 	void viewport_set_hide_canvas(RID p_viewport, bool p_hide);
 	void viewport_set_disable_environment(RID p_viewport, bool p_disable);
 	void viewport_set_disable_3d(RID p_viewport, bool p_disable);
-	void viewport_set_keep_3d_linear(RID p_viewport, bool p_keep_3d_linear);
 
 	void viewport_attach_camera(RID p_viewport, RID p_camera);
 	void viewport_set_scenario(RID p_viewport, RID p_scenario);
@@ -188,7 +185,6 @@ public:
 	virtual int viewport_get_render_info(RID p_viewport, VS::ViewportRenderInfo p_info);
 	virtual void viewport_set_debug_draw(RID p_viewport, VS::ViewportDebugDraw p_draw);
 
-	void set_default_clear_color(const Color &p_color);
 	void draw_viewports();
 
 	bool free(RID p_rid);

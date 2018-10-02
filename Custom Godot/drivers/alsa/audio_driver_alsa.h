@@ -66,6 +66,7 @@ class AudioDriverALSA : public AudioDriver {
 	bool active;
 	bool thread_exited;
 	mutable bool exit_thread;
+	bool pcm_open;
 
 public:
 	const char *get_name() const {

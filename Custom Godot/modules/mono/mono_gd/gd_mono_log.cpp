@@ -33,8 +33,8 @@
 #include <mono/utils/mono-logger.h>
 #include <stdlib.h> // abort
 
-#include "core/os/dir_access.h"
-#include "core/os/os.h"
+#include "os/dir_access.h"
+#include "os/os.h"
 
 #include "../godotsharp_dirs.h"
 
@@ -152,7 +152,8 @@ void GDMonoLog::initialize() {
 	log_level_id = log_level_get_id(log_level);
 
 	if (log_file) {
-		print_verbose("Mono: Logfile is " + log_file_path);
+		if (OS::get_singleton()->is_stdout_verbose())
+			OS::get_singleton()->print(String("Mono: Logfile is " + log_file_path + "\n").utf8());
 		mono_trace_set_log_handler(gdmono_MonoLogCallback, this);
 	} else {
 		OS::get_singleton()->printerr("Mono: No log file, using default log handler\n");

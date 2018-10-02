@@ -33,8 +33,7 @@
 
 #if defined(UNIX_ENABLED) || defined(PTHREAD_ENABLED)
 
-#include "core/os/mutex.h"
-
+#include "os/mutex.h"
 #include <pthread.h>
 
 class MutexPosix : public Mutex {

@@ -52,9 +52,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\\n"
 """
 
-def process_file(f, fname):
+print("Updating the editor.pot template...")
 
-    global main_po, unique_str, unique_loc
+for fname in matches:
+
+    f = open(fname, "rb")
 
     l = f.readline()
     lc = 1
@@ -88,7 +90,7 @@ def process_file(f, fname):
                 unique_str.append(msg)
                 unique_loc[msg] = [location]
             elif (not location in unique_loc[msg]):
-                # Add additional location to previous occurrence too
+                # Add additional location to previous occurence too
                 msg_pos = main_po.find('\nmsgid "' + msg + '"')
                 if (msg_pos == -1):
                     print("Someone apparently thought writing Python was as easy as GDScript. Ping Akien.")
@@ -98,14 +100,12 @@ def process_file(f, fname):
         l = f.readline()
         lc += 1
 
-print("Updating the editor.pot template...")
+    f.close()
 
-for fname in matches:
-    with open(fname, "rb") as f:
-        process_file(f, fname)
 
-with open("editor.pot", "wb") as f:
-    f.write(main_po)
+f = open("editor.pot", "wb")
+f.write(main_po)
+f.close()
 
 if (os.name == "posix"):
     print("Wrapping template at 79 characters for compatibility with Weblate.")

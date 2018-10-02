@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Viewport" inherits="Node" category="Core" version="3.1">
+<class name="Viewport" inherits="Node" category="Core" version="3.0.6">
 	<brief_description>
 		Creates a sub-view into the screen.
 	</brief_description>
@@ -12,8 +12,8 @@
 		Finally, viewports can also behave as render targets, in which case they will not be visible unless the associated texture is used to draw.
 	</description>
 	<tutorials>
-		<link>http://docs.godotengine.org/en/3.0/tutorials/2d/2d_transforms.html</link>
-		<link>http://docs.godotengine.org/en/3.0/tutorials/viewports/index.html</link>
+		http://docs.godotengine.org/en/3.0/tutorials/2d/2d_transforms.html
+	http://docs.godotengine.org/en/3.0/tutorials/viewports/index.html
 	</tutorials>
 	<demos>
 	</demos>
@@ -22,42 +22,35 @@
 			<return type="World">
 			</return>
 			<description>
-				Returns the 3D world of the viewport, or if none the world of the parent viewport.
+				Return the 3D world of the viewport, or if no such present, the one of the parent viewport.
 			</description>
 		</method>
 		<method name="find_world_2d" qualifiers="const">
 			<return type="World2D">
 			</return>
 			<description>
-				Returns the 2D world of the viewport.
+				Return the 2D world of the viewport.
 			</description>
 		</method>
 		<method name="get_camera" qualifiers="const">
 			<return type="Camera">
 			</return>
 			<description>
-				Returns the active 3D camera.
+				Return the active 3D camera.
 			</description>
 		</method>
 		<method name="get_final_transform" qualifiers="const">
 			<return type="Transform2D">
 			</return>
 			<description>
-				Returns the total transform of the viewport.
-			</description>
-		</method>
-		<method name="get_modal_stack_top" qualifiers="const">
-			<return type="Control">
-			</return>
-			<description>
-				Returns the topmost modal in the stack.
+				Get the total transform of the viewport.
 			</description>
 		</method>
 		<method name="get_mouse_position" qualifiers="const">
 			<return type="Vector2">
 			</return>
 			<description>
-				Returns the mouse position relative to the viewport.
+				Get the mouse position, relative to the viewport.
 			</description>
 		</method>
 		<method name="get_render_info">
@@ -66,35 +59,35 @@
 			<argument index="0" name="info" type="int" enum="Viewport.RenderInfo">
 			</argument>
 			<description>
-				Returns information about the viewport from the rendering pipeline.
+				Get the specific information about the viewport from rendering pipeline.
 			</description>
 		</method>
 		<method name="get_size_override" qualifiers="const">
 			<return type="Vector2">
 			</return>
 			<description>
-				Returns the size override set with [method set_size_override].
+				Get the size override set with [method set_size_override].
 			</description>
 		</method>
 		<method name="get_texture" qualifiers="const">
 			<return type="ViewportTexture">
 			</return>
 			<description>
-				Returns the viewport's texture.
+				Get the viewport's texture, for use with various objects that you want to texture with the viewport.
 			</description>
 		</method>
 		<method name="get_viewport_rid" qualifiers="const">
 			<return type="RID">
 			</return>
 			<description>
-				Returns the viewport's RID from the [VisualServer].
+				Get the viewport RID from the [VisualServer].
 			</description>
 		</method>
 		<method name="get_visible_rect" qualifiers="const">
 			<return type="Rect2">
 			</return>
 			<description>
-				Returns the visible rectangle in global screen coordinates.
+				Return the final, visible rect in global screen coordinates.
 			</description>
 		</method>
 		<method name="gui_get_drag_data" qualifiers="const">
@@ -108,13 +101,7 @@
 			<return type="bool">
 			</return>
 			<description>
-				Returns [code]true[/code] if there are visible modals on-screen.
-			</description>
-		</method>
-		<method name="gui_is_dragging" qualifiers="const">
-			<return type="bool">
-			</return>
-			<description>
+				Returns whether there are shown modals on-screen.
 			</description>
 		</method>
 		<method name="input">
@@ -129,14 +116,14 @@
 			<return type="bool">
 			</return>
 			<description>
-				Returns [code]true[/code] if the size override is enabled. See [method set_size_override].
+				Get the enabled status of the size override set with [method set_size_override].
 			</description>
 		</method>
 		<method name="is_size_override_stretch_enabled" qualifiers="const">
 			<return type="bool">
 			</return>
 			<description>
-				Returns [code]true[/code] if the size stretch override is enabled. See [method set_size_override_stretch].
+				Get the enabled status of the size stretch override set with [method set_size_override_stretch].
 			</description>
 		</method>
 		<method name="set_attach_to_screen_rect">
@@ -157,7 +144,7 @@
 			<argument index="2" name="margin" type="Vector2" default="Vector2( 0, 0 )">
 			</argument>
 			<description>
-				Sets the size override of the viewport. If the [code]enable[/code] parameter is [code]true[/code] the override is used, otherwise it uses the default size. If the size parameter is [code](-1, -1)[/code], it won't update the size.
+				Set the size override of the viewport. If the enable parameter is true, it would use the override, otherwise it would use the default size. If the size parameter is equal to [code](-1, -1)[/code], it won't update the size.
 			</description>
 		</method>
 		<method name="set_size_override_stretch">
@@ -166,7 +153,7 @@
 			<argument index="0" name="enabled" type="bool">
 			</argument>
 			<description>
-				If [code]true[/code] the size override affects stretch as well.
+				Set whether the size override affects stretch as well.
 			</description>
 		</method>
 		<method name="unhandled_input">
@@ -181,7 +168,7 @@
 			<return type="void">
 			</return>
 			<description>
-				Forces update of the 2D and 3D worlds.
+				Force update of the 2D and 3D worlds.
 			</description>
 		</method>
 		<method name="warp_mouse">
@@ -190,7 +177,7 @@
 			<argument index="0" name="to_position" type="Vector2">
 			</argument>
 			<description>
-				Warps the mouse to a position relative to the viewport.
+				Warp the mouse to a position, relative to the viewport.
 			</description>
 		</method>
 	</methods>
@@ -224,9 +211,6 @@
 		</member>
 		<member name="hdr" type="bool" setter="set_hdr" getter="get_hdr">
 			If [code]true[/code] the viewport rendering will receive benefits from High Dynamic Range algorithm. Default value: [code]true[/code].
-		</member>
-		<member name="keep_3d_linear" type="bool" setter="set_keep_3d_linear" getter="get_keep_3d_linear">
-			If [code]true[/code] the result after 3D rendering will not have a linear to sRGB color conversion applied. This is important when the viewport is used as a render target where the result is used as a texture on a 3D object rendered in another viewport. It is also important if the viewport is used to create data that is not color based (noise, heightmaps, pickmaps, etc.). Do not enable this when the viewport is used as a texture on a 2D object or if the viewport is your final output.
 		</member>
 		<member name="msaa" type="int" setter="set_msaa" getter="get_msaa" enum="Viewport.MSAA">
 			The multisample anti-aliasing mode. Default value: [code]MSAA_DISABLED[/code].

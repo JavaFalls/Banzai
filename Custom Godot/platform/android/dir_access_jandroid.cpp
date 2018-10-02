@@ -31,8 +31,8 @@
 #ifndef ANDROID_NATIVE_ACTIVITY
 
 #include "dir_access_jandroid.h"
-#include "core/print_string.h"
 #include "file_access_jandroid.h"
+#include "print_string.h"
 #include "thread_jandroid.h"
 
 jobject DirAccessJAndroid::io = NULL;
@@ -130,6 +130,7 @@ Error DirAccessJAndroid::change_dir(String p_dir) {
 	else
 		new_dir = current_dir.plus_file(p_dir);
 
+	//print_line("new dir is: "+new_dir);
 	//test if newdir exists
 	new_dir = new_dir.simplify_path();
 
@@ -153,6 +154,7 @@ String DirAccessJAndroid::get_current_dir() {
 
 bool DirAccessJAndroid::file_exists(String p_file) {
 
+	JNIEnv *env = ThreadAndroid::get_env();
 	String sd;
 	if (current_dir == "")
 		sd = p_file;
@@ -224,14 +226,28 @@ void DirAccessJAndroid::setup(jobject p_io) {
 
 	JNIEnv *env = ThreadAndroid::get_env();
 	io = p_io;
+	__android_log_print(ANDROID_LOG_INFO, "godot", "STEP7");
 
 	jclass c = env->GetObjectClass(io);
 	cls = (jclass)env->NewGlobalRef(c);
+	__android_log_print(ANDROID_LOG_INFO, "godot", "STEP8");
 
 	_dir_open = env->GetMethodID(cls, "dir_open", "(Ljava/lang/String;)I");
+	if (_dir_open != 0) {
+		__android_log_print(ANDROID_LOG_INFO, "godot", "*******GOT METHOD _dir_open ok!!");
+	}
 	_dir_next = env->GetMethodID(cls, "dir_next", "(I)Ljava/lang/String;");
+	if (_dir_next != 0) {
+		__android_log_print(ANDROID_LOG_INFO, "godot", "*******GOT METHOD _dir_next ok!!");
+	}
 	_dir_close = env->GetMethodID(cls, "dir_close", "(I)V");
+	if (_dir_close != 0) {
+		__android_log_print(ANDROID_LOG_INFO, "godot", "*******GOT METHOD _dir_close ok!!");
+	}
 	_dir_is_dir = env->GetMethodID(cls, "dir_is_dir", "(I)Z");
+	if (_dir_is_dir != 0) {
+		__android_log_print(ANDROID_LOG_INFO, "godot", "*******GOT METHOD _dir_is_dir ok!!");
+	}
 
 	//(*env)->CallVoidMethod(env,obj,aMethodID, myvar);
 }

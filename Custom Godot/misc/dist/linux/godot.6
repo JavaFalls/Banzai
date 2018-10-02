@@ -1,4 +1,4 @@
-.TH GODOT "6" "Februaryot 2018" "godot 3.1" "Games"
+.TH GODOT "6" "February 2018" "godot 3.0.2" "Games"
 .SH NAME
 godot \- multi\-platform 2D and 3D game engine with a feature\-rich editor
 .SH SYNOPSIS
@@ -59,7 +59,7 @@ Password for remote filesystem.
 Audio driver ('PulseAudio', 'ALSA').
 .TP
 \fB\-\-video\-driver\fR <driver>
-Video driver ('GLES3', 'GLES2').
+Video driver ('GLES3').
 .SS "Display options:"
 .TP
 \fB\-f\fR, \fB\-\-fullscreen\fR
@@ -70,9 +70,6 @@ Request a maximized window.
 .TP
 \fB\-w\fR, \fB\-\-windowed\fR
 Request windowed mode.
-.TP
-\fB\-t\fR, \fB\-\-always\-on\-top\fR
-Request an always\-on\-top window.
 .TP
 \fB\-\-resolution\fR <W>x<H>
 Request window resolution.
@@ -127,14 +124,11 @@ Print the frames per second to the stdout.
 \fB\-s\fR, \fB\-\-script\fR <script>
 Run a script.
 .TP
-\fB\-\-check\-only\fR
-Only parse for errors and quit (use with --script).
-.TP
 \fB\-\-export\fR <target>
-Export the project using the given export target. Export only main pack if path ends with .pck or .zip.
+Export the project using the given export target.
 .TP
 \fB\-\-export\-debug\fR
-Like \-\-export, but use debug template.
+Use together with \fB\-\-export\fR, enables debug mode for the template.
 .TP
 \fB\-\-doctool\fR <path>
 Dump the engine API reference to the given <path> in XML format, merging if existing files are found.
@@ -149,7 +143,7 @@ Build the scripting solutions (e.g. for C# projects).
 Generate JSON dump of the Godot API for GDNative bindings.
 .TP
 \fB\-\-test\fR <test>
-Run a unit test ('string', 'math', 'physics', 'physics_2d', 'render', 'oa_hash_map', 'gui', 'io', 'shaderlang', 'gd_tokenizer', 'gd_parser', 'gd_compiler', 'gd_bytecode', 'image', 'ordered_hash_map').
+Run a unit test ('string', 'containers', 'math', 'render', 'multimesh', 'gui', 'io', 'shaderlang', 'physics', 'oa_hash_map').
 .SH FILES
 XDG_DATA_CONFIG/godot/ or ~/.config/godot/
 .RS
@@ -159,7 +153,7 @@ XDG_DATA_HOME/godot/ or ~/.local/share/godot/
 .RS
 Contains the default configuration and user data folders for Godot\-made games (\fIuser://\fR path), as well as export templates.
 .RE
-XDG_DATA_CACHE/godot/ or ~/.cache/godot/
+XDG_DATA_CACHE/godot or ~/.cache/godot/
 .RS
 Cache folder for generated thumbnails and scene previews, as well as temporary location for downloads.
 .RE

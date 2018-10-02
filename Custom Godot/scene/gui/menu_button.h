@@ -43,6 +43,7 @@ class MenuButton : public Button {
 	bool clicked;
 	bool disable_shortcuts;
 	PopupMenu *popup;
+	virtual void pressed();
 
 	void _unhandled_key_input(Ref<InputEvent> p_event);
 	Array _get_items() const;
@@ -54,8 +55,6 @@ protected:
 	static void _bind_methods();
 
 public:
-	virtual void pressed();
-
 	PopupMenu *get_popup() const;
 	void set_disable_shortcuts(bool p_disabled);
 

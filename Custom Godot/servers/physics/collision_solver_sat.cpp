@@ -29,7 +29,7 @@
 /*************************************************************************/
 
 #include "collision_solver_sat.h"
-#include "core/math/geometry.h"
+#include "geometry.h"
 
 #define _EDGE_IS_VALID_SUPPORT_THRESHOLD 0.02
 
@@ -43,6 +43,12 @@ struct _CollectorCallback {
 	Vector3 *prev_axis;
 
 	_FORCE_INLINE_ void call(const Vector3 &p_point_A, const Vector3 &p_point_B) {
+
+		/*
+		if (normal.dot(p_point_A) >= normal.dot(p_point_B))
+			return;
+		print_line("** A: "+p_point_A+" B: "+p_point_B+" D: "+rtos(p_point_A.distance_to(p_point_B)));
+		*/
 
 		if (swap)
 			callback(p_point_B, p_point_A, userdata);
@@ -211,6 +217,8 @@ static void _generate_contacts_face_face(const Vector3 *p_points_A, int p_point_
 	// generate contacts
 	//Plane plane_A(p_points_A[0],p_points_A[1],p_points_A[2]);
 
+	int added = 0;
+
 	for (int i = 0; i < clipbuf_len; i++) {
 
 		real_t d = plane_B.distance_to(clipbuf_src[i]);
@@ -225,6 +233,7 @@ static void _generate_contacts_face_face(const Vector3 *p_points_A, int p_point_
 			continue;
 
 		p_callback->call(clipbuf_src[i], closest_B);
+		added++;
 	}
 }
 
@@ -342,7 +351,7 @@ public:
 
 		//use the smallest depth
 
-		if (min_B < 0.0) { // could be +0.0, we don't want it to become -0.0
+		if (min_B < 0.0) {
 			min_B = -min_B;
 		}
 
@@ -404,13 +413,26 @@ public:
 				supports_B[i] += best_axis * margin_B;
 			}
 		}
+		/*
+		print_line("best depth: "+rtos(best_depth));
+		print_line("best axis: "+(best_axis));
+		for(int i=0;i<support_count_A;i++) {
 
+			print_line("A-"+itos(i)+": "+supports_A[i]);
+		}
+		for(int i=0;i<support_count_B;i++) {
+
+			print_line("B-"+itos(i)+": "+supports_B[i]);
+		}
+*/
 		callback->normal = best_axis;
 		if (callback->prev_axis)
 			*callback->prev_axis = best_axis;
 		_generate_contacts_from_supports(supports_A, support_count_A, supports_B, support_count_B, callback);
 
 		callback->collided = true;
+		//CollisionSolverSW::CallbackResult cbk=NULL;
+		//cbk(Vector3(),Vector3(),NULL);
 	}
 
 	_FORCE_INLINE_ SeparatorAxisTest(const ShapeA *p_shape_A, const Transform &p_transform_A, const ShapeB *p_shape_B, const Transform &p_transform_B, _CollectorCallback *p_callback, real_t p_margin_A = 0, real_t p_margin_B = 0) {
@@ -425,6 +447,9 @@ public:
 	}
 };
 
+/****** SAT TESTS *******/
+/****** SAT TESTS *******/
+/****** SAT TESTS *******/
 /****** SAT TESTS *******/
 
 typedef void (*CollisionFunc)(const ShapeSW *, const Transform &, const ShapeSW *, const Transform &, _CollectorCallback *p_callback, real_t, real_t);
@@ -535,12 +560,6 @@ static void _collision_sphere_capsule(const ShapeSW *p_a, const Transform &p_tra
 		return;
 
 	separator.generate_contacts();
-}
-
-template <bool withMargin>
-static void _collision_sphere_cylinder(const ShapeSW *p_a, const Transform &p_transform_a, const ShapeSW *p_b, const Transform &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
-
-	return;
 }
 
 template <bool withMargin>
@@ -835,12 +854,6 @@ static void _collision_box_capsule(const ShapeSW *p_a, const Transform &p_transf
 }
 
 template <bool withMargin>
-static void _collision_box_cylinder(const ShapeSW *p_a, const Transform &p_transform_a, const ShapeSW *p_b, const Transform &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
-
-	return;
-}
-
-template <bool withMargin>
 static void _collision_box_convex_polygon(const ShapeSW *p_a, const Transform &p_transform_a, const ShapeSW *p_b, const Transform &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
 
 	const BoxShapeSW *box_A = static_cast<const BoxShapeSW *>(p_a);
@@ -1117,12 +1130,6 @@ static void _collision_capsule_capsule(const ShapeSW *p_a, const Transform &p_tr
 }
 
 template <bool withMargin>
-static void _collision_capsule_cylinder(const ShapeSW *p_a, const Transform &p_transform_a, const ShapeSW *p_b, const Transform &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
-
-	return;
-}
-
-template <bool withMargin>
 static void _collision_capsule_convex_polygon(const ShapeSW *p_a, const Transform &p_transform_a, const ShapeSW *p_b, const Transform &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
 
 	const CapsuleShapeSW *capsule_A = static_cast<const CapsuleShapeSW *>(p_a);
@@ -1240,24 +1247,6 @@ static void _collision_capsule_face(const ShapeSW *p_a, const Transform &p_trans
 	}
 
 	separator.generate_contacts();
-}
-
-template <bool withMargin>
-static void _collision_cylinder_cylinder(const ShapeSW *p_a, const Transform &p_transform_a, const ShapeSW *p_b, const Transform &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
-
-	return;
-}
-
-template <bool withMargin>
-static void _collision_cylinder_convex_polygon(const ShapeSW *p_a, const Transform &p_transform_a, const ShapeSW *p_b, const Transform &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
-
-	return;
-}
-
-template <bool withMargin>
-static void _collision_cylinder_face(const ShapeSW *p_a, const Transform &p_transform_a, const ShapeSW *p_b, const Transform &p_transform_b, _CollectorCallback *p_collector, real_t p_margin_a, real_t p_margin_b) {
-
-	return;
 }
 
 template <bool withMargin>
@@ -1489,33 +1478,23 @@ bool sat_calculate_penetration(const ShapeSW *p_shape_A, const Transform &p_tran
 	ERR_FAIL_COND_V(type_B == PhysicsServer::SHAPE_RAY, false);
 	ERR_FAIL_COND_V(p_shape_B->is_concave(), false);
 
-	static const CollisionFunc collision_table[6][6] = {
+	static const CollisionFunc collision_table[5][5] = {
 		{ _collision_sphere_sphere<false>,
 				_collision_sphere_box<false>,
 				_collision_sphere_capsule<false>,
-				_collision_sphere_cylinder<false>,
 				_collision_sphere_convex_polygon<false>,
 				_collision_sphere_face<false> },
 		{ 0,
 				_collision_box_box<false>,
 				_collision_box_capsule<false>,
-				_collision_box_cylinder<false>,
 				_collision_box_convex_polygon<false>,
 				_collision_box_face<false> },
 		{ 0,
 				0,
 				_collision_capsule_capsule<false>,
-				_collision_capsule_cylinder<false>,
 				_collision_capsule_convex_polygon<false>,
 				_collision_capsule_face<false> },
 		{ 0,
-				0,
-				0,
-				_collision_cylinder_cylinder<false>,
-				_collision_cylinder_convex_polygon<false>,
-				_collision_cylinder_face<false> },
-		{ 0,
-				0,
 				0,
 				0,
 				_collision_convex_polygon_convex_polygon<false>,
@@ -1524,43 +1503,31 @@ bool sat_calculate_penetration(const ShapeSW *p_shape_A, const Transform &p_tran
 				0,
 				0,
 				0,
-				0,
 				0 },
 	};
 
-	static const CollisionFunc collision_table_margin[6][6] = {
+	static const CollisionFunc collision_table_margin[5][5] = {
 		{ _collision_sphere_sphere<true>,
 				_collision_sphere_box<true>,
 				_collision_sphere_capsule<true>,
-				_collision_sphere_cylinder<true>,
 				_collision_sphere_convex_polygon<true>,
 				_collision_sphere_face<true> },
 		{ 0,
 				_collision_box_box<true>,
 				_collision_box_capsule<true>,
-				_collision_box_cylinder<true>,
 				_collision_box_convex_polygon<true>,
 				_collision_box_face<true> },
 		{ 0,
 				0,
 				_collision_capsule_capsule<true>,
-				_collision_capsule_cylinder<true>,
 				_collision_capsule_convex_polygon<true>,
 				_collision_capsule_face<true> },
 		{ 0,
 				0,
 				0,
-				_collision_cylinder_cylinder<true>,
-				_collision_cylinder_convex_polygon<true>,
-				_collision_cylinder_face<true> },
-		{ 0,
-				0,
-				0,
-				0,
 				_collision_convex_polygon_convex_polygon<true>,
 				_collision_convex_polygon_face<true> },
 		{ 0,
-				0,
 				0,
 				0,
 				0,

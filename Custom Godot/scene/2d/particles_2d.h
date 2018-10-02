@@ -28,11 +28,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef PARTICLES_2D_H
-#define PARTICLES_2D_H
+#ifndef PARTICLES_FRAME_H
+#define PARTICLES_FRAME_H
 
-#include "core/rid.h"
 #include "scene/2d/node_2d.h"
+#include "scene/resources/color_ramp.h"
 #include "scene/resources/texture.h"
 
 class Particles2D : public Node2D {
@@ -84,7 +84,7 @@ public:
 	void set_pre_process_time(float p_time);
 	void set_explosiveness_ratio(float p_ratio);
 	void set_randomness_ratio(float p_ratio);
-	void set_visibility_rect(const Rect2 &p_visibility_rect);
+	void set_visibility_rect(const Rect2 &p_aabb);
 	void set_use_local_coordinates(bool p_enable);
 	void set_process_material(const Ref<Material> &p_material);
 	void set_speed_scale(float p_scale);
@@ -132,4 +132,4 @@ public:
 
 VARIANT_ENUM_CAST(Particles2D::DrawOrder)
 
-#endif // PARTICLES_2D_H
+#endif // PARTICLES_FRAME_H

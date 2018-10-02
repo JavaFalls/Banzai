@@ -31,8 +31,8 @@
 #ifndef NETWORKED_MULTIPLAYER_ENET_H
 #define NETWORKED_MULTIPLAYER_ENET_H
 
-#include "core/io/compression.h"
-#include "core/io/networked_multiplayer_peer.h"
+#include "io/compression.h"
+#include "io/networked_multiplayer_peer.h"
 
 #include <enet/enet.h>
 
@@ -68,9 +68,6 @@ private:
 
 	int target_peer;
 	TransferMode transfer_mode;
-	int transfer_channel;
-	int channel_count;
-	bool always_ordered;
 
 	ENetEvent event;
 	ENetPeer *peer;
@@ -86,7 +83,6 @@ private:
 
 		ENetPacket *packet;
 		int from;
-		int channel;
 	};
 
 	CompressionMode compression_mode;
@@ -119,15 +115,10 @@ public:
 
 	virtual int get_packet_peer() const;
 
-	virtual IP_Address get_peer_address(int p_peer_id) const;
-	virtual int get_peer_port(int p_peer_id) const;
-
 	Error create_server(int p_port, int p_max_clients = 32, int p_in_bandwidth = 0, int p_out_bandwidth = 0);
-	Error create_client(const String &p_address, int p_port, int p_in_bandwidth = 0, int p_out_bandwidth = 0, int p_client_port = 0);
+	Error create_client(const IP_Address &p_ip, int p_port, int p_in_bandwidth = 0, int p_out_bandwidth = 0);
 
-	void close_connection(uint32_t wait_usec = 100);
-
-	void disconnect_peer(int p_peer, bool now = false);
+	void close_connection();
 
 	virtual void poll();
 
@@ -148,15 +139,6 @@ public:
 
 	void set_compression_mode(CompressionMode p_mode);
 	CompressionMode get_compression_mode() const;
-
-	int get_packet_channel() const;
-	int get_last_packet_channel() const;
-	void set_transfer_channel(int p_channel);
-	int get_transfer_channel() const;
-	void set_channel_count(int p_channel);
-	int get_channel_count() const;
-	void set_always_ordered(bool p_ordered);
-	bool is_always_ordered() const;
 
 	NetworkedMultiplayerENet();
 	~NetworkedMultiplayerENet();

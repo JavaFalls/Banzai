@@ -30,7 +30,7 @@
 
 #include "thread_dummy.h"
 
-#include "core/os/memory.h"
+#include "memory.h"
 
 Thread *ThreadDummy::create(ThreadCreateCallback p_callback, void *p_user, const Thread::Settings &p_settings) {
 	return memnew(ThreadDummy);
@@ -54,12 +54,4 @@ Semaphore *SemaphoreDummy::create() {
 
 void SemaphoreDummy::make_default() {
 	Semaphore::create_func = &SemaphoreDummy::create;
-};
-
-RWLock *RWLockDummy::create() {
-	return memnew(RWLockDummy);
-};
-
-void RWLockDummy::make_default() {
-	RWLock::create_func = &RWLockDummy::create;
 };

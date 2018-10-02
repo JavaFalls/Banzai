@@ -32,9 +32,8 @@
 #define TYPEDEFS_H
 
 #include <stddef.h>
-
 /**
- * Basic definitions and simple functions to be used everywhere.
+ * Basic definitions and simple functions to be used everywhere..
  */
 
 #include "platform_config.h"
@@ -72,7 +71,7 @@ T *_nullptr() {
 #define OFFSET_OF(st, m) \
 	((size_t)((char *)&(_nullptr<st>()->m) - (char *)0))
 /**
- * Some platforms (devices) don't define NULL
+ * Some platforms (devices) not define NULL
  */
 
 #ifndef NULL
@@ -80,7 +79,7 @@ T *_nullptr() {
 #endif
 
 /**
- * Windows badly defines a lot of stuff we'll never use. Undefine it.
+ * Windows defines a lot of badly stuff we'll never ever use. undefine it.
  */
 
 #ifdef _WIN32
@@ -94,22 +93,21 @@ T *_nullptr() {
 #undef CLAMP // override standard definition
 #undef Error
 #undef OK
-#undef CONNECT_DEFERRED // override from Windows SDK, clashes with Object enum
 #endif
 
-#include "core/int_types.h"
+#include "int_types.h"
 
-#include "core/error_list.h"
-#include "core/error_macros.h"
+#include "error_list.h"
+#include "error_macros.h"
 
 /** Generic ABS function, for math uses please use Math::abs */
 
 #ifndef ABS
-#define ABS(m_v) (((m_v) < 0) ? (-(m_v)) : (m_v))
+#define ABS(m_v) ((m_v < 0) ? (-(m_v)) : (m_v))
 #endif
 
 #ifndef SGN
-#define SGN(m_v) (((m_v) < 0) ? (-1.0) : (+1.0))
+#define SGN(m_v) ((m_v < 0) ? (-1.0) : (+1.0))
 #endif
 
 #ifndef MIN
@@ -297,4 +295,4 @@ struct _GlobalLock {
 #define unlikely(x) x
 #endif
 
-#endif // TYPEDEFS_H
+#endif /* typedefs.h */

@@ -30,12 +30,11 @@
 
 #include "register_types.h"
 
-#include "core/io/file_access_encrypted.h"
-#include "core/io/resource_loader.h"
-#include "core/os/file_access.h"
-#include "editor/gdscript_highlighter.h"
 #include "gdscript.h"
 #include "gdscript_tokenizer.h"
+#include "io/file_access_encrypted.h"
+#include "io/resource_loader.h"
+#include "os/file_access.h"
 
 GDScriptLanguage *script_language_gd = NULL;
 ResourceFormatLoaderGDScript *resource_loader_gd = NULL;
@@ -93,7 +92,6 @@ void register_gdscript_types() {
 	ResourceSaver::add_resource_format_saver(resource_saver_gd);
 
 #ifdef TOOLS_ENABLED
-	ScriptEditor::register_create_syntax_highlighter_function(GDScriptSyntaxHighlighter::create);
 	EditorNode::add_init_callback(_editor_init);
 #endif
 }

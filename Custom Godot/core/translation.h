@@ -31,7 +31,7 @@
 #ifndef TRANSLATION_H
 #define TRANSLATION_H
 
-#include "core/resource.h"
+#include "resource.h"
 
 class Translation : public Resource {
 

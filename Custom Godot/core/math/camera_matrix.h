@@ -31,9 +31,8 @@
 #ifndef CAMERA_MATRIX_H
 #define CAMERA_MATRIX_H
 
-#include "core/math/rect2.h"
-#include "core/math/transform.h"
-
+#include "math_2d.h"
+#include "transform.h"
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */

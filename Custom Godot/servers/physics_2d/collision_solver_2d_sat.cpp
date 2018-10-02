@@ -30,7 +30,7 @@
 
 #include "collision_solver_2d_sat.h"
 
-#include "core/math/geometry.h"
+#include "geometry.h"
 
 struct _CollectorCallback2D {
 
@@ -300,6 +300,7 @@ public:
 			}
 		}
 
+//print_line("test axis: "+p_axis+" depth: "+rtos(best_depth));
 #ifdef DEBUG_ENABLED
 		best_axis_count++;
 #endif

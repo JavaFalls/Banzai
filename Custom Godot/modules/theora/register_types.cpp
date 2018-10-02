@@ -29,22 +29,18 @@
 /*************************************************************************/
 
 #include "register_types.h"
-
+#include "resource_importer_theora.h"
 #include "video_stream_theora.h"
-
-static ResourceFormatLoaderTheora *resource_loader_theora = NULL;
 
 void register_theora_types() {
 
-	resource_loader_theora = memnew(ResourceFormatLoaderTheora);
-	ResourceLoader::add_resource_format_loader(resource_loader_theora, true);
-
+#ifdef TOOLS_ENABLED
+	Ref<ResourceImporterTheora> theora_import;
+	theora_import.instance();
+	ResourceFormatImporter::get_singleton()->add_importer(theora_import);
+#endif
 	ClassDB::register_class<VideoStreamTheora>();
 }
 
 void unregister_theora_types() {
-
-	if (resource_loader_theora) {
-		memdelete(resource_loader_theora);
-	}
 }

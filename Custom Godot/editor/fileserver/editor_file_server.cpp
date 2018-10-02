@@ -31,13 +31,12 @@
 #include "editor_file_server.h"
 
 #include "../editor_settings.h"
-#include "core/io/marshalls.h"
+#include "io/marshalls.h"
 
 //#define DEBUG_PRINT(m_p) print_line(m_p)
-//#define DEBUG_TIME(m_what) printf("MS: %s - %lu\n", m_what, OS::get_singleton()->get_ticks_usec());
+#define DEBUG_TIME(m_what) printf("MS: %s - %lu\n", m_what, OS::get_singleton()->get_ticks_usec());
 
-#define DEBUG_PRINT(m_what)
-#define DEBUG_TIME(m_what)
+//#define DEBUG_TIME(m_what)
 
 void EditorFileServer::_close_client(ClientData *cd) {
 
@@ -79,7 +78,7 @@ void EditorFileServer::_subthread_start(void *s) {
 			_close_client(cd);
 			ERR_FAIL_COND(err != OK);
 		}
-		passutf8.write[passlen] = 0;
+		passutf8[passlen] = 0;
 		String s;
 		s.parse_utf8(passutf8.ptr());
 		if (s != cd->efs->password) {
@@ -108,6 +107,7 @@ void EditorFileServer::_subthread_start(void *s) {
 
 		//wait for ID
 		err = cd->connection->get_data(buf4, 4);
+		//#define DEBUG_PRINT(m_p) print_line(m_p)
 		DEBUG_TIME("get_data")
 
 		if (err != OK) {
@@ -145,18 +145,18 @@ void EditorFileServer::_subthread_start(void *s) {
 					_close_client(cd);
 					ERR_FAIL_COND(err != OK);
 				}
-				fileutf8.write[namelen] = 0;
+				fileutf8[namelen] = 0;
 				String s;
 				s.parse_utf8(fileutf8.ptr());
 
 				if (cmd == FileAccessNetwork::COMMAND_FILE_EXISTS) {
-					DEBUG_PRINT("FILE EXISTS: " + s);
+					print_line("FILE EXISTS: " + s);
 				}
 				if (cmd == FileAccessNetwork::COMMAND_GET_MODTIME) {
-					DEBUG_PRINT("MOD TIME: " + s);
+					print_line("MOD TIME: " + s);
 				}
 				if (cmd == FileAccessNetwork::COMMAND_OPEN_FILE) {
-					DEBUG_PRINT("OPEN: " + s);
+					print_line("OPEN: " + s);
 				}
 
 				if (!s.begins_with("res://")) {
@@ -243,7 +243,7 @@ void EditorFileServer::_subthread_start(void *s) {
 				int read = cd->files[id]->get_buffer(buf.ptrw(), blocklen);
 				ERR_CONTINUE(read < 0);
 
-				DEBUG_PRINT("GET BLOCK - offset: " + itos(offset) + ", blocklen: " + itos(blocklen));
+				print_line("GET BLOCK - offset: " + itos(offset) + ", blocklen: " + itos(blocklen));
 
 				//not found, continue
 				encode_uint32(id, buf4);
@@ -259,7 +259,7 @@ void EditorFileServer::_subthread_start(void *s) {
 			} break;
 			case FileAccessNetwork::COMMAND_CLOSE: {
 
-				DEBUG_PRINT("CLOSED");
+				print_line("CLOSED");
 				ERR_CONTINUE(!cd->files.has(id));
 				memdelete(cd->files[id]);
 				cd->files.erase(id);
@@ -330,7 +330,7 @@ void EditorFileServer::stop() {
 
 EditorFileServer::EditorFileServer() {
 
-	server.instance();
+	server = TCP_Server::create_ref();
 	wait_mutex = Mutex::create();
 	quit = false;
 	active = false;

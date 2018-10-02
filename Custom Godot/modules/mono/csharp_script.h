@@ -31,10 +31,10 @@
 #ifndef CSHARP_SCRIPT_H
 #define CSHARP_SCRIPT_H
 
-#include "core/io/resource_loader.h"
-#include "core/io/resource_saver.h"
-#include "core/script_language.h"
-#include "core/self_list.h"
+#include "io/resource_loader.h"
+#include "io/resource_saver.h"
+#include "script_language.h"
+#include "self_list.h"
 
 #include "mono_gc_handle.h"
 #include "mono_gd/gd_mono.h"
@@ -48,8 +48,6 @@ class CSharpLanguage;
 #ifdef NO_SAFE_CAST
 template <typename TScriptInstance, typename TScriptLanguage>
 TScriptInstance *cast_script_instance(ScriptInstance *p_inst) {
-	if (!p_inst)
-		return NULL;
 	return p_inst->get_language() == TScriptLanguage::get_singleton() ? static_cast<TScriptInstance *>(p_inst) : NULL;
 }
 #else
@@ -141,7 +139,6 @@ public:
 	virtual bool can_instance() const;
 	virtual StringName get_instance_base_type() const;
 	virtual ScriptInstance *instance_create(Object *p_this);
-	virtual PlaceHolderScriptInstance *placeholder_instance_create(Object *p_this);
 	virtual bool instance_has(const Object *p_this) const;
 
 	virtual bool has_source_code() const;
@@ -179,19 +176,14 @@ class CSharpInstance : public ScriptInstance {
 
 	friend class CSharpScript;
 	friend class CSharpLanguage;
-
 	Object *owner;
-	bool base_ref;
-	bool ref_dying;
-	bool unsafe_referenced;
-
 	Ref<CSharpScript> script;
 	Ref<MonoGCHandle> gchandle;
+	bool base_ref;
+	bool ref_dying;
 
-	bool _reference_owner_unsafe();
-	bool _unreference_owner_unsafe();
-
-	MonoObject *_internal_new_managed();
+	void _reference_owner_unsafe();
+	void _unreference_owner_unsafe();
 
 	// Do not use unless you know what you are doing
 	friend void GDMonoInternals::tie_managed_to_unmanaged(MonoObject *, Object *);
@@ -199,7 +191,7 @@ class CSharpInstance : public ScriptInstance {
 
 	void _call_multilevel(MonoObject *p_mono_object, const StringName &p_method, const Variant **p_args, int p_argcount);
 
-	MultiplayerAPI::RPCMode _member_get_rpc_mode(GDMonoClassMember *p_member) const;
+	RPCMode _member_get_rpc_mode(GDMonoClassMember *p_member) const;
 
 public:
 	MonoObject *get_mono_object() const;
@@ -215,17 +207,16 @@ public:
 	virtual void call_multilevel(const StringName &p_method, const Variant **p_args, int p_argcount);
 	virtual void call_multilevel_reversed(const StringName &p_method, const Variant **p_args, int p_argcount);
 
-	void mono_object_disposed(MonoObject *p_obj);
-	void mono_object_disposed_baseref(MonoObject *p_obj, bool p_is_finalizer, bool &r_owner_deleted);
+	void mono_object_disposed();
 
 	virtual void refcount_incremented();
 	virtual bool refcount_decremented();
 
-	virtual MultiplayerAPI::RPCMode get_rpc_mode(const StringName &p_method) const;
-	virtual MultiplayerAPI::RPCMode get_rset_mode(const StringName &p_variable) const;
+	virtual RPCMode get_rpc_mode(const StringName &p_method) const;
+	virtual RPCMode get_rset_mode(const StringName &p_variable) const;
 
 	virtual void notification(int p_notification);
-	void _call_notification(int p_notification);
+	void call_notification_no_check(MonoObject *p_mono_object, int p_notification);
 
 	virtual Ref<Script> get_script() const;
 
@@ -233,12 +224,6 @@ public:
 
 	CSharpInstance();
 	~CSharpInstance();
-};
-
-struct CSharpScriptBinding {
-	StringName type_name;
-	GDMonoClass *wrapper_class;
-	Ref<MonoGCHandle> gchandle;
 };
 
 class CSharpLanguage : public ScriptLanguage {
@@ -255,11 +240,10 @@ class CSharpLanguage : public ScriptLanguage {
 
 	Mutex *lock;
 	Mutex *script_bind_lock;
-	Mutex *script_gchandle_release_lock;
 
 	Map<Ref<CSharpScript>, Map<ObjectID, List<Pair<StringName, Variant> > > > to_reload;
 
-	Map<Object *, CSharpScriptBinding> script_bindings;
+	Map<Object *, Ref<MonoGCHandle> > gchandle_bindings;
 
 	struct StringNameCache {
 
@@ -285,9 +269,6 @@ public:
 
 	_FORCE_INLINE_ static CSharpLanguage *get_singleton() { return singleton; }
 
-	static void release_script_gchandle(Ref<MonoGCHandle> &p_gchandle);
-	static void release_script_gchandle(MonoObject *p_pinned_expected_obj, Ref<MonoGCHandle> &p_gchandle);
-
 	bool debug_break(const String &p_error, bool p_allow_continue = true);
 	bool debug_break_parse(const String &p_file, int p_line, const String &p_error);
 
@@ -311,7 +292,7 @@ public:
 	virtual Ref<Script> get_template(const String &p_class_name, const String &p_base_class_name) const;
 	virtual bool is_using_templates();
 	virtual void make_template(const String &p_class_name, const String &p_base_class_name, Ref<Script> &p_script);
-	/* TODO */ virtual bool validate(const String &p_script, int &r_line_error, int &r_col_error, String &r_test_error, const String &p_path, List<String> *r_functions, List<ScriptLanguage::Warning> *r_warnings = NULL, Set<int> *r_safe_lines = NULL) const { return true; }
+	/* TODO */ virtual bool validate(const String &p_script, int &r_line_error, int &r_col_error, String &r_test_error, const String &p_path, List<String> *r_functions) const { return true; }
 	virtual String validate_path(const String &p_path) const;
 	virtual Script *create_script() const;
 	virtual bool has_named_classes() const;
@@ -364,8 +345,6 @@ public:
 	// Don't use these. I'm watching you
 	virtual void *alloc_instance_binding_data(Object *p_object);
 	virtual void free_instance_binding_data(void *p_data);
-	virtual void refcount_incremented_instance_binding(Object *p_object);
-	virtual bool refcount_decremented_instance_binding(Object *p_object);
 
 #ifdef DEBUG_ENABLED
 	Vector<StackInfo> stack_trace_get_info(MonoObject *p_stack_trace);

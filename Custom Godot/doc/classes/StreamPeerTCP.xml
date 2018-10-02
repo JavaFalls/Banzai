@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="StreamPeerTCP" inherits="StreamPeer" category="Core" version="3.1">
+<class name="StreamPeerTCP" inherits="StreamPeer" category="Core" version="3.0.6">
 	<brief_description>
 		TCP Stream peer.
 	</brief_description>
@@ -43,7 +43,7 @@
 				Return the port of this peer.
 			</description>
 		</method>
-		<method name="get_status">
+		<method name="get_status" qualifiers="const">
 			<return type="int" enum="StreamPeerTCP.Status">
 			</return>
 			<description>
@@ -78,7 +78,7 @@
 			A status representing a [code]StreamPeerTCP[/code] that is connected to a host.
 		</constant>
 		<constant name="STATUS_ERROR" value="3" enum="Status">
-			A status representing a [code]StreamPeerTCP[/code] in error state.
+			A staus representing a [code]StreamPeerTCP[/code] in error state.
 		</constant>
 	</constants>
 </class>

@@ -31,10 +31,10 @@
 #ifndef HTTPREQUEST_H
 #define HTTPREQUEST_H
 
-#include "core/io/http_client.h"
-#include "core/os/file_access.h"
-#include "core/os/thread.h"
+#include "io/http_client.h"
 #include "node.h"
+#include "os/file_access.h"
+#include "os/thread.h"
 
 class HTTPRequest : public Node {
 

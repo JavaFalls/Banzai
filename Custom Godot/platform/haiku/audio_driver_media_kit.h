@@ -35,9 +35,8 @@
 #include "core/os/mutex.h"
 #include "core/os/thread.h"
 
-#include <kernel/image.h> // needed for image_id
-
 #include <SoundPlayer.h>
+#include <kernel/image.h> // needed for image_id
 
 class AudioDriverMediaKit : public AudioDriver {
 	Mutex *mutex;

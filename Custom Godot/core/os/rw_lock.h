@@ -31,7 +31,7 @@
 #ifndef RWLOCK_H
 #define RWLOCK_H
 
-#include "core/error_list.h"
+#include "error_list.h"
 
 class RWLock {
 protected:
@@ -56,10 +56,8 @@ class RWLockRead {
 	RWLock *lock;
 
 public:
-	RWLockRead(const RWLock *p_lock) {
-		if (p_lock) {
-			lock = const_cast<RWLock *>(p_lock);
-		}
+	RWLockRead(RWLock *p_lock) {
+		lock = p_lock;
 		if (lock) lock->read_lock();
 	}
 	~RWLockRead() {

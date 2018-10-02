@@ -30,9 +30,9 @@
 
 #include "doc_dump.h"
 
-#include "core/os/file_access.h"
-#include "core/version.h"
+#include "os/file_access.h"
 #include "scene/main/node.h"
+#include "version.h"
 
 static void _write_string(FileAccess *f, int p_tablevel, const String &p_string) {
 
@@ -142,7 +142,7 @@ void DocDump::dump(const String &p_file) {
 					if (arginfo.hint == PROPERTY_HINT_RESOURCE_TYPE)
 						type_name = arginfo.hint_string;
 					else if (arginfo.type == Variant::NIL)
-						type_name = "Variant";
+						type_name = "var";
 					else
 						type_name = Variant::get_type_name(arginfo.type);
 

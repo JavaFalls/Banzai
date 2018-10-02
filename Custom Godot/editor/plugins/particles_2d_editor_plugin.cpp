@@ -31,9 +31,9 @@
 #include "particles_2d_editor_plugin.h"
 
 #include "canvas_item_editor_plugin.h"
-#include "core/io/image_loader.h"
+#include "io/image_loader.h"
+#include "scene/3d/particles.h"
 #include "scene/gui/separator.h"
-#include "scene/resources/particles_material.h"
 
 void Particles2DEditorPlugin::edit(Object *p_object) {
 
@@ -58,6 +58,8 @@ void Particles2DEditorPlugin::make_visible(bool p_visible) {
 
 void Particles2DEditorPlugin::_file_selected(const String &p_file) {
 
+	print_line("file: " + p_file);
+
 	source_emission_file = p_file;
 	emission_mask->popup_centered_minsize();
 }
@@ -66,12 +68,7 @@ void Particles2DEditorPlugin::_menu_callback(int p_idx) {
 
 	switch (p_idx) {
 		case MENU_GENERATE_VISIBILITY_RECT: {
-			float gen_time = particles->get_lifetime();
-			if (gen_time < 1.0)
-				generate_seconds->set_value(1.0);
-			else
-				generate_seconds->set_value(trunc(gen_time) + 1.0);
-			generate_visibility_rect->popup_centered_minsize();
+			generate_aabb->popup_centered_minsize();
 		} break;
 		case MENU_LOAD_EMISSION_MASK: {
 
@@ -91,13 +88,7 @@ void Particles2DEditorPlugin::_generate_visibility_rect() {
 
 	float running = 0.0;
 
-	EditorProgress ep("gen_vrect", TTR("Generating Visibility Rect"), int(time));
-
-	bool was_emitting = particles->is_emitting();
-	if (!was_emitting) {
-		particles->set_emitting(true);
-		OS::get_singleton()->delay_usec(1000);
-	}
+	EditorProgress ep("gen_aabb", TTR("Generating AABB"), int(time));
 
 	Rect2 rect;
 	while (running < time) {
@@ -113,10 +104,6 @@ void Particles2DEditorPlugin::_generate_visibility_rect() {
 			rect = rect.merge(capture);
 
 		running += (OS::get_singleton()->get_ticks_usec() - ticks) / 1000000.0;
-	}
-
-	if (!was_emitting) {
-		particles->set_emitting(false);
 	}
 
 	particles->set_visibility_rect(rect);
@@ -178,12 +165,12 @@ void Particles2DEditorPlugin::_generate_emission_mask() {
 					if (emode == EMISSION_MODE_SOLID) {
 
 						if (capture_colors) {
-							valid_colors.write[vpc * 4 + 0] = r[(j * s.width + i) * 4 + 0];
-							valid_colors.write[vpc * 4 + 1] = r[(j * s.width + i) * 4 + 1];
-							valid_colors.write[vpc * 4 + 2] = r[(j * s.width + i) * 4 + 2];
-							valid_colors.write[vpc * 4 + 3] = r[(j * s.width + i) * 4 + 3];
+							valid_colors[vpc * 4 + 0] = r[(j * s.width + i) * 4 + 0];
+							valid_colors[vpc * 4 + 1] = r[(j * s.width + i) * 4 + 1];
+							valid_colors[vpc * 4 + 2] = r[(j * s.width + i) * 4 + 2];
+							valid_colors[vpc * 4 + 3] = r[(j * s.width + i) * 4 + 3];
 						}
-						valid_positions.write[vpc++] = Point2(i, j);
+						valid_positions[vpc++] = Point2(i, j);
 
 					} else {
 
@@ -202,7 +189,7 @@ void Particles2DEditorPlugin::_generate_emission_mask() {
 						}
 
 						if (on_border) {
-							valid_positions.write[vpc] = Point2(i, j);
+							valid_positions[vpc] = Point2(i, j);
 
 							if (emode == EMISSION_MODE_BORDER_DIRECTED) {
 								Vector2 normal;
@@ -219,14 +206,14 @@ void Particles2DEditorPlugin::_generate_emission_mask() {
 								}
 
 								normal.normalize();
-								valid_normals.write[vpc] = normal;
+								valid_normals[vpc] = normal;
 							}
 
 							if (capture_colors) {
-								valid_colors.write[vpc * 4 + 0] = r[(j * s.width + i) * 4 + 0];
-								valid_colors.write[vpc * 4 + 1] = r[(j * s.width + i) * 4 + 1];
-								valid_colors.write[vpc * 4 + 2] = r[(j * s.width + i) * 4 + 2];
-								valid_colors.write[vpc * 4 + 3] = r[(j * s.width + i) * 4 + 3];
+								valid_colors[vpc * 4 + 0] = r[(j * s.width + i) * 4 + 0];
+								valid_colors[vpc * 4 + 1] = r[(j * s.width + i) * 4 + 1];
+								valid_colors[vpc * 4 + 2] = r[(j * s.width + i) * 4 + 2];
+								valid_colors[vpc * 4 + 3] = r[(j * s.width + i) * 4 + 3];
 							}
 
 							vpc++;
@@ -374,19 +361,19 @@ Particles2DEditorPlugin::Particles2DEditorPlugin(EditorNode *p_node) {
 	epoints->set_value(512);
 	file->get_vbox()->add_margin_child(TTR("Generated Point Count:"), epoints);
 
-	generate_visibility_rect = memnew(ConfirmationDialog);
-	generate_visibility_rect->set_title(TTR("Generate Visibility Rect"));
+	generate_aabb = memnew(ConfirmationDialog);
+	generate_aabb->set_title(TTR("Generate Visibility Rect"));
 	VBoxContainer *genvb = memnew(VBoxContainer);
-	generate_visibility_rect->add_child(genvb);
+	generate_aabb->add_child(genvb);
 	generate_seconds = memnew(SpinBox);
 	genvb->add_margin_child(TTR("Generation Time (sec):"), generate_seconds);
 	generate_seconds->set_min(0.1);
 	generate_seconds->set_max(25);
 	generate_seconds->set_value(2);
 
-	toolbar->add_child(generate_visibility_rect);
+	toolbar->add_child(generate_aabb);
 
-	generate_visibility_rect->connect("confirmed", this, "_generate_visibility_rect");
+	generate_aabb->connect("confirmed", this, "_generate_visibility_rect");
 
 	emission_mask = memnew(ConfirmationDialog);
 	emission_mask->set_title(TTR("Generate Visibility Rect"));

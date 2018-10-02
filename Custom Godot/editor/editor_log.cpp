@@ -31,10 +31,10 @@
 #include "editor_log.h"
 
 #include "core/os/keyboard.h"
-#include "core/version.h"
 #include "editor_node.h"
 #include "scene/gui/center_container.h"
 #include "scene/resources/dynamic_font.h"
+#include "version.h"
 
 void EditorLog::_error_handler(void *p_self, const char *p_func, const char *p_file, int p_line, const char *p_error, const char *p_errorexp, ErrorHandlerType p_type) {
 
@@ -54,11 +54,7 @@ void EditorLog::_error_handler(void *p_self, const char *p_func, const char *p_f
 		self->emit_signal("show_request");
 	*/
 
-	if (p_type == ERR_HANDLER_WARNING) {
-		self->add_message(err_str, MSG_TYPE_WARNING);
-	} else {
-		self->add_message(err_str, MSG_TYPE_ERROR);
-	}
+	self->add_message(err_str, true);
 }
 
 void EditorLog::_notification(int p_what) {
@@ -99,32 +95,22 @@ void EditorLog::clear() {
 	_clear_request();
 }
 
-void EditorLog::add_message(const String &p_msg, MessageType p_type) {
+void EditorLog::add_message(const String &p_msg, bool p_error) {
 
 	log->add_newline();
 
-	bool restore = p_type != MSG_TYPE_STD;
-	switch (p_type) {
-		case MSG_TYPE_ERROR: {
-			log->push_color(get_color("error_color", "Editor"));
-			Ref<Texture> icon = get_icon("Error", "EditorIcons");
-			log->add_image(icon);
-			log->add_text(" ");
-			tool_button->set_icon(icon);
-		} break;
-		case MSG_TYPE_WARNING: {
-			log->push_color(get_color("warning_color", "Editor"));
-			Ref<Texture> icon = get_icon("Warning", "EditorIcons");
-			log->add_image(icon);
-			log->add_text(" ");
-			tool_button->set_icon(icon);
-		} break;
+	if (p_error) {
+		log->push_color(get_color("error_color", "Editor"));
+		Ref<Texture> icon = get_icon("Error", "EditorIcons");
+		log->add_image(icon);
+		log->add_text(" ");
+		tool_button->set_icon(icon);
 	}
 
 	log->add_text(p_msg);
 	//button->set_text(p_msg);
 
-	if (restore)
+	if (p_error)
 		log->pop();
 }
 

@@ -31,13 +31,13 @@
 #ifndef SCENE_MAIN_LOOP_H
 #define SCENE_MAIN_LOOP_H
 
-#include "core/io/multiplayer_api.h"
-#include "core/os/main_loop.h"
-#include "core/os/thread_safe.h"
-#include "core/self_list.h"
+#include "io/networked_multiplayer_peer.h"
+#include "os/main_loop.h"
+#include "os/thread_safe.h"
 #include "scene/resources/mesh.h"
 #include "scene/resources/world.h"
 #include "scene/resources/world_2d.h"
+#include "self_list.h"
 
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
@@ -161,7 +161,7 @@ private:
 	bool ugc_locked;
 	void _flush_ugc();
 
-	_FORCE_INLINE_ void _update_group_order(Group &g, bool p_use_priority = false);
+	_FORCE_INLINE_ void _update_group_order(Group &g);
 	void _update_listener();
 
 	Array _get_nodes_in_group(const StringName &p_group);
@@ -185,9 +185,16 @@ private:
 
 	///network///
 
-	Ref<MultiplayerAPI> multiplayer;
-	bool multiplayer_poll;
+	enum NetworkCommands {
+		NETWORK_COMMAND_REMOTE_CALL,
+		NETWORK_COMMAND_REMOTE_SET,
+		NETWORK_COMMAND_SIMPLIFY_PATH,
+		NETWORK_COMMAND_CONFIRM_PATH,
+	};
 
+	Ref<NetworkedMultiplayerPeer> network_peer;
+
+	Set<int> connected_peers;
 	void _network_peer_connected(int p_id);
 	void _network_peer_disconnected(int p_id);
 
@@ -195,8 +202,38 @@ private:
 	void _connection_failed();
 	void _server_disconnected();
 
+	int rpc_sender_id;
+
+	//path sent caches
+	struct PathSentCache {
+		Map<int, bool> confirmed_peers;
+		int id;
+	};
+
+	HashMap<NodePath, PathSentCache> path_send_cache;
+	int last_send_cache_id;
+
+	//path get caches
+	struct PathGetCache {
+		struct NodeInfo {
+			NodePath path;
+			ObjectID instance;
+		};
+
+		Map<int, NodeInfo> nodes;
+	};
+
+	Map<int, PathGetCache> path_get_cache;
+
+	Vector<uint8_t> packet_cache;
+
+	void _network_process_packet(int p_from, const uint8_t *p_packet, int p_packet_len);
+	void _network_poll();
+
 	static SceneTree *singleton;
 	friend class Node;
+
+	void _rpc(Node *p_from, int p_to, bool p_unreliable, bool p_set, const StringName &p_name, const Variant **p_arg, int p_argcount);
 
 	void tree_changed();
 	void node_added(Node *p_node);
@@ -204,7 +241,6 @@ private:
 
 	Group *add_to_group(const StringName &p_group, Node *p_node);
 	void remove_from_group(const StringName &p_group, Node *p_node);
-	void make_group_changed(const StringName &p_group);
 
 	void _notify_group_pause(const StringName &p_group, int p_notification);
 	void _call_input_pause(const StringName &p_group, const StringName &p_method, const Ref<InputEvent> &p_input);
@@ -412,10 +448,6 @@ public:
 
 	//network API
 
-	Ref<MultiplayerAPI> get_multiplayer() const;
-	void set_multiplayer_poll_enabled(bool p_enabled);
-	bool is_multiplayer_poll_enabled() const;
-	void set_multiplayer(Ref<MultiplayerAPI> p_multiplayer);
 	void set_network_peer(const Ref<NetworkedMultiplayerPeer> &p_network_peer);
 	Ref<NetworkedMultiplayerPeer> get_network_peer() const;
 	bool is_network_server() const;

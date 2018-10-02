@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Vector3" category="Built-In Types" version="3.1">
+<class name="Vector3" category="Built-In Types" version="3.0.6">
 	<brief_description>
 		Vector class, which performs basic 3D vector math operations.
 	</brief_description>
@@ -7,7 +7,7 @@
 		Vector3 is one of the core classes of the engine, and includes several built-in helper functions to perform basic vector math operations.
 	</description>
 	<tutorials>
-		<link>http://docs.godotengine.org/en/3.0/tutorials/math/index.html</link>
+		http://docs.godotengine.org/en/3.0/tutorials/math/index.html
 	</tutorials>
 	<demos>
 	</demos>
@@ -78,7 +78,7 @@
 			<argument index="3" name="t" type="float">
 			</argument>
 			<description>
-				Performs a cubic interpolation between vectors [code]pre_a[/code], [code]a[/code], [code]b[/code], [code]post_b[/code] ([code]a[/code] is current), by the given amount [code]t[/code]. [code]t[/code] is in the range of [code]0.0 - 1.0[/code], representing the amount of interpolation.
+				Performs a cubic interpolation between vectors [code]pre_a[/code], [code]a[/code], [code]b[/code], [code]post_b[/code] ([code]a[/code] is current), by the given amount (t). (t) should be a float of 0.0-1.0, a percentage of how far along the interpolation is.
 			</description>
 		</method>
 		<method name="distance_squared_to">
@@ -151,7 +151,7 @@
 			<argument index="1" name="t" type="float">
 			</argument>
 			<description>
-				Returns the result of the linear interpolation between this vector and [code]b[/code] by amount [code]t[/code]. [code]t[/code] is in the range of [code]0.0 - 1.0[/code], representing the amount of interpolation..
+				Returns the result of the linear interpolation between this vector and [code]b[/code] by amount [code]t[/code]. [code]t[/code] is in the range of [code]0.0 - 1.0[/code], a percentage of how far along the interpolation is.
 			</description>
 		</method>
 		<method name="max_axis">
@@ -184,15 +184,6 @@
 				Returns the outer product with [code]b[/code].
 			</description>
 		</method>
-		<method name="project">
-			<return type="Vector3">
-			</return>
-			<argument index="0" name="b" type="Vector3">
-			</argument>
-			<description>
-				Returns the vector projected onto the vector [code]b[/code].
-			</description>
-		</method>
 		<method name="reflect">
 			<return type="Vector3">
 			</return>
@@ -217,19 +208,6 @@
 			<return type="Vector3">
 			</return>
 			<description>
-				Returns the vector with all components rounded to the nearest integer, with halfway cases rounded away from zero.
-			</description>
-		</method>
-		<method name="slerp">
-			<return type="Vector3">
-			</return>
-			<argument index="0" name="b" type="Vector3">
-			</argument>
-			<argument index="1" name="t" type="float">
-			</argument>
-			<description>
-				Returns the result of SLERP between this vector and [code]b[/code], by amount [code]t[/code]. [code]t[/code] is in the range of [code]0.0 - 1.0[/code], representing the amount of interpolation.
-				Both vectors need to be normalized.
 			</description>
 		</method>
 		<method name="slide">
@@ -244,7 +222,7 @@
 		<method name="snapped">
 			<return type="Vector3">
 			</return>
-			<argument index="0" name="by" type="Vector3">
+			<argument index="0" name="by" type="float">
 			</argument>
 			<description>
 				Returns a copy of the vector, snapped to the lowest neared multiple.
@@ -278,30 +256,6 @@
 		</constant>
 		<constant name="AXIS_Z" value="2">
 			Enumerated value for the Z axis.
-		</constant>
-		<constant name="ZERO" value="Vector3( 0, 0, 0 )">
-			Null vector.
-		</constant>
-		<constant name="INF" value="Vector3( inf, inf, inf )">
-			Infinite vector.
-		</constant>
-		<constant name="LEFT" value="Vector3( -1, 0, 0 )">
-			Left unit vector.
-		</constant>
-		<constant name="RIGHT" value="Vector3( 1, 0, 0 )">
-			Right unit vector.
-		</constant>
-		<constant name="UP" value="Vector3( 0, 1, 0 )">
-			Up unit vector.
-		</constant>
-		<constant name="DOWN" value="Vector3( 0, -1, 0 )">
-			Down unit vector.
-		</constant>
-		<constant name="FORWARD" value="Vector3( 0, 0, -1 )">
-			Forward unit vector.
-		</constant>
-		<constant name="BACK" value="Vector3( 0, 0, 1 )">
-			Back unit vector.
 		</constant>
 	</constants>
 </class>

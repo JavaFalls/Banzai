@@ -31,9 +31,10 @@
 #ifndef STRING_DB_H
 #define STRING_DB_H
 
-#include "core/os/mutex.h"
-#include "core/safe_refcount.h"
-#include "core/ustring.h"
+#include "hash_map.h"
+#include "os/mutex.h"
+#include "safe_refcount.h"
+#include "ustring.h"
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
@@ -66,7 +67,6 @@ class StringName {
 		_Data() {
 			cname = NULL;
 			next = prev = NULL;
-			idx = 0;
 			hash = 0;
 		}
 	};
@@ -165,6 +165,11 @@ public:
 	StringName(const StaticCString &p_static_string);
 	StringName();
 	~StringName();
+};
+
+struct StringNameHasher {
+
+	static _FORCE_INLINE_ uint32_t hash(const StringName &p_string) { return p_string.hash(); }
 };
 
 StringName _scs_create(const char *p_chr);

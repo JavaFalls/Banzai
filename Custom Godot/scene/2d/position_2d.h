@@ -44,7 +44,6 @@ protected:
 
 public:
 	virtual Rect2 _edit_get_rect() const;
-	virtual bool _edit_use_rect() const;
 	Position2D();
 };
 

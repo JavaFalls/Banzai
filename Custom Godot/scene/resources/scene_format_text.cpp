@@ -30,15 +30,15 @@
 
 #include "scene_format_text.h"
 #include "core/io/resource_format_binary.h"
-#include "core/os/dir_access.h"
-#include "core/project_settings.h"
-#include "core/version.h"
+#include "os/dir_access.h"
+#include "project_settings.h"
+#include "version.h"
 
 //version 2: changed names for basis, aabb, poolvectors, etc.
 #define FORMAT_VERSION 2
 
-#include "core/os/dir_access.h"
-#include "core/version.h"
+#include "os/dir_access.h"
+#include "version.h"
 
 #define _printerr() ERR_PRINT(String(res_path + ":" + itos(lines) + " - Parse Error: " + error_text).utf8().get_data());
 
@@ -294,25 +294,25 @@ Ref<PackedScene> ResourceInteractiveLoaderText::_parse_node_tag(VariantParser::R
 
 			if (!next_tag.fields.has("from")) {
 				error = ERR_FILE_CORRUPT;
-				error_text = "missing 'from' field from connection tag";
+				error_text = "missing 'from' field fron connection tag";
 				return Ref<PackedScene>();
 			}
 
 			if (!next_tag.fields.has("to")) {
 				error = ERR_FILE_CORRUPT;
-				error_text = "missing 'to' field from connection tag";
+				error_text = "missing 'to' field fron connection tag";
 				return Ref<PackedScene>();
 			}
 
 			if (!next_tag.fields.has("signal")) {
 				error = ERR_FILE_CORRUPT;
-				error_text = "missing 'signal' field from connection tag";
+				error_text = "missing 'signal' field fron connection tag";
 				return Ref<PackedScene>();
 			}
 
 			if (!next_tag.fields.has("method")) {
 				error = ERR_FILE_CORRUPT;
-				error_text = "missing 'method' field from connection tag";
+				error_text = "missing 'method' field fron connection tag";
 				return Ref<PackedScene>();
 			}
 
@@ -358,7 +358,7 @@ Ref<PackedScene> ResourceInteractiveLoaderText::_parse_node_tag(VariantParser::R
 
 			if (!next_tag.fields.has("path")) {
 				error = ERR_FILE_CORRUPT;
-				error_text = "missing 'path' field from connection tag";
+				error_text = "missing 'path' field fron connection tag";
 				_printerr();
 				return Ref<PackedScene>();
 			}
@@ -896,7 +896,7 @@ static void bs_save_unicode_string(FileAccess *f, const String &p_string, bool p
 
 	CharString utf8 = p_string.utf8();
 	if (p_bit_on_len) {
-		f->store_32((utf8.length() + 1) | 0x80000000);
+		f->store_32(utf8.length() + 1 | 0x80000000);
 	} else {
 		f->store_32(utf8.length() + 1);
 	}
@@ -1523,7 +1523,7 @@ Error ResourceFormatSaverTextInstance::save(const String &p_path, const RES &p_r
 
 	for (Map<RES, int>::Element *E = external_resources.front(); E; E = E->next()) {
 
-		sorted_er.write[E->get()] = E->key();
+		sorted_er[E->get()] = E->key();
 	}
 
 	for (int i = 0; i < sorted_er.size(); i++) {
@@ -1672,7 +1672,7 @@ Error ResourceFormatSaverTextInstance::save(const String &p_path, const RES &p_r
 				f->store_string(vars);
 			}
 
-			f->store_line("]");
+			f->store_line("]\n");
 
 			for (int j = 0; j < state->get_node_property_count(i); j++) {
 
@@ -1682,7 +1682,10 @@ Error ResourceFormatSaverTextInstance::save(const String &p_path, const RES &p_r
 				f->store_string(_valprop(String(state->get_node_property_name(i, j))) + " = " + vars + "\n");
 			}
 
-			f->store_line(String());
+			if (state->get_node_property_count(i)) {
+				//add space
+				f->store_line(String());
+			}
 		}
 
 		for (int i = 0; i < state->get_connection_count(); i++) {
@@ -1705,12 +1708,14 @@ Error ResourceFormatSaverTextInstance::save(const String &p_path, const RES &p_r
 				f->store_string(" binds= " + vars);
 			}
 
-			f->store_line("]");
+			f->store_line("]\n");
 		}
+
+		f->store_line(String());
 
 		Vector<NodePath> editable_instances = state->get_editable_instances();
 		for (int i = 0; i < editable_instances.size(); i++) {
-			f->store_line("\n[editable path=\"" + editable_instances[i].operator String() + "\"]");
+			f->store_line("[editable path=\"" + editable_instances[i].operator String() + "\"]");
 		}
 	}
 

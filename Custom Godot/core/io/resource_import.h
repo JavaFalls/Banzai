@@ -31,8 +31,7 @@
 #ifndef RESOURCE_IMPORT_H
 #define RESOURCE_IMPORT_H
 
-#include "core/io/resource_loader.h"
-
+#include "io/resource_loader.h"
 class ResourceImporter;
 
 class ResourceFormatImporter : public ResourceFormatLoader {

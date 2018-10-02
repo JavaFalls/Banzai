@@ -44,7 +44,6 @@ ATTRIBUTE_ALIGNED16(class)
 btRayShape : public btConvexInternalShape {
 
 	btScalar m_length;
-	bool slipsOnSlope;
 	/// The default axis is the z
 	btVector3 m_shapeAxis;
 
@@ -59,9 +58,6 @@ public:
 
 	void setLength(btScalar p_length);
 	btScalar getLength() const { return m_length; }
-
-	void setSlipsOnSlope(bool p_slipOnSlope);
-	bool getSlipsOnSlope() const { return slipsOnSlope; }
 
 	const btTransform &getSupportPoint() const { return m_cacheSupportPoint; }
 	const btScalar &getScaledLength() const { return m_cacheScaledLength; }

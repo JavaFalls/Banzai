@@ -9,4 +9,3 @@ drivers/* linguist-vendored
 *.py eol=lf
 *.hpp eol=lf
 *.xml eol=lf
-*.natvis eol=lf

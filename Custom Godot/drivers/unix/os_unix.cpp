@@ -32,16 +32,20 @@
 
 #ifdef UNIX_ENABLED
 
-#include "core/os/thread_dummy.h"
-#include "core/project_settings.h"
-#include "drivers/unix/dir_access_unix.h"
-#include "drivers/unix/file_access_unix.h"
-#include "drivers/unix/mutex_posix.h"
-#include "drivers/unix/net_socket_posix.h"
-#include "drivers/unix/rw_lock_posix.h"
-#include "drivers/unix/semaphore_posix.h"
-#include "drivers/unix/thread_posix.h"
 #include "servers/visual_server.h"
+
+#include "core/os/thread_dummy.h"
+#include "mutex_posix.h"
+#include "rw_lock_posix.h"
+#include "semaphore_posix.h"
+#include "thread_posix.h"
+
+//#include "core/io/file_access_buffered_fa.h"
+#include "dir_access_unix.h"
+#include "file_access_unix.h"
+#include "packet_peer_udp_posix.h"
+#include "stream_peer_tcp_posix.h"
+#include "tcp_server_posix.h"
 
 #ifdef __APPLE__
 #include <mach-o/dyld.h>
@@ -51,7 +55,7 @@
 #include <sys/param.h>
 #include <sys/sysctl.h>
 #endif
-
+#include "project_settings.h"
 #include <assert.h>
 #include <dlfcn.h>
 #include <errno.h>
@@ -69,21 +73,13 @@ void OS_Unix::debug_break() {
 	assert(false);
 };
 
-static void handle_interrupt(int sig) {
-	if (ScriptDebugger::get_singleton() == NULL)
-		return;
+int OS_Unix::get_audio_driver_count() const {
 
-	ScriptDebugger::get_singleton()->set_depth(-1);
-	ScriptDebugger::get_singleton()->set_lines_left(1);
+	return 1;
 }
+const char *OS_Unix::get_audio_driver_name(int p_driver) const {
 
-void OS_Unix::initialize_debugging() {
-
-	if (ScriptDebugger::get_singleton() != NULL) {
-		struct sigaction action;
-		action.sa_handler = handle_interrupt;
-		sigaction(SIGINT, &action, NULL);
-	}
+	return "dummy";
 }
 
 int OS_Unix::unix_initialize_audio(int p_audio_driver) {
@@ -102,11 +98,10 @@ void handle_sigchld(int sig) {
 
 void OS_Unix::initialize_core() {
 
-#ifdef NO_THREADS
+#ifdef NO_PTHREADS
 	ThreadDummy::make_default();
 	SemaphoreDummy::make_default();
 	MutexDummy::make_default();
-	RWLockDummy::make_default();
 #else
 	ThreadPosix::make_default();
 	SemaphorePosix::make_default();
@@ -122,7 +117,9 @@ void OS_Unix::initialize_core() {
 	DirAccess::make_default<DirAccessUnix>(DirAccess::ACCESS_FILESYSTEM);
 
 #ifndef NO_NETWORK
-	NetSocketPosix::make_default();
+	TCPServerPosix::make_default();
+	StreamPeerTCPPosix::make_default();
+	PacketPeerUDPPosix::make_default();
 	IP_Unix::make_default();
 #endif
 
@@ -139,8 +136,6 @@ void OS_Unix::initialize_core() {
 }
 
 void OS_Unix::finalize_core() {
-
-	NetSocketPosix::cleanup();
 }
 
 void OS_Unix::alert(const String &p_alert, const String &p_title) {

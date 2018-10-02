@@ -32,7 +32,7 @@
 #define COLLISION_OBJECT_2D_SW_H
 
 #include "broad_phase_2d_sw.h"
-#include "core/self_list.h"
+#include "self_list.h"
 #include "servers/physics_2d_server.h"
 #include "shape_2d_sw.h"
 
@@ -112,23 +112,23 @@ public:
 
 	_FORCE_INLINE_ int get_shape_count() const { return shapes.size(); }
 	_FORCE_INLINE_ Shape2DSW *get_shape(int p_index) const {
-		CRASH_BAD_INDEX(p_index, shapes.size());
+		ERR_FAIL_INDEX_V(p_index, shapes.size(), NULL);
 		return shapes[p_index].shape;
 	}
 	_FORCE_INLINE_ const Transform2D &get_shape_transform(int p_index) const {
-		CRASH_BAD_INDEX(p_index, shapes.size());
+		ERR_FAIL_INDEX_V(p_index, shapes.size(), Transform2D());
 		return shapes[p_index].xform;
 	}
 	_FORCE_INLINE_ const Transform2D &get_shape_inv_transform(int p_index) const {
-		CRASH_BAD_INDEX(p_index, shapes.size());
+		ERR_FAIL_INDEX_V(p_index, shapes.size(), Transform2D());
 		return shapes[p_index].xform_inv;
 	}
 	_FORCE_INLINE_ const Rect2 &get_shape_aabb(int p_index) const {
-		CRASH_BAD_INDEX(p_index, shapes.size());
+		ERR_FAIL_INDEX_V(p_index, shapes.size(), Rect2());
 		return shapes[p_index].aabb_cache;
 	}
 	_FORCE_INLINE_ const Variant &get_shape_metadata(int p_index) const {
-		CRASH_BAD_INDEX(p_index, shapes.size());
+		ERR_FAIL_INDEX_V(p_index, shapes.size(), Variant());
 		return shapes[p_index].metadata;
 	}
 
@@ -136,18 +136,21 @@ public:
 	_FORCE_INLINE_ Transform2D get_inv_transform() const { return inv_transform; }
 	_FORCE_INLINE_ Space2DSW *get_space() const { return space; }
 
-	void set_shape_as_disabled(int p_idx, bool p_disabled);
+	_FORCE_INLINE_ void set_shape_as_disabled(int p_idx, bool p_disabled) {
+		ERR_FAIL_INDEX(p_idx, shapes.size());
+		shapes[p_idx].disabled = p_disabled;
+	}
 	_FORCE_INLINE_ bool is_shape_set_as_disabled(int p_idx) const {
-		CRASH_BAD_INDEX(p_idx, shapes.size());
+		ERR_FAIL_INDEX_V(p_idx, shapes.size(), false);
 		return shapes[p_idx].disabled;
 	}
 
 	_FORCE_INLINE_ void set_shape_as_one_way_collision(int p_idx, bool p_one_way_collision) {
-		CRASH_BAD_INDEX(p_idx, shapes.size());
-		shapes.write[p_idx].one_way_collision = p_one_way_collision;
+		ERR_FAIL_INDEX(p_idx, shapes.size());
+		shapes[p_idx].one_way_collision = p_one_way_collision;
 	}
 	_FORCE_INLINE_ bool is_shape_set_as_one_way_collision(int p_idx) const {
-		CRASH_BAD_INDEX(p_idx, shapes.size());
+		ERR_FAIL_INDEX_V(p_idx, shapes.size(), false);
 		return shapes[p_idx].one_way_collision;
 	}
 

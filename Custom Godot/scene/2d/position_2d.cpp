@@ -30,7 +30,7 @@
 
 #include "position_2d.h"
 
-#include "core/engine.h"
+#include "engine.h"
 #include "scene/resources/texture.h"
 
 void Position2D::_draw_cross() {
@@ -42,10 +42,6 @@ void Position2D::_draw_cross() {
 Rect2 Position2D::_edit_get_rect() const {
 
 	return Rect2(Point2(-10, -10), Size2(20, 20));
-}
-
-bool Position2D::_edit_use_rect() const {
-	return false;
 }
 
 void Position2D::_notification(int p_what) {

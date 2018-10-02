@@ -31,8 +31,8 @@
 #ifndef TEST_STRING_H
 #define TEST_STRING_H
 
-#include "core/os/main_loop.h"
-#include "core/ustring.h"
+#include "os/main_loop.h"
+#include "ustring.h"
 
 namespace TestString {
 

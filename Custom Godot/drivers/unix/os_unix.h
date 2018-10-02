@@ -37,8 +37,8 @@
 
 #ifdef UNIX_ENABLED
 
-#include "core/os/os.h"
 #include "drivers/unix/ip_unix.h"
+#include "os/os.h"
 
 class OS_Unix : public OS {
 
@@ -47,6 +47,12 @@ class OS_Unix : public OS {
 protected:
 	// UNIX only handles the core functions.
 	// inheriting platforms under unix (eg. X11) should handle the rest
+
+	//virtual int get_video_driver_count() const;
+	//virtual const char * get_video_driver_name(int p_driver) const;
+
+	virtual int get_audio_driver_count() const;
+	virtual const char *get_audio_driver_name(int p_driver) const;
 
 	virtual void initialize_core();
 	virtual int unix_initialize_audio(int p_audio_driver);
@@ -101,7 +107,6 @@ public:
 	virtual int get_processor_count() const;
 
 	virtual void debug_break();
-	virtual void initialize_debugging();
 
 	virtual String get_executable_path() const;
 	virtual String get_user_data_dir() const;

@@ -29,9 +29,9 @@
 /*************************************************************************/
 
 #include "baked_lightmap.h"
-#include "core/io/resource_saver.h"
-#include "core/os/dir_access.h"
-#include "core/os/os.h"
+#include "io/resource_saver.h"
+#include "os/dir_access.h"
+#include "os/os.h"
 #include "voxel_light_baker.h"
 
 void BakedLightmapData::set_bounds(const AABB &p_bounds) {
@@ -374,6 +374,9 @@ BakedLightmap::BakeError BakedLightmap::bake(Node *p_from_node, bool p_create_vi
 			capture_subdiv--;
 			css *= 2.0;
 		}
+
+		print_line("bake subdiv: " + itos(bake_subdiv));
+		print_line("capture subdiv: " + itos(capture_subdiv));
 	}
 
 	baker.begin_bake(bake_subdiv, bake_bounds);
@@ -808,5 +811,4 @@ BakedLightmap::BakedLightmap() {
 	propagation = 1;
 	hdr = false;
 	image_path = ".";
-	set_disable_scale(true);
 }

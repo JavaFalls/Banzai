@@ -109,8 +109,6 @@ public:
 	virtual void applyGravity();
 	
 	virtual	void	serialize(btSerializer* serializer);
-	virtual void	setMultiBodyConstraintSolver(btMultiBodyConstraintSolver* solver);
-    virtual void    setConstraintSolver(btConstraintSolver* solver);
 
 };
 #endif //BT_MULTIBODY_DYNAMICS_WORLD_H

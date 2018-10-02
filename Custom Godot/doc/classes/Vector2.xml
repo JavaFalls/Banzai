@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Vector2" category="Built-In Types" version="3.1">
+<class name="Vector2" category="Built-In Types" version="3.0.6">
 	<brief_description>
 		Vector used for 2D math.
 	</brief_description>
@@ -7,7 +7,7 @@
 		2-element structure that can be used to represent positions in 2d space or any other pair of numeric values.
 	</description>
 	<tutorials>
-		<link>http://docs.godotengine.org/en/3.0/tutorials/math/index.html</link>
+		http://docs.godotengine.org/en/3.0/tutorials/math/index.html
 	</tutorials>
 	<demos>
 	</demos>
@@ -88,15 +88,6 @@
 				Returns the vector with a maximum length.
 			</description>
 		</method>
-		<method name="cross">
-			<return type="float">
-			</return>
-			<argument index="0" name="with" type="Vector2">
-			</argument>
-			<description>
-				Returns the 2 dimensional analog of the cross product with the given vector.
-			</description>
-		</method>
 		<method name="cubic_interpolate">
 			<return type="Vector2">
 			</return>
@@ -109,7 +100,7 @@
 			<argument index="3" name="t" type="float">
 			</argument>
 			<description>
-				Cubicly interpolates between this vector and [code]b[/code] using [code]pre_a[/code] and [code]post_b[/code] as handles, and returns the result at position [code]t[/code]. [code]t[/code] is in the range of [code]0.0 - 1.0[/code], representing the amount of interpolation.
+				Cubicly interpolates between this vector and [code]b[/code] using [code]pre_a[/code] and [code]post_b[/code] as handles, and returns the result at position [code]t[/code]. [code]t[/code] is in the range of [code]0.0 - 1.0[/code], or a percentage of how far along the interpolation is.
 			</description>
 		</method>
 		<method name="distance_squared_to">
@@ -175,7 +166,7 @@
 			<argument index="1" name="t" type="float">
 			</argument>
 			<description>
-				Returns the result of the linear interpolation between this vector and [code]b[/code] by amount [code]t[/code]. [code]t[/code] is in the range of [code]0.0 - 1.0[/code], representing the amount of interpolation.
+				Returns the result of the linear interpolation between this vector and [code]b[/code] by amount [code]t[/code]. [code]t[/code] is in the range of [code]0.0 - 1.0[/code], a percentage of how far along the interpolation is.
 			</description>
 		</method>
 		<method name="normalized">
@@ -183,15 +174,6 @@
 			</return>
 			<description>
 				Returns the vector scaled to unit length. Equivalent to [code]v / v.length()[/code].
-			</description>
-		</method>
-		<method name="project">
-			<return type="Vector2">
-			</return>
-			<argument index="0" name="b" type="Vector2">
-			</argument>
-			<description>
-				Returns the vector projected onto the vector [code]b[/code].
 			</description>
 		</method>
 		<method name="reflect">
@@ -216,19 +198,6 @@
 			<return type="Vector2">
 			</return>
 			<description>
-				Returns the vector with all components rounded to the nearest integer, with halfway cases rounded away from zero.
-			</description>
-		</method>
-		<method name="slerp">
-			<return type="Vector2">
-			</return>
-			<argument index="0" name="b" type="Vector2">
-			</argument>
-			<argument index="1" name="t" type="float">
-			</argument>
-			<description>
-				Returns the result of SLERP between this vector and [code]b[/code], by amount [code]t[/code]. [code]t[/code] is in the range of  [code]0.0 - 1.0[/code], representing the amount of interpolation.
-				Both vectors need to be normalized.
 			</description>
 		</method>
 		<method name="slide">
@@ -266,23 +235,5 @@
 		</member>
 	</members>
 	<constants>
-		<constant name="ZERO" value="Vector2( 0, 0 )">
-			Null vector.
-		</constant>
-		<constant name="INF" value="Vector2( inf, inf )">
-			Infinite vector.
-		</constant>
-		<constant name="LEFT" value="Vector2( -1, 0 )">
-			Left unit vector.
-		</constant>
-		<constant name="RIGHT" value="Vector2( 1, 0 )">
-			Right unit vector.
-		</constant>
-		<constant name="UP" value="Vector2( 0, -1 )">
-			Up unit vector.
-		</constant>
-		<constant name="DOWN" value="Vector2( 0, 1 )">
-			Down unit vector.
-		</constant>
 	</constants>
 </class>

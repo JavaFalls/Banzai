@@ -30,14 +30,13 @@
 
 #include "script_debugger_remote.h"
 
-#include "core/engine.h"
-#include "core/io/ip.h"
-#include "core/io/marshalls.h"
-#include "core/os/input.h"
-#include "core/os/os.h"
-#include "core/project_settings.h"
+#include "engine.h"
+#include "io/ip.h"
+#include "io/marshalls.h"
+#include "os/input.h"
+#include "os/os.h"
+#include "project_settings.h"
 #include "scene/main/node.h"
-#include "scene/resources/packed_scene.h"
 
 void ScriptDebuggerRemote::_send_video_memory() {
 
@@ -77,22 +76,22 @@ Error ScriptDebuggerRemote::connect_to_host(const String &p_host, uint16_t p_por
 	for (int i = 0; i < tries; i++) {
 
 		if (tcp_client->get_status() == StreamPeerTCP::STATUS_CONNECTED) {
-			print_verbose("Remote Debugger: Connected!");
 			break;
 		} else {
 
 			const int ms = waits[i];
 			OS::get_singleton()->delay_usec(ms * 1000);
-			print_verbose("Remote Debugger: Connection failed with status: '" + String::num(tcp_client->get_status()) + "', retrying in " + String::num(ms) + " msec.");
+			print_line("Remote Debugger: Connection failed with status: '" + String::num(tcp_client->get_status()) + "', retrying in " + String::num(ms) + " msec.");
 		};
 	};
 
 	if (tcp_client->get_status() != StreamPeerTCP::STATUS_CONNECTED) {
 
-		ERR_PRINTS("Remote Debugger: Unable to connect. Status: " + String::num(tcp_client->get_status()));
+		print_line("Remote Debugger: Unable to connect");
 		return FAILED;
 	};
 
+	//    print_line("Remote Debugger: Connection OK!");
 	packet_peer_stream->set_stream_peer(tcp_client);
 
 	return OK;
@@ -147,16 +146,6 @@ void ScriptDebuggerRemote::_put_variable(const String &p_name, const Variant &p_
 	} else {
 		packet_peer_stream->put_var(var);
 	}
-}
-
-void ScriptDebuggerRemote::_save_node(ObjectID id, const String &p_path) {
-
-	Node *node = Object::cast_to<Node>(ObjectDB::get_instance(id));
-	ERR_FAIL_COND(!node);
-
-	Ref<PackedScene> ps = memnew(PackedScene);
-	ps->pack(node);
-	ResourceSaver::save(p_path, ps);
 }
 
 void ScriptDebuggerRemote::debug(ScriptLanguage *p_script, bool p_can_continue) {
@@ -337,8 +326,6 @@ void ScriptDebuggerRemote::debug(ScriptLanguage *p_script, bool p_can_continue) 
 				else
 					remove_breakpoint(cmd[2], cmd[1]);
 
-			} else if (command == "save_node") {
-				_save_node(cmd[1], cmd[2]);
 			} else {
 				_parse_live_edit(cmd);
 			}
@@ -571,46 +558,22 @@ void ScriptDebuggerRemote::_send_object_id(ObjectID p_id) {
 	if (ScriptInstance *si = obj->get_script_instance()) {
 		if (!si->get_script().is_null()) {
 
-			typedef Map<const Script *, Set<StringName> > ScriptMemberMap;
-			typedef Map<const Script *, Map<StringName, Variant> > ScriptConstantsMap;
+			Set<StringName> members;
+			si->get_script()->get_members(&members);
+			for (Set<StringName>::Element *E = members.front(); E; E = E->next()) {
 
-			ScriptMemberMap members;
-			members[si->get_script().ptr()] = Set<StringName>();
-			si->get_script()->get_members(&(members[si->get_script().ptr()]));
-
-			ScriptConstantsMap constants;
-			constants[si->get_script().ptr()] = Map<StringName, Variant>();
-			si->get_script()->get_constants(&(constants[si->get_script().ptr()]));
-
-			Ref<Script> base = si->get_script()->get_base_script();
-			while (base.is_valid()) {
-
-				members[base.ptr()] = Set<StringName>();
-				base->get_members(&(members[base.ptr()]));
-
-				constants[base.ptr()] = Map<StringName, Variant>();
-				base->get_constants(&(constants[base.ptr()]));
-
-				base = base->get_base_script();
-			}
-
-			for (ScriptMemberMap::Element *sm = members.front(); sm; sm = sm->next()) {
-				for (Set<StringName>::Element *E = sm->get().front(); E; E = E->next()) {
-					Variant m;
-					if (si->get(E->get(), m)) {
-						String script_path = sm->key() == si->get_script().ptr() ? "" : sm->key()->get_path().get_file() + "/";
-						PropertyInfo pi(m.get_type(), "Members/" + script_path + E->get());
-						properties.push_back(PropertyDesc(pi, m));
-					}
+				Variant m;
+				if (si->get(E->get(), m)) {
+					PropertyInfo pi(m.get_type(), String("Members/") + E->get());
+					properties.push_back(PropertyDesc(pi, m));
 				}
 			}
 
-			for (ScriptConstantsMap::Element *sc = constants.front(); sc; sc = sc->next()) {
-				for (Map<StringName, Variant>::Element *E = sc->get().front(); E; E = E->next()) {
-					String script_path = sc->key() == si->get_script().ptr() ? "" : sc->key()->get_path().get_file() + "/";
-					PropertyInfo pi(E->value().get_type(), "Constants/" + script_path + E->key());
-					properties.push_back(PropertyDesc(pi, E->value()));
-				}
+			Map<StringName, Variant> constants;
+			si->get_script()->get_constants(&constants);
+			for (Map<StringName, Variant>::Element *E = constants.front(); E; E = E->next()) {
+				PropertyInfo pi(E->value().get_type(), (String("Constants/") + E->key()));
+				properties.push_back(PropertyDesc(pi, E->value()));
 			}
 		}
 	}
@@ -662,14 +625,11 @@ void ScriptDebuggerRemote::_send_object_id(ObjectID p_id) {
 			prop.push_back(Variant());
 		} else {
 			prop.push_back(pi.hint);
-			prop.push_back(pi.hint_string);
+			if (res.is_null())
+				prop.push_back(pi.hint_string);
+			else
+				prop.push_back(String("RES:") + res->get_path());
 			prop.push_back(pi.usage);
-			if (!res.is_null()) {
-				var = String("PATH") + res->get_path();
-			} else if (var.get_type() == Variant::STRING) {
-				var = String("DATA") + var;
-			}
-
 			prop.push_back(var);
 		}
 		send_props.push_back(prop);
@@ -689,10 +649,8 @@ void ScriptDebuggerRemote::_set_object_property(ObjectID p_id, const String &p_p
 		return;
 
 	String prop_name = p_property;
-	if (p_property.begins_with("Members/")) {
-		Vector<String> ss = p_property.split("/");
-		prop_name = ss[ss.size() - 1];
-	}
+	if (p_property.begins_with("Members/"))
+		prop_name = p_property.substr(8, p_property.length());
 
 	obj->set(prop_name, p_value);
 }
@@ -786,13 +744,13 @@ void ScriptDebuggerRemote::_send_profiling_data(bool p_for_frame) {
 
 	for (int i = 0; i < ScriptServer::get_language_count(); i++) {
 		if (p_for_frame)
-			ofs += ScriptServer::get_language(i)->profiling_get_frame_data(&profile_info.write[ofs], profile_info.size() - ofs);
+			ofs += ScriptServer::get_language(i)->profiling_get_frame_data(&profile_info[ofs], profile_info.size() - ofs);
 		else
-			ofs += ScriptServer::get_language(i)->profiling_get_accumulated_data(&profile_info.write[ofs], profile_info.size() - ofs);
+			ofs += ScriptServer::get_language(i)->profiling_get_accumulated_data(&profile_info[ofs], profile_info.size() - ofs);
 	}
 
 	for (int i = 0; i < ofs; i++) {
-		profile_info_ptrs.write[i] = &profile_info.write[i];
+		profile_info_ptrs[i] = &profile_info[i];
 	}
 
 	SortArray<ScriptLanguage::ProfilingInfo *, ProfileInfoSort> sa;
@@ -1057,7 +1015,7 @@ void ScriptDebuggerRemote::add_profiling_frame_data(const StringName &p_name, co
 	if (idx == -1) {
 		profile_frame_data.push_back(fd);
 	} else {
-		profile_frame_data.write[idx] = fd;
+		profile_frame_data[idx] = fd;
 	}
 }
 
@@ -1088,7 +1046,7 @@ ScriptDebuggerRemote::ScriptDebuggerRemote() :
 		max_frame_functions(16),
 		skip_profile_frame(false),
 		reload_all_scripts(false),
-		tcp_client(Ref<StreamPeerTCP>(memnew(StreamPeerTCP))),
+		tcp_client(StreamPeerTCP::create_ref()),
 		packet_peer_stream(Ref<PacketPeerStream>(memnew(PacketPeerStream))),
 		last_perf_time(0),
 		performance(Engine::get_singleton()->get_singleton_object("Performance")),

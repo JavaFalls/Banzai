@@ -30,7 +30,7 @@
 
 #include "visual_server_viewport.h"
 
-#include "core/project_settings.h"
+#include "project_settings.h"
 #include "visual_server_canvas.h"
 #include "visual_server_global.h"
 #include "visual_server_scene.h"
@@ -137,6 +137,7 @@ void VisualServerViewport::_draw_viewport(Viewport *p_viewport, ARVRInterface::E
 				}
 			}
 
+			//print_line("lights: "+itos(light_count));
 			canvas_map[Viewport::CanvasKey(E->key(), E->get().layer)] = &E->get();
 		}
 
@@ -177,14 +178,11 @@ void VisualServerViewport::_draw_viewport(Viewport *p_viewport, ARVRInterface::E
 		VSG::rasterizer->restore_render_target();
 
 		if (scenario_draw_canvas_bg && canvas_map.front() && canvas_map.front()->key().layer > scenario_canvas_max_layer) {
-			Ref<ARVRInterface> arvr_interface = ARVRServer::get_singleton()->get_primary_interface();
 
-			if (!can_draw_3d) {
-				VSG::scene->render_empty_scene(p_viewport->scenario, p_viewport->shadow_atlas);
-			} else if (p_viewport->use_arvr && arvr_interface.is_valid()) {
-				VSG::scene->render_camera(arvr_interface, p_eye, p_viewport->camera, p_viewport->scenario, p_viewport->size, p_viewport->shadow_atlas);
-			} else {
+			if (can_draw_3d) {
 				VSG::scene->render_camera(p_viewport->camera, p_viewport->scenario, p_viewport->size, p_viewport->shadow_atlas);
+			} else {
+				VSG::scene->render_empty_scene(p_viewport->scenario, p_viewport->shadow_atlas);
 			}
 			scenario_draw_canvas_bg = false;
 		}
@@ -193,6 +191,8 @@ void VisualServerViewport::_draw_viewport(Viewport *p_viewport, ARVRInterface::E
 
 			VisualServerCanvas::Canvas *canvas = static_cast<VisualServerCanvas::Canvas *>(E->get()->canvas);
 
+			//print_line("canvas "+itos(i)+" size: "+itos(I->get()->canvas->child_items.size()));
+			//print_line("GT "+p_viewport->global_transform+". CT: "+E->get()->transform);
 			Transform2D xform = p_viewport->global_transform * E->get()->transform;
 
 			RasterizerCanvas::Light *canvas_lights = NULL;
@@ -210,14 +210,11 @@ void VisualServerViewport::_draw_viewport(Viewport *p_viewport, ARVRInterface::E
 			i++;
 
 			if (scenario_draw_canvas_bg && E->key().layer >= scenario_canvas_max_layer) {
-				Ref<ARVRInterface> arvr_interface = ARVRServer::get_singleton()->get_primary_interface();
 
-				if (!can_draw_3d) {
-					VSG::scene->render_empty_scene(p_viewport->scenario, p_viewport->shadow_atlas);
-				} else if (p_viewport->use_arvr && arvr_interface.is_valid()) {
-					VSG::scene->render_camera(arvr_interface, p_eye, p_viewport->camera, p_viewport->scenario, p_viewport->size, p_viewport->shadow_atlas);
-				} else {
+				if (can_draw_3d) {
 					VSG::scene->render_camera(p_viewport->camera, p_viewport->scenario, p_viewport->size, p_viewport->shadow_atlas);
+				} else {
+					VSG::scene->render_empty_scene(p_viewport->scenario, p_viewport->shadow_atlas);
 				}
 
 				scenario_draw_canvas_bg = false;
@@ -225,14 +222,11 @@ void VisualServerViewport::_draw_viewport(Viewport *p_viewport, ARVRInterface::E
 		}
 
 		if (scenario_draw_canvas_bg) {
-			Ref<ARVRInterface> arvr_interface = ARVRServer::get_singleton()->get_primary_interface();
 
-			if (!can_draw_3d) {
-				VSG::scene->render_empty_scene(p_viewport->scenario, p_viewport->shadow_atlas);
-			} else if (p_viewport->use_arvr && arvr_interface.is_valid()) {
-				VSG::scene->render_camera(arvr_interface, p_eye, p_viewport->camera, p_viewport->scenario, p_viewport->size, p_viewport->shadow_atlas);
-			} else {
+			if (can_draw_3d) {
 				VSG::scene->render_camera(p_viewport->camera, p_viewport->scenario, p_viewport->size, p_viewport->shadow_atlas);
+			} else {
+				VSG::scene->render_empty_scene(p_viewport->scenario, p_viewport->shadow_atlas);
 			}
 
 			scenario_draw_canvas_bg = false;
@@ -249,9 +243,7 @@ void VisualServerViewport::draw_viewports() {
 	// process all our active interfaces
 	ARVRServer::get_singleton()->_process();
 
-	if (Engine::get_singleton()->is_editor_hint()) {
-		clear_color = GLOBAL_GET("rendering/environment/default_clear_color");
-	}
+	clear_color = GLOBAL_GET("rendering/environment/default_clear_color");
 
 	//sort viewports
 	active_viewports.sort_custom<ViewportSort>();
@@ -267,7 +259,7 @@ void VisualServerViewport::draw_viewports() {
 		ERR_CONTINUE(!vp->render_target.is_valid());
 
 		bool visible = vp->viewport_to_screen_rect != Rect2() || vp->update_mode == VS::VIEWPORT_UPDATE_ALWAYS || vp->update_mode == VS::VIEWPORT_UPDATE_ONCE || (vp->update_mode == VS::VIEWPORT_UPDATE_WHEN_VISIBLE && VSG::storage->render_target_was_used(vp->render_target));
-		visible = visible && vp->size.x > 1 && vp->size.y > 1;
+		visible = visible && vp->size.x > 0 && vp->size.y > 0;
 
 		if (!visible)
 			continue;
@@ -294,7 +286,7 @@ void VisualServerViewport::draw_viewports() {
 				arvr_interface->commit_for_eye(ARVRInterface::EYE_RIGHT, vp->render_target, vp->viewport_to_screen_rect);
 			}
 
-			// and for our frame timing, mark when we've finished committing our eyes
+			// and for our frame timing, mark when we've finished commiting our eyes
 			ARVRServer::get_singleton()->_mark_commit();
 		} else {
 			VSG::rasterizer->set_current_render_target(vp->render_target);
@@ -459,15 +451,6 @@ void VisualServerViewport::viewport_set_disable_3d(RID p_viewport, bool p_disabl
 	viewport->disable_3d = p_disable;
 	//VSG::storage->render_target_set_flag(viewport->render_target, RasterizerStorage::RENDER_TARGET_NO_3D, p_disable);
 	//this should be just for disabling rendering of 3D, to actually disable it, set usage
-}
-
-void VisualServerViewport::viewport_set_keep_3d_linear(RID p_viewport, bool p_keep_3d_linear) {
-
-	Viewport *viewport = viewport_owner.getornull(p_viewport);
-	ERR_FAIL_COND(!viewport);
-
-	viewport->keep_3d_linear = p_keep_3d_linear;
-	VSG::storage->render_target_set_flag(viewport->render_target, RasterizerStorage::RENDER_TARGET_KEEP_3D_LINEAR, p_keep_3d_linear);
 }
 
 void VisualServerViewport::viewport_attach_camera(RID p_viewport, RID p_camera) {
@@ -657,10 +640,6 @@ bool VisualServerViewport::free(RID p_rid) {
 	}
 
 	return false;
-}
-
-void VisualServerViewport::set_default_clear_color(const Color &p_color) {
-	clear_color = p_color;
 }
 
 VisualServerViewport::VisualServerViewport() {

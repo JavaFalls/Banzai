@@ -31,7 +31,7 @@
 #ifndef JSON_H
 #define JSON_H
 
-#include "core/variant.h"
+#include "variant.h"
 
 class JSON {
 

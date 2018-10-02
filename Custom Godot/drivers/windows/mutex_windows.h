@@ -33,14 +33,11 @@
 
 #ifdef WINDOWS_ENABLED
 
-#include "core/os/mutex.h"
-
+#include "os/mutex.h"
 #include <windows.h>
-
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
-
 class MutexWindows : public Mutex {
 
 #ifdef WINDOWS_USE_MUTEX

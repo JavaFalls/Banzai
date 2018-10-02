@@ -31,12 +31,12 @@
 #ifndef THREAD_H
 #define THREAD_H
 
-#include "core/typedefs.h"
-#include "core/ustring.h"
-
+#include "typedefs.h"
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
+
+#include "ustring.h"
 
 typedef void (*ThreadCreateCallback)(void *p_userdata);
 

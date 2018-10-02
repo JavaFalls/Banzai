@@ -30,51 +30,38 @@
 
 #include "light_2d.h"
 
-#include "core/engine.h"
+#include "engine.h"
 #include "servers/visual_server.h"
 
-Dictionary Light2D::_edit_get_state() const {
-	Dictionary state = Node2D::_edit_get_state();
-	state["offset"] = get_texture_offset();
-	return state;
-}
-
-void Light2D::_edit_set_state(const Dictionary &p_state) {
-	Node2D::_edit_set_state(p_state);
-	set_texture_offset(p_state["offset"]);
-}
-
 void Light2D::_edit_set_pivot(const Point2 &p_pivot) {
-	set_position(get_transform().xform(p_pivot));
-	set_texture_offset(get_texture_offset() - p_pivot);
+
+	set_texture_offset(p_pivot);
 }
 
 Point2 Light2D::_edit_get_pivot() const {
-	return Vector2();
-}
 
+	return get_texture_offset();
+}
 bool Light2D::_edit_use_pivot() const {
+
 	return true;
 }
 
 Rect2 Light2D::_edit_get_rect() const {
+
 	if (texture.is_null())
-		return Rect2();
+		return Rect2(0, 0, 1, 1);
 
-	Size2 s = texture->get_size() * _scale;
-	return Rect2(texture_offset - s / 2.0, s);
-}
+	Size2i s;
 
-bool Light2D::_edit_use_rect() const {
-	return !texture.is_null();
-}
+	s = texture->get_size() * _scale;
+	Point2i ofs = texture_offset;
+	ofs -= s / 2;
 
-Rect2 Light2D::get_anchorable_rect() const {
-	if (texture.is_null())
-		return Rect2();
+	if (s == Size2(0, 0))
+		s = Size2(1, 1);
 
-	Size2 s = texture->get_size() * _scale;
-	return Rect2(texture_offset - s / 2.0, s);
+	return Rect2(ofs, s);
 }
 
 void Light2D::_update_light_visibility() {
@@ -144,7 +131,6 @@ void Light2D::set_texture_offset(const Vector2 &p_offset) {
 	texture_offset = p_offset;
 	VS::get_singleton()->canvas_light_set_texture_offset(canvas_light, texture_offset);
 	item_rect_changed();
-	_change_notify("offset");
 }
 
 Vector2 Light2D::get_texture_offset() const {
@@ -431,7 +417,7 @@ void Light2D::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "enabled"), "set_enabled", "is_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "editor_only"), "set_editor_only", "is_editor_only");
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "StreamTexture,ImageTexture"), "set_texture", "get_texture");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_texture", "get_texture");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "offset"), "set_texture_offset", "get_texture_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "texture_scale", PROPERTY_HINT_RANGE, "0.01,50,0.01"), "set_texture_scale", "get_texture_scale");
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_color", "get_color");

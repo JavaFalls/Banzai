@@ -705,11 +705,11 @@
 
     for ( v = 0; sbitset( ddigits, *s ); s++ )
     {
-      if ( v < ( FT_ULONG_MAX - 9 ) / 10 )
+      if ( v < ( ULONG_MAX - 9 ) / 10 )
         v = v * 10 + a2i[(int)*s];
       else
       {
-        v = FT_ULONG_MAX;
+        v = ULONG_MAX;
         break;
       }
     }
@@ -738,11 +738,11 @@
 
     for ( v = 0; sbitset( ddigits, *s ); s++ )
     {
-      if ( v < ( FT_LONG_MAX - 9 ) / 10 )
+      if ( v < ( LONG_MAX - 9 ) / 10 )
         v = v * 10 + a2i[(int)*s];
       else
       {
-        v = FT_LONG_MAX;
+        v = LONG_MAX;
         break;
       }
     }
@@ -763,11 +763,11 @@
 
     for ( v = 0; sbitset( ddigits, *s ); s++ )
     {
-      if ( v < ( FT_USHORT_MAX - 9 ) / 10 )
+      if ( v < ( USHRT_MAX - 9 ) / 10 )
         v = (unsigned short)( v * 10 + a2i[(int)*s] );
       else
       {
-        v = FT_USHORT_MAX;
+        v = USHRT_MAX;
         break;
       }
     }

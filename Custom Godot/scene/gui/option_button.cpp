@@ -29,14 +29,14 @@
 /*************************************************************************/
 
 #include "option_button.h"
-#include "core/print_string.h"
+#include "print_string.h"
 
 Size2 OptionButton::get_minimum_size() const {
 
 	Size2 minsize = Button::get_minimum_size();
 
 	if (has_icon("arrow"))
-		minsize.width += Control::get_icon("arrow")->get_width() + get_constant("hseparation");
+		minsize.width += Control::get_icon("arrow")->get_width();
 
 	return minsize;
 }
@@ -73,10 +73,6 @@ void OptionButton::_notification(int p_what) {
 		Point2 ofs(size.width - arrow->get_width() - get_constant("arrow_margin"), int(Math::abs((size.height - arrow->get_height()) / 2)));
 		arrow->draw(ci, ofs, clr);
 	}
-}
-
-void OptionButton::_focused(int p_which) {
-	emit_signal("item_focused", p_which);
 }
 
 void OptionButton::_selected(int p_which) {
@@ -294,10 +290,9 @@ void OptionButton::get_translatable_strings(List<String> *p_strings) const {
 void OptionButton::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_selected"), &OptionButton::_selected);
-	ClassDB::bind_method(D_METHOD("_focused"), &OptionButton::_focused);
 
 	ClassDB::bind_method(D_METHOD("add_item", "label", "id"), &OptionButton::add_item, DEFVAL(-1));
-	ClassDB::bind_method(D_METHOD("add_icon_item", "texture", "label", "id"), &OptionButton::add_icon_item, DEFVAL(-1));
+	ClassDB::bind_method(D_METHOD("add_icon_item", "texture", "label", "id"), &OptionButton::add_icon_item);
 	ClassDB::bind_method(D_METHOD("set_item_text", "idx", "text"), &OptionButton::set_item_text);
 	ClassDB::bind_method(D_METHOD("set_item_icon", "idx", "texture"), &OptionButton::set_item_icon);
 	ClassDB::bind_method(D_METHOD("set_item_disabled", "idx", "disabled"), &OptionButton::set_item_disabled);
@@ -327,7 +322,6 @@ void OptionButton::_bind_methods() {
 	// "selected" property must come after "items", otherwise GH-10213 occurs
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "selected"), "_select_int", "get_selected");
 	ADD_SIGNAL(MethodInfo("item_selected", PropertyInfo(Variant::INT, "ID")));
-	ADD_SIGNAL(MethodInfo("item_focused", PropertyInfo(Variant::INT, "ID")));
 }
 
 OptionButton::OptionButton() {
@@ -342,7 +336,6 @@ OptionButton::OptionButton() {
 	popup->set_as_toplevel(true);
 	popup->set_pass_on_modal_close_click(false);
 	popup->connect("id_pressed", this, "_selected");
-	popup->connect("id_focused", this, "_focused");
 }
 
 OptionButton::~OptionButton() {

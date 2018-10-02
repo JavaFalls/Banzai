@@ -39,7 +39,6 @@ class CollisionObject : public Spatial {
 	GDCLASS(CollisionObject, Spatial);
 
 	bool area;
-
 	RID rid;
 
 	struct ShapeData {

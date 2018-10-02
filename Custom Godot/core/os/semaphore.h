@@ -31,12 +31,11 @@
 #ifndef SEMAPHORE_H
 #define SEMAPHORE_H
 
-#include "core/error_list.h"
+#include "error_list.h"
 
 /**
 	@author Juan Linietsky <reduzio@gmail.com>
 */
-
 class Semaphore {
 protected:
 	static Semaphore *(*create_func)();
