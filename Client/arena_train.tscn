@@ -9,5 +9,6 @@
 position = Vector2( 460, 313.5 )
 scale = Vector2( 20.3438, 20.3438 )
 texture = ExtResource( 1 )
+_sections_unfolded = [ "Animation", "Material", "Region", "Visibility" ]
 
 
