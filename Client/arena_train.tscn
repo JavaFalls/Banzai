@@ -2,9 +2,9 @@
 
 [ext_resource path="res://assets/ground.png" type="Texture" id=1]
 
-[node name="Node2D" type="Node2D" index="0"]
+[node name="ground" type="Node2D" index="0"]
 
-[node name="ground" type="Sprite" parent="." index="0"]
+[node name="sprite" type="Sprite" parent="." index="0"]
 
 position = Vector2( 460, 313.5 )
 scale = Vector2( 20.3438, 20.3438 )
