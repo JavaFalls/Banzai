@@ -4,6 +4,7 @@
 [ext_resource path="res://assets/menu/game_background_1.png" type="Texture" id=2]
 
 [node name="Control" type="Control"]
+
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -16,12 +17,14 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
 
-[node name="game_background_1" type="Sprite" parent="."]
+[node name="game_background_1" type="Sprite" parent="." index="0"]
+
 position = Vector2( 497.667, 300 )
 scale = Vector2( 0.594444, 0.594444 )
 texture = ExtResource( 2 )
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="RichTextLabel" type="RichTextLabel" parent="." index="1"]
+
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -48,4 +51,5 @@ scroll_following = false
 selection_enabled = false
 override_selected_font_color = false
 _sections_unfolded = [ "BBCode" ]
+
 
