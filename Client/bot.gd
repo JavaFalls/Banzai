@@ -7,7 +7,7 @@ func _process(delta):
 	var path = PoolStringArray() 
 	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/nn.py')
 	
-	print(player_node.get_position())
+	#print(player_node.get_position())
 	OS.execute('python', path, true, output)
 	#for line in output:
 	print(output.size())
