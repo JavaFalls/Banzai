@@ -14,9 +14,13 @@ onready var projectile = preload("res://projectile.tscn")
 func shoot():
 	
 	#ZZ.add_child(projectile.instance())
-	var p = projectile.instance()
+	#var p = projectile.instance()
+	#projectile_container.add_child(p)
+	#p.start_at(get_viewport().get_mouse_position(), get_position())
+	p = projectile.instance()
 	projectile_container.add_child(p)
-	p.start_at(get_rotation(), get_position())
+	p.set_gravity_scale(0) # There is no gravity in a top-down game
+	p.shoot_at_mouse(self.global_position)
 
 #func _ready():
 #	this_node = get_node("entity")
