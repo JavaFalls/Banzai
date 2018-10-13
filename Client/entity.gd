@@ -4,8 +4,19 @@ const UP = Vector2(0,0)
 const SPEED =  300
 var direction = Vector2()
 var this_node = Node2D
+var p = Area2D
 var ev = InputEventAction.new()
+# or #export (PackedScene) var projectile
+onready var projectile_container = get_node("player_projectiles")
+onready var projectile = preload("res://projectile.tscn")
+#onready var ZZ = get_node("ZZ")
 
+func shoot():
+	
+	#ZZ.add_child(projectile.instance())
+	var p = projectile.instance()
+	projectile_container.add_child(p)
+	p.start_at(get_rotation(), get_position())
 
 #func _ready():
 #	this_node = get_node("entity")
