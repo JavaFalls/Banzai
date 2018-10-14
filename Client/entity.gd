@@ -3,7 +3,7 @@ extends KinematicBody2D
 const UP = Vector2(0,0)
 const SPEED =  300
 var direction = Vector2()
-onready var player_node = get_node("player")
+onready var player_node = get_parent().get_node("player")
 var this_node = Node2D
 var p = Area2D
 var ev = InputEventAction.new()
@@ -13,7 +13,6 @@ onready var projectile = preload("res://projectile.tscn")
 #onready var ZZ = get_node("ZZ")
 
 func shoot():
-	
 	#ZZ.add_child(projectile.instance())
 	#var p = projectile.instance()
 	#projectile_container.add_child(p)
@@ -22,6 +21,7 @@ func shoot():
 	projectile_container.add_child(p)
 	p.set_gravity_scale(0) # There is no gravity in a top-down game
 	p.shoot_at_mouse(self.global_position)
+	
 
 #func _ready():
 	#player_node = get_node("player")
