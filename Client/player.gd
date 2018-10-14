@@ -5,7 +5,9 @@ func _physics_process(delta):
 	direction = Vector2(0,0)
 	
 	if Input.is_action_pressed("primary_attack"):
-		shoot()
+		if timer.is_stopped():
+			shoot()
+			restart_timer(projectile_delay)
 #		print (get_rotation())
 	if Input.is_action_pressed("ui_right"):
 		direction.x = SPEED

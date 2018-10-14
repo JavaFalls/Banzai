@@ -10,6 +10,8 @@ var ev = InputEventAction.new()
 # or #export (PackedScene) var projectile
 onready var projectile_container = get_node("player_projectiles")
 onready var projectile = preload("res://projectile.tscn")
+var timer = Timer.new()
+var projectile_delay = .3
 #onready var ZZ = get_node("ZZ")
 
 func shoot():
@@ -24,11 +26,15 @@ func shoot():
 	
 
 #func _ready():
-	#player_node = get_node("player")
-#	this_node = get_node("entity")
-
+	timer.set_wait_time(projectile_delay)
+	timer.set_one_shot(true)
+	self.add_child(timer)
+	timer.stop()
 
 #func _physics_process(delta):
 #	direction = move_and_slide(direction, UP)
 #	direction = Vector2(0,0)
 #	pass
+func restart_timer(delay):
+	timer.set_wait_time(delay)
+	timer.start()

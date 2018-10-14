@@ -8,7 +8,7 @@
 custom_solver_bias = 0.0
 extents = Vector2( 10.4, 10.4 )
 
-[node name="player" type="KinematicBody2D" index="0"]
+[node name="player" type="KinematicBody2D"]
 
 input_pickable = false
 collision_layer = 1
@@ -18,7 +18,6 @@ script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
-position = Vector2( 173.958, 16.6556 )
 scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 2 )
 __meta__ = {
@@ -27,7 +26,6 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
-position = Vector2( 175.809, 29.6099 )
 scale = Vector2( 1.53846, 1.53846 )
 shape = SubResource( 1 )
 __meta__ = {
