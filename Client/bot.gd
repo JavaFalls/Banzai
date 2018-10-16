@@ -19,7 +19,7 @@ func send_nn_state():
 	
 	
 	# Send the required information to the Neural Network
-	OS.execute('python', path, true, output)
+	#OS.execute('python', path, true, output)
 	
 func _physics_process(delta):
 	direction = Vector2(0,0)

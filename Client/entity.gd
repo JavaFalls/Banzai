@@ -11,6 +11,7 @@ var direction           = Vector2()   # The 2d movement vector of entity
 var projectile_instance = Area2D      # The name of a projectile
 var timer               = Timer.new() # Creates a timer for ability cool down purposes
 var projectile_delay    = .3          # Shoot ability delay
+var hit_points          = 0           # Amount of damage an entity absorbed during a match
 
 
 func shoot():
@@ -33,3 +34,7 @@ func shoot():
 func restart_timer(delay):
 	timer.set_wait_time(delay)
 	timer.start()
+	
+func going_to_be_hit():
+	
+	

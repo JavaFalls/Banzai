@@ -20,8 +20,9 @@ func shoot_at_mouse(start_pos):
 	self.add_child(t)
 	# Create and move the projectile
 	self.global_position = start_pos
-	self.look_at(get_global_mouse_position())
-	var direction = (get_global_mouse_position() - start_pos).normalized()
+	var target = get_global_mouse_position()
+	self.look_at(target)
+	var direction = (target - start_pos).normalized()
 	self.linear_velocity = direction * speed
 	t.start()
 	# Kill the projectile after the timer ends
