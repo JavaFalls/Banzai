@@ -36,5 +36,7 @@ func restart_timer(delay):
 	timer.start()
 	
 func going_to_be_hit():
-	
+	pass
+func get_hit_points():
+	return(hit_points)
 	

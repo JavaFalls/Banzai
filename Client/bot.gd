@@ -16,10 +16,16 @@ func send_nn_state():
 	# Create Neural Network call with all required information
 	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/nn.py')
 	path.append(player_node.get_position())
+	path.append(self.get_position())
+	path.append(player_node.get_hit_points())
+	path.append(self.get_hit_points())
+	
 	
 	
 	# Send the required information to the Neural Network
-	#OS.execute('python', path, true, output)
+	OS.execute('python', path, true, output)
+	for line in output:
+		print(line)
 	
 func _physics_process(delta):
 	direction = Vector2(0,0)
