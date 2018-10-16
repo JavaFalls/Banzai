@@ -6,20 +6,19 @@ func _process(delta):
 	
 	send_nn_state()
 	
-	#OS.execute('python', path, true, output)
-	#for line in output:
-		#print(line)
+
 
 
 func send_nn_state():
-	var output = []
-	var path = PoolStringArray() 
+	var output = []                # Array for storing neural network responses
+	var path   = PoolStringArray() # Neural network path
+	
+	# Create Neural Network call with all required information
 	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/nn.py')
 	path.append(player_node.get_position())
+	
+	# Send the required information to the Neural Network
 	OS.execute('python', path, true, output)
-	print(output)
-	#for line in output:
-		#print(line)
 	
 func _physics_process(delta):
 	direction = Vector2(0,0)
