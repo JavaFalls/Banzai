@@ -1,5 +1,5 @@
 extends "res://entity.gd"
-
+onready var player_node          = get_parent().get_node("player")
 
 func _process(delta):
 	
@@ -16,6 +16,7 @@ func send_nn_state():
 	# Create Neural Network call with all required information
 	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/nn.py')
 	path.append(player_node.get_position())
+	
 	
 	# Send the required information to the Neural Network
 	OS.execute('python', path, true, output)
