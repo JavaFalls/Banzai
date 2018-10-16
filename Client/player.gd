@@ -10,16 +10,16 @@ func _physics_process(delta):
 			restart_timer(projectile_delay)
 #		print (get_rotation())
 	if Input.is_action_pressed("ui_right"):
-		direction.x = SPEED
+		direction.x = MOVEMENT_SPEED
 	if Input.is_action_pressed("ui_left"):
-		direction.x = -SPEED
+		direction.x = -MOVEMENT_SPEED
 	if Input.is_action_pressed("ui_right") and Input.is_action_pressed("ui_left"):
 		direction.x = 0
 	
 	if Input.is_action_pressed("ui_up"):
-		direction.y = -SPEED
+		direction.y = -MOVEMENT_SPEED
 	if Input.is_action_pressed("ui_down"):
-		direction.y = SPEED
+		direction.y = MOVEMENT_SPEED
 	if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_down"):
 		direction.y = 0
 		

@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 const UP = Vector2(0,0)
-const SPEED =  300
+const MOVEMENT_SPEED =  300
 var direction = Vector2()
 onready var player_node = get_parent().get_node("player")
 var this_node = Node2D
