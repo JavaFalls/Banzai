@@ -12,6 +12,7 @@ onready var projectile_container = get_node("player_projectiles")
 onready var projectile = preload("res://projectile.tscn")
 var timer = Timer.new()
 var projectile_delay = .3
+var hit_points = 0
 #onready var ZZ = get_node("ZZ")
 
 func shoot():
@@ -37,14 +38,8 @@ func shoot():
 #	pass
 func restart_timer(delay):
 	timer.set_wait_time(delay)
-<<<<<<< HEAD
+
 	timer.start()
-	
-func going_to_be_hit():
-	pass
+
 func get_hit_points():
-	return(hit_points)
-	
-=======
-	timer.start()
->>>>>>> 6315b81d08576e73e6b3fb8d505c3c00dae4b0dc
+	return hit_points

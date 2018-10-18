@@ -16,7 +16,7 @@ func send_nn_state():
 	var path = PoolStringArray() 
 	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/nn.py')
 	path.append(player_node.get_position())
-<<<<<<< HEAD
+
 	path.append(self.get_position())
 	path.append(player_node.get_hit_points())
 	path.append(self.get_hit_points())
@@ -27,12 +27,8 @@ func send_nn_state():
 	OS.execute('python', path, true, output)
 	for line in output:
 		print(line)
-=======
-	OS.execute('python', path, true, output)
-	print(output)
-	#for line in output:
-		#print(line)
->>>>>>> 6315b81d08576e73e6b3fb8d505c3c00dae4b0dc
+
+
 	
 func _physics_process(delta):
 	direction = Vector2(0,0)
