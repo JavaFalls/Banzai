@@ -1,0 +1,297 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://UI/UI_ServerStats.gd" type="Script" id=1]
+[ext_resource path="res://UI/Font_Resources/Header.tres" type="DynamicFont" id=2]
+[ext_resource path="res://UI/UI_IncomingRequestList.tscn" type="PackedScene" id=3]
+[ext_resource path="res://UI/UI_Scoreboard.tscn" type="PackedScene" id=4]
+[ext_resource path="res://UI/Font_Resources/StdFont.tres" type="DynamicFont" id=5]
+
+[node name="UI_ServerStats" type="MarginContainer"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1600.0
+margin_bottom = 900.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+_sections_unfolded = [ "Margin", "Rect", "Size Flags", "custom_constants" ]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1600.0
+margin_bottom = 900.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+_sections_unfolded = [ "Grow Direction", "Margin", "Rect", "Size Flags" ]
+
+[node name="Header" type="Label" parent="VBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1600.0
+margin_bottom = 61.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 2 )
+text = "Netherlord Statistics"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin", "Rect", "Size Flags", "custom_fonts" ]
+
+[node name="Body" type="HBoxContainer" parent="VBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 65.0
+margin_right = 1600.0
+margin_bottom = 831.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 0
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="UI_IncomingRequestList" parent="VBoxContainer/Body" index="0" instance=ExtResource( 3 )]
+
+margin_right = 798.0
+margin_bottom = 766.0
+
+[node name="UI_Scoreboard" parent="VBoxContainer/Body" index="1" instance=ExtResource( 4 )]
+
+margin_left = 802.0
+margin_right = 1600.0
+margin_bottom = 766.0
+
+[node name="Footer" type="MarginContainer" parent="VBoxContainer" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 835.0
+margin_right = 1600.0
+margin_bottom = 900.0
+rect_min_size = Vector2( 0, 65 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Footer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1600.0
+margin_bottom = 65.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Left Margin" type="Control" parent="VBoxContainer/Footer/HBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 10.0
+margin_bottom = 65.0
+rect_min_size = Vector2( 10, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="btnToggleServer" type="Button" parent="VBoxContainer/Footer/HBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 14.0
+margin_top = 7.0
+margin_right = 214.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 50 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 5 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Start Server"
+flat = false
+align = 1
+_sections_unfolded = [ "Margin", "Rect", "Size Flags", "Theme", "custom_fonts" ]
+
+[node name="Divider" type="Control" parent="VBoxContainer/Footer/HBoxContainer" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 218.0
+margin_right = 660.0
+margin_bottom = 65.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 1
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="btnSwitchToScoreboardMode" type="Button" parent="VBoxContainer/Footer/HBoxContainer" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 664.0
+margin_top = 7.0
+margin_right = 936.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 50 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 5 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Project Scoreboard"
+flat = false
+align = 1
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Divider2" type="Control" parent="VBoxContainer/Footer/HBoxContainer" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 940.0
+margin_right = 1382.0
+margin_bottom = 65.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 1
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="btnExit" type="Button" parent="VBoxContainer/Footer/HBoxContainer" index="5"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1386.0
+margin_top = 7.0
+margin_right = 1586.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 200, 50 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 5 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Exit"
+flat = false
+align = 1
+_sections_unfolded = [ "Grow Direction", "Rect", "Size Flags", "custom_colors", "custom_fonts" ]
+
+[node name="RightMargin" type="Control" parent="VBoxContainer/Footer/HBoxContainer" index="6"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1590.0
+margin_right = 1600.0
+margin_bottom = 65.0
+rect_min_size = Vector2( 10, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[connection signal="pressed" from="VBoxContainer/Footer/HBoxContainer/btnToggleServer" to="." method="_on_btnToggleServer_pressed"]
+
+[connection signal="pressed" from="VBoxContainer/Footer/HBoxContainer/btnSwitchToScoreboardMode" to="." method="_on_btnSwitchToScoreboardMode_pressed"]
+
+[connection signal="pressed" from="VBoxContainer/Footer/HBoxContainer/btnExit" to="." method="_on_btnExit_pressed"]
+
+
