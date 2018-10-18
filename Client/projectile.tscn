@@ -45,4 +45,15 @@ shape = SubResource( 1 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
 
+[node name="RayCast2D" type="RayCast2D" parent="." index="2"]
+
+show_behind_parent = true
+rotation = 4.71239
+scale = Vector2( 1, 10 )
+enabled = false
+exclude_parent = true
+cast_to = Vector2( 0, 50 )
+collision_mask = 1
+_sections_unfolded = [ "Transform", "Visibility" ]
+
 
