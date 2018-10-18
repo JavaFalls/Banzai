@@ -1,24 +1,28 @@
 extends KinematicBody2D
 
-
+const UP = Vector2(0,0)
+const MOVEMENT_SPEED =  300
+var direction = Vector2()
+onready var player_node = get_parent().get_node("player")
+var this_node = Node2D
+var p = Area2D
+var ev = InputEventAction.new()
+# or #export (PackedScene) var projectile
 onready var projectile_container = get_node("player_projectiles")
-onready var projectile           = preload("res://projectile.tscn")
-
-const UP    = Vector2(0,0) # Dictates down as being the background as opposed to south
-const SPEED = 300          # Entity rate of movement 
-
-var direction           = Vector2()   # The 2d movement vector of entity
-var projectile_instance = Area2D      # The name of a projectile
-var timer               = Timer.new() # Creates a timer for ability cool down purposes
-var projectile_delay    = .3          # Shoot ability delay
-var hit_points          = 0           # Amount of damage an entity absorbed during a match
-
+onready var projectile = preload("res://projectile.tscn")
+var timer = Timer.new()
+var projectile_delay = .3
+#onready var ZZ = get_node("ZZ")
 
 func shoot():
-	projectile_instance = projectile.instance()
-	projectile_container.add_child(projectile_instance)
-	projectile_instance.set_gravity_scale(0) # There is no gravity in a top-down game
-	projectile_instance.shoot_at_mouse(self.global_position)
+	#ZZ.add_child(projectile.instance())
+	#var p = projectile.instance()
+	#projectile_container.add_child(p)
+	#p.start_at(get_viewport().get_mouse_position(), get_position())
+	p = projectile.instance()
+	projectile_container.add_child(p)
+	p.set_gravity_scale(0) # There is no gravity in a top-down game
+	p.shoot_at_mouse(self.global_position)
 	
 
 #func _ready():
@@ -33,6 +37,7 @@ func shoot():
 #	pass
 func restart_timer(delay):
 	timer.set_wait_time(delay)
+<<<<<<< HEAD
 	timer.start()
 	
 func going_to_be_hit():
@@ -40,3 +45,6 @@ func going_to_be_hit():
 func get_hit_points():
 	return(hit_points)
 	
+=======
+	timer.start()
+>>>>>>> 6315b81d08576e73e6b3fb8d505c3c00dae4b0dc
