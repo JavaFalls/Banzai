@@ -9,7 +9,7 @@
 [ext_resource path="res://assets/menu/main_menu/customize_button.png" type="Texture" id=7]
 [ext_resource path="res://assets/menu/main_menu/train_button.png" type="Texture" id=8]
 
-[node name="main_menu" type="Node" index="0"]
+[node name="main_menu" type="Node"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
@@ -391,9 +391,9 @@ _sections_unfolded = [ "Margin", "Textures" ]
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Title/CenterContainer/fight_button" to="." method="_on_fight_button_pressed"]
 
-[connection signal="pressed" from="MarginContainer/HBoxContainer/Options/customize_button" to="." method="_on_customize_button_pressed"]
-
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Options/customize_button" to="." method="_on_Customize_pressed"]
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Options/customize_button" to="." method="_on_customize_button_pressed"]
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Options/train_button" to="." method="_on_train_button_pressed"]
 

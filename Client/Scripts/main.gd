@@ -3,7 +3,7 @@ extends Node
 
 
 func _ready():
-	get_tree().change_scene("res://menu_title.tscn")
+	get_tree().change_scene("res://Scenes/menu_title.tscn")
 
 #func _process(delta):
 #	pass
