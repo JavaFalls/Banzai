@@ -13,11 +13,11 @@ def build_model():
 def main():
     
     number_of_factors = 0
-    for line in sys.argv:
-        print(line)
-        number_of_factors=+1
-    bot = build_model()
-    print(number_of_factors)
+    #for line in sys.argv:
+        #print(line)
+        #number_of_factors=+1
+    #bot = build_model()
+    #print(number_of_factors)
     return()
 
 main()
