@@ -32,4 +32,6 @@ __meta__ = {
 "_edit_group_": true
 }
 
+[node name="projectile_container" type="Node" parent="." index="2"]
+
 
