@@ -6,7 +6,7 @@
 [ext_resource path="res://UI/UI_Scoreboard.tscn" type="PackedScene" id=4]
 [ext_resource path="res://UI/Font_Resources/StdFont.tres" type="DynamicFont" id=5]
 
-[node name="UI_ServerStats" type="MarginContainer"]
+[node name="UI_ServerStats" type="MarginContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
