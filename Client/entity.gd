@@ -48,3 +48,6 @@ func choose_weapon(weapon_choice):
 	# GDScript does support case statements
 	if weapon_choice is 1:
 		pass
+func get_tragectory():
+	return direction
+	
