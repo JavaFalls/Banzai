@@ -53,6 +53,9 @@ func _start_server():
 		serverState = SERVER_UP
 		emit_signal("server_started", SERVER_ERROR_SUCCESS)
 
+		# Log action
+		Utility.create_message(self, "Server", "Server started\ns\nu\np\nr\nl\nm\ne\ns\ns\na\ng\ne", Utility.COLOR_SUBJECT_SERVER, Utility.COLOR_GREEN)
+
 func _stop_server():
 	if serverState == SERVER_UP: # Only shutdown the server if it is currently running
 		# Unsubscribe from Signals
@@ -67,6 +70,9 @@ func _stop_server():
 		get_tree().set_network_peer(null)
 		serverState = SERVER_DOWN
 		emit_signal("server_stopped")
+
+		# Log action
+		Utility.create_message(self, "Server", "Server stopped", Utility.COLOR_SUBJECT_SERVER, Utility.COLOR_RED)
 
 # Local Functions:
 #-------------------------------------------------------------------------------

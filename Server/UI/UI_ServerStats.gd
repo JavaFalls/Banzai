@@ -8,11 +8,14 @@ const NP_UI_CONTAINER = "/root/Master/UI_Container"
 const NP_BTN_TOGGLE_SERVER = "VBoxContainer/Footer/HBoxContainer/btnToggleServer"
 const NP_BTN_SWITCH_MODE = "VBoxContainer/Footer/HBoxContainer/btnSwitchToScoreboardMode"
 const NP_BTN_EXIT = "VBoxContainer/Footer/HBoxContainer/btnExit"
+const NP_UI_INCOMING_REQUEST_LIST = "VBoxContainer/Body/UI_IncomingRequestList"
 const DEFAULT_NP_UI_SCOREBOARD = "VBoxContainer/Body/UI_Scoreboard"
 const NP_BODY = "VBoxContainer/Body"
 
 const TXT_STRT_SERVER = "Start Server"
 const TXT_STOP_SERVER = "Stop Server"
+
+const MAX_REQUEST_LIST_HEIGHT = 766
 
 # Signals:
 #-------------------------------------------------------------------------------
@@ -23,20 +26,21 @@ signal scoreboard_projection(enabled)
 # Local vars:
 #-------------------------------------------------------------------------------
 var UI_Scoreboard
-
+var message_list
+var MAX_REQUEST_LIST_HEIGHT = 9999 # Used as a constant but has to be a variable because it's value is determined in the _ready() function
+                                   # Yes, it is given the value 9999 here but that is just because the request list gets resized when it is created before we are able to actually initialize MAX_REQUEST_LIST_HEIGHT
 # Godot Signal Receivers:
 #-------------------------------------------------------------------------------
 func _ready():
 	# Initialize variables
 	UI_Scoreboard = get_node(DEFAULT_NP_UI_SCOREBOARD)
-
+	message_list = Utility.LIST.new()
+	MAX_REQUEST_LIST_HEIGHT = get_node(NP_UI_INCOMING_REQUEST_LIST).rect_size.y
 	# Subscribe signals
 	Server.connect("server_started", self, "_server_started")
 	self.connect("server_start", Server, "_start_server")
 	self.connect("server_stop", Server, "_stop_server")
 	self.connect("scoreboard_projection", UI_Scoreboard, "_scoreboard_projection")
-
-
 	# Initialize UI
 	enable_buttons()
 
@@ -73,6 +77,13 @@ func _on_btnExit_pressed():
 		Server.SERVER_DOWN:
 			Utility.create_popup(self, "Exit?", "_confirm_exit", "_deny_exit")
 
+func _on_UI_IncomingRequestList_resized():
+	print("rect_size.y: %d" %  get_node(NP_UI_INCOMING_REQUEST_LIST).rect_size.y)
+	print("max_size: %d" % MAX_REQUEST_LIST_HEIGHT)
+	if get_node(NP_UI_INCOMING_REQUEST_LIST).rect_size.y > MAX_REQUEST_LIST_HEIGHT:
+		message_list.remove_front()
+		get_node(NP_UI_INCOMING_REQUEST_LIST).rect_size.y = MAX_REQUEST_LIST_HEIGHT # TODO: If this works turn it into a constant
+
 # Parent Node Signal Receivers:
 #-------------------------------------------------------------------------------
 func _state_changed():
@@ -85,6 +96,11 @@ func _server_started(errorCode):
 	match errorCode:
 		Server.SERVER_ERROR_SUCCESS:
 			enable_buttons()
+
+# Utility Signal Receivers:
+#-------------------------------------------------------------------------------
+func _message_created(node_message):
+	message_list.append_back(node_message)
 
 # Popup Dialog Signal Receivers:
 #-------------------------------------------------------------------------------
