@@ -6,7 +6,7 @@ func _physics_process(delta):
 	
 	if Input.is_action_pressed("primary_attack"):
 		if timer.is_stopped():
-			shoot()
+			shoot(self.global_position)
 			restart_timer(projectile_delay)
 #		print (get_rotation())
 	if Input.is_action_pressed("ui_right"):

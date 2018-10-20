@@ -7,7 +7,7 @@ var p                = Area2D      # New Projectile
 var timer            = Timer.new() # Timer for Firing cooldown
 var projectile_delay = .3          # Firing cooldown length
 var hit_points       = 0           # How many times the entity has been hit
-var direction        = Vector2()   # Direction the entity is facing
+var direction        = Vector2()   # Direction the entity is moving
 
 onready var projectile_container = get_node("projectile_container")   # Where the projectiles are stored
 onready var projectile           = preload("res://projectile.tscn") # The projectile scene to be instanced
@@ -15,7 +15,7 @@ onready var player_node          = get_parent().get_node("player")  # A referenc
 
 #onready var ZZ = get_node("ZZ")
 
-func shoot():
+func shoot(target_position):
 	#ZZ.add_child(projectile.instance())
 	#var p = projectile.instance()
 	#projectile_container.add_child(p)
@@ -23,7 +23,7 @@ func shoot():
 	p = projectile.instance()
 	projectile_container.add_child(p)
 	p.set_gravity_scale(0) # There is no gravity in a top-down game
-	p.shoot_at_mouse(self.global_position)
+	p.shoot_at_mouse(target_position)
 	
 
 func _ready():
