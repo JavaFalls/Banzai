@@ -11,11 +11,13 @@ const NP_BTN_EXIT = "VBoxContainer/Footer/HBoxContainer/btnExit"
 const NP_UI_INCOMING_REQUEST_LIST = "VBoxContainer/Body/UI_IncomingRequestList"
 const DEFAULT_NP_UI_SCOREBOARD = "VBoxContainer/Body/UI_Scoreboard"
 const NP_BODY = "VBoxContainer/Body"
+const NP_FOOTER = "VBoxContainer/Footer"
 
 const TXT_STRT_SERVER = "Start Server"
 const TXT_STOP_SERVER = "Stop Server"
 
-const MAX_REQUEST_LIST_HEIGHT = 766
+const MYSTERIOUS_MARGIN = 4 # Godot puts a margin of 4 pixels between UI elements. I have no idea why.
+
 
 # Signals:
 #-------------------------------------------------------------------------------
@@ -35,7 +37,7 @@ func _ready():
 	# Initialize variables
 	UI_Scoreboard = get_node(DEFAULT_NP_UI_SCOREBOARD)
 	message_list = Utility.LIST.new()
-	MAX_REQUEST_LIST_HEIGHT = get_node(NP_UI_INCOMING_REQUEST_LIST).rect_size.y
+	MAX_REQUEST_LIST_HEIGHT = get_node(NP_FOOTER).rect_position.y - get_node(NP_BODY).rect_position.y - MYSTERIOUS_MARGIN
 	# Subscribe signals
 	Server.connect("server_started", self, "_server_started")
 	self.connect("server_start", Server, "_start_server")
@@ -78,11 +80,12 @@ func _on_btnExit_pressed():
 			Utility.create_popup(self, "Exit?", "_confirm_exit", "_deny_exit")
 
 func _on_UI_IncomingRequestList_resized():
-	print("rect_size.y: %d" %  get_node(NP_UI_INCOMING_REQUEST_LIST).rect_size.y)
+	print("rect_size.y: %d" % get_node(NP_UI_INCOMING_REQUEST_LIST).rect_size.y)
 	print("max_size: %d" % MAX_REQUEST_LIST_HEIGHT)
 	if get_node(NP_UI_INCOMING_REQUEST_LIST).rect_size.y > MAX_REQUEST_LIST_HEIGHT:
+		# If we do not orphan the child before freeing it from the list, for some reason Godot never shrinks the request list back to size
+		message_list.first_item.item.get_parent().remove_child(message_list.first_item.item)
 		message_list.remove_front()
-		get_node(NP_UI_INCOMING_REQUEST_LIST).rect_size.y = MAX_REQUEST_LIST_HEIGHT # TODO: If this works turn it into a constant
 
 # Parent Node Signal Receivers:
 #-------------------------------------------------------------------------------

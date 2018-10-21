@@ -7,7 +7,7 @@
 flags = 4
 load_path = "res://.import/HighResSpaceBackGround_right.png-5d5d2bf48b7d7862552a10bdbe40aa40.stex"
 
-[node name="Master" type="Node"]
+[node name="Master" type="Node" index="0"]
 
 [node name="Popups" type="CanvasLayer" parent="." index="0"]
 
@@ -39,7 +39,7 @@ _sections_unfolded = [ "Rect", "Size Flags", "custom_constants" ]
 
 [node name="UI_ServerStats" parent="UI_Container" index="0" instance=ExtResource( 1 )]
 
-_sections_unfolded = [ "Margin", "Rect", "Size Flags", "Visibility", "custom_constants" ]
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags", "Visibility", "custom_constants" ]
 
 [node name="Background" type="Sprite" parent="." index="2"]
 
