@@ -21,9 +21,9 @@ func send_nn_state():
 	path.append(self.get_tragectory())
 	#path.append(player_node.get_hit_points())
 	#path.append(self.get_hit_points())
-	print(path)
+	
     # Send the required information to the Neural Network
-	OS.execute('python', path, true, output)
+	#OS.execute('python', path, true, output)
 
 
 	
