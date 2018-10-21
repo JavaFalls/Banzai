@@ -3,6 +3,11 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import load_model
 
+def save_game_state(game_state):
+   str_game_state = str(game_state)
+   f = open('gamestates', 'a')
+   f.write(str_game_state)
+
 
 def save_bot(model):
    model.save('my_model1.h5')
@@ -33,6 +38,7 @@ def main():
     bot = load_bot()
     bot = build_model()
     save_bot(bot)
+    save_game_state(sys.argv)
     #print(number_of_factors)
     return()
 
