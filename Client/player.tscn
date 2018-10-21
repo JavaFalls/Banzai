@@ -52,4 +52,6 @@ editor_draw_drag_margin = false
 scale = Vector2( 1.53846, 1.53846 )
 shape = SubResource( 1 )
 
+[node name="projectile_container" type="Node" parent="." index="3"]
+
 

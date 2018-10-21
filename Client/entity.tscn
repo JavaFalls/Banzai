@@ -21,4 +21,10 @@ shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="." index="1"]
 
+[node name="projectile_container" type="Node" parent="." index="2"]
+
+_sections_unfolded = [ "Pause" ]
+
+[node name="ZZ" type="Node" parent="." index="3"]
+
 
