@@ -80,8 +80,6 @@ func _on_btnExit_pressed():
 			Utility.create_popup(self, "Exit?", "_confirm_exit", "_deny_exit")
 
 func _on_UI_IncomingRequestList_resized():
-	print("rect_size.y: %d" % get_node(NP_UI_INCOMING_REQUEST_LIST).rect_size.y)
-	print("max_size: %d" % MAX_REQUEST_LIST_HEIGHT)
 	if get_node(NP_UI_INCOMING_REQUEST_LIST).rect_size.y > MAX_REQUEST_LIST_HEIGHT:
 		# If we do not orphan the child before freeing it from the list, for some reason Godot never shrinks the request list back to size
 		message_list.first_item.item.get_parent().remove_child(message_list.first_item.item)

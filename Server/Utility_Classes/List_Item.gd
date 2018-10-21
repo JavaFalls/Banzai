@@ -23,4 +23,3 @@ func list_item_init(value):
 func destroy():
    if item is Node:
       item.queue_free()
-      print("freed")

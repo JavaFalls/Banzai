@@ -54,7 +54,7 @@ func _start_server():
 		emit_signal("server_started", SERVER_ERROR_SUCCESS)
 
 		# Log action
-		Utility.create_message(self, "Server", "Server started\ns\nu\np\nr\nl\nm\ne\ns\ns\na\ng\ne", Utility.COLOR_SUBJECT_SERVER, Utility.COLOR_GREEN)
+		Utility.create_message(self, "Server", "Server started", Utility.COLOR_SUBJECT_SERVER, Utility.COLOR_GREEN)
 
 func _stop_server():
 	if serverState == SERVER_UP: # Only shutdown the server if it is currently running
