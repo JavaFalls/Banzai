@@ -8,13 +8,16 @@ var timer            = Timer.new() # Timer for Firing cooldown
 var projectile_delay = .3          # Firing cooldown length
 var hit_points       = 0           # How many times the entity has been hit
 var direction        = Vector2()   # Direction the entity is moving
-#var primary
-#var secondary
-#var ability
+var primary_weapon
+var secondary_weapon
+var ability
 
 onready var projectile_container = get_node("projectile_container")   # Where the projectiles are stored
 onready var projectile           = preload("res://projectile.tscn") # The projectile scene to be instanced
 onready var player_node          = get_parent().get_node("player")  # A reference to the player node
+
+enum weapon_slot {primary,secondary,ability}
+enum weapon {empty,heavy,quick,ranged,evade,shield}
 
 func _ready():
 	timer.set_wait_time(projectile_delay)
@@ -33,7 +36,12 @@ func restart_timer(delay):
 	timer.start()
 
 func set_weapons(new_weapon, weapon_slot):
-	pass
+	if weapon_slot is weapon_slot.primary:
+		primary_weapon = new_weapon
+	elif weapon_slot is weapon_slot.secondary:
+		secondary_weapon = new_weapon
+	elif weapon_slot is weapon_slot.ability:
+		ability = new_weapon
 
 func get_hit_points():
 	return hit_points
