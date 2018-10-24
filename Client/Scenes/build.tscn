@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/build.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/game_background_3.1.png" type="Texture" id=2]
 [ext_resource path="res://assets/menu/main_menu/fight_button.png" type="Texture" id=3]
 [ext_resource path="res://assets/menu/main_menu/train_button.png" type="Texture" id=4]
+[ext_resource path="res://themes/bot_stats.theme" type="Theme" id=5]
+[ext_resource path="res://icon.png" type="Texture" id=6]
 
 [node name="build" type="Node" index="0"]
 
@@ -38,10 +40,10 @@ _sections_unfolded = [ "Transform" ]
 anchor_left = 0.08594
 anchor_top = 0.0
 anchor_right = 0.21
-anchor_bottom = 0.15556
-margin_left = -0.503998
-margin_right = 1.0
-margin_bottom = -0.0039978
+anchor_bottom = 0.14667
+margin_left = -0.00255585
+margin_right = -0.0399933
+margin_bottom = -0.0019989
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -60,12 +62,13 @@ _sections_unfolded = [ "Grow Direction", "Size Flags", "Textures" ]
 
 [node name="go_button" type="TextureButton" parent="." index="2"]
 
-anchor_left = 0.8175
+anchor_left = 0.81641
 anchor_top = 0.0
 anchor_right = 0.945
-anchor_bottom = 0.15556
-margin_right = -4.0
-margin_bottom = -0.0039978
+anchor_bottom = 0.14667
+margin_left = 1.99615
+margin_right = -5.67999
+margin_bottom = -0.0019989
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -82,15 +85,15 @@ expand = true
 stretch_mode = 4
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Size Flags" ]
 
-[node name="ItemList" type="ItemList" parent="." index="3"]
+[node name="stats" type="ItemList" parent="." index="3"]
 
-anchor_left = 0.08984
+anchor_left = 0.12891
 anchor_top = 0.26667
 anchor_right = 0.30078
 anchor_bottom = 0.7
-margin_left = 0.256012
-margin_top = -0.00299072
-margin_right = -0.247986
+margin_left = -0.00382996
+margin_top = -0.0019989
+margin_right = -1.99872
 margin_bottom = -1.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
@@ -99,29 +102,51 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
+theme = ExtResource( 5 )
 items = [  ]
 select_mode = 0
 allow_reselect = false
 icon_mode = 1
 fixed_icon_size = Vector2( 0, 0 )
-_sections_unfolded = [ "Columns", "Icon", "Size Flags" ]
+_sections_unfolded = [ "Columns", "Icon", "Size Flags", "Theme" ]
 
-[node name="ReferenceRect" type="ReferenceRect" parent="." index="4"]
+[node name="CenterContainer" type="CenterContainer" parent="." index="4"]
 
 anchor_left = 0.30078
 anchor_top = 0.26667
 anchor_right = 1.0
 anchor_bottom = 0.7
-margin_left = -0.247986
-margin_top = -0.00299072
-margin_right = -1.0
-margin_bottom = -1.0
+margin_left = -0.998718
+margin_top = -1.002
+margin_right = -2.0
+margin_bottom = -2.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
+use_top_left = false
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 293.0
+margin_top = 65.0
+margin_right = 421.0
+margin_bottom = 193.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 5
+size_flags_vertical = 5
+texture = ExtResource( 6 )
+stretch_mode = 5
 _sections_unfolded = [ "Size Flags" ]
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." index="5"]
@@ -143,14 +168,14 @@ scroll_vertical = 0
 scroll_deadzone = 0
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="ReferenceRect" type="ReferenceRect" parent="ScrollContainer" index="2"]
+[node name="ReferenceRect" type="ReferenceRect" parent="ScrollContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 1024.0
-margin_bottom = 192.0
+margin_bottom = 180.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -158,5 +183,9 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
 _sections_unfolded = [ "Rect", "Size Flags" ]
+
+[connection signal="pressed" from="back_button" to="." method="_on_back_button_pressed"]
+
+[connection signal="pressed" from="go_button" to="." method="_on_go_button_pressed"]
 
 

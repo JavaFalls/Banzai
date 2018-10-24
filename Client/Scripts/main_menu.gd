@@ -8,12 +8,8 @@ func _process(delta):
 		get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
 
-func _on_customize_button_pressed():
-	get_tree().change_scene("res://Scenes/build.tscn")
-	pass
-
 func _on_train_button_pressed():
-	get_tree().change_scene("res://Scenes/arena_train.tscn")
+	get_tree().change_scene("res://Scenes/build.tscn")
 	pass
 
 func _on_fight_button_pressed():
