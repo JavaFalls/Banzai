@@ -3,6 +3,7 @@ extends RigidBody2D
 var vel = Vector2()
 export var speed = 1000
 
+
 func _ready():
 #	set_fixed_process(true)
 	pass
@@ -12,7 +13,7 @@ func start_at(dir, pos):
 		set_position(pos)
 		vel = Vector2(speed, 0).rotated(dir)
 		
-func shoot_at_mouse(start_pos):
+func shoot_at_mouse(start_pos): 
 	# Setup the timer
 	var t = Timer.new()
 	t.set_wait_time(1)
@@ -27,6 +28,7 @@ func shoot_at_mouse(start_pos):
 	# Kill the projectile after the timer ends
 	yield(t, "timeout")
 	get_parent().remove_child(self)
+	self.queue_free()
 	t.queue_free()
 		
 func _physics_process(delta):
