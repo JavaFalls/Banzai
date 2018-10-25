@@ -31,5 +31,5 @@ func _on_back_button_pressed():
 
 func _resize():
 	var size = OS.get_window_size()
-	_background.scale = Vector2(size.x / NORMAL_WIDTH, size.y / NORMAL_HEIGHT)
+	_background.scale = Vector2(size.x / _macros.NORMAL_WIDTH, size.y / _macros.NORMAL_HEIGHT)
 	pass

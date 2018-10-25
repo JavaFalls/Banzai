@@ -1,7 +1,7 @@
 extends Node
 
 onready var _macros = preload("res://Scripts/macros.gd")
-onready var _background = get_node("MarginContainer2/background")
+onready var _background = get_node("MarginContainer/background")
 
 func _ready():
 	get_tree().get_root().connect("size_changed", self, "_resize")
