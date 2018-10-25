@@ -1,145 +1,58 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/game_background_4.png" type="Texture" id=2]
-[ext_resource path="res://assets/menu/main_menu/title.png" type="Texture" id=3]
-[ext_resource path="res://assets/menu/main_menu/unstress.png" type="Texture" id=4]
-[ext_resource path="res://assets/menu/main_menu/fight_button.png" type="Texture" id=5]
-[ext_resource path="res://icon.png" type="Texture" id=6]
-[ext_resource path="res://assets/menu/main_menu/customize_button.png" type="Texture" id=7]
-[ext_resource path="res://assets/menu/main_menu/train_button.png" type="Texture" id=8]
+[ext_resource path="res://assets/menu/main_menu/train_button.png" type="Texture" id=3]
+[ext_resource path="res://assets/menu/main_menu/fight_button.png" type="Texture" id=4]
+[ext_resource path="res://assets/menu/main_menu/title.png" type="Texture" id=5]
+[ext_resource path="res://assets/menu/main_menu/unstress.png" type="Texture" id=6]
 
 [node name="main_menu" type="Node" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
 
-[node name="background" type="Sprite" parent="." index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="." index="0"]
 
-position = Vector2( 840.767, 476.902 )
-scale = Vector2( 0.951531, 0.951531 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -1077.0
+margin_top = -600.0
+margin_right = -1069.0
+margin_bottom = -560.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+_sections_unfolded = [ "Anchor", "Size Flags" ]
+
+[node name="background" type="Sprite" parent="MarginContainer" index="0"]
+
+position = Vector2( 1060, 600 )
 texture = ExtResource( 2 )
+_sections_unfolded = [ "Transform" ]
 
-[node name="MarginContainer" type="MarginContainer" parent="." index="1"]
+[node name="description" type="TextEdit" parent="." index="1"]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 8.0
-margin_right = 1024.0
-margin_bottom = 600.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-alignment = 1
-_sections_unfolded = [ "Margin", "Size Flags" ]
-
-[node name="Description" type="HBoxContainer" parent="MarginContainer/HBoxContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 304.0
-margin_bottom = 600.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-alignment = 0
-_sections_unfolded = [ "Anchor", "Margin", "Size Flags" ]
-
-[node name="Container" type="Container" parent="MarginContainer/HBoxContainer/Description" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 100.0
-margin_bottom = 600.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/Description" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 104.0
-margin_right = 304.0
-margin_bottom = 600.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = true
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 0
-size_flags_vertical = 1
-scroll_horizontal_enabled = false
-scroll_horizontal = 0
-scroll_vertical_enabled = true
-scroll_vertical = 0
-scroll_deadzone = 0
-_sections_unfolded = [ "Anchor", "Margin", "Scroll", "Size Flags" ]
-
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer/Description/ScrollContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 200.0
-margin_bottom = 600.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-use_top_left = false
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="TextEdit" type="TextEdit" parent="MarginContainer/HBoxContainer/Description/ScrollContainer/CenterContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 50.0
-margin_right = 200.0
-margin_bottom = 550.0
+anchor_left = 0.10938
+anchor_top = 0.08667
+anchor_right = 0.30469
+anchor_bottom = 0.92
+margin_left = -0.00511932
+margin_top = -0.0019989
+margin_right = -0.00256348
 rect_min_size = Vector2( 200, 500 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
+size_flags_horizontal = 5
+size_flags_vertical = 5
 text = "Add description of the game
 flow and purpose. This node
 seems pretty boring to look
@@ -161,51 +74,66 @@ caret_block_mode = false
 caret_blink = false
 caret_blink_speed = 0.65
 caret_moving_by_right_click = true
-_sections_unfolded = [ "Margin", "Rect" ]
+_sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
 
-[node name="Title" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="1"]
+[node name="train_button" type="TextureButton" parent="." index="2"]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 308.0
-margin_right = 708.0
-margin_bottom = 600.0
+anchor_left = 0.70313
+anchor_top = 0.38667
+anchor_right = 0.89844
+anchor_bottom = 0.62
+margin_left = -0.00512695
+margin_top = -0.0019989
+margin_right = -0.00256348
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="CenterContainer2" type="CenterContainer" parent="MarginContainer/HBoxContainer/Title" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 400.0
-margin_bottom = 250.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
+focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 3
-use_top_left = false
-_sections_unfolded = [ "Size Flags" ]
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 3 )
+expand = true
+stretch_mode = 4
+_sections_unfolded = [ "Margin", "Textures" ]
 
-[node name="TextEdit" type="TextureRect" parent="MarginContainer/HBoxContainer/Title/CenterContainer2" index="0"]
+[node name="fight_button" type="TextureButton" parent="." index="3"]
 
-anchor_left = 0.0
+anchor_left = 0.40625
+anchor_top = 0.68667
+anchor_right = 0.60156
+anchor_bottom = 0.92
+margin_top = -0.00201416
+margin_right = 0.00256348
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 4 )
+expand = true
+stretch_mode = 4
+_sections_unfolded = [ "Margin", "Textures" ]
+
+[node name="TextEdit" type="TextureRect" parent="." index="4"]
+
+anchor_left = 0.30859
 anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 400.0
-margin_bottom = 250.0
+anchor_right = 0.69922
+anchor_bottom = 0.42
+margin_left = 0.00384521
+margin_right = -0.00128174
+margin_bottom = -1.99998
 rect_min_size = Vector2( 400, 250 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -213,37 +141,20 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 3 )
+texture = ExtResource( 5 )
 expand = true
-stretch_mode = 0
+stretch_mode = 5
 _sections_unfolded = [ "Rect" ]
 
-[node name="CenterContainer3" type="CenterContainer" parent="MarginContainer/HBoxContainer/Title" index="1"]
+[node name="CheckBox" type="CheckBox" parent="." index="5"]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 254.0
-margin_right = 400.0
-margin_bottom = 362.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-use_top_left = false
-
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/HBoxContainer/Title/CenterContainer3" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 262.0
-margin_bottom = 108.0
+anchor_left = 0.44141
+anchor_top = 0.42
+anchor_right = 0.5625
+anchor_bottom = 0.6
+margin_left = -0.0038147
+margin_top = 1.52588e-005
+margin_bottom = 3.05176e-005
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -255,142 +166,12 @@ toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
 group = null
-icon = ExtResource( 4 )
+icon = ExtResource( 6 )
 flat = false
 align = 0
 
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer/Title" index="2"]
+[connection signal="pressed" from="train_button" to="." method="_on_train_button_pressed"]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 366.0
-margin_right = 400.0
-margin_bottom = 600.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 3
-use_top_left = false
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="fight_button" type="TextureButton" parent="MarginContainer/HBoxContainer/Title/CenterContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 100.0
-margin_top = 47.0
-margin_right = 300.0
-margin_bottom = 187.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-texture_normal = ExtResource( 5 )
-_sections_unfolded = [ "Margin", "Textures" ]
-
-[node name="Options" type="VBoxContainer" parent="MarginContainer/HBoxContainer" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 712.0
-margin_right = 1016.0
-margin_bottom = 600.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/separation = 60
-alignment = 1
-_sections_unfolded = [ "Size Flags", "custom_constants" ]
-
-[node name="ExtraButton" type="TextureButton" parent="MarginContainer/HBoxContainer/Options" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 36.0
-margin_right = 304.0
-margin_bottom = 164.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-texture_normal = ExtResource( 6 )
-_sections_unfolded = [ "Margin", "Textures" ]
-
-[node name="customize_button" type="TextureButton" parent="MarginContainer/HBoxContainer/Options" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 224.0
-margin_right = 304.0
-margin_bottom = 364.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-texture_normal = ExtResource( 7 )
-_sections_unfolded = [ "Margin", "Textures" ]
-
-[node name="train_button" type="TextureButton" parent="MarginContainer/HBoxContainer/Options" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 424.0
-margin_right = 304.0
-margin_bottom = 564.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-texture_normal = ExtResource( 8 )
-_sections_unfolded = [ "Margin", "Textures" ]
-
-[connection signal="pressed" from="MarginContainer/HBoxContainer/Title/CenterContainer/fight_button" to="." method="_on_fight_button_pressed"]
-
-[connection signal="pressed" from="MarginContainer/HBoxContainer/Options/train_button" to="." method="_on_train_button_pressed"]
+[connection signal="pressed" from="fight_button" to="." method="_on_fight_button_pressed"]
 
 
