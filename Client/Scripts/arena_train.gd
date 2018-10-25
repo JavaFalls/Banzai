@@ -1,7 +1,7 @@
 extends Node2D
 
-onready var player_scene = preload("res://player.tscn")
-onready var bot_scene    = preload("res://bot.tscn")
+onready var player_scene = preload("res://Scenes/player.tscn")
+onready var bot_scene    = preload("res://Scenes/bot.tscn")
 var fighter1  
 var fighter2
 var start_pos1 = Vector2(320,320)
