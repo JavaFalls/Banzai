@@ -29,7 +29,7 @@ size_flags_horizontal = 7
 size_flags_vertical = 7
 _sections_unfolded = [ "Anchor", "Size Flags" ]
 
-[node name="game_background_31" type="Sprite" parent="Container" index="0"]
+[node name="background" type="Sprite" parent="Container" index="0"]
 
 position = Vector2( 1700, 900 )
 texture = ExtResource( 2 )
