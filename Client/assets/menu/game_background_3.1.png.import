@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/game_background_3.1.png-ecf0218c0cab919bdcea314ec4e430ad.stex"
+path="res://.import/game_background_3.1.png-7fbde8f32f56b0baf5422192975b34d4.stex"
 
 [deps]
 
-source_file="res://Assets/menu/game_background_3.1.png"
-dest_files=[ "res://.import/game_background_3.1.png-ecf0218c0cab919bdcea314ec4e430ad.stex" ]
+source_file="res://assets/menu/game_background_3.1.png"
+dest_files=[ "res://.import/game_background_3.1.png-7fbde8f32f56b0baf5422192975b34d4.stex" ]
 
 [params]
 
