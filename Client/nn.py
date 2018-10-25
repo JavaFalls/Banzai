@@ -6,7 +6,7 @@ from tensorflow.keras.models import load_model
 def save_game_state(game_state):
    str_game_state = str(game_state)
    f = open('gamestates', 'a')
-   f.write(str_game_state)
+   f.write(str_game_state + "\n")
 
 
 def save_bot(model):
