@@ -13,7 +13,7 @@ var secondary_weapon = Area2D
 var ability          = Area2D
 
 onready var projectile_container = get_node("projectile_container")   # Where the projectiles are stored
-onready var projectile           = preload("res://projectile.tscn") # The projectile scene to be instanced
+onready var projectile           = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
 onready var player_node          = get_parent().get_node("player")  # A reference to the player node
 #onready var heavy_attack  = preload("res://heavy.tscn") # The heavy scene to be instanced
 #onready var quick_attack  = preload("res://quick.tscn") # The quick scene to be instanced

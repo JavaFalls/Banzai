@@ -1,4 +1,4 @@
-extends "res://entity.gd"
+extends "res://Scripts/entity.gd"
 var relative_mouse = Vector2()
 func _physics_process(delta):
 	relative_mouse = get_position() - get_viewport().get_mouse_position()
