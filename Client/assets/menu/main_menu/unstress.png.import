@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/game_background_1.png-432645ffe4e2a916980509537d5777b8.stex"
+path="res://.import/unstress.png-acc7ff09b48556220d48b29492582280.stex"
 
 [deps]
 
-source_file="res://Assets/menu/game_background_1.png"
-dest_files=[ "res://.import/game_background_1.png-432645ffe4e2a916980509537d5777b8.stex" ]
+source_file="res://Assets/menu/main_menu/unstress.png"
+dest_files=[ "res://.import/unstress.png-acc7ff09b48556220d48b29492582280.stex" ]
 
 [params]
 

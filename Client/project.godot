@@ -8,13 +8,10 @@
 
 config_version=3
 
-_global_script_classes=null
-_global_script_class_icons=null
-
 [application]
 
 config/name="Banzai"
-run/main_scene="res://main.tscn"
+run/main_scene="res://Scenes/main.tscn"
 config/icon="res://icon.png"
 
 [input]

@@ -36,6 +36,10 @@
 ehthumbs.db
 Thumbs.db
 
+# Binary Files #
+################
+.h5
+
 # Folders #
 ###########
 .import
