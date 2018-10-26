@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/game_background_4.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/menu/main_menu/fight_button.png" type="Texture" id=4]
 [ext_resource path="res://assets/menu/main_menu/title.png" type="Texture" id=5]
 [ext_resource path="res://assets/menu/main_menu/unstress.png" type="Texture" id=6]
+[ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=7]
 
 [node name="main_menu" type="Node" index="0"]
 
@@ -170,8 +171,51 @@ icon = ExtResource( 6 )
 flat = false
 align = 0
 
+[node name="timeout_warning" type="ConfirmationDialog" parent="." index="6"]
+
+visible = false
+anchor_left = 0.33984
+anchor_top = 0.46
+anchor_right = 0.66406
+anchor_bottom = 0.58
+margin_left = 0.00384521
+margin_right = 0.00256348
+margin_bottom = -2.0
+rect_min_size = Vector2( 200, 70 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+window_title = "Inactivity Detected"
+resizable = false
+dialog_text = "The user is inactive. Please, verify your presence."
+dialog_hide_on_ok = true
+script = ExtResource( 7 )
+_sections_unfolded = [ "Anchor", "Dialog", "Margin", "Popup", "Theme" ]
+
+[node name="Timer" type="Timer" parent="timeout_warning" index="4"]
+
+process_mode = 1
+wait_time = 30.0
+one_shot = true
+autostart = false
+
+[node name="timeout" type="Timer" parent="." index="7"]
+
+process_mode = 1
+wait_time = 270.0
+one_shot = true
+autostart = false
+
 [connection signal="pressed" from="train_button" to="." method="_on_train_button_pressed"]
 
 [connection signal="pressed" from="fight_button" to="." method="_on_fight_button_pressed"]
+
+[connection signal="popup_hide" from="timeout_warning" to="." method="restart_timer"]
+
+[connection signal="timeout" from="timeout" to="." method="screen_idle_timeout"]
 
 
