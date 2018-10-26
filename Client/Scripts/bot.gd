@@ -1,4 +1,4 @@
-extends "res://entity.gd"
+extends "res://Scripts/entity.gd"
 
 
 func _process(delta):

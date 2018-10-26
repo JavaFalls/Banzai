@@ -8,9 +8,6 @@
 
 config_version=3
 
-_global_script_classes=null
-_global_script_class_icons=null
-
 [application]
 
 config/name="Banzai"
@@ -37,10 +34,6 @@ ui_down=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"
  ]
 primary_attack=[ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
  ]
-[layer_names]
-
-2d_physics/layer_1="solid"
-2d_physics/layer_2="player"
 
 [rendering]
 
