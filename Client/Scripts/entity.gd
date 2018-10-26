@@ -11,10 +11,12 @@ var direction        = Vector2()   # Direction the entity is moving
 var primary_weapon   = Area2D
 var secondary_weapon = Area2D
 var ability          = Area2D
+var s                = Area2D
 
 onready var projectile_container = get_node("projectile_container")   # Where the projectiles are stored
 onready var projectile           = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
 onready var player_node          = get_parent().get_node("player")  # A reference to the player node
+onready var shield               = preload("res://Scenes/shield.tscn")
 #onready var heavy_attack  = preload("res://heavy.tscn") # The heavy scene to be instanced
 #onready var quick_attack  = preload("res://quick.tscn") # The quick scene to be instanced
 #onready var ranged_attack = preload("res://ranged.tscn") # The ranged scene to be instanced
@@ -39,6 +41,8 @@ func shoot(target_position):
 	projectile_container.add_child(p)
 	p.set_gravity_scale(0) # There is no gravity in a top-down game
 	p.shoot_at_mouse(target_position)
+	s = shield.instance()
+	self.add_child(s)
 
 func restart_timer(delay):
 	timer.set_wait_time(delay)
