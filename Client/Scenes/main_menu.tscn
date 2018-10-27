@@ -196,7 +196,7 @@ dialog_hide_on_ok = true
 script = ExtResource( 7 )
 _sections_unfolded = [ "Anchor", "Dialog", "Margin", "Popup", "Theme" ]
 
-[node name="Timer" type="Timer" parent="timeout_warning" index="4"]
+[node name="Timer" type="Timer" parent="timeout_warning" index="3"]
 
 process_mode = 1
 wait_time = 30.0
@@ -206,7 +206,7 @@ autostart = false
 [node name="timeout" type="Timer" parent="." index="7"]
 
 process_mode = 1
-wait_time = 270.0
+wait_time = 300.0
 one_shot = true
 autostart = false
 
