@@ -51,7 +51,8 @@ def train(model):
           test[x][y] = int(test[x][y])
           label[x][y] = int(label[x][y])
     for z in range(0,len(test) - 1):
-       model.fit(x=test[z], y=label[z],  epochs=10, verbose=1, validation_split=0.3, initial_epoch=0)
+       model.fit(x=test[z], y=label[z],  epochs=3, verbose=1, validation_split=0.3)
+    print(model.predict(test[4]))
 
 
 def main():
@@ -59,13 +60,16 @@ def main():
     #number_of_factors = 0
     #for line in sys.argv:
      #   print(line)
-      #  number_of_factors=+1
-    #bot = load_bot()
+      #  number_of_factors=+1t
+    bot = load_bot()
     bot = build_model()
     train(bot)
     save_bot(bot)
-    save_game_state(sys.argv)
+    #save_game_state(sys.argv)
     #print(number_of_factors)
     return()
 
 main()
+#sql server is numeric mysql and oracle is number
+#page 256 create product table.
+#264, 265 insert two to vendor and two to product fix product code issue
