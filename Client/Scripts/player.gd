@@ -44,6 +44,4 @@ func get_state():
 	state.append(self.get_position())
 	state.append(self.get_trajectory())
 	state.append(get_viewport().get_mouse_position())
-	state.append(self.get_trajectory())
-	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/nn.py')
-	path.append(player_node.get_position())
+	state.append(self.get_health())
