@@ -16,21 +16,20 @@ var s                = Area2D
 onready var projectile_container = get_node("projectile_container")   # Where the projectiles are stored
 onready var projectile           = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
 onready var player_node          = get_parent().get_node("player")  # A reference to the player node
-onready var shield               = preload("res://Scenes/aby_shield.tscn")
-#onready var heavy_attack  = preload("res://heavy.tscn") # The heavy scene to be instanced
-#onready var quick_attack  = preload("res://quick.tscn") # The quick scene to be instanced
-#onready var ranged_attack = preload("res://ranged.tscn") # The ranged scene to be instanced
+onready var shield               = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
+onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn") # The heavy scene to be instanced
+onready var quick_attack  = preload("res://Scenes/atk_quick.tscn") # The quick scene to be instanced
+onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged scene to be instanced
 #onready var evade         = preload("res://evade.tscn") # The evade scene to be instanced
-#onready var shield        = preload("res://shield.tscn") # The shield scene to be instanced
 
 enum weapon_slot {primary,secondary,ability}
 enum weapon {empty,heavy,quick,ranged,evade,shield}
 
 
 func _ready():
-#	var primary_weapon   = quick_attack
-#	var secondary_weapon = heavy_attack
-#	var ability          = evade
+	var primary_weapon   = quick_attack
+	var secondary_weapon = heavy_attack
+	var ability          = evade
 	timer.set_wait_time(projectile_delay)
 	timer.set_one_shot(true)
 	self.add_child(timer)
