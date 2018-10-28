@@ -6,8 +6,8 @@ onready var _macros = preload("res://Scripts/macros.gd")
 onready var _background = get_node("Container/background")
 onready var _stats = get_node("stats")
 onready var _item_current = get_node("ScrollContainer/HBoxContainer/HBoxContainer/current")
-onready var _item_next = get_node("ScrollContainer/HBoxContainer/HBoxContainer/next")
-onready var _item_prev = get_node("ScrollContainer/HBoxContainer/HBoxContainer/previous")
+onready var _item_next = get_node("ScrollContainer/HBoxContainer/HBoxContainer/CenterContainer2/next")
+onready var _item_prev = get_node("ScrollContainer/HBoxContainer/HBoxContainer/CenterContainer/previous")
 
 signal weapon_changed
 
