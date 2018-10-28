@@ -15,10 +15,10 @@ func send_nn_state():
 	var output = []
 	var path = PoolStringArray() 
 	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/nn.py')
-	path.append(player_node.get_position())
-	path.append(player_node.get_tragectory())
+	path.append(player_node.get_state())
 	path.append(self.get_position())
-	path.append(self.get_tragectory())
+	path.append(self.get_trajectory())
+	print(path)
 	#path.append(player_node.get_hit_points())
 	#path.append(self.get_hit_points())
 	
