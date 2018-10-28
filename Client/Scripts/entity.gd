@@ -64,6 +64,3 @@ func get_hit_points():
 	
 func get_tragectory():
 	return direction
-
-func get_entity_state():
-	

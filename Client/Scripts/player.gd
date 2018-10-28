@@ -39,3 +39,11 @@ func _physics_process(delta):
 	direction = move_and_slide(direction, UP)
 
 	
+func get_state():
+	var state = PoolStringArray() 
+	state.append(self.get_position())
+	state.append(self.get_trajectory())
+	state.append(get_viewport().get_mouse_position())
+	state.append(self.get_trajectory())
+	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/nn.py')
+	path.append(player_node.get_position())
