@@ -11,7 +11,7 @@ config_version=3
 [application]
 
 config/name="Banzai"
-run/main_scene="res://Scenes/main.tscn"
+run/main_scene="res://Scenes/menu_title.tscn"
 config/icon="res://icon.png"
 
 [input]
@@ -33,6 +33,8 @@ ui_down=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
  ]
 primary_attack=[ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+secondary_attack=[ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
  ]
 
 [rendering]
