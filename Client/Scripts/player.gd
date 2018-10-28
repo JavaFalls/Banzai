@@ -48,8 +48,3 @@ func get_state():
 	state.append(self.get_position())
 	state.append(self.get_trajectory())
 	state.append(get_viewport().get_mouse_position())
-<<<<<<< HEAD
-	state.append(self.get_health())
-=======
-	state.append(self.get_trajectory())
->>>>>>> 4f41150f01e67455e1ae3630bd770ea8fb373510
