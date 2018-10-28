@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Scenes/shield.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/shield.gd" type="Script" id=1]
 [ext_resource path="res://assets/shield.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -8,7 +8,7 @@
 custom_solver_bias = 0.0
 radius = 10.0
 
-[node name="shield" type="Area2D" index="0"]
+[node name="aby_shield" type="Area2D" index="0"]
 
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
