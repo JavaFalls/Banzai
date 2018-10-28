@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/ranged.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/atk_ranged.gd" type="Script" id=1]
+[ext_resource path="res://assets/ranged.png" type="Texture" id=2]
 
 [sub_resource type="CapsuleShape2D" id=2]
 
@@ -39,7 +40,7 @@ tracks/1/keys = {
 "values": [ -96.2965, 95.7035 ]
 }
 
-[node name="atk_ranged" type="Area2D"]
+[node name="atk_ranged" type="Area2D" index="0"]
 
 rotation = -0.340279
 input_pickable = true
@@ -47,9 +48,11 @@ gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
+monitoring = false
 audio_bus_override = false
 audio_bus_name = "Master"
-_sections_unfolded = [ "Transform" ]
+script = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
 
@@ -73,7 +76,9 @@ blend_times = [  ]
 position = Vector2( 0.159959, -0.161726 )
 rotation = 1.5708
 scale = Vector2( 0.23092, 0.23092 )
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 _sections_unfolded = [ "Animation", "Transform" ]
+
+[node name="projectile_container" type="Node" parent="." index="3"]
 
 

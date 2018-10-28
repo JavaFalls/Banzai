@@ -10,11 +10,8 @@ func _physics_process(delta):
 		if timer.is_stopped():
 			shoot(self.global_position)
 			restart_timer(projectile_delay)
-#		pimary_attack.use()
 	if Input.is_action_pressed("secondary_attack"):
-		if timer.is_stopped():
-			shoot(self.global_position)
-			restart_timer(projectile_delay)
+		secondary_weapon.use()
 	if Input.is_action_pressed("ui_right"):
 		direction.x = MOVEMENT_SPEED
 	if Input.is_action_pressed("ui_left"):

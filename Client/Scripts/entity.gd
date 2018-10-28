@@ -16,20 +16,19 @@ var s                = Area2D
 onready var projectile_container = get_node("projectile_container")   # Where the projectiles are stored
 onready var projectile           = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
 onready var player_node          = get_parent().get_node("player")  # A reference to the player node
-onready var shield               = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
+
+onready var shield        = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
 onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn") # The heavy scene to be instanced
 onready var quick_attack  = preload("res://Scenes/atk_quick.tscn") # The quick scene to be instanced
 onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged scene to be instanced
-#onready var evade         = preload("res://evade.tscn") # The evade scene to be instanced
+onready var evade         = preload("res://Scenes/aby_evade.tscn") # The evade scene to be instanced
 
 enum weapon_slot {primary,secondary,ability}
 enum weapon {empty,heavy,quick,ranged,evade,shield}
 
 
 func _ready():
-	var primary_weapon   = quick_attack
-	var secondary_weapon = heavy_attack
-	var ability          = evade
+	set_weapons(ranged_attack, heavy_attack, evade)
 	timer.set_wait_time(projectile_delay)
 	timer.set_one_shot(true)
 	self.add_child(timer)
@@ -49,14 +48,14 @@ func restart_timer(delay):
 # Will be sent the weapon scene as a parameter
 func set_weapons(new_primary, new_secondary, new_ability):
 	self.remove_child(primary_weapon)
-	primary_weapon   = new_primary
-	self.add_child(primary_weapon.instance())
+	primary_weapon   = new_primary.instance()
+	self.add_child(primary_weapon)
 	self.remove_child(secondary_weapon)
-	secondary_weapon = new_secondary
-	self.add_child(secondary_weapon.instance())
+	secondary_weapon = new_secondary.instance()
+	self.add_child(secondary_weapon)
 	self.remove_child(ability)
-	ability          = new_ability
-	self.add_child(ability.instance())
+	ability          = new_ability.instance()
+	self.add_child(ability)
 func get_hit_points():
 	return hit_points
 	
