@@ -7,6 +7,7 @@ def save_game_state(game_state):
    str_game_state = str(game_state)
    f = open('gamestates', 'a')
    f.write(str_game_state + "\n")
+   f.close()
 
 
 def save_bot(model):
