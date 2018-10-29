@@ -5,16 +5,33 @@ onready var _macros = preload("res://Scripts/macros.gd")
 
 onready var _background = get_node("Container/background")
 onready var _stats = get_node("stats")
-onready var _item_current = get_node("ScrollContainer/HBoxContainer/HBoxContainer/current")
-onready var _item_next = get_node("ScrollContainer/HBoxContainer/HBoxContainer/CenterContainer2/next")
-onready var _item_prev = get_node("ScrollContainer/HBoxContainer/HBoxContainer/CenterContainer/previous")
 
-signal weapon_changed
+onready var _primary_current = get_node("primary_weapons/HBoxContainer/HBoxContainer/current")
+onready var _primary_next = get_node("primary_weapons/HBoxContainer/HBoxContainer/next")
+onready var _primary_prev = get_node("primary_weapons/HBoxContainer/HBoxContainer/previous")
+onready var _secondary_current = get_node("secondary_weapons/HBoxContainer/HBoxContainer/current")
+onready var _secondary_next = get_node("secondary_weapons/HBoxContainer/HBoxContainer/next")
+onready var _secondary_prev = get_node("secondary_weapons/HBoxContainer/HBoxContainer/previous")
+onready var _ability_current = get_node("abilities/HBoxContainer/HBoxContainer/current")
+onready var _ability_next = get_node("abilities/HBoxContainer/HBoxContainer/next")
+onready var _ability_prev = get_node("abilities/HBoxContainer/HBoxContainer/previous")
 
 onready var weapons = _item_list.new([
 	_item_list.Item.new(load("res://assets/icon.png"), null, null),
 	_item_list.Item.new(load("res://assets/sword.png"), null, null),
 	_item_list.Item.new(load("res://assets/wall.png"), null, null)
+])
+
+onready var secondaries = _item_list.new([
+	_item_list.Item.new(load("res://assets/sword.png"), null, null),
+	_item_list.Item.new(load("res://assets/sword.png"), null, null),
+	_item_list.Item.new(load("res://assets/sword.png"), null, null)
+])
+
+onready var abilities = _item_list.new([
+	_item_list.Item.new(load("res://assets/sword.png"), null, null),
+	_item_list.Item.new(load("res://assets/sword.png"), null, null),
+	_item_list.Item.new(load("res://assets/sword.png"), null, null)
 ])
 
 var stats = [
@@ -26,8 +43,6 @@ var stats = [
 ]
 
 func _ready():
-	connect("weapon_changed", self, "move_weapons")
-	
 	get_tree().get_root().connect("size_changed", self, "_resize")
 	var size = OS.get_window_size()
 	_background.scale = Vector2(size.x / _macros.NORMAL_WIDTH, size.y / _macros.NORMAL_HEIGHT)
@@ -49,18 +64,23 @@ func _resize():
 	_background.scale = Vector2(size.x / _macros.NORMAL_WIDTH, size.y / _macros.NORMAL_HEIGHT)
 	pass
 
-func _on_weapon_left_pressed():
-	weapons.set_current(weapons.prev())
-	emit_signal("weapon_changed")
+func move_weapons(direction):
+	weapons.set_current(weapons.call(direction))
+	_primary_current.texture = weapons.current().texture
+	_primary_next.texture = weapons.next().texture
+	_primary_prev.texture = weapons.prev().texture
 	pass
 
-func _on_weapon_right_pressed():
-	weapons.set_current(weapons.next())
-	emit_signal("weapon_changed")
+func move_secondaries(direction):
+	secondaries.set_current(secondaries.call(direction))
+	_secondary_current.texture = secondaries.current().texture
+	_secondary_next.texture = secondaries.next().texture
+	_secondary_prev.texture = secondaries.prev().texture
 	pass
 
-func move_weapons():
-	_item_current.texture = weapons.current().texture
-	_item_next.texture = weapons.next().texture
-	_item_prev.texture = weapons.prev().texture
+func move_abilities(direction):
+	abilities.set_current(abilities.call(direction))
+	_ability_current.texture = abilities.current().texture
+	_ability_next.texture = abilities.next().texture
+	_ability_prev.texture = abilities.prev().texture
 	pass
