@@ -88,33 +88,15 @@ expand = true
 stretch_mode = 4
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Size Flags" ]
 
-[node name="CenterContainer" type="CenterContainer" parent="." index="3"]
+[node name="player_bot" type="TextureRect" parent="." index="3"]
 
-anchor_left = 0.3
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 0.7
-margin_left = 0.800018
-margin_right = -3.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-use_top_left = false
-_sections_unfolded = [ "Anchor" ]
-
-[node name="TextureRect" type="TextureRect" parent="CenterContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 292.0
-margin_top = 146.0
-margin_right = 420.0
-margin_bottom = 274.0
+anchor_left = 0.45
+anchor_top = 0.22667
+anchor_right = 0.58
+anchor_bottom = 0.44
+margin_left = -0.799988
+margin_top = -0.0019989
+margin_right = -1.91998
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -122,12 +104,32 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 5
 size_flags_vertical = 5
 texture = ExtResource( 5 )
+expand = true
 stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
+_sections_unfolded = [ "Anchor", "Size Flags" ]
 
-[node name="primary_weapons" type="VBoxContainer" parent="." index="4"]
+[node name="training_bot" type="TextureRect" parent="." index="4"]
 
-editor/display_folded = true
+anchor_left = 0.77344
+anchor_top = 0.22667
+anchor_right = 0.90234
+anchor_bottom = 0.44
+margin_left = -0.00256348
+margin_top = -0.0019989
+margin_right = 0.00384521
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 5
+size_flags_vertical = 5
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 6
+_sections_unfolded = [ "Anchor", "Size Flags" ]
+
+[node name="primary_weapons" type="VBoxContainer" parent="." index="5"]
+
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.3
@@ -312,7 +314,7 @@ expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Margin", "Size Flags" ]
 
-[node name="secondary_weapons" type="VBoxContainer" parent="." index="5"]
+[node name="secondary_weapons" type="VBoxContainer" parent="." index="6"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -498,8 +500,9 @@ expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Size Flags", "Textures" ]
 
-[node name="abilities" type="VBoxContainer" parent="." index="6"]
+[node name="abilities" type="VBoxContainer" parent="." index="7"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.4
 anchor_right = 0.3
@@ -685,14 +688,15 @@ expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Size Flags", "Textures" ]
 
-[node name="stats" type="ItemList" parent="." index="7"]
+[node name="stats" type="ItemList" parent="." index="8"]
 
-anchor_left = 0.0
+anchor_left = 0.09766
 anchor_top = 0.6
 anchor_right = 0.3
 anchor_bottom = 1.0
+margin_left = -0.00383759
 margin_top = 3.05176e-005
-margin_right = 0.800018
+margin_right = -0.199982
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 focus_mode = 2
