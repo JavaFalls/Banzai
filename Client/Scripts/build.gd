@@ -9,35 +9,94 @@ onready var _stats = get_node("stats")
 onready var _primary_current = get_node("primary_weapons/HBoxContainer/HBoxContainer/current")
 onready var _primary_next = get_node("primary_weapons/HBoxContainer/HBoxContainer/next")
 onready var _primary_prev = get_node("primary_weapons/HBoxContainer/HBoxContainer/previous")
+onready var _primary_label = get_node("primary_weapons/Label")
+
 onready var _secondary_current = get_node("secondary_weapons/HBoxContainer/HBoxContainer/current")
 onready var _secondary_next = get_node("secondary_weapons/HBoxContainer/HBoxContainer/next")
 onready var _secondary_prev = get_node("secondary_weapons/HBoxContainer/HBoxContainer/previous")
+onready var _secondary_label = get_node("secondary_weapons/Label")
+
 onready var _ability_current = get_node("abilities/HBoxContainer/HBoxContainer/current")
 onready var _ability_next = get_node("abilities/HBoxContainer/HBoxContainer/next")
 onready var _ability_prev = get_node("abilities/HBoxContainer/HBoxContainer/previous")
+onready var _ability_label = get_node("abilities/Label")
 
 onready var weapons = _item_list.new([
-	_item_list.Item.new(load("res://assets/icon.png"), null, null),
-	_item_list.Item.new(load("res://assets/sword.png"), null, null),
-	_item_list.Item.new(load("res://assets/wall.png"), null, null)
+	_item_list.Item.new(load("res://assets/icon.png"), "Robot Face", {
+		"attack": 1,
+		"armor": 2,
+		"range": 3,
+		"points": 4,
+		"weight": 5
+	}),
+	_item_list.Item.new(load("res://assets/sword.png"), "Sword", {
+		"attack": 2,
+		"armor": 4,
+		"range": 3,
+		"points": 6,
+		"weight": 15
+	}),
+	_item_list.Item.new(load("res://assets/wall.png"), "Nothing Particular", {
+		"attack": 0,
+		"armor": 20,
+		"range": 2,
+		"points": 8,
+		"weight": 1
+	})
 ])
 
 onready var secondaries = _item_list.new([
-	_item_list.Item.new(load("res://assets/sword.png"), null, null),
-	_item_list.Item.new(load("res://assets/sword.png"), null, null),
-	_item_list.Item.new(load("res://assets/sword.png"), null, null)
+	_item_list.Item.new(load("res://assets/sword.png"), "Sword1", {
+		"attack": 0,
+		"armor": 0,
+		"range": 0,
+		"points": 0,
+		"weight": 0
+	}),
+	_item_list.Item.new(load("res://assets/sword.png"), "Sword2", {
+		"attack": 1,
+		"armor": 2,
+		"range": 32,
+		"points": 8,
+		"weight": 3
+	}),
+	_item_list.Item.new(load("res://assets/sword.png"), "Sword3", {
+		"attack": 2,
+		"armor": 3,
+		"range": 6,
+		"points": 2,
+		"weight": 4
+	})
 ])
 
 onready var abilities = _item_list.new([
-	_item_list.Item.new(load("res://assets/sword.png"), null, null),
-	_item_list.Item.new(load("res://assets/sword.png"), null, null),
-	_item_list.Item.new(load("res://assets/sword.png"), null, null)
+	_item_list.Item.new(load("res://assets/sword.png"), "Sword1", {
+		"attack": 0,
+		"armor": 0,
+		"range": 2,
+		"points": 0,
+		"weight": 1
+	}),
+	_item_list.Item.new(load("res://assets/sword.png"), "Sword2", {
+		"attack": 0,
+		"armor": 0,
+		"range": 0,
+		"points": 0,
+		"weight": 0
+	}),
+	_item_list.Item.new(load("res://assets/sword.png"), "Sword3", {
+		"attack": 0,
+		"armor": 1,
+		"range": 1,
+		"points": 0,
+		"weight": 1
+	})
 ])
 
 var stats = [
 	"Attack: ",
-	"Armor:  ",
-	"Range:  ",
+	"Armor: ",
+	"Range: ",
 	"Points: ",
 	"Weight: "
 ]
@@ -66,21 +125,41 @@ func _resize():
 
 func move_weapons(direction):
 	weapons.set_current(weapons.call(direction))
+	
 	_primary_current.texture = weapons.current().texture
 	_primary_next.texture = weapons.next().texture
 	_primary_prev.texture = weapons.prev().texture
+	
+	_primary_label.text = "Primary: " + weapons.current().text
+	update_stats()
 	pass
 
 func move_secondaries(direction):
 	secondaries.set_current(secondaries.call(direction))
+	
 	_secondary_current.texture = secondaries.current().texture
 	_secondary_next.texture = secondaries.next().texture
 	_secondary_prev.texture = secondaries.prev().texture
+	
+	_secondary_label.text = "Secondary: " + secondaries.current().text
+	update_stats()
 	pass
 
 func move_abilities(direction):
 	abilities.set_current(abilities.call(direction))
+	
 	_ability_current.texture = abilities.current().texture
 	_ability_next.texture = abilities.next().texture
 	_ability_prev.texture = abilities.prev().texture
+	
+	_ability_label.text = "Ability: " + abilities.current().text
+	update_stats()
+	pass
+
+func update_stats():
+	var prim_stats = weapons.current().stats.values()
+	var sec_stats = secondaries.current().stats.values()
+	var abil_stats = abilities.current().stats.values()
+	for i in range(_stats.get_item_count()):
+		_stats.set_item_text(i, stats[i] + str(prim_stats[i] + sec_stats[i] + abil_stats[i]))
 	pass
