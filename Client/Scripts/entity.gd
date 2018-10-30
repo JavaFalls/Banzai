@@ -11,24 +11,25 @@ var direction        = Vector2()   # Direction the entity is moving
 var primary_weapon   = Area2D
 var secondary_weapon = Area2D
 var ability          = Area2D
+var s                = Area2D
 
 onready var projectile_container = get_node("projectile_container")   # Where the projectiles are stored
 onready var projectile           = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
 onready var player_node          = get_parent().get_node("player")  # A reference to the player node
-#onready var heavy_attack  = preload("res://heavy.tscn") # The heavy scene to be instanced
-#onready var quick_attack  = preload("res://quick.tscn") # The quick scene to be instanced
-#onready var ranged_attack = preload("res://ranged.tscn") # The ranged scene to be instanced
+onready var shield               = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
+onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn") # The heavy scene to be instanced
+onready var quick_attack  = preload("res://Scenes/atk_quick.tscn") # The quick scene to be instanced
+onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged scene to be instanced
 #onready var evade         = preload("res://evade.tscn") # The evade scene to be instanced
-#onready var shield        = preload("res://shield.tscn") # The shield scene to be instanced
 
 enum weapon_slot {primary,secondary,ability}
 enum weapon {empty,heavy,quick,ranged,evade,shield}
 
 
 func _ready():
-#	var primary_weapon   = quick_attack
-#	var secondary_weapon = heavy_attack
-#	var ability          = evade
+	var primary_weapon   = quick_attack
+	var secondary_weapon = heavy_attack
+	var ability          = evade
 	timer.set_wait_time(projectile_delay)
 	timer.set_one_shot(true)
 	self.add_child(timer)
@@ -39,6 +40,7 @@ func shoot(target_position):
 	projectile_container.add_child(p)
 	p.set_gravity_scale(0) # There is no gravity in a top-down game
 	p.shoot_at_mouse(target_position)
+
 
 func restart_timer(delay):
 	timer.set_wait_time(delay)
@@ -58,5 +60,5 @@ func set_weapons(new_primary, new_secondary, new_ability):
 func get_hit_points():
 	return hit_points
 	
-func get_tragectory():
+func get_trajectory():
 	return direction

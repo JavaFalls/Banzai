@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/customize_button.png-ed6a203b36914f3a0be101dabc47ee60.stex"
+path="res://.import/ranged.png-722ad20065a781d81f0f8fc97b89a749.stex"
 
 [deps]
 
-source_file="res://assets/menu/main_menu/customize_button.png"
-dest_files=[ "res://.import/customize_button.png-ed6a203b36914f3a0be101dabc47ee60.stex" ]
+source_file="res://assets/ranged.png"
+dest_files=[ "res://.import/ranged.png-722ad20065a781d81f0f8fc97b89a749.stex" ]
 
 [params]
 
