@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/customize_button.png-ed6a203b36914f3a0be101dabc47ee60.stex"
+path="res://.import/shield.png-46d74908b0ac118b50397d7021ae31f8.stex"
 
 [deps]
 
-source_file="res://assets/menu/main_menu/customize_button.png"
-dest_files=[ "res://.import/customize_button.png-ed6a203b36914f3a0be101dabc47ee60.stex" ]
+source_file="res://assets/shield.png"
+dest_files=[ "res://.import/shield.png-46d74908b0ac118b50397d7021ae31f8.stex" ]
 
 [params]
 
