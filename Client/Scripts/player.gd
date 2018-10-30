@@ -45,4 +45,11 @@ func get_state():
 	state.append(self.get_position())
 	state.append(self.get_trajectory())
 	state.append(get_viewport().get_mouse_position())
-	state.append(self.get_trajectory())
+	state.append(Input.is_action_pressed("primary_attack"))
+	state.append(Input.is_action_pressed("secondary_attack"))
+	state.append(Input.is_action_pressed("ui_right"))
+	state.append(Input.is_action_pressed("ui_left"))
+	state.append(Input.is_action_pressed("ui_up"))
+	state.append(Input.is_action_pressed("ui_down"))
+	return state
+	

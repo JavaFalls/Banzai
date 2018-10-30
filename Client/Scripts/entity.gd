@@ -59,5 +59,5 @@ func set_weapons(new_primary, new_secondary, new_ability):
 func get_hit_points():
 	return hit_points
 	
-func get_tragectory():
+func get_trajectory():
 	return direction
