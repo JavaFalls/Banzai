@@ -17,18 +17,18 @@ onready var projectile_container = get_node("projectile_container")   # Where th
 onready var projectile           = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
 onready var player_node          = get_parent().get_node("player")  # A reference to the player node
 
-onready var shield        = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
+onready var aby_shield        = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
 onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn") # The heavy scene to be instanced
 onready var quick_attack  = preload("res://Scenes/atk_quick.tscn") # The quick scene to be instanced
 onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged scene to be instanced
-onready var evade         = preload("res://Scenes/aby_evade.tscn") # The evade scene to be instanced
+onready var aby_evade         = preload("res://Scenes/aby_evade.tscn") # The evade scene to be instanced
 
 enum weapon_slot {primary,secondary,ability}
 enum weapon {empty,heavy,quick,ranged,evade,shield}
 
 
 func _ready():
-	set_weapons(ranged_attack, heavy_attack, evade)
+	set_weapons(quick_attack, heavy_attack, aby_shield)
 	timer.set_wait_time(projectile_delay)
 	timer.set_one_shot(true)
 	self.add_child(timer)
