@@ -7,9 +7,7 @@ func _physics_process(delta):
 	direction = Vector2(0,0)
 	
 	if Input.is_action_pressed("primary_attack"):
-		if timer.is_stopped():
-			shoot(self.global_position)
-			restart_timer(projectile_delay)
+		primary_weapon.use()
 	if Input.is_action_pressed("secondary_attack"):
 		secondary_weapon.use()
 	if Input.is_action_pressed("ui_right"):

@@ -1,17 +1,16 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scenes/atk_ranged.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/atk_ranged.gd" type="Script" id=1]
 [ext_resource path="res://assets/ranged.png" type="Texture" id=2]
 
-[sub_resource type="CapsuleShape2D" id=2]
+[sub_resource type="CapsuleShape2D" id=1]
 
 custom_solver_bias = 0.0
 radius = 10.0
 height = 0.843361
 
-[sub_resource type="Animation" id=1]
+[sub_resource type="Animation" id=2]
 
-resource_name = "attack"
 length = 0.5
 loop = false
 step = 0.05
@@ -40,7 +39,7 @@ tracks/1/keys = {
 "values": [ -96.2965, 95.7035 ]
 }
 
-[node name="atk_ranged" type="Area2D" index="0"]
+[node name="atk_ranged" type="Area2D"]
 
 rotation = -0.340279
 input_pickable = true
@@ -59,7 +58,7 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 position = Vector2( 0.421217, -0.467 )
 rotation = 1.44069
 scale = Vector2( 0.520768, 0.819026 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
 
@@ -68,7 +67,7 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/attack = SubResource( 1 )
+anims/attack = SubResource( 2 )
 blend_times = [  ]
 
 [node name="Sprite" type="Sprite" parent="." index="2"]
