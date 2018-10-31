@@ -110,10 +110,6 @@ func _ready():
 		_stats.add_item(stat, null, false)
 	pass
 
-func _on_go_button_pressed():
-	get_tree().change_scene("res://Scenes/arena_train.tscn")
-	pass
-
 func _on_back_button_pressed():
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 	pass

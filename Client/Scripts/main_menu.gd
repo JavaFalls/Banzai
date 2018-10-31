@@ -20,12 +20,18 @@ func _input(event):
 		_timer.start()
 	pass
 
-func _on_train_button_pressed():
-	get_tree().change_scene("res://Scenes/build.tscn")
-	pass
-
-func _on_fight_button_pressed():
-	get_tree().change_scene("res://Scenes/arena_battle.tscn")
+func scene_change(button):
+	match (button):
+		"leader":
+			get_tree().change_scene("res://Scenes/leaderboard.tscn")
+		"custom":
+			get_tree().change_scene("res://Scenes/build.tscn")
+		"stats":
+			get_tree().change_scene("res://Scenes/stats.tscn")
+		"train":
+			get_tree().change_scene("res://Scenes/arena_train.tscn")
+		"fight":
+			get_tree().change_scene("res://Scenes/arena_battle.tscn")
 	pass
 
 func _resize():
