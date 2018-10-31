@@ -1,14 +1,15 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/build.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/game_background_3.1.png" type="Texture" id=2]
 [ext_resource path="res://assets/menu/main_menu/fight_button.png" type="Texture" id=3]
-[ext_resource path="res://assets/icon.png" type="Texture" id=4]
-[ext_resource path="res://assets/menu/main_menu/arrow_left.png" type="Texture" id=5]
-[ext_resource path="res://assets/Wall.png" type="Texture" id=6]
-[ext_resource path="res://assets/sword.png" type="Texture" id=7]
-[ext_resource path="res://assets/menu/main_menu/arrow_right.png" type="Texture" id=8]
-[ext_resource path="res://themes/bot_stats.theme" type="Theme" id=9]
+[ext_resource path="res://assets/menu/main_menu/train_button.png" type="Texture" id=4]
+[ext_resource path="res://assets/icon.png" type="Texture" id=5]
+[ext_resource path="res://assets/menu/main_menu/arrow_left.png" type="Texture" id=6]
+[ext_resource path="res://assets/Wall.png" type="Texture" id=7]
+[ext_resource path="res://assets/sword.png" type="Texture" id=8]
+[ext_resource path="res://assets/menu/main_menu/arrow_right.png" type="Texture" id=9]
+[ext_resource path="res://themes/bot_stats.theme" type="Theme" id=10]
 
 [node name="build" type="Node" index="0"]
 
@@ -62,7 +63,32 @@ expand = true
 stretch_mode = 4
 _sections_unfolded = [ "Anchor", "Grow Direction", "Size Flags", "Textures" ]
 
-[node name="player_bot" type="TextureRect" parent="." index="2"]
+[node name="go_button" type="TextureButton" parent="." index="2"]
+
+anchor_left = 0.67969
+anchor_top = 0.71333
+anchor_right = 0.86719
+anchor_bottom = 0.94
+margin_left = -0.00256348
+margin_top = 0.00201416
+margin_right = -0.00256348
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 4 )
+expand = true
+stretch_mode = 4
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Size Flags" ]
+
+[node name="player_bot" type="TextureRect" parent="." index="3"]
 
 anchor_left = 0.3
 anchor_top = 0.0
@@ -78,12 +104,12 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 5
 size_flags_vertical = 5
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Anchor", "Margin", "Size Flags" ]
 
-[node name="training_bot" type="TextureRect" parent="." index="3"]
+[node name="training_bot" type="TextureRect" parent="." index="4"]
 
 anchor_left = 0.65
 anchor_top = 0.0
@@ -99,12 +125,12 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 5
 size_flags_vertical = 5
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Anchor", "Size Flags" ]
 
-[node name="primary_weapons" type="VBoxContainer" parent="." index="4"]
+[node name="primary_weapons" type="VBoxContainer" parent="." index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -180,7 +206,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 5 )
+texture_normal = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Size Flags", "Textures" ]
@@ -218,7 +244,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Rect", "Size Flags", "Visibility" ]
@@ -238,7 +264,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags" ]
@@ -259,7 +285,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Rect", "Size Flags" ]
@@ -285,12 +311,12 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 8 )
+texture_normal = ExtResource( 9 )
 expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Margin", "Size Flags" ]
 
-[node name="secondary_weapons" type="VBoxContainer" parent="." index="5"]
+[node name="secondary_weapons" type="VBoxContainer" parent="." index="6"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -368,7 +394,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 5 )
+texture_normal = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Size Flags", "Textures" ]
@@ -406,7 +432,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags", "Visibility" ]
@@ -426,7 +452,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags" ]
 
@@ -446,7 +472,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags", "Visibility" ]
 
@@ -471,12 +497,12 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 8 )
+texture_normal = ExtResource( 9 )
 expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Size Flags", "Textures" ]
 
-[node name="abilities" type="VBoxContainer" parent="." index="6"]
+[node name="abilities" type="VBoxContainer" parent="." index="7"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -554,7 +580,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 5 )
+texture_normal = ExtResource( 6 )
 expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Size Flags", "Textures" ]
@@ -592,7 +618,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags", "Visibility" ]
@@ -612,7 +638,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags" ]
@@ -633,7 +659,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags", "Visibility" ]
@@ -659,12 +685,12 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 8 )
+texture_normal = ExtResource( 9 )
 expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Size Flags", "Textures" ]
 
-[node name="stats" type="ItemList" parent="." index="7"]
+[node name="stats" type="ItemList" parent="." index="8"]
 
 anchor_left = 0.09766
 anchor_top = 0.6
@@ -680,7 +706,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-theme = ExtResource( 9 )
+theme = ExtResource( 10 )
 items = [  ]
 select_mode = 0
 allow_reselect = false
@@ -689,6 +715,8 @@ fixed_icon_size = Vector2( 0, 0 )
 _sections_unfolded = [ "Anchor", "Columns", "Icon", "Size Flags", "Theme" ]
 
 [connection signal="pressed" from="back_button" to="." method="_on_back_button_pressed"]
+
+[connection signal="pressed" from="go_button" to="." method="_on_go_button_pressed"]
 
 [connection signal="pressed" from="primary_weapons/HBoxContainer/left" to="." method="move_weapons" binds= [ "prev" ]]
 
