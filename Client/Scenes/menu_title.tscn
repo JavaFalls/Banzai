@@ -77,68 +77,38 @@ size_flags_vertical = 7
 alignment = 1
 _sections_unfolded = [ "Anchor", "Size Flags" ]
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer" index="0"]
+[node name="ready" type="Button" parent="VBoxContainer" index="0"]
 
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 820.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = true
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 5
-size_flags_vertical = 5
-bbcode_enabled = false
-bbcode_text = ""
-visible_characters = -1
-percent_visible = 1.0
-meta_underlined = true
-tab_size = 4
-text = ""
-scroll_active = true
-scroll_following = false
-selection_enabled = false
-override_selected_font_color = false
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="HSlider" type="HSlider" parent="VBoxContainer" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 4.0
-margin_right = 820.0
+margin_left = 377.0
+margin_right = 442.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 5
-min_value = 0.0
-max_value = 1000.0
-step = 1.0
-page = 0.0
-value = 0.0
-exp_edit = false
-rounded = false
-editable = true
-tick_count = 0
-ticks_on_borders = false
-focus_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "READY..."
+flat = false
+align = 1
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" index="2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 24.0
 margin_right = 820.0
 margin_bottom = 480.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -148,96 +118,108 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
 alignment = 1
-_sections_unfolded = [ "Anchor", "Size Flags" ]
-
-[node name="manufacturor" type="PopupMenu" parent="VBoxContainer/HBoxContainer" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 269.0
-margin_bottom = 456.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-popup_exclusive = true
-items = [  ]
-hide_on_item_selection = false
-hide_on_checkable_item_selection = false
-hide_on_state_item_selection = false
 _sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
 
-[node name="name" type="PopupMenu" parent="VBoxContainer/HBoxContainer" index="1"]
+[node name="manufacturor" type="ItemList" parent="VBoxContainer/HBoxContainer" index="0"]
 
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 273.0
-margin_right = 542.0
-margin_bottom = 456.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-popup_exclusive = true
-items = [  ]
-hide_on_item_selection = false
-hide_on_checkable_item_selection = false
-hide_on_state_item_selection = false
-_sections_unfolded = [ "Anchor", "Size Flags" ]
-
-[node name="code" type="PopupMenu" parent="VBoxContainer/HBoxContainer" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 546.0
-margin_right = 815.0
-margin_bottom = 456.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-popup_exclusive = true
-items = [  ]
-hide_on_item_selection = false
-hide_on_checkable_item_selection = false
-hide_on_state_item_selection = false
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="ItemList" type="ItemList" parent="VBoxContainer/HBoxContainer" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 819.0
-margin_right = 819.0
+margin_right = 820.0
 margin_bottom = 456.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
+size_flags_horizontal = 7
+size_flags_vertical = 7
 items = [  ]
 select_mode = 0
 allow_reselect = false
 icon_mode = 1
 fixed_icon_size = Vector2( 0, 0 )
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="name" type="ItemList" parent="VBoxContainer/HBoxContainer" index="1"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 412.0
+margin_right = 820.0
+margin_bottom = 456.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+items = [  ]
+select_mode = 0
+allow_reselect = false
+icon_mode = 1
+fixed_icon_size = Vector2( 0, 0 )
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="code" type="ItemList" parent="VBoxContainer/HBoxContainer" index="2"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 548.0
+margin_right = 820.0
+margin_bottom = 456.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+items = [  ]
+select_mode = 0
+allow_reselect = false
+icon_mode = 1
+fixed_icon_size = Vector2( 0, 0 )
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="full_name" type="Label" parent="VBoxContainer" index="2"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 466.0
+margin_right = 820.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 5
+size_flags_vertical = 5
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Size Flags" ]
+
+[connection signal="pressed" from="VBoxContainer/ready" to="." method="create_user"]
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/manufacturor" to="." method="name_changed" binds= [ "M" ]]
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/name" to="." method="name_changed" binds= [ "N" ]]
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/code" to="." method="name_changed" binds= [ "C" ]]
 
 
