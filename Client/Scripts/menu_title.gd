@@ -18,8 +18,8 @@ var names = [
 	["manufacturor", "name", "code"],
 	["manufacturor", "name", "code"],
 	["manufacturor", "name", "code"],
-	["Java", "Hyper-actor", "!=ZZZ"],
-	["Rosenburg", "TNT", "4megaton"],
+	["Java", "Hyper-actor", "sleep=0"],
+	["Rosenburg", "TNT", "40megaton"],
 	["ACME", "Burst-amator", "EZ-24/7"]
 ]
 
@@ -68,7 +68,9 @@ func name_changed(index, list):
 			full_name[list] = _code.get_item_text(index)
 	_full_name.text = ""
 	for n in full_name:
-		_full_name.text += full_name[n] + " "
+		_full_name.text += " " + full_name[n] + " "
+	if full_name['M'] != "" and full_name["N"] != "" and full_name["C"] != "":
+		_ready_button.disabled = false
 	pass
 
 func create_user():
