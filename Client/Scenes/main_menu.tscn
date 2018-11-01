@@ -1,12 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/game_background_4.png" type="Texture" id=2]
 [ext_resource path="res://assets/menu/main_menu/train_button.png" type="Texture" id=3]
 [ext_resource path="res://assets/menu/main_menu/fight_button.png" type="Texture" id=4]
 [ext_resource path="res://assets/menu/main_menu/title.png" type="Texture" id=5]
-[ext_resource path="res://assets/menu/main_menu/unstress.png" type="Texture" id=6]
-[ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=7]
+[ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=6]
 
 [node name="main_menu" type="Node" index="0"]
 
@@ -43,8 +42,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.27
 anchor_bottom = 0.27
-margin_right = -0.47998
-margin_bottom = -1.99998
+margin_right = -0.480011
+margin_bottom = -2.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -117,10 +116,9 @@ _sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
 
 anchor_left = 0.0
 anchor_top = 0.56
-anchor_right = 0.27
-anchor_bottom = 0.83
-margin_right = -0.47998
-margin_bottom = -2.0
+anchor_right = 0.26953
+anchor_bottom = 0.76
+margin_right = 0.00128174
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -299,14 +297,23 @@ expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Rect" ]
 
-[node name="CheckBox" type="CheckBox" parent="." index="10"]
+[node name="timeout" type="Timer" parent="." index="10"]
 
-anchor_left = 0.44141
-anchor_top = 0.42
-anchor_right = 0.5625
-anchor_bottom = 0.6
-margin_left = -0.00384521
-margin_top = 1.52588e-005
+process_mode = 1
+wait_time = 300.0
+one_shot = true
+autostart = false
+
+[node name="logout_button" type="Button" parent="." index="11"]
+
+anchor_left = 0.12207
+anchor_top = 0.82333
+anchor_right = 0.26953
+anchor_bottom = 0.90333
+margin_left = 0.000320435
+margin_top = 1.00201
+margin_right = -0.998718
+margin_bottom = -0.997986
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -314,15 +321,15 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-toggle_mode = true
+toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-icon = ExtResource( 6 )
+text = "Logout"
 flat = false
-align = 0
+align = 1
 
-[node name="timeout_warning" type="ConfirmationDialog" parent="." index="11"]
+[node name="timeout_warning" type="ConfirmationDialog" parent="." index="12"]
 
 visible = false
 anchor_left = 0.33984
@@ -344,7 +351,7 @@ window_title = "Inactivity Detected"
 resizable = false
 dialog_text = "The user is inactive. Please, verify your presence."
 dialog_hide_on_ok = true
-script = ExtResource( 7 )
+script = ExtResource( 6 )
 _sections_unfolded = [ "Anchor", "Dialog", "Margin", "Popup", "Theme" ]
 
 [node name="Timer" type="Timer" parent="timeout_warning" index="3"]
@@ -354,12 +361,28 @@ wait_time = 30.0
 one_shot = true
 autostart = false
 
-[node name="timeout" type="Timer" parent="." index="12"]
+[node name="logout_warning" type="ConfirmationDialog" parent="." index="13"]
 
-process_mode = 1
-wait_time = 300.0
-one_shot = true
-autostart = false
+visible = false
+anchor_left = 0.40137
+anchor_top = 0.44
+anchor_right = 0.59668
+anchor_bottom = 0.55667
+margin_left = -0.00286865
+margin_right = -0.000305176
+margin_bottom = -0.00201416
+rect_min_size = Vector2( 200, 70 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+popup_exclusive = false
+window_title = "Logout?"
+resizable = false
+dialog_hide_on_ok = true
+_sections_unfolded = [ "Anchor", "Dialog", "Margin", "Popup" ]
 
 [connection signal="pressed" from="train_button" to="." method="scene_change" binds= [ "train" ]]
 
@@ -371,8 +394,12 @@ autostart = false
 
 [connection signal="pressed" from="custom_button" to="." method="scene_change" binds= [ "custom" ]]
 
+[connection signal="timeout" from="timeout" to="." method="screen_idle_timeout"]
+
+[connection signal="pressed" from="logout_button" to="." method="logout"]
+
 [connection signal="popup_hide" from="timeout_warning" to="." method="restart_timer"]
 
-[connection signal="timeout" from="timeout" to="." method="screen_idle_timeout"]
+[connection signal="confirmed" from="logout_warning" to="." method="_on_logout_warning_confirmed"]
 
 

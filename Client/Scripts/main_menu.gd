@@ -8,11 +8,13 @@ func _ready():
 	get_tree().get_root().connect("size_changed", self, "_resize")
 	var size = OS.get_window_size()
 	_background.scale = Vector2(size.x / _macros.NORMAL_WIDTH, size.y / _macros.NORMAL_HEIGHT)
+	
+	get_node("logout_warning").dialog_text = (
+		"Are you sure you want to logout?  Your profile will be unusable,\n") + (
+		"and you have to start from scratch to play again.")
 	pass
 
 func _process(delta):
-	if Input.is_key_pressed(KEY_ESCAPE):
-		get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
 
 func _input(event):
@@ -46,4 +48,12 @@ func screen_idle_timeout():
 
 func restart_timer():
 	_timer.start()
+	pass
+
+func logout():
+	get_node("logout_warning").popup()
+	pass
+
+func _on_logout_warning_confirmed():
+	get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
