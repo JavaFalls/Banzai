@@ -121,15 +121,33 @@ size_flags_vertical = 7
 alignment = 1
 _sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
 
-[node name="manufacturor" type="ItemList" parent="VBoxContainer/HBoxContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer" index="0"]
 
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 270.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="manufacturor" type="ItemList" parent="VBoxContainer/HBoxContainer/MarginContainer" index="0"]
+
+editor/display_folded = true
 visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 820.0
-margin_bottom = 456.0
+margin_left = 8.0
+margin_right = 270.0
+margin_bottom = 480.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 focus_mode = 2
@@ -142,18 +160,46 @@ select_mode = 0
 allow_reselect = false
 icon_mode = 1
 fixed_icon_size = Vector2( 0, 0 )
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Tween" type="Tween" parent="VBoxContainer/HBoxContainer/MarginContainer/manufacturor" index="1"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+_sections_unfolded = [ "playback" ]
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 274.0
+margin_right = 544.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="name" type="ItemList" parent="VBoxContainer/HBoxContainer" index="1"]
+[node name="name" type="ItemList" parent="VBoxContainer/HBoxContainer/MarginContainer2" index="0"]
 
+editor/display_folded = true
 visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 412.0
-margin_right = 820.0
-margin_bottom = 456.0
+margin_left = 8.0
+margin_right = 270.0
+margin_bottom = 480.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 focus_mode = 2
@@ -166,18 +212,45 @@ select_mode = 0
 allow_reselect = false
 icon_mode = 1
 fixed_icon_size = Vector2( 0, 0 )
-_sections_unfolded = [ "Size Flags" ]
+_sections_unfolded = [ "Rect", "Size Flags" ]
 
-[node name="code" type="ItemList" parent="VBoxContainer/HBoxContainer" index="2"]
+[node name="Tween" type="Tween" parent="VBoxContainer/HBoxContainer/MarginContainer2/name" index="1"]
 
-visible = false
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/HBoxContainer" index="2"]
+
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 548.0
 margin_right = 820.0
-margin_bottom = 456.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="code" type="ItemList" parent="VBoxContainer/HBoxContainer/MarginContainer3" index="0"]
+
+editor/display_folded = true
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 8.0
+margin_right = 272.0
+margin_bottom = 480.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 focus_mode = 2
@@ -190,7 +263,16 @@ select_mode = 0
 allow_reselect = false
 icon_mode = 1
 fixed_icon_size = Vector2( 0, 0 )
-_sections_unfolded = [ "Size Flags" ]
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Tween" type="Tween" parent="VBoxContainer/HBoxContainer/MarginContainer3/code" index="1"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
 
 [node name="full_name" type="Label" parent="VBoxContainer" index="2"]
 
@@ -217,10 +299,10 @@ _sections_unfolded = [ "Size Flags" ]
 
 [connection signal="pressed" from="VBoxContainer/ready" to="." method="create_user"]
 
-[connection signal="item_selected" from="VBoxContainer/HBoxContainer/manufacturor" to="." method="name_changed" binds= [ "M" ]]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/MarginContainer/manufacturor" to="." method="name_changed" binds= [ "M" ]]
 
-[connection signal="item_selected" from="VBoxContainer/HBoxContainer/name" to="." method="name_changed" binds= [ "N" ]]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/MarginContainer2/name" to="." method="name_changed" binds= [ "N" ]]
 
-[connection signal="item_selected" from="VBoxContainer/HBoxContainer/code" to="." method="name_changed" binds= [ "C" ]]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/MarginContainer3/code" to="." method="name_changed" binds= [ "C" ]]
 
 

@@ -2,9 +2,9 @@ extends Node
 
 onready var _macros = preload("res://Scripts/macros.gd")
 
-onready var _manufacturor = get_node("VBoxContainer/HBoxContainer/manufacturor")
-onready var _name = get_node("VBoxContainer/HBoxContainer/name")
-onready var _code = get_node("VBoxContainer/HBoxContainer/code")
+onready var _manufacturor = get_node("VBoxContainer/HBoxContainer/MarginContainer/manufacturor")
+onready var _name = get_node("VBoxContainer/HBoxContainer/MarginContainer2/name")
+onready var _code = get_node("VBoxContainer/HBoxContainer/MarginContainer3/code")
 
 onready var _ready_button = get_node("VBoxContainer/ready")
 onready var _full_name = get_node("VBoxContainer/full_name")
@@ -41,10 +41,30 @@ func _process(delta):
 func _input(event):
 	if event is InputEventKey and event.is_pressed():
 		_ready_button.show()
+		
 		_manufacturor.show()
+		_manufacturor.get_node("Tween").interpolate_property(
+			_manufacturor, "rect_scale:y", 0, 1,
+			2, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
+		)
+		_manufacturor.get_node("Tween").start()
+		
 		_name.show()
+		_name.get_node("Tween").interpolate_property(
+			_name, "rect_scale:y", 0, 1,
+			4, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
+		)
+		_name.get_node("Tween").start()
+		
 		_code.show()
+		_code.get_node("Tween").interpolate_property(
+			_code, "rect_scale:y", 0, 1,
+			6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
+		)
+		_code.get_node("Tween").start()
+		
 		_full_name.show()
+	pass
 
 func _resize():
 	var size = OS.get_window_size()
