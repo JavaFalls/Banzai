@@ -1,5 +1,11 @@
 extends "res://Scripts/entity.gd"
+var print_timer = Timer.new()
 
+func _ready():
+	self.add_child(print_timer)
+	print_timer.set_one_shot(true)
+	print_timer.set_wait_time(.3)
+	print_timer.start()
 
 func _process(delta):
 	
@@ -15,10 +21,13 @@ func send_nn_state():
 	var output = []
 	var path = PoolStringArray() 
 	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/nn.py')
-	path.append(player_node.get_position())
-	path.append(player_node.get_tragectory())
+	path.append(player_node.get_state())
 	path.append(self.get_position())
-	path.append(self.get_tragectory())
+	path.append(self.get_trajectory())
+	if print_timer.is_stopped():
+		print(path)
+		print_timer.set_wait_time(.3)
+		print_timer.start()
 	#path.append(player_node.get_hit_points())
 	#path.append(self.get_hit_points())
 	
