@@ -1,5 +1,7 @@
 extends "res://Scripts/entity.gd"
+
 var relative_mouse = Vector2()
+
 func _physics_process(delta):
 	relative_mouse = get_position() - get_viewport().get_mouse_position()
 	direction = Vector2(0,0)
@@ -8,7 +10,11 @@ func _physics_process(delta):
 		if timer.is_stopped():
 			shoot(self.global_position)
 			restart_timer(projectile_delay)
-#		print (get_rotation())
+#		pimary_attack.use()
+	if Input.is_action_pressed("secondary_attack"):
+		if timer.is_stopped():
+			shoot(self.global_position)
+			restart_timer(projectile_delay)
 	if Input.is_action_pressed("ui_right"):
 		direction.x = MOVEMENT_SPEED
 	if Input.is_action_pressed("ui_left"):
@@ -35,7 +41,18 @@ func _physics_process(delta):
 		else:
 			set_rotation_degrees(0)
 
-
 	direction = move_and_slide(direction, UP)
 
+func get_state():
+	var state = PoolStringArray() 
+	state.append(self.get_position())
+	state.append(self.get_trajectory())
+	state.append(get_viewport().get_mouse_position())
+	state.append(Input.is_action_pressed("primary_attack"))
+	state.append(Input.is_action_pressed("secondary_attack"))
+	state.append(Input.is_action_pressed("ui_right"))
+	state.append(Input.is_action_pressed("ui_left"))
+	state.append(Input.is_action_pressed("ui_up"))
+	state.append(Input.is_action_pressed("ui_down"))
+	return state
 	
