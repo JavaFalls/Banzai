@@ -1,6 +1,7 @@
 extends Node
 
 onready var _item_list = preload("res://Scripts/item_list.gd")
+onready var _bot_build = preload("res://Scripts/bot_build.gd")
 onready var _macros = preload("res://Scripts/macros.gd")
 
 onready var _background = get_node("Container/background")
@@ -20,6 +21,9 @@ onready var _ability_current = get_node("abilities/HBoxContainer/HBoxContainer/c
 onready var _ability_next = get_node("abilities/HBoxContainer/HBoxContainer/next")
 onready var _ability_prev = get_node("abilities/HBoxContainer/HBoxContainer/previous")
 onready var _ability_label = get_node("abilities/Label")
+
+var bots = []
+var current_bot = 0
 
 onready var weapons = _item_list.new([
 	_item_list.Item.new(load("res://assets/icon.png"), "Robot Face", {
@@ -108,6 +112,25 @@ func _ready():
 	
 	for stat in stats:
 		_stats.add_item(stat, null, false)
+	
+	bots = [
+		_bot_build.new(),
+		_bot_build.new()
+	]
+	bots[0].add_item("primary", {
+		"attack": 1,
+		"armor": 2,
+		"range": 3,
+		"points": 4,
+		"weight": 5
+	})
+	bots[1].add_item("primary", {
+		"attack": 4,
+		"armor": 4,
+		"range": 3,
+		"points": 1,
+		"weight": 10
+	})
 	pass
 
 func _on_go_button_pressed():
@@ -162,4 +185,8 @@ func update_stats():
 	var abil_stats = abilities.current().stats.values()
 	for i in range(_stats.get_item_count()):
 		_stats.set_item_text(i, stats[i] + str(prim_stats[i] + sec_stats[i] + abil_stats[i]))
+	pass
+
+func switch_bot(bot):
+	current_bot = bot
 	pass

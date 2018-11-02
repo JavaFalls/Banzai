@@ -109,6 +109,28 @@ expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Anchor", "Margin", "Size Flags" ]
 
+[node name="Button" type="Button" parent="player_bot" index="0"]
+
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+flat = false
+align = 1
+_sections_unfolded = [ "Visibility" ]
+
 [node name="training_bot" type="TextureRect" parent="." index="4"]
 
 anchor_left = 0.65
@@ -129,6 +151,28 @@ texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Anchor", "Size Flags" ]
+
+[node name="Button" type="Button" parent="training_bot" index="0"]
+
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+flat = false
+align = 1
+_sections_unfolded = [ "Visibility" ]
 
 [node name="primary_weapons" type="VBoxContainer" parent="." index="5"]
 
@@ -504,7 +548,6 @@ _sections_unfolded = [ "Size Flags", "Textures" ]
 
 [node name="abilities" type="VBoxContainer" parent="." index="7"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.4
 anchor_right = 0.3
@@ -717,6 +760,10 @@ _sections_unfolded = [ "Anchor", "Columns", "Icon", "Size Flags", "Theme" ]
 [connection signal="pressed" from="back_button" to="." method="_on_back_button_pressed"]
 
 [connection signal="pressed" from="go_button" to="." method="_on_go_button_pressed"]
+
+[connection signal="pressed" from="player_bot/Button" to="." method="switch_bot" binds= [ 0 ]]
+
+[connection signal="pressed" from="training_bot/Button" to="." method="switch_bot" binds= [ 1 ]]
 
 [connection signal="pressed" from="primary_weapons/HBoxContainer/left" to="." method="move_weapons" binds= [ "prev" ]]
 
