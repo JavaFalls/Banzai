@@ -1,13 +1,23 @@
 extends Area2D
 
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
+onready var cooldown_timer = get_node("cooldown_timer") # Timer for evade cooldown
+onready var active_timer   = get_node("active_timer")
+onready var animation      = get_node("anim_evade")
+onready var parent_node    = self.get_parent()
+onready var effect         = get_node("Tween")
+
+var cooldown    = 1
+var time_active = .1
 
 func _ready():
-	# Called when the node is added to the scene for the first time.
-	# Initialization here
-	pass
+	cooldown_timer.set_wait_time(cooldown)
+	active_timer.set_wait_time(time_active)
 
 func use():
-	self.get_parent(set_position(self.get_parent().get_position()) + Vector2(50,50))
+	if cooldown_timer.is_stopped():
+		parent_node.movement_speed *= 5
+		active_timer.start()
+		cooldown_timer.start()
+
+func _on_active_timer_timeout():
+	parent_node.movement_speed /= 5

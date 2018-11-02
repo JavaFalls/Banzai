@@ -39,18 +39,17 @@ func send_nn_state():
 func _physics_process(delta):
 	direction = Vector2(0,0)
 	if Input.is_action_pressed("ui_right"):
-		direction.x = MOVEMENT_SPEED
+		direction.x = 1
 	if Input.is_action_pressed("ui_left"):
-		direction.x = -MOVEMENT_SPEED
+		direction.x = -1
 	if Input.is_action_pressed("ui_right") and Input.is_action_pressed("ui_left"):
 		direction.x = 0
 
 	if Input.is_action_pressed("ui_up"):
-		direction.y = -MOVEMENT_SPEED
+		direction.y = -1
 	if Input.is_action_pressed("ui_down"):
-		direction.y = MOVEMENT_SPEED
+		direction.y = 1
 	if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_down"):
 		direction.y = 0
 
-	direction = move_and_slide(direction, UP)
-	pass
+	direction = move_and_slide(direction*movement_speed, UP)

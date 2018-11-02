@@ -51,7 +51,7 @@ tracks/2/keys = {
 "values": [ true, false, false ]
 }
 
-[node name="aby_shield" type="Area2D"]
+[node name="aby_shield" type="Area2D" index="0"]
 
 visible = false
 input_pickable = true

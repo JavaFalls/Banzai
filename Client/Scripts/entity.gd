@@ -1,8 +1,8 @@
 extends KinematicBody2D
  
 const UP             = Vector2(0,0) # Indicates top-down view
-const MOVEMENT_SPEED =  300         # Movement speed of the entity
 
+var movement_speed   =  300         # Movement speed of the entity
 var p                = Area2D      # New Projectile
 var timer            = Timer.new() # Timer for Firing cooldown
 var projectile_delay = .3          # Firing cooldown length
@@ -17,18 +17,18 @@ onready var projectile_container = get_node("projectile_container")   # Where th
 onready var projectile           = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
 onready var player_node          = get_parent().get_node("player")  # A reference to the player node
 
-onready var aby_shield        = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
+onready var aby_shield    = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
 onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn") # The heavy scene to be instanced
 onready var quick_attack  = preload("res://Scenes/atk_quick.tscn") # The quick scene to be instanced
 onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged scene to be instanced
-onready var aby_evade         = preload("res://Scenes/aby_evade.tscn") # The evade scene to be instanced
+onready var aby_evade     = preload("res://Scenes/aby_evade.tscn") # The evade scene to be instanced
 
 enum weapon_slot {primary,secondary,ability}
 enum weapon {empty,heavy,quick,ranged,evade,shield}
 
 
 func _ready():
-	set_weapons(quick_attack, heavy_attack, aby_shield)
+	set_weapons(quick_attack, heavy_attack, aby_evade)
 	timer.set_wait_time(projectile_delay)
 	timer.set_one_shot(true)
 	self.add_child(timer)

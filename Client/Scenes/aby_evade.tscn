@@ -1,27 +1,27 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/aby_evade.gd" type="Script" id=1]
 [ext_resource path="res://assets/shield.png" type="Texture" id=2]
-
+[ext_resource path="res://Scenes/part_evade.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 
 custom_solver_bias = 0.0
 radius = 10.0
 
-[node name="aby_evade" type="Area2D"]
+[node name="aby_evade" type="Area2D" index="0"]
 
 visible = false
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
+gravity = 0.0
 linear_damp = 0.1
 angular_damp = 1.0
 monitoring = false
 audio_bus_override = false
 audio_bus_name = "Master"
 script = ExtResource( 1 )
-_sections_unfolded = [ "Visibility" ]
+_sections_unfolded = [ "Pickable", "Visibility" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
 
@@ -32,10 +32,34 @@ disabled = true
 
 [node name="Sprite" type="Sprite" parent="." index="1"]
 
+visible = false
 modulate = Color( 0, 0, 0, 1 )
 position = Vector2( -4.05941, 0.912628 )
 scale = Vector2( 1, 0.161767 )
 texture = ExtResource( 2 )
 _sections_unfolded = [ "Animation", "Transform", "Visibility" ]
+
+[node name="part_evade" parent="." index="2" instance=ExtResource( 3 )]
+
+position = Vector2( -0.188431, 0.136076 )
+emitting = false
+one_shot = true
+
+[node name="cooldown_timer" type="Timer" parent="." index="3"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
+_sections_unfolded = [ "Pause" ]
+
+[node name="active_timer" type="Timer" parent="." index="4"]
+
+process_mode = 1
+wait_time = 0.1
+one_shot = true
+autostart = false
+
+[connection signal="timeout" from="active_timer" to="." method="_on_active_timer_timeout"]
 
 

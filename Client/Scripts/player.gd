@@ -13,18 +13,17 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ability"):
 		ability.use()
 	if Input.is_action_pressed("ui_right"):
-		direction.x = MOVEMENT_SPEED
+		direction.x = 1
 	if Input.is_action_pressed("ui_left"):
-		direction.x = -MOVEMENT_SPEED
+		direction.x = -1
 	if Input.is_action_pressed("ui_right") and Input.is_action_pressed("ui_left"):
 		direction.x = 0
 	if Input.is_action_pressed("ui_up"):
-		direction.y = -MOVEMENT_SPEED
+		direction.y = -1
 	if Input.is_action_pressed("ui_down"):
-		direction.y = MOVEMENT_SPEED
+		direction.y = 1
 	if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_down"):
 		direction.y = 0
-		
 		
 #rotate sprite towards the mouse curser
 	if (abs(relative_mouse.x) > abs(relative_mouse.y)):
@@ -38,7 +37,8 @@ func _physics_process(delta):
 		else:
 			set_rotation_degrees(0)
 
-	direction = move_and_slide(direction, UP)
+	#direction = move_and_slide(direction*movement_speed, UP)
+	move_and_slide(direction*movement_speed, UP)
 
 func get_state():
 	var state = PoolStringArray() 
