@@ -41,6 +41,11 @@ func _process(delta):
 func _input(event):
 	if event is InputEventKey and event.is_pressed():
 		_ready_button.show()
+		_ready_button.get_node("Tween").interpolate_property(
+			_ready_button, "rect_scale:y", 0, 1,
+			0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
+		)
+		_ready_button.get_node("Tween").start()
 		
 		_manufacturor.show()
 		_manufacturor.get_node("Tween").interpolate_property(
