@@ -1,9 +1,11 @@
+extends "macros.gd"
+
 var texture
 
 var items = {
-	"primary": null,
-	"secondary": null,
-	"ability": null
+	PRIMARY: null,
+	SECONDARY: null,
+	ABILITY: null
 }
 
 func _init(new_items=null):

@@ -143,27 +143,27 @@ func _resize():
 func move_primaries(direction):
 	primaries.set_current(primaries.call(direction))
 	
-	bots[current_bot].items["primary"] = primaries.current()
+	bots[current_bot].items[_macros.PRIMARY] = primaries.current()
 	
-	update_items("primary")
+	update_items(_macros.PRIMARY)
 	update_stats()
 	pass
 
 func move_secondaries(direction):
 	secondaries.set_current(secondaries.call(direction))
 	
-	bots[current_bot].items["secondary"] = secondaries.current()
+	bots[current_bot].items[_macros.SECONDARY] = secondaries.current()
 	
-	update_items("secondary")
+	update_items(_macros.SECONDARY)
 	update_stats()
 	pass
 
 func move_abilities(direction):	
 	abilities.set_current(abilities.call(direction))
 	
-	bots[current_bot].items["ability"] = abilities.current()
+	bots[current_bot].items[_macros.ABILITY] = abilities.current()
 	
-	update_items("ability")
+	update_items(_macros.ABILITY)
 	update_stats()
 	pass
 
@@ -177,17 +177,17 @@ func update_stats():
 
 func update_items(list):
 	match (list):
-		"primary":
+		_macros.PRIMARY:
 			_primary_current.texture = primaries.current().texture
 			_primary_next.texture = primaries.next().texture
 			_primary_prev.texture = primaries.prev().texture
 			_primary_label.text = "Primary: " + primaries.current().text
-		"secondary":
+		_macros.SECONDARY:
 			_secondary_current.texture = secondaries.current().texture
 			_secondary_next.texture = secondaries.next().texture
 			_secondary_prev.texture = secondaries.prev().texture
 			_secondary_label.text = "Secondary: " + secondaries.current().text
-		"ability":
+		_macros.ABILITY:
 			_ability_current.texture = abilities.current().texture
 			_ability_next.texture = abilities.next().texture
 			_ability_prev.texture = abilities.prev().texture
@@ -195,16 +195,13 @@ func update_items(list):
 	pass
 
 func switch_bot(bot):
-	print(bots[current_bot].items)
 	current_bot = bot
 	var items = bots[current_bot].items
-	primaries.set_current(items["primary"])
-	secondaries.set_current(items["secondary"])
-	abilities.set_current(items["ability"])
-	update_items("primary")
-	update_items("secondary")
-	update_items("ability")
+	primaries.set_current(items[_macros.PRIMARY])
+	secondaries.set_current(items[_macros.SECONDARY])
+	abilities.set_current(items[_macros.ABILITY])
+	update_items(_macros.PRIMARY)
+	update_items(_macros.SECONDARY)
+	update_items(_macros.ABILITY)
 	update_stats()
-	print(bots[current_bot].items)
-	print("\n")
 	pass
