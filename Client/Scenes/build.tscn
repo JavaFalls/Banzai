@@ -765,9 +765,9 @@ _sections_unfolded = [ "Anchor", "Columns", "Icon", "Size Flags", "Theme" ]
 
 [connection signal="pressed" from="training_bot/Button" to="." method="switch_bot" binds= [ 1 ]]
 
-[connection signal="pressed" from="primary_weapons/HBoxContainer/left" to="." method="move_weapons" binds= [ "prev" ]]
+[connection signal="pressed" from="primary_weapons/HBoxContainer/left" to="." method="move_primaries" binds= [ "prev" ]]
 
-[connection signal="pressed" from="primary_weapons/HBoxContainer/right" to="." method="move_weapons" binds= [ "next" ]]
+[connection signal="pressed" from="primary_weapons/HBoxContainer/right" to="." method="move_primaries" binds= [ "next" ]]
 
 [connection signal="pressed" from="secondary_weapons/HBoxContainer/left" to="." method="move_secondaries" binds= [ "prev" ]]
 

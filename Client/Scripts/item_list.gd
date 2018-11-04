@@ -39,20 +39,6 @@ func next():
 func prev():
 	return items[current-1]
 
-# move items that are displayed in circular format
-#func move_circular(direction="next"):
-#	match (direction):
-#		"next":
-#			var first = items.front()
-#			for i in range(items.size()-1):
-#				items[i] = items[i+1]
-#			items[items.size()-1] = first
-#		"prev":
-#			var last = items.back()
-#			for i in range(1, items.size()):
-#				items[i] = items[i-1]
-#			items[0] = items.back()
-#	return call(direction)
 
 func move(animation, direction="next"):
 	var item = call(direction)
