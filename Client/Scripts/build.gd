@@ -22,7 +22,7 @@ onready var _ability_prev = get_node("abilities/HBoxContainer/HBoxContainer/prev
 onready var _ability_label = get_node("abilities/Label")
 
 onready var bots = head.bots
-var current_bot = head.PLAYER
+onready var current_bot = head.PLAYER
 
 onready var primaries = head.primaries
 onready var secondaries = head.secondaries

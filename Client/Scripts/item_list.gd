@@ -1,5 +1,3 @@
-extends "head.gd"
-
 class Item:
 	var texture
 	var text

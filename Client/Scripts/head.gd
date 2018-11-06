@@ -10,7 +10,7 @@ enum {PLAYER, BOT}
 enum {PRIMARY, SECONDARY, ABILITY}
 
 # Weapons/abilities
-onready var item_list = preload("res://Scripts/item_list.gd")
+var item_list = load("res://Scripts/item_list.gd")
 var primaries = item_list.new([
 	item_list.Item.new(load("res://assets/icon.png"), "Robot Face", {
 		"attack": 1,
@@ -84,7 +84,7 @@ var abilities = item_list.new([
 ])
 
 # Bots
-onready var bot_build = preload("res://Scripts/bot_build.gd")
+var bot_build = load("res://Scripts/bot_build.gd")
 var bots = [
 	bot_build.new([
 		primaries.items[0],
