@@ -22,7 +22,7 @@ onready var _ability_prev = get_node("abilities/HBoxContainer/HBoxContainer/prev
 onready var _ability_label = get_node("abilities/Label")
 
 onready var bots = head.bots
-onready var current_bot = head.PLAYER
+var current_bot
 
 onready var primaries = head.primaries
 onready var secondaries = head.secondaries
@@ -43,6 +43,7 @@ func _ready():
 	
 	for stat in stats:
 		_stats.add_item(stat, null, false)
+	switch_bot(head.PLAYER)
 	pass
 
 # TEST CODE ------------------------------------------------------------------------------#
@@ -54,11 +55,11 @@ func _process(delta):
 #-----------------------------------------------------------------------------------------#
 
 func _on_go_button_pressed():
-	get_tree().change_scene("res://Scenes/arena_train.tscn")
+	change_scene("res://Scenes/arena_train.tscn")
 	pass
 
 func _on_back_button_pressed():
-	get_tree().change_scene("res://Scenes/main_menu.tscn")
+	change_scene("res://Scenes/main_menu.tscn")
 	pass
 
 func _resize():
@@ -131,3 +132,10 @@ func switch_bot(bot):
 	update_items(head.ABILITY)
 	update_stats()
 	pass
+
+func change_scene(path):
+	head.bots = bots
+	head.primaries = primaries
+	head.secondaries = secondaries
+	head.abilities = abilities
+	get_tree().change_scene(path)
