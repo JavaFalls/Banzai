@@ -127,6 +127,13 @@ func _ready():
 	]
 	pass
 
+# TEST CODE ------------------------------------------------------------------------------#
+func _process(delta):
+	if Input.is_action_just_pressed("ui_up"):
+		get_tree().get_root().get_node("/root/macros").save_bots(bots)
+	elif Input.is_action_just_pressed("ui_down"):
+		bots = _macros.load_bots()
+
 func _on_go_button_pressed():
 	get_tree().change_scene("res://Scenes/arena_train.tscn")
 	pass

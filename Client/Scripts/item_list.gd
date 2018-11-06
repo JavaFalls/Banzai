@@ -1,3 +1,5 @@
+extends "macros.gd"
+
 class Item:
 	var texture
 	var text
