@@ -9,6 +9,10 @@ enum {PRIMARY, SECONDARY, ABILITY}
 # Bot keys
 enum {PLAYER, BOT}
 
+# Screen Position and Size
+var screen_size = OS.get_screen_size()
+var window_size = OS.get_window_size()
+
 # Weapons/abilities
 onready var item_list = load("res://Scripts/item_list.gd")
 onready var primaries = item_list.new([
@@ -151,4 +155,11 @@ static func load_weapons():
 	return
 
 func _ready():
+	OS.set_window_position(screen_size*0.5 - window_size*0.5)
 	init_bots()
+
+func _input(event):
+	if Input.is_action_just_pressed("shutdown"):
+		get_tree().quit()
+	if Input.is_action_just_pressed("toggle_fullscreen"):
+		OS.window_fullscreen = !OS.window_fullscreen
