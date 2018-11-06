@@ -3,9 +3,6 @@ extends Node
 # Get head singleton
 onready var head = get_tree().get_root().get_node("/root/head")
 
-onready var _item_list = preload("res://Scripts/item_list.gd")
-onready var _bot_build = preload("res://Scripts/bot_build.gd")
-
 onready var _background = get_node("Container/background")
 onready var _stats = get_node("stats")
 
@@ -24,80 +21,12 @@ onready var _ability_next = get_node("abilities/HBoxContainer/HBoxContainer/next
 onready var _ability_prev = get_node("abilities/HBoxContainer/HBoxContainer/previous")
 onready var _ability_label = get_node("abilities/Label")
 
-var bots = []
-var current_bot = 0
+onready var bots = head.bots
+var current_bot
 
-onready var primaries = _item_list.new([
-	_item_list.Item.new(load("res://assets/icon.png"), "Robot Face", {
-		"attack": 1,
-		"armor": 2,
-		"range": 3,
-		"points": 4,
-		"weight": 5
-	}),
-	_item_list.Item.new(load("res://assets/sword.png"), "Sword", {
-		"attack": 2,
-		"armor": 4,
-		"range": 3,
-		"points": 6,
-		"weight": 15
-	}),
-	_item_list.Item.new(load("res://assets/wall.png"), "Nothing Particular", {
-		"attack": 0,
-		"armor": 20,
-		"range": 2,
-		"points": 8,
-		"weight": 1
-	})
-])
-
-onready var secondaries = _item_list.new([
-	_item_list.Item.new(load("res://assets/sword.png"), "Sword1", {
-		"attack": 0,
-		"armor": 0,
-		"range": 0,
-		"points": 0,
-		"weight": 0
-	}),
-	_item_list.Item.new(load("res://assets/sword.png"), "Sword2", {
-		"attack": 1,
-		"armor": 2,
-		"range": 32,
-		"points": 8,
-		"weight": 3
-	}),
-	_item_list.Item.new(load("res://assets/sword.png"), "Sword3", {
-		"attack": 2,
-		"armor": 3,
-		"range": 6,
-		"points": 2,
-		"weight": 4
-	})
-])
-
-onready var abilities = _item_list.new([
-	_item_list.Item.new(load("res://assets/sword.png"), "Sword1", {
-		"attack": 0,
-		"armor": 0,
-		"range": 2,
-		"points": 0,
-		"weight": 1
-	}),
-	_item_list.Item.new(load("res://assets/sword.png"), "Sword2", {
-		"attack": 0,
-		"armor": 0,
-		"range": 0,
-		"points": 0,
-		"weight": 0
-	}),
-	_item_list.Item.new(load("res://assets/sword.png"), "Sword3", {
-		"attack": 0,
-		"armor": 1,
-		"range": 1,
-		"points": 0,
-		"weight": 1
-	})
-])
+onready var primaries = head.primaries
+onready var secondaries = head.secondaries
+onready var abilities = head.abilities
 
 var stats = [
 	"Attack: ",
@@ -114,19 +43,8 @@ func _ready():
 	
 	for stat in stats:
 		_stats.add_item(stat, null, false)
-	
-	bots = [
-		_bot_build.new([
-			primaries.items[0],
-			secondaries.items[0],
-			abilities.items[0]
-		]),
-		_bot_build.new([
-			primaries.items[0],
-			secondaries.items[0],
-			abilities.items[0]
-		])
-	]
+	switch_bot(head.PLAYER)
+	update_stats()
 	pass
 
 # TEST CODE ------------------------------------------------------------------------------#
@@ -135,13 +53,14 @@ func _process(delta):
 		head.save_bots(bots)
 	elif Input.is_action_just_pressed("ui_down"):
 		bots = head.load_bots()
+#-----------------------------------------------------------------------------------------#
 
 func _on_go_button_pressed():
-	get_tree().change_scene("res://Scenes/arena_train.tscn")
+	change_scene("res://Scenes/arena_train.tscn")
 	pass
 
 func _on_back_button_pressed():
-	get_tree().change_scene("res://Scenes/main_menu.tscn")
+	change_scene("res://Scenes/main_menu.tscn")
 	pass
 
 func _resize():
@@ -167,7 +86,7 @@ func move_secondaries(direction):
 	update_stats()
 	pass
 
-func move_abilities(direction):	
+func move_abilities(direction):
 	abilities.set_current(abilities.call(direction))
 	
 	bots[current_bot].items[head.ABILITY] = abilities.current()
@@ -214,3 +133,10 @@ func switch_bot(bot):
 	update_items(head.ABILITY)
 	update_stats()
 	pass
+
+func change_scene(path):
+	head.bots = bots
+	head.primaries = primaries
+	head.secondaries = secondaries
+	head.abilities = abilities
+	get_tree().change_scene(path)
