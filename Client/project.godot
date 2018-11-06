@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-macros="*res://Scripts/macros.gd"
+head="*res://Scripts/head.gd"
 
 [input]
 

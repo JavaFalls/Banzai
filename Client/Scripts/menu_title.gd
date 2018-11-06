@@ -1,6 +1,7 @@
 extends Node
 
-onready var _macros = preload("res://Scripts/macros.gd")
+# Get head singleton
+onready var head = get_tree().get_root().get_node("/root/head")
 
 onready var _manufacturor = get_node("VBoxContainer/HBoxContainer/MarginContainer/manufacturor")
 onready var _name = get_node("VBoxContainer/HBoxContainer/MarginContainer2/name")
@@ -28,7 +29,7 @@ var full_name = {"M": "", "N": "", "C": ""}
 func _ready():
 	get_tree().get_root().connect("size_changed", self, "_resize")
 	var size = OS.get_window_size()
-	_background.scale = Vector2(size.x / _macros.NORMAL_WIDTH, size.y / _macros.NORMAL_HEIGHT)
+	_background.scale = Vector2(size.x / head.NORMAL_WIDTH, size.y / head.NORMAL_HEIGHT)
 	
 	add_names()
 	for n in full_name:
@@ -73,7 +74,7 @@ func _input(event):
 
 func _resize():
 	var size = OS.get_window_size()
-	_background.scale = Vector2(size.x / _macros.NORMAL_WIDTH, size.y / _macros.NORMAL_HEIGHT)
+	_background.scale = Vector2(size.x / head.NORMAL_WIDTH, size.y / head.NORMAL_HEIGHT)
 	pass
 
 func add_names():

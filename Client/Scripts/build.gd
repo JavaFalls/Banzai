@@ -1,8 +1,10 @@
 extends Node
 
+# Get head singleton
+onready var head = get_tree().get_root().get_node("/root/head")
+
 onready var _item_list = preload("res://Scripts/item_list.gd")
 onready var _bot_build = preload("res://Scripts/bot_build.gd")
-onready var _macros = preload("res://Scripts/macros.gd")
 
 onready var _background = get_node("Container/background")
 onready var _stats = get_node("stats")
@@ -108,7 +110,7 @@ var stats = [
 func _ready():
 	get_tree().get_root().connect("size_changed", self, "_resize")
 	var size = OS.get_window_size()
-	_background.scale = Vector2(size.x / _macros.NORMAL_WIDTH, size.y / _macros.NORMAL_HEIGHT)
+	_background.scale = Vector2(size.x / head.NORMAL_WIDTH, size.y / head.NORMAL_HEIGHT)
 	
 	for stat in stats:
 		_stats.add_item(stat, null, false)
@@ -130,9 +132,9 @@ func _ready():
 # TEST CODE ------------------------------------------------------------------------------#
 func _process(delta):
 	if Input.is_action_just_pressed("ui_up"):
-		get_tree().get_root().get_node("/root/macros").save_bots(bots)
+		head.save_bots(bots)
 	elif Input.is_action_just_pressed("ui_down"):
-		bots = _macros.load_bots()
+		bots = head.load_bots()
 
 func _on_go_button_pressed():
 	get_tree().change_scene("res://Scenes/arena_train.tscn")
@@ -144,33 +146,33 @@ func _on_back_button_pressed():
 
 func _resize():
 	var size = OS.get_window_size()
-	_background.scale = Vector2(size.x / _macros.NORMAL_WIDTH, size.y / _macros.NORMAL_HEIGHT)
+	_background.scale = Vector2(size.x / head.NORMAL_WIDTH, size.y / head.NORMAL_HEIGHT)
 	pass
 
 func move_primaries(direction):
 	primaries.set_current(primaries.call(direction))
 	
-	bots[current_bot].items[_macros.PRIMARY] = primaries.current()
+	bots[current_bot].items[head.PRIMARY] = primaries.current()
 	
-	update_items(_macros.PRIMARY)
+	update_items(head.PRIMARY)
 	update_stats()
 	pass
 
 func move_secondaries(direction):
 	secondaries.set_current(secondaries.call(direction))
 	
-	bots[current_bot].items[_macros.SECONDARY] = secondaries.current()
+	bots[current_bot].items[head.SECONDARY] = secondaries.current()
 	
-	update_items(_macros.SECONDARY)
+	update_items(head.SECONDARY)
 	update_stats()
 	pass
 
 func move_abilities(direction):	
 	abilities.set_current(abilities.call(direction))
 	
-	bots[current_bot].items[_macros.ABILITY] = abilities.current()
+	bots[current_bot].items[head.ABILITY] = abilities.current()
 	
-	update_items(_macros.ABILITY)
+	update_items(head.ABILITY)
 	update_stats()
 	pass
 
@@ -184,17 +186,17 @@ func update_stats():
 
 func update_items(list):
 	match (list):
-		_macros.PRIMARY:
+		head.PRIMARY:
 			_primary_current.texture = primaries.current().texture
 			_primary_next.texture = primaries.next().texture
 			_primary_prev.texture = primaries.prev().texture
 			_primary_label.text = "Primary: " + primaries.current().text
-		_macros.SECONDARY:
+		head.SECONDARY:
 			_secondary_current.texture = secondaries.current().texture
 			_secondary_next.texture = secondaries.next().texture
 			_secondary_prev.texture = secondaries.prev().texture
 			_secondary_label.text = "Secondary: " + secondaries.current().text
-		_macros.ABILITY:
+		head.ABILITY:
 			_ability_current.texture = abilities.current().texture
 			_ability_next.texture = abilities.next().texture
 			_ability_prev.texture = abilities.prev().texture
@@ -204,11 +206,11 @@ func update_items(list):
 func switch_bot(bot):
 	current_bot = bot
 	var items = bots[current_bot].items
-	primaries.set_current(items[_macros.PRIMARY])
-	secondaries.set_current(items[_macros.SECONDARY])
-	abilities.set_current(items[_macros.ABILITY])
-	update_items(_macros.PRIMARY)
-	update_items(_macros.SECONDARY)
-	update_items(_macros.ABILITY)
+	primaries.set_current(items[head.PRIMARY])
+	secondaries.set_current(items[head.SECONDARY])
+	abilities.set_current(items[head.ABILITY])
+	update_items(head.PRIMARY)
+	update_items(head.SECONDARY)
+	update_items(head.ABILITY)
 	update_stats()
 	pass

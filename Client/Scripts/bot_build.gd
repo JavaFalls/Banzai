@@ -1,4 +1,4 @@
-extends "macros.gd"
+extends "head.gd"
 
 var texture
 
