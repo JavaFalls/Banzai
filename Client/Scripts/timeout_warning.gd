@@ -1,5 +1,8 @@
 extends ConfirmationDialog
 
+# Get head singleton
+onready var head = get_tree().get_root().get_node("/root/head")
+
 onready var timer = get_node("Timer")
 var normal_text
 var time_before
@@ -23,5 +26,7 @@ func timeout(is_first):
 		timer.start()
 		time_before = int(timer.wait_time)
 	else:
+		head.save_bots(head.bots)
+		head.init_bots()
 		get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass

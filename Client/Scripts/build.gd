@@ -44,6 +44,7 @@ func _ready():
 	for stat in stats:
 		_stats.add_item(stat, null, false)
 	switch_bot(head.PLAYER)
+	update_stats()
 	pass
 
 # TEST CODE ------------------------------------------------------------------------------#
@@ -85,7 +86,7 @@ func move_secondaries(direction):
 	update_stats()
 	pass
 
-func move_abilities(direction):	
+func move_abilities(direction):
 	abilities.set_current(abilities.call(direction))
 	
 	bots[current_bot].items[head.ABILITY] = abilities.current()

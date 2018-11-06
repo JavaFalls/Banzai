@@ -4,10 +4,10 @@ extends Node
 const NORMAL_HEIGHT = 900
 const NORMAL_WIDTH = 1600
 
-# Bot keys
-enum {PLAYER, BOT}
 # Weapons keys
 enum {PRIMARY, SECONDARY, ABILITY}
+# Bot keys
+enum {PLAYER, BOT}
 
 # Weapons/abilities
 onready var item_list = load("res://Scripts/item_list.gd")
@@ -84,19 +84,21 @@ onready var abilities = item_list.new([
 ])
 
 # Bots
-onready var bot_build = load("res://Scripts/bot_build.gd")
-onready var bots = [
-	bot_build.new([
-		primaries.items[0],
-		secondaries.items[0],
-		abilities.items[0]
-	]),
-	bot_build.new([
-		primaries.items[0],
-		secondaries.items[0],
-		abilities.items[0]
-	])
-]
+var bots = []
+func init_bots():
+	var bot_build = load("res://Scripts/bot_build.gd")
+	bots = [
+		bot_build.new([
+			primaries.items[0],
+			secondaries.items[0],
+			abilities.items[0]
+		]),
+		bot_build.new([
+			primaries.items[0],
+			secondaries.items[0],
+			abilities.items[0]
+		])
+	]
 
 static func save_bots(save_bots):
 	var bot_file = File.new()
@@ -147,3 +149,6 @@ static func load_bots():
 static func load_weapons():
 	
 	return
+
+func _ready():
+	init_bots()
