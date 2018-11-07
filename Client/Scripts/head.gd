@@ -100,18 +100,28 @@ func init_bots():
 		])
 	]
 
-static func save_bots(save_bots):
+#static 
+func save_bots(save_bots):
 	var bot_file = File.new()
 	bot_file.open("res://json/bot.json", File.WRITE)
 	for bot in save_bots:
+		var primary = bot.items[PRIMARY]
+		var secondary = bot.items[SECONDARY]
+		var ability = bot.items[ABILITY]
 		var d = {
 			"texture": bot.texture,
-			"primary": bot.items[PRIMARY],
+			"primary": {
+				"texture": primary.texture,
+				"text": primary.text,
+				"stats": primary.stats
+			},
 			"secondary": bot.items[SECONDARY],
 			"ability": bot.items[ABILITY]
 		}
 		bot_file.store_line(to_json(d))
 	bot_file.close()
+	var it = primaries.items[0]
+	print(it)
 
 static func load_bots():
 	var load_bots = []
@@ -125,24 +135,11 @@ static func load_bots():
 			break
 		var bot = bot_build.new(null)
 		bot.texture = current_line["texture"]
-		bot.items[PRIMARY] = load(current_line["primary"]).instance()
-		bot.items[SECONDARY] = load(current_line["secondary"]).instance()
-		bot.items[ABILITY] = load(current_line["ability"]).instance()
+#		bot.items[PRIMARY] = current_line["primary"]
+		bot.items[SECONDARY] = current_line["secondary"]
+		bot.items[ABILITY] = current_line["ability"]
 		load_bots.push_back(bot)
-		
-#		bot = load("res://Scripts/bot_build.gd").new([
-#			load("res://Scripts/item_list.gd").Item.new(
-#				load("res://assets/icon.png"),
-#				"Robot Face",
-#				{
-#					"attack": 1,
-#					"armor": 2,
-#					"range": 3,
-#					"points": 4,
-#					"weight": 5
-#				}
-#			)
-#		])
+	
 	bot_file.close()
 	return load_bots
 
