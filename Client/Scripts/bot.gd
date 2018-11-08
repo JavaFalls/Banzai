@@ -25,7 +25,7 @@ func send_nn_state():
 	path.append(self.get_position())
 	path.append(self.get_trajectory())
 	if print_timer.is_stopped():
-		print(path)
+		#print(path)
 		print_timer.set_wait_time(.3)
 		print_timer.start()
 	#path.append(player_node.get_hit_points())

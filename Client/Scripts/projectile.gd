@@ -2,6 +2,7 @@ extends RigidBody2D
 
 var vel = Vector2()
 export var speed = 1000
+var damage = 2
 
 
 func _ready():

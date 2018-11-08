@@ -19,3 +19,8 @@ func _ready():
 func use():
 	if !animation.is_playing():
 		animation.play("attack",-1, 1.0, false )
+
+
+func _on_sword_area_entered(area):
+	print(area)
+	

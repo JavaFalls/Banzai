@@ -12,6 +12,7 @@ var primary_weapon   = Area2D
 var secondary_weapon = Area2D
 var ability          = Area2D
 var s                = Area2D
+var hitpoints        = 0           # The hitpoint counter for the fighter
 
 onready var projectile_container = get_node("projectile_container")   # Where the projectiles are stored
 onready var projectile           = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
@@ -28,7 +29,7 @@ enum weapon {empty,heavy,quick,ranged,evade,shield}
 
 
 func _ready():
-	set_weapons(quick_attack, heavy_attack, aby_evade)
+	set_weapons(ranged_attack, heavy_attack, aby_evade)
 	timer.set_wait_time(projectile_delay)
 	timer.set_one_shot(true)
 	self.add_child(timer)
@@ -61,3 +62,6 @@ func get_hit_points():
 	
 func get_trajectory():
 	return direction
+	
+func increment_hitpoints(inc_num):
+	hitpoints += inc_num

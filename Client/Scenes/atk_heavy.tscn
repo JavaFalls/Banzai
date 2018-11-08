@@ -3,7 +3,6 @@
 [ext_resource path="res://Scripts/atk_heavy.gd" type="Script" id=1]
 [ext_resource path="res://assets/sword.png" type="Texture" id=2]
 
-
 [sub_resource type="Animation" id=1]
 
 resource_name = "attack"
@@ -85,5 +84,7 @@ position = Vector2( 16, 0 )
 rotation = 1.5708
 texture = ExtResource( 2 )
 _sections_unfolded = [ "Animation", "Transform" ]
+
+[connection signal="area_entered" from="." to="." method="_on_sword_area_entered"]
 
 

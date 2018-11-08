@@ -22,37 +22,11 @@ _sections_unfolded = [ "Collision", "Material", "Pause", "Pickable", "Transform"
 scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 2 )
 
-[node name="Camera2D" type="Camera2D" parent="." index="1"]
-
-scale = Vector2( 0.125, 0.125 )
-anchor_mode = 1
-rotating = false
-current = false
-zoom = Vector2( 1, 1 )
-limit_left = -10000000
-limit_top = -10000000
-limit_right = 10000000
-limit_bottom = 10000000
-limit_smoothed = false
-drag_margin_h_enabled = true
-drag_margin_v_enabled = true
-smoothing_enabled = false
-smoothing_speed = 5.0
-offset_v = 0.0
-offset_h = 0.0
-drag_margin_left = 0.2
-drag_margin_top = 0.2
-drag_margin_right = 0.2
-drag_margin_bottom = 0.2
-editor_draw_screen = true
-editor_draw_limits = false
-editor_draw_drag_margin = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
 scale = Vector2( 1.53846, 1.53846 )
 shape = SubResource( 1 )
 
-[node name="projectile_container" type="Node" parent="." index="3"]
+[node name="projectile_container" type="Node" parent="." index="2"]
 
 

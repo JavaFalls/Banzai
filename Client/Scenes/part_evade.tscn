@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/icon.png" type="Texture" id=1]
 
 [sub_resource type="ParticlesMaterial" id=1]
 
@@ -40,22 +42,22 @@ anim_loop = false
 
 [node name="part_evade" type="Particles2D"]
 
-position = Vector2( 60.8254, 13.9472 )
-emitting = true
-amount = 20
+position = Vector2( 0.193748, 0.774832 )
+emitting = false
+amount = 100
 lifetime = 0.01
 one_shot = false
 preprocess = 0.0
-speed_scale = 0.01
-explosiveness = 0.5
-randomness = 1.0
+speed_scale = 0.05
+explosiveness = 0.9
+randomness = 0.0
 fixed_fps = 0
 fract_delta = true
 visibility_rect = Rect2( -100, -100, 200, 200 )
 local_coords = false
 draw_order = 0
 process_material = SubResource( 1 )
-texture = null
+texture = ExtResource( 1 )
 normal_map = null
 h_frames = 1
 v_frames = 1

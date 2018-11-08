@@ -25,6 +25,4 @@ shape = SubResource( 1 )
 
 _sections_unfolded = [ "Pause" ]
 
-[node name="ZZ" type="Node" parent="." index="3"]
-
 
