@@ -11,8 +11,10 @@ script = ExtResource( 1 )
 
 [node name="ground" type="Sprite" parent="background" index="0"]
 
+modulate = Color( 0, 0.49231, 0.851563, 1 )
 position = Vector2( 609.413, 324.274 )
 scale = Vector2( 20.3438, 20.3438 )
 texture = ExtResource( 2 )
+_sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
 
