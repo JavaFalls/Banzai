@@ -8,7 +8,12 @@ func _ready():
 	print_timer.start()
 
 func _process(delta):
-	
+	# these lines are for checking latency of a simple python os call with blocking
+	#var output = []
+	#var hello = PoolStringArray() 
+	#hello.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/hello.py')
+	#OS.execute('python', hello, true, output)
+	#print(output)
 	
 	send_nn_state()
 	
@@ -20,19 +25,19 @@ func _process(delta):
 func send_nn_state():
 	var output = []
 	var path = PoolStringArray() 
-	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/nn.py')
+	#print_timer.is_stopped():
+	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/Neural Network/nn12.py')
 	path.append(player_node.get_state())
 	path.append(self.get_position())
 	path.append(self.get_trajectory())
-	if print_timer.is_stopped():
-		print(path)
-		print_timer.set_wait_time(.3)
-		print_timer.start()
-	#path.append(player_node.get_hit_points())
-	#path.append(self.get_hit_points())
-	
-    # Send the required information to the Neural Network
+	path.append(player_node.get_hit_points())
+	path.append(self.get_hit_points())
+	#Send the required information to the Neural Network
 	#OS.execute('python', path, true, output)
+	#print(output)
+		
+	#	print_timer.set_wait_time(.3)
+	#	print_timer.start()
 
 
 	
