@@ -30,20 +30,15 @@ func send_nn_state():
 	path.append(player_node.get_state())
 	path.append(self.get_position())
 	path.append(self.get_trajectory())
-<<<<<<< HEAD
-	path.append(player_node.get_hit_points())
-	path.append(self.get_hit_points())
-	#Send the required information to the Neural Network
-=======
-	if print_timer.is_stopped():
-		#print(path)
-		print_timer.set_wait_time(.3)
-		print_timer.start()
+	#if print_timer.is_stopped():
+	#	#print(path)
+	#	print_timer.set_wait_time(.3)
+	#	print_timer.start()
 	#path.append(player_node.get_hit_points())
 	#path.append(self.get_hit_points())
 	
     # Send the required information to the Neural Network
->>>>>>> be4e4c0a99e23d4563ad40efea27e1ea64fcc1ce
+
 	#OS.execute('python', path, true, output)
 	#print(output)
 		

@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/menu_title.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/game_background_1.png" type="Texture" id=2]
 
-[node name="title_screen" type="Node"]
+[node name="title_screen" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
