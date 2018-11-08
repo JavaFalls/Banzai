@@ -1,10 +1,10 @@
 class Item:
 	var texture
 	var text
-	var stats
+	var stats = {}
 	
 	func _init(i_texture=null, i_text=null, i_stats=null):
-		if i_texture is Texture:
+		if typeof(i_texture) != TYPE_NIL and i_texture is Texture:
 			texture = i_texture
 		if typeof(i_text) == TYPE_STRING:
 			text = i_text
