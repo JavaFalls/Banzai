@@ -1,16 +1,16 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/ranged.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/atk_ranged.gd" type="Script" id=1]
+[ext_resource path="res://assets/ranged.png" type="Texture" id=2]
 
-[sub_resource type="CapsuleShape2D" id=2]
+[sub_resource type="CapsuleShape2D" id=1]
 
 custom_solver_bias = 0.0
 radius = 10.0
 height = 0.843361
 
-[sub_resource type="Animation" id=1]
+[sub_resource type="Animation" id=2]
 
-resource_name = "attack"
 length = 0.5
 loop = false
 step = 0.05
@@ -47,16 +47,18 @@ gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
+monitoring = false
 audio_bus_override = false
 audio_bus_name = "Master"
-_sections_unfolded = [ "Transform" ]
+script = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
 
 position = Vector2( 0.421217, -0.467 )
 rotation = 1.44069
 scale = Vector2( 0.520768, 0.819026 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
 
@@ -65,7 +67,7 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/attack = SubResource( 1 )
+anims/attack = SubResource( 2 )
 blend_times = [  ]
 
 [node name="Sprite" type="Sprite" parent="." index="2"]
@@ -73,7 +75,9 @@ blend_times = [  ]
 position = Vector2( 0.159959, -0.161726 )
 rotation = 1.5708
 scale = Vector2( 0.23092, 0.23092 )
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 _sections_unfolded = [ "Animation", "Transform" ]
+
+[node name="projectile_container" type="Node" parent="." index="3"]
 
 

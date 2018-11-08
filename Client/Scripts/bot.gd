@@ -30,9 +30,20 @@ func send_nn_state():
 	path.append(player_node.get_state())
 	path.append(self.get_position())
 	path.append(self.get_trajectory())
+<<<<<<< HEAD
 	path.append(player_node.get_hit_points())
 	path.append(self.get_hit_points())
 	#Send the required information to the Neural Network
+=======
+	if print_timer.is_stopped():
+		#print(path)
+		print_timer.set_wait_time(.3)
+		print_timer.start()
+	#path.append(player_node.get_hit_points())
+	#path.append(self.get_hit_points())
+	
+    # Send the required information to the Neural Network
+>>>>>>> be4e4c0a99e23d4563ad40efea27e1ea64fcc1ce
 	#OS.execute('python', path, true, output)
 	#print(output)
 		
@@ -44,18 +55,17 @@ func send_nn_state():
 func _physics_process(delta):
 	direction = Vector2(0,0)
 	if Input.is_action_pressed("ui_right"):
-		direction.x = MOVEMENT_SPEED
+		direction.x = 1
 	if Input.is_action_pressed("ui_left"):
-		direction.x = -MOVEMENT_SPEED
+		direction.x = -1
 	if Input.is_action_pressed("ui_right") and Input.is_action_pressed("ui_left"):
 		direction.x = 0
 
 	if Input.is_action_pressed("ui_up"):
-		direction.y = -MOVEMENT_SPEED
+		direction.y = -1
 	if Input.is_action_pressed("ui_down"):
-		direction.y = MOVEMENT_SPEED
+		direction.y = 1
 	if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_down"):
 		direction.y = 0
 
-	direction = move_and_slide(direction, UP)
-	pass
+	direction = move_and_slide(direction*movement_speed, UP)
