@@ -1,10 +1,10 @@
 extends Area2D
 
+onready var animation = get_node("anim_swing")
+
 # class member variables go here, for example:
 # var a = 2
 # var b = "textvar"
-
-onready var animation = get_node("anim_shield")
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -12,8 +12,10 @@ func _ready():
 	pass
 
 #func _process(delta):
+#	# Called every frame. Delta is time since last frame.
+#	# Update game logic here.
 #	pass
 
 func use():
 	if !animation.is_playing():
-		animation.play("shield",-1, 1.0, false )
+		animation.play("swing_quick",-1, 1.0, false )

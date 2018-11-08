@@ -7,25 +7,21 @@ func _physics_process(delta):
 	direction = Vector2(0,0)
 	
 	if Input.is_action_pressed("primary_attack"):
-		if timer.is_stopped():
-			shoot(self.global_position)
-			restart_timer(projectile_delay)
-#		pimary_attack.use()
+		primary_weapon.use()
 	if Input.is_action_pressed("secondary_attack"):
-		if timer.is_stopped():
-			shoot(self.global_position)
-			restart_timer(projectile_delay)
+		secondary_weapon.use()
+	if Input.is_action_pressed("ability"):
+		ability.use()
 	if Input.is_action_pressed("ui_right"):
-		direction.x = MOVEMENT_SPEED
+		direction.x = 1
 	if Input.is_action_pressed("ui_left"):
-		direction.x = -MOVEMENT_SPEED
+		direction.x = -1
 	if Input.is_action_pressed("ui_right") and Input.is_action_pressed("ui_left"):
 		direction.x = 0
-	
 	if Input.is_action_pressed("ui_up"):
-		direction.y = -MOVEMENT_SPEED
+		direction.y = -1
 	if Input.is_action_pressed("ui_down"):
-		direction.y = MOVEMENT_SPEED
+		direction.y = 1
 	if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_down"):
 		direction.y = 0
 		
@@ -41,7 +37,7 @@ func _physics_process(delta):
 		else:
 			set_rotation_degrees(0)
 
-	direction = move_and_slide(direction, UP)
+	move_and_slide(direction*movement_speed, UP)
 
 func get_state():
 	var state = PoolStringArray() 
