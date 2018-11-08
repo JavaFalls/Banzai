@@ -14,6 +14,8 @@ func _ready():
 	get_node("logout_warning").dialog_text = (
 		"Are you sure you want to logout?  Your profile will be unusable,\n") + (
 		"and you have to start from scratch to play again.")
+	
+	get_node("username").text = head.username
 	pass
 
 func _process(delta):

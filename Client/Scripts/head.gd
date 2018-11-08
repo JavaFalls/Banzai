@@ -13,6 +13,9 @@ enum {PLAYER, BOT}
 var screen_size = OS.get_screen_size()
 var window_size = OS.get_window_size()
 
+# Username
+var username = ""
+
 # Weapons/abilities
 onready var item_list = load("res://Scripts/item_list.gd")
 onready var primaries = item_list.new([

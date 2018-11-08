@@ -12,6 +12,9 @@ onready var _full_name = get_node("VBoxContainer/full_name")
 
 onready var _background = get_node("MarginContainer/background")
 
+# Disable all input reset
+var go = 0x0
+
 var names = [
 	["manufacturor", "name", "code"],
 	["manufacturor", "name", "code"],
@@ -41,35 +44,37 @@ func _process(delta):
 	
 func _input(event):
 	if event is InputEventKey and event.is_pressed():
-		_ready_button.show()
-		_ready_button.get_node("Tween").interpolate_property(
-			_ready_button, "rect_scale:y", 0, 1,
-			0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
-		)
-		_ready_button.get_node("Tween").start()
-		
-		_manufacturor.show()
-		_manufacturor.get_node("Tween").interpolate_property(
-			_manufacturor, "rect_scale:y", 0, 1,
-			2, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
-		)
-		_manufacturor.get_node("Tween").start()
-		
-		_name.show()
-		_name.get_node("Tween").interpolate_property(
-			_name, "rect_scale:y", 0, 1,
-			4, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
-		)
-		_name.get_node("Tween").start()
-		
-		_code.show()
-		_code.get_node("Tween").interpolate_property(
-			_code, "rect_scale:y", 0, 1,
-			6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
-		)
-		_code.get_node("Tween").start()
-		
-		_full_name.show()
+		if not go:
+			go = go ^ 0x1
+			_ready_button.show()
+			_ready_button.get_node("Tween").interpolate_property(
+				_ready_button, "rect_scale:y", 0, 1,
+				0.6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
+			)
+			_ready_button.get_node("Tween").start()
+			
+			_manufacturor.show()
+			_manufacturor.get_node("Tween").interpolate_property(
+				_manufacturor, "rect_scale:y", 0, 1,
+				2, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
+			)
+			_manufacturor.get_node("Tween").start()
+			
+			_name.show()
+			_name.get_node("Tween").interpolate_property(
+				_name, "rect_scale:y", 0, 1,
+				4, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
+			)
+			_name.get_node("Tween").start()
+			
+			_code.show()
+			_code.get_node("Tween").interpolate_property(
+				_code, "rect_scale:y", 0, 1,
+				6, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT
+			)
+			_code.get_node("Tween").start()
+			
+			_full_name.show()
 	pass
 
 func _resize():
@@ -100,5 +105,6 @@ func name_changed(index, list):
 	pass
 
 func create_user():
+	head.username = _full_name.text
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 	pass
