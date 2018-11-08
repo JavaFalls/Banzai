@@ -26,7 +26,7 @@ func send_nn_state():
 	var output = []
 	var path = PoolStringArray() 
 	#print_timer.is_stopped():
-	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/Neural Network/nn12.py')
+	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/nn12.py')
 	path.append(player_node.get_state())
 	path.append(self.get_position())
 	path.append(self.get_trajectory())
@@ -39,8 +39,8 @@ func send_nn_state():
 	
     # Send the required information to the Neural Network
 
-	#OS.execute('python', path, true, output)
-	#print(output)
+	OS.execute('python', path, true, output)
+	print(output)
 		
 	#	print_timer.set_wait_time(.3)
 	#	print_timer.start()
