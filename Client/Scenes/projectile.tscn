@@ -42,6 +42,7 @@ _sections_unfolded = [ "Material", "Visibility" ]
 
 scale = Vector2( 1, 0.5 )
 shape = SubResource( 1 )
+disabled = true
 _sections_unfolded = [ "Transform" ]
 
 [node name="RayCast2D" type="RayCast2D" parent="." index="2"]

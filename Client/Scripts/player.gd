@@ -37,7 +37,6 @@ func _physics_process(delta):
 		else:
 			set_rotation_degrees(0)
 
-	#direction = move_and_slide(direction*movement_speed, UP)
 	move_and_slide(direction*movement_speed, UP)
 
 func get_state():

@@ -22,5 +22,5 @@ func use():
 
 
 func _on_sword_area_entered(area):
-	print(area)
-	
+	#print(area)
+	pass
