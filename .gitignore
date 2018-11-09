@@ -381,3 +381,6 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+Client/Scripts/bot.gd
+Client/Scenes/Sword.tscn
+Client/Scripts/bot.gd

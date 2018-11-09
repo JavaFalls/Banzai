@@ -7,7 +7,7 @@
 custom_solver_bias = 0.0
 extents = Vector2( 10, 10 )
 
-[node name="entity" type="KinematicBody2D"]
+[node name="entity" type="KinematicBody2D" index="0"]
 
 input_pickable = false
 collision_layer = 1
@@ -24,7 +24,5 @@ shape = SubResource( 1 )
 [node name="projectile_container" type="Node" parent="." index="2"]
 
 _sections_unfolded = [ "Pause" ]
-
-[node name="ZZ" type="Node" parent="." index="3"]
 
 

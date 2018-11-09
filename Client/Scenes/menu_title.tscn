@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/menu_title.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/game_background_1.png" type="Texture" id=2]
 
-[node name="title_screen" type="Node" index="0"]
+[node name="title_screen" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -58,5 +58,261 @@ scroll_following = false
 selection_enabled = false
 override_selected_font_color = false
 _sections_unfolded = [ "BBCode", "Rect", "Size Flags" ]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." index="2"]
+
+anchor_left = 0.09961
+anchor_top = 0.1
+anchor_right = 0.90039
+anchor_bottom = 0.9
+margin_left = -0.000640869
+margin_top = 3.8147e-006
+margin_right = 0.000671387
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+alignment = 1
+_sections_unfolded = [ "Anchor", "Size Flags" ]
+
+[node name="ready" type="Button" parent="VBoxContainer" index="0"]
+
+editor/display_folded = true
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 377.0
+margin_right = 442.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "READY..."
+flat = false
+align = 1
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="Tween" type="Tween" parent="VBoxContainer/ready" index="0"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 820.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+alignment = 1
+_sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 270.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="manufacturor" type="ItemList" parent="VBoxContainer/HBoxContainer/MarginContainer" index="0"]
+
+editor/display_folded = true
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 8.0
+margin_right = 270.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+items = [  ]
+select_mode = 0
+allow_reselect = false
+icon_mode = 1
+fixed_icon_size = Vector2( 0, 0 )
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Tween" type="Tween" parent="VBoxContainer/HBoxContainer/MarginContainer/manufacturor" index="1"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+_sections_unfolded = [ "playback" ]
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 274.0
+margin_right = 544.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="name" type="ItemList" parent="VBoxContainer/HBoxContainer/MarginContainer2" index="0"]
+
+editor/display_folded = true
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 8.0
+margin_right = 270.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+items = [  ]
+select_mode = 0
+allow_reselect = false
+icon_mode = 1
+fixed_icon_size = Vector2( 0, 0 )
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Tween" type="Tween" parent="VBoxContainer/HBoxContainer/MarginContainer2/name" index="1"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/HBoxContainer" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 548.0
+margin_right = 820.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="code" type="ItemList" parent="VBoxContainer/HBoxContainer/MarginContainer3" index="0"]
+
+editor/display_folded = true
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 8.0
+margin_right = 272.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+items = [  ]
+select_mode = 0
+allow_reselect = false
+icon_mode = 1
+fixed_icon_size = Vector2( 0, 0 )
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Tween" type="Tween" parent="VBoxContainer/HBoxContainer/MarginContainer3/code" index="1"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="full_name" type="Label" parent="VBoxContainer" index="2"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 466.0
+margin_right = 820.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 5
+size_flags_vertical = 5
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Size Flags" ]
+
+[connection signal="pressed" from="VBoxContainer/ready" to="." method="create_user"]
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/MarginContainer/manufacturor" to="." method="name_changed" binds= [ "M" ]]
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/MarginContainer2/name" to="." method="name_changed" binds= [ "N" ]]
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/MarginContainer3/code" to="." method="name_changed" binds= [ "C" ]]
 
 

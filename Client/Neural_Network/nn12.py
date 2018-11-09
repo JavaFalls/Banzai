@@ -5,9 +5,13 @@ from tensorflow.keras.models import load_model
 
 def save_game_state(game_state):
    str_game_state = str(game_state)
-   f = open('gamestates', 'a')
+   
+   f = open('gamestates.txt', 'a')
    f.write(str_game_state + "\n")
-   f.close()
+   #print("game_state")
+   #print(str_game_state)
+   f.close()   
+   
 
 
 def save_bot(model):
@@ -58,19 +62,14 @@ def train(model):
 
 def main():
     
-    #number_of_factors = 0
-    #for line in sys.argv:
-     #   print(line)
-      #  number_of_factors=+1t
-    bot = load_bot()
-    bot = build_model()
-    train(bot)
-    save_bot(bot)
+    save_game_state(sys.argv)
+    #print(sys.argv)
+    #bot = load_bot()
+    #bot = build_model()
+    #train(bot)
+    #save_bot(bot)
     #save_game_state(sys.argv)
     #print(number_of_factors)
     return()
 
 main()
-#sql server is numeric mysql and oracle is number
-#page 256 create product table.
-#264, 265 insert two to vendor and two to product fix product code issue

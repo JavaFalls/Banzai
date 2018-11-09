@@ -12,3 +12,6 @@ func _ready():
 func _process(delta):
 	self.rotate(1)
 #	pass
+
+func use():
+	#play the animation that causes you to be immune
