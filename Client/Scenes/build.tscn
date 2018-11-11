@@ -6,9 +6,9 @@
 [ext_resource path="res://assets/menu/main_menu/train_button.png" type="Texture" id=4]
 [ext_resource path="res://assets/icon.png" type="Texture" id=5]
 [ext_resource path="res://assets/menu/main_menu/arrow_left.png" type="Texture" id=6]
-[ext_resource path="res://assets/Wall.png" type="Texture" id=7]
-[ext_resource path="res://assets/sword.png" type="Texture" id=8]
-[ext_resource path="res://assets/menu/main_menu/arrow_right.png" type="Texture" id=9]
+[ext_resource path="res://assets/menu/main_menu/arrow_right.png" type="Texture" id=7]
+[ext_resource path="res://assets/Wall.png" type="Texture" id=8]
+[ext_resource path="res://assets/sword.png" type="Texture" id=9]
 [ext_resource path="res://themes/bot_stats.theme" type="Theme" id=10]
 
 [node name="build" type="Node" index="0"]
@@ -17,6 +17,7 @@ script = ExtResource( 1 )
 
 [node name="Container" type="MarginContainer" parent="." index="0"]
 
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 1.0
@@ -90,6 +91,7 @@ _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Size Flags" ]
 
 [node name="player_bot" type="TextureRect" parent="." index="3"]
 
+editor/display_folded = true
 anchor_left = 0.3
 anchor_top = 0.0
 anchor_right = 0.65
@@ -174,14 +176,81 @@ flat = false
 align = 1
 _sections_unfolded = [ "Visibility" ]
 
-[node name="primary_weapons" type="VBoxContainer" parent="." index="5"]
+[node name="ai_builds" type="HBoxContainer" parent="." index="5"]
 
+anchor_left = 0.73242
+anchor_top = 0.03833
+anchor_right = 0.92188
+anchor_bottom = 0.205
+margin_left = 0.00195313
+margin_top = 0.00200081
+margin_right = -0.00506592
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+
+[node name="left" type="TextureButton" parent="ai_builds" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 95.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+_sections_unfolded = [ "Size Flags", "Textures" ]
+
+[node name="right" type="TextureButton" parent="ai_builds" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 99.0
+margin_right = 194.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 5
+_sections_unfolded = [ "Size Flags", "Textures" ]
+
+[node name="primary_weapons" type="VBoxContainer" parent="." index="6"]
+
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.3
 anchor_bottom = 0.2
 margin_right = 168.8
-margin_bottom = 8.00001
+margin_bottom = 8.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -214,6 +283,7 @@ max_lines_visible = -1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="primary_weapons" index="1"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -257,6 +327,7 @@ _sections_unfolded = [ "Size Flags", "Textures" ]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="primary_weapons/HBoxContainer" index="1"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -288,7 +359,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Rect", "Size Flags", "Visibility" ]
@@ -329,7 +400,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Rect", "Size Flags" ]
@@ -355,21 +426,19 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 9 )
+texture_normal = ExtResource( 7 )
 expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Margin", "Size Flags" ]
 
-[node name="secondary_weapons" type="VBoxContainer" parent="." index="6"]
+[node name="secondary_weapons" type="VBoxContainer" parent="." index="7"]
 
 editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.2
 anchor_right = 0.3
 anchor_bottom = 0.4
-margin_top = 7.62939e-006
 margin_right = 104.8
-margin_bottom = 1.52588e-005
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -476,7 +545,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags", "Visibility" ]
@@ -496,7 +565,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags" ]
 
@@ -516,7 +585,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags", "Visibility" ]
 
@@ -541,20 +610,19 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 9 )
+texture_normal = ExtResource( 7 )
 expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Size Flags", "Textures" ]
 
-[node name="abilities" type="VBoxContainer" parent="." index="7"]
+[node name="abilities" type="VBoxContainer" parent="." index="8"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.4
 anchor_right = 0.3
 anchor_bottom = 0.6
-margin_top = 1.52588e-005
 margin_right = 104.8
-margin_bottom = 3.05176e-005
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -661,7 +729,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags", "Visibility" ]
@@ -681,7 +749,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags" ]
@@ -702,7 +770,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 expand = true
 stretch_mode = 6
 _sections_unfolded = [ "Size Flags", "Visibility" ]
@@ -728,20 +796,19 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 9 )
+texture_normal = ExtResource( 7 )
 expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Size Flags", "Textures" ]
 
-[node name="stats" type="ItemList" parent="." index="8"]
+[node name="stats" type="ItemList" parent="." index="9"]
 
 anchor_left = 0.09766
 anchor_top = 0.6
 anchor_right = 0.3
 anchor_bottom = 1.0
 margin_left = -0.00383759
-margin_top = 3.05176e-005
-margin_right = -0.199982
+margin_right = -0.200012
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 focus_mode = 2
@@ -764,6 +831,10 @@ _sections_unfolded = [ "Anchor", "Columns", "Icon", "Size Flags", "Theme" ]
 [connection signal="pressed" from="player_bot/Button" to="." method="switch_bot" binds= [ 0 ]]
 
 [connection signal="pressed" from="training_bot/Button" to="." method="switch_bot" binds= [ 1 ]]
+
+[connection signal="pressed" from="ai_builds/left" to="." method="switch_ai_bot" binds= [ -1 ]]
+
+[connection signal="pressed" from="ai_builds/right" to="." method="switch_ai_bot" binds= [ 1 ]]
 
 [connection signal="pressed" from="primary_weapons/HBoxContainer/left" to="." method="move_primaries" binds= [ "prev" ]]
 

@@ -6,8 +6,8 @@ const NORMAL_WIDTH = 1600
 
 # Weapons keys
 enum {PRIMARY, SECONDARY, ABILITY}
-# Bot keys
-enum {PLAYER, BOT}
+# Bot builds keys
+enum {PLAYER BOT}
 
 # Screen Position and Size
 var screen_size = OS.get_screen_size()
@@ -91,100 +91,47 @@ onready var abilities = item_list.new([
 ])
 
 # Bots
-var bots = []
-func init_bots():
-	var bot_build = load("res://Scripts/bot_build.gd")
-	bots = [
-		bot_build.new([
-			primaries.items[0],
-			secondaries.items[0],
-			abilities.items[0]
-		]),
-		bot_build.new([
-			primaries.items[0],
-			secondaries.items[0],
-			abilities.items[0]
-		])
-	]
+onready var bot_builds = {
+	PLAYER: {
+		PRIMARY: primaries.items[0],
+		SECONDARY: secondaries.items[0],
+		ABILITY: abilities.items[0]
+	},
+	BOT: {
+		PRIMARY: primaries.items[0],
+		SECONDARY: secondaries.items[0],
+		ABILITY: abilities.items[0]
+	}
+}
 
-# JSON functions that may not be needed
-# Delete if unnecessary
-static func save_bots(save_bots):
-	var bot_file = File.new()
-	bot_file.open("res://json/bots.json", File.WRITE)
-	for bot in save_bots:
-		var primary = bot.items[PRIMARY]
-		var secondary = bot.items[SECONDARY]
-		var ability = bot.items[ABILITY]
-		
-		var texture = bot.texture.get_path() if bot.texture != null else ""
-		var p_texture = primary.texture.get_path() if primary.texture != null else ""
-		var s_texture = secondary.texture.get_path() if secondary.texture != null else ""
-		var a_texture = ability.texture.get_path() if ability.texture != null else ""
-		
-		var data = {
-			"texture": texture,
-			
-			"p_texture": p_texture,
-			"p_text": primary.text,
-			"p_stats": primary.stats,
-			
-			"s_texture": s_texture,
-			"s_text": secondary.text,
-			"s_stats": secondary.stats,
-			
-			"a_texture": a_texture,
-			"a_text": ability.text,
-			"a_stats": ability.stats
-		}
-		bot_file.store_line(to_json(data))
-	bot_file.close()
+#onready var bot_builds = [
+#	load("res://Scripts/bot_build.gd").new([
+#		primaries.items[0],
+#		secondaries.items[0],
+#		abilities.items[0]
+#	]),
+#	load("res://Scripts/bot_build.gd").new([
+#		primaries.items[0],
+#		secondaries.items[0],
+#		abilities.items[0]
+#	])
+#]
+var ai_builds = []
 
-static func load_bots():
-	var load_bots = []
-	var bot_file = File.new()
-	var item_list = load("res://Scripts/item_list.gd")
-	var bot_build = load("res://Scripts/bot_build.gd")
-	
-	bot_file.open("res://json/bots.json", File.READ)
-	while true:
-		var current_line = parse_json(bot_file.get_line())
-		if bot_file.eof_reached():
-			break
-		var bot = bot_build.new()
-		
-		var primary = item_list.Item.new()
-		var secondary = item_list.Item.new()
-		var ability = item_list.Item.new()
+func is_ai_bot(bot):
+	for i in range(PLAYER+1, ai_builds.size()):
+		if (ai_builds[i].items[PRIMARY] == bot.items[PRIMARY] and
+			 ai_builds[i].items[SECONDARY] == bot.items[SECONDARY] and
+			 ai_builds[i].items[ABILITY] == bot.items[ABILITY] and
+			 ai_builds[i].texture == bot.texture):
+			return true
+	return false
 
-		bot.texture = load(current_line["texture"])
-
-		primary.texture = load(current_line["p_texture"])
-		primary.text = current_line["p_text"]
-		primary.stats = current_line["p_stats"]
-
-		secondary.texture = load(current_line["s_texture"])
-		secondary.text = current_line["s_text"]
-		secondary.stats = current_line["s_stats"]
-
-		ability.texture = load(current_line["a_texture"])
-		ability.text = current_line["a_text"]
-		ability.stats = current_line["a_stats"]
-
-		bot.items.push_back(primary)
-		bot.items.push_back(secondary)
-		bot.items.push_back(ability)
-		load_bots.push_back(bot)
-	bot_file.close()
-	return load_bots
-
-static func load_weapons():
-	
-	return
+func save_bot(new_bot):
+	ai_builds.push_back(new_bot)
 
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
-	init_bots()
 
 func _input(event):
 	if Input.is_action_just_pressed("shutdown"):
