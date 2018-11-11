@@ -1,17 +1,3 @@
-class Item:
-	var texture
-	var text
-	var stats = {}
-	
-	func _init(i_texture=null, i_text=null, i_stats=null):
-		if typeof(i_texture) != TYPE_NIL and i_texture is Texture:
-			texture = i_texture
-		if typeof(i_text) == TYPE_STRING:
-			text = i_text
-		if typeof(i_stats) == TYPE_DICTIONARY:
-			stats = i_stats
-		pass
-
 var items = []
 var current = 0
 var animation_player

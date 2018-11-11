@@ -25,9 +25,9 @@ onready var builds = head.bot_builds
 var current_bot
 var current_ai = 0
 
-onready var primaries = head.primaries
-onready var secondaries = head.secondaries
-onready var abilities = head.abilities
+onready var primaries = head.primary_list
+onready var secondaries = head.secondary_list
+onready var abilities = head.ability_list
 
 var stats = [
 	"Attack: ",
@@ -98,30 +98,31 @@ func move_abilities(direction):
 	pass
 
 func update_stats():
-	var prim_stats = primaries.current().stats.values()
-	var sec_stats = secondaries.current().stats.values()
-	var abil_stats = abilities.current().stats.values()
+	var prim_stats = primaries.current().values()
+	var sec_stats = secondaries.current().values()
+	var abil_stats = abilities.current().values()
 	for i in range(_stats.get_item_count()):
-		_stats.set_item_text(i, stats[i] + str(prim_stats[i] + sec_stats[i] + abil_stats[i]))
+		var j = i + 3
+		_stats.set_item_text(i, stats[i] + str(prim_stats[j] + sec_stats[j] + abil_stats[j]))
 	pass
 
 func update_items(list):
 	match (list):
 		head.PRIMARY:
-			_primary_current.texture = primaries.current().texture
-			_primary_next.texture = primaries.next().texture
-			_primary_prev.texture = primaries.prev().texture
-			_primary_label.text = "Primary: " + primaries.current().text
+			_primary_current.texture = primaries.current()["texture"]
+			_primary_next.texture = primaries.next()["texture"]
+			_primary_prev.texture = primaries.prev()["texture"]
+			_primary_label.text = "Primary: " + primaries.current()["name"]
 		head.SECONDARY:
-			_secondary_current.texture = secondaries.current().texture
-			_secondary_next.texture = secondaries.next().texture
-			_secondary_prev.texture = secondaries.prev().texture
-			_secondary_label.text = "Secondary: " + secondaries.current().text
+			_secondary_current.texture = secondaries.current()["texture"]
+			_secondary_next.texture = secondaries.next()["texture"]
+			_secondary_prev.texture = secondaries.prev()["texture"]
+			_secondary_label.text = "Secondary: " + secondaries.current()["name"]
 		head.ABILITY:
-			_ability_current.texture = abilities.current().texture
-			_ability_next.texture = abilities.next().texture
-			_ability_prev.texture = abilities.prev().texture
-			_ability_label.text = "Ability: " + abilities.current().text
+			_ability_current.texture = abilities.current()["texture"]
+			_ability_next.texture = abilities.next()["texture"]
+			_ability_prev.texture = abilities.prev()["texture"]
+			_ability_label.text = "Ability: " + abilities.current()["name"]
 	pass
 
 func switch_bot(bot):
