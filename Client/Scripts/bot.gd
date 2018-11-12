@@ -39,8 +39,8 @@ func send_nn_state():
 	
     # Send the required information to the Neural Network
 
-	OS.execute('python', path, true, output)
-	print(output)
+	#OS.execute('python', path, true, output)
+	#print(output)
 		
 	#	print_timer.set_wait_time(.3)
 	#	print_timer.start()

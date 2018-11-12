@@ -8,6 +8,7 @@ func _physics_process(delta):
 	
 	if Input.is_action_pressed("primary_attack"):
 		primary_weapon.use()
+	#	set_weapons(ranged_attack, heavy_attack, aby_evade)
 	if Input.is_action_pressed("secondary_attack"):
 		secondary_weapon.use()
 	if Input.is_action_pressed("ability"):

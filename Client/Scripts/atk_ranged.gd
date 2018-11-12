@@ -17,6 +17,5 @@ func use():
 	if cooldown_timer.is_stopped():
 		bullet = projectile.instance()
 		projectile_container.add_child(bullet)
-		bullet.set_gravity_scale(0) # There is no gravity in a top-down game. can be defaulted to zero (do this)
-		bullet.shoot_at_mouse(get_parent().global_position)# this will probably need to come out of the gun eventually
+#		bullet.shoot_at_mouse(get_parent().global_position, get_global_mouse_position())# this will probably need to come out of the gun eventually
 		cooldown_timer.start()
