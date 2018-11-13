@@ -83,27 +83,19 @@ onready var abilities = {
 	}
 }
 
-onready var primary_list = load("res://Scripts/item_list.gd").new(weapons.values())
-onready var secondary_list = load("res://Scripts/item_list.gd").new(weapons.values())
-onready var ability_list = load("res://Scripts/item_list.gd").new(abilities.values())
+onready var primary_list = load("res://Scripts/Objects/item_list.gd").new(weapons.values())
+onready var secondary_list = load("res://Scripts/Objects/item_list.gd").new(weapons.values())
+onready var ability_list = load("res://Scripts/Objects/item_list.gd").new(abilities.values())
 
 # Bots
-onready var bot_builds = {
-	PLAYER: load("res://Scripts/Objects/bot_build.gd").new(
-		weapons["robot_face"],
-		weapons["robot_face"],
-		abilities["sword1"]
-	),
-	BOT: load("res://Scripts/Objects/bot_build.gd").new(
-		weapons["robot_face"],
-		weapons["robot_face"],
-		abilities["sword1"]
-	)
-}
-onready var ai_builds = [bot_builds[BOT]]
+var bot_builds
+var ai_builds
 
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
+	
+	init_bots()
+	ai_builds = [bot_builds[BOT]]
 
 func _input(event):
 	if Input.is_action_just_pressed("shutdown"):
@@ -119,3 +111,17 @@ func find_bot(bot):
 
 func save_bot(new_bot):
 	ai_builds.push_back(new_bot)
+
+func init_bots():
+	bot_builds = {
+		PLAYER: load("res://Scripts/Objects/bot_build.gd").new(
+			weapons["robot_face"],
+			weapons["robot_face"],
+			abilities["sword1"]
+		),
+		BOT: load("res://Scripts/Objects/bot_build.gd").new(
+			weapons["robot_face"],
+			weapons["robot_face"],
+			abilities["sword1"]
+		)
+	}
