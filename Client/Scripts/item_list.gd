@@ -1,3 +1,5 @@
+extends Object
+
 var items = []
 var current = 0
 var animation_player

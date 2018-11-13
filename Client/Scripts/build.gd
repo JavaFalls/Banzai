@@ -21,7 +21,10 @@ onready var _ability_next = get_node("abilities/HBoxContainer/HBoxContainer/next
 onready var _ability_prev = get_node("abilities/HBoxContainer/HBoxContainer/previous")
 onready var _ability_label = get_node("abilities/Label")
 
-onready var builds = head.bot_builds
+onready var builds = [
+	load("res://Scripts/Objects/bot_build.gd").new(),
+	load("res://Scripts/Objects/bot_build.gd").new()
+]
 var current_bot
 var current_ai = 0
 
@@ -29,13 +32,13 @@ onready var primaries = head.primary_list
 onready var secondaries = head.secondary_list
 onready var abilities = head.ability_list
 
-var stats = [
+var stats = PoolStringArray([
 	"Attack: ",
 	"Armor: ",
 	"Range: ",
 	"Points: ",
 	"Weight: "
-]
+])
 
 func _ready():
 	get_tree().get_root().connect("size_changed", self, "_resize")
@@ -45,6 +48,20 @@ func _ready():
 	for stat in stats:
 		_stats.add_item(stat, null, false)
 	
+	# Copy bot data to new bots
+	var player = head.bot_builds[head.PLAYER]
+	var bot = head.bot_builds[head.BOT]
+	
+	builds[head.PLAYER].set("texture", player.texture)
+	builds[head.PLAYER].set("primary", player.primary)
+	builds[head.PLAYER].set("secondary", player.secondary)
+	builds[head.PLAYER].set("ability", player.ability)
+	
+	builds[head.BOT].set("texture", bot.texture)
+	builds[head.BOT].set("primary", bot.primary)
+	builds[head.BOT].set("secondary", bot.secondary)
+	builds[head.BOT].set("ability", bot.ability)
+	
 	switch_bot(head.PLAYER)
 	update_stats()
 	pass
@@ -52,9 +69,12 @@ func _ready():
 # TEST CODE ------------------------------------------------------------------------------#
 #func _process(delta):
 #	if Input.is_action_just_pressed("ui_up"):
-#		head.save_bots(bots)
+#		print(builds[head.BOT])
 #	elif Input.is_action_just_pressed("ui_down"):
-#		bots = head.load_bots()
+#		print(builds[head.BOT].values())
+#		var j = [ {"y": 1, 1: "y"}.values()]
+#		var i = [ {"y": 1, 1: "y"}.values()]
+#		print( i==j)
 #-----------------------------------------------------------------------------------------#
 
 func _on_go_button_pressed():
@@ -73,7 +93,7 @@ func _resize():
 func move_primaries(direction):
 	primaries.set_current(primaries.call(direction))
 	
-	builds[current_bot][head.PRIMARY] = primaries.current()
+	builds[current_bot].primary = primaries.current()
 	
 	update_items(head.PRIMARY)
 	update_stats()
@@ -82,7 +102,7 @@ func move_primaries(direction):
 func move_secondaries(direction):
 	secondaries.set_current(secondaries.call(direction))
 	
-	builds[current_bot][head.SECONDARY] = secondaries.current()
+	builds[current_bot].secondary = secondaries.current()
 	
 	update_items(head.SECONDARY)
 	update_stats()
@@ -91,7 +111,7 @@ func move_secondaries(direction):
 func move_abilities(direction):
 	abilities.set_current(abilities.call(direction))
 	
-	builds[current_bot][head.ABILITY] = abilities.current()
+	builds[current_bot].ability = abilities.current()
 	
 	update_items(head.ABILITY)
 	update_stats()
@@ -128,9 +148,9 @@ func update_items(list):
 func switch_bot(bot):
 	current_bot = bot
 	var items = builds[current_bot]
-	primaries.set_current(items[head.PRIMARY])
-	secondaries.set_current(items[head.SECONDARY])
-	abilities.set_current(items[head.ABILITY])
+	primaries.set_current(items.primary)
+	secondaries.set_current(items.secondary)
+	abilities.set_current(items.ability)
 	update_items(head.PRIMARY)
 	update_items(head.SECONDARY)
 	update_items(head.ABILITY)
@@ -142,11 +162,19 @@ func switch_ai_bot(add_index):
 	if current_ai < 0:
 		current_ai = head.ai_builds.size() + current_ai
 	elif current_ai > head.ai_builds.size() - 1:
-		current_ai = current_ai - head.ai_builds.size() - 1
-	builds[head.BOT] = head.ai_builds[current_ai]
+		current_ai = current_ai - head.ai_builds.size()
+	builds[head.BOT].copy(head.ai_builds[current_ai])
+	switch_bot(head.BOT)
 
 func change_scene(path):
-	if not head.is_ai_bot(builds[head.BOT]):
+	var bot = head.find_bot(builds[head.BOT])
+	if typeof(bot) == TYPE_NIL:
 		head.save_bot(builds[head.BOT])
-	head.bot_builds = builds
+		head.bot_builds[head.BOT] = builds[head.BOT]
+	else:
+		builds[head.BOT].free()
+		head.bot_builds[head.BOT] = bot
+	
+	head.bot_builds[head.PLAYER].free()
+	head.bot_builds[head.PLAYER] = builds[head.PLAYER]
 	get_tree().change_scene(path)

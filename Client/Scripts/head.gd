@@ -89,34 +89,18 @@ onready var ability_list = load("res://Scripts/item_list.gd").new(abilities.valu
 
 # Bots
 onready var bot_builds = {
-	PLAYER: {
-		PRIMARY: weapons["robot_face"],
-		SECONDARY: weapons["robot_face"],
-		ABILITY: abilities["sword1"],
-		"texture": null
-	},
-	BOT: {
-		PRIMARY: weapons["robot_face"],
-		SECONDARY: weapons["robot_face"],
-		ABILITY: abilities["sword1"],
-		"texture": null
-	}
+	PLAYER: load("res://Scripts/Objects/bot_build.gd").new(
+		weapons["robot_face"],
+		weapons["robot_face"],
+		abilities["sword1"]
+	),
+	BOT: load("res://Scripts/Objects/bot_build.gd").new(
+		weapons["robot_face"],
+		weapons["robot_face"],
+		abilities["sword1"]
+	)
 }
 onready var ai_builds = [bot_builds[BOT]]
-
-func is_ai_bot(bot):
-	for i in range(PLAYER+1, ai_builds.size()):
-		if (ai_builds == bot):
-			print("true")
-		if (ai_builds[i][PRIMARY] == bot[PRIMARY] and
-			 ai_builds[i][SECONDARY] == bot[SECONDARY] and
-			 ai_builds[i][ABILITY] == bot[ABILITY] and
-			 ai_builds[i]["texture"] == bot["texture"]):
-			return true
-	return false
-
-func save_bot(new_bot):
-	ai_builds.push_back(new_bot)
 
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
@@ -126,3 +110,12 @@ func _input(event):
 		get_tree().quit()
 	if Input.is_action_just_pressed("toggle_fullscreen"):
 		OS.window_fullscreen = !OS.window_fullscreen
+
+func find_bot(bot):
+	for i in range(ai_builds.size()):
+		if ai_builds[i].compare(bot):
+			return ai_builds[i]
+	return null
+
+func save_bot(new_bot):
+	ai_builds.push_back(new_bot)
