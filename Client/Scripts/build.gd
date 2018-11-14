@@ -21,6 +21,8 @@ onready var _ability_next = get_node("abilities/HBoxContainer/HBoxContainer/next
 onready var _ability_prev = get_node("abilities/HBoxContainer/HBoxContainer/previous")
 onready var _ability_label = get_node("abilities/Label")
 
+onready var _confirm_save = get_node("confirm_save")
+
 onready var builds = [
 	load("res://Scripts/Objects/bot_build.gd").new(),
 	load("res://Scripts/Objects/bot_build.gd").new()
@@ -48,19 +50,8 @@ func _ready():
 	for stat in stats:
 		_stats.add_item(stat, null, false)
 	
-	# Copy bot data to new bots
-	var player = head.bot_builds[head.PLAYER]
-	var bot = head.bot_builds[head.BOT]
-	
-	builds[head.PLAYER].set("texture", player.texture)
-	builds[head.PLAYER].set("primary", player.primary)
-	builds[head.PLAYER].set("secondary", player.secondary)
-	builds[head.PLAYER].set("ability", player.ability)
-	
-	builds[head.BOT].set("texture", bot.texture)
-	builds[head.BOT].set("primary", bot.primary)
-	builds[head.BOT].set("secondary", bot.secondary)
-	builds[head.BOT].set("ability", bot.ability)
+	builds[head.PLAYER].copy(head.bot_builds[head.PLAYER])
+	builds[head.BOT].copy(head.bot_builds[head.BOT])
 	
 	switch_bot(head.PLAYER)
 	update_stats()
@@ -77,12 +68,22 @@ func _ready():
 #		print( i==j)
 #-----------------------------------------------------------------------------------------#
 
+# Go to training
 func _on_go_button_pressed():
-	change_scene("res://Scenes/arena_train.tscn")
+	_confirm_save.disconnect("confirmed", self, "change_scene")
+	_confirm_save.connect("confirmed", self, "change_scene", ["res://Scenes/arena_train.tscn", true])
+	_confirm_save.get_cancel().disconnect("pressed", self, "change_scene")
+	_confirm_save.get_cancel().connect("pressed", self, "change_scene", ["res://Scenes/arena_train.tscn", false])
+	_confirm_save.popup()
 	pass
 
+# Go to main menu
 func _on_back_button_pressed():
-	change_scene("res://Scenes/main_menu.tscn")
+	_confirm_save.disconnect("confirmed", self, "change_scene")
+	_confirm_save.connect("confirmed", self, "change_scene", ["res://Scenes/main_menu.tscn", true])
+	_confirm_save.get_cancel().disconnect("pressed", self, "change_scene")
+	_confirm_save.get_cancel().connect("pressed", self, "change_scene", ["res://Scenes/main_menu.tscn", false])
+	_confirm_save.popup()
 	pass
 
 func _resize():
@@ -166,15 +167,19 @@ func switch_ai_bot(add_index):
 	builds[head.BOT].copy(head.ai_builds[current_ai])
 	switch_bot(head.BOT)
 
-func change_scene(path):
-	var bot = head.find_bot(builds[head.BOT])
-	if typeof(bot) == TYPE_NIL:
-		head.save_bot(builds[head.BOT])
-		head.bot_builds[head.BOT] = builds[head.BOT]
+func change_scene(path, save):
+	if save:
+		var bot = head.find_bot(builds[head.BOT])
+		if typeof(bot) == TYPE_NIL:
+			head.save_bot(builds[head.BOT])
+			head.bot_builds[head.BOT] = builds[head.BOT]
+		else:
+			builds[head.BOT].free()
+			head.bot_builds[head.BOT] = bot
+		
+		head.bot_builds[head.PLAYER].free()
+		head.bot_builds[head.PLAYER] = builds[head.PLAYER]
 	else:
-		builds[head.BOT].free()
-		head.bot_builds[head.BOT] = bot
-	
-	head.bot_builds[head.PLAYER].free()
-	head.bot_builds[head.PLAYER] = builds[head.PLAYER]
+		for b in builds:
+			b.free()
 	get_tree().change_scene(path)
