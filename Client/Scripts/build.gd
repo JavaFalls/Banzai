@@ -43,10 +43,6 @@ var stats = PoolStringArray([
 ])
 
 func _ready():
-	get_tree().get_root().connect("size_changed", self, "_resize")
-	var size = OS.get_window_size()
-	_background.scale = Vector2(size.x / head.NORMAL_WIDTH, size.y / head.NORMAL_HEIGHT)
-	
 	_confirm_save.get_cancel().text = "No"
 	
 	for stat in stats:
@@ -86,11 +82,6 @@ func _on_back_button_pressed():
 	_confirm_save.get_cancel().disconnect("pressed", self, "change_scene")
 	_confirm_save.get_cancel().connect("pressed", self, "change_scene", ["res://Scenes/main_menu.tscn", false])
 	_confirm_save.popup()
-	pass
-
-func _resize():
-	var size = OS.get_window_size()
-	_background.scale = Vector2(size.x / head.NORMAL_WIDTH, size.y / head.NORMAL_HEIGHT)
 	pass
 
 func move_primaries(direction):
