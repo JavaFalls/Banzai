@@ -53,4 +53,6 @@ toggle_fullscreen=[ Object(InputEventKey,"resource_local_to_scene":false,"resour
 
 [rendering]
 
+quality/intended_usage/framebuffer_allocation=0
+quality/2d/use_pixel_snap=true
 environment/default_environment="res://default_env.tres"
