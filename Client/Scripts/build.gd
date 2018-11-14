@@ -47,6 +47,8 @@ func _ready():
 	var size = OS.get_window_size()
 	_background.scale = Vector2(size.x / head.NORMAL_WIDTH, size.y / head.NORMAL_HEIGHT)
 	
+	_confirm_save.get_cancel().text = "No"
+	
 	for stat in stats:
 		_stats.add_item(stat, null, false)
 	
