@@ -173,6 +173,6 @@ func change_scene(path, save):
 		head.bot_builds[head.PLAYER].free()
 		head.bot_builds[head.PLAYER] = builds[head.PLAYER]
 	else:
-		for b in builds:
-			b.free()
+		for bot in builds:
+			bot.free()
 	get_tree().change_scene(path)

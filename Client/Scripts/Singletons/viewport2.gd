@@ -22,7 +22,3 @@ func _screen_resized():
 	
 	# attach the viewport to the rect we calculated
 	viewport.set_attach_to_screen_rect(Rect2(diffhalf, viewport.size * scale))
-	
-	# draw black borders
-	
-	
