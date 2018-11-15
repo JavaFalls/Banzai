@@ -5,8 +5,8 @@ onready var bot_scene    = preload("res://Scenes/bot.tscn")
 
 var fighter1                              # Players fighter or AI
 var fighter2                              # Opponent
-var start_pos1 = Vector2(320,320)
-var start_pos2 = Vector2(320,160)
+var start_pos1 = Vector2(320,320)         # Where the first fighter spawns
+var start_pos2 = Vector2(320,160)         # Where the second fighter spawns
 
 func _ready():
 	#add code here to choose who fights (player or AIs)

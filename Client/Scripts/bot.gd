@@ -39,8 +39,8 @@ func send_nn_state():
 	
     # Send the required information to the Neural Network
 
-	OS.execute('python', path, true, output)
-	print(output)
+	#OS.execute('python', path, true, output)
+	#print(output)
 		
 	#	print_timer.set_wait_time(.3)
 	#	print_timer.start()
@@ -63,4 +63,4 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_down"):
 		direction.y = 0
 
-	direction = move_and_slide(direction*movement_speed, UP)
+	direction = move_and_slide(direction.normalized()*movement_speed, UP)

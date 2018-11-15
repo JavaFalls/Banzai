@@ -8,28 +8,18 @@
 custom_solver_bias = 0.0
 extents = Vector2( 8, 8 )
 
-[node name="projectile" type="RigidBody2D"]
+[node name="projectile" type="Area2D"]
 
-input_pickable = false
-collision_layer = 1
-collision_mask = 1
-mode = 0
-mass = 1.0
-friction = 1.0
-bounce = 0.0
-gravity_scale = 0.0
-custom_integrator = false
-continuous_cd = 0
-contacts_reported = 0
-contact_monitor = false
-sleeping = false
-can_sleep = true
-linear_velocity = Vector2( 0, 0 )
-linear_damp = -1.0
-angular_velocity = 0.0
-angular_damp = -1.0
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 0.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
 script = ExtResource( 1 )
-speed = 1000
+_sections_unfolded = [ "Visibility" ]
+speed = 10
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
@@ -42,18 +32,21 @@ _sections_unfolded = [ "Material", "Visibility" ]
 
 scale = Vector2( 1, 0.5 )
 shape = SubResource( 1 )
-disabled = true
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
 [node name="RayCast2D" type="RayCast2D" parent="." index="2"]
 
 show_behind_parent = true
-rotation = 4.71239
+rotation = -1.5708
 scale = Vector2( 1, 10 )
 enabled = false
 exclude_parent = true
 cast_to = Vector2( 0, 50 )
 collision_mask = 1
 _sections_unfolded = [ "Transform", "Visibility" ]
+
+[connection signal="area_entered" from="." to="." method="_on_projectile_area_entered"]
+
+[connection signal="body_entered" from="." to="." method="_on_projectile_body_entered"]
 
 

@@ -41,7 +41,7 @@ tracks/1/keys = {
 
 [node name="atk_ranged" type="Area2D"]
 
-rotation = -0.340279
+rotation = -1.68069
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -59,6 +59,7 @@ position = Vector2( 0.421217, -0.467 )
 rotation = 1.44069
 scale = Vector2( 0.520768, 0.819026 )
 shape = SubResource( 1 )
+disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
 
@@ -79,5 +80,7 @@ texture = ExtResource( 2 )
 _sections_unfolded = [ "Animation", "Transform" ]
 
 [node name="projectile_container" type="Node" parent="." index="3"]
+
+[connection signal="body_entered" from="." to="." method="_on_atk_ranged_body_entered"]
 
 
