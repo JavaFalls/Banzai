@@ -4,7 +4,7 @@ var cooldown_timer  = Timer.new()
 var ranged_cooldown = 0.3
 var bullet          = Area2D
 
-onready var projectile = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
+onready var projectile           = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
 onready var projectile_container = get_node("projectile_container")
 
 func _ready():
@@ -17,5 +17,4 @@ func use():
 	if cooldown_timer.is_stopped():
 		bullet = projectile.instance()
 		projectile_container.add_child(bullet)
-#		bullet.shoot_at_mouse(get_parent().global_position, get_global_mouse_position())# this will probably need to come out of the gun eventually
 		cooldown_timer.start()

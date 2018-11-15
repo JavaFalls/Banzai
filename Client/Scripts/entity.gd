@@ -23,7 +23,7 @@ onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged
 onready var aby_evade     = preload("res://Scenes/aby_evade.tscn") # The evade scene to be instanced
 
 func _ready():
-	set_weapons(heavy_attack, quick_attack, ranged_attack)
+	set_weapons(ranged_attack, quick_attack, aby_evade)
 
 # Will be sent the weapon scene as a parameter
 func set_weapons(new_primary, new_secondary, new_ability):

@@ -2,7 +2,7 @@ extends Area2D
 
 var particles = Particles2D
 onready var cooldown_timer  = get_node("cooldown_timer") # Timer for evade cooldown
-onready var active_timer    = get_node("active_timer")
+onready var active_timer    = get_node("active_timer")   # How long the sprint is active
 onready var parent_node     = self.get_parent()
 onready var evade_particles = preload("res://Scenes/part_evade.tscn")
 
