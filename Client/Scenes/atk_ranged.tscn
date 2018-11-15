@@ -41,7 +41,7 @@ tracks/1/keys = {
 
 [node name="atk_ranged" type="Area2D"]
 
-rotation = -0.340279
+rotation = -1.68069
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0

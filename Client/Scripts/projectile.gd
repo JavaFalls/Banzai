@@ -20,7 +20,7 @@ func _ready():
 	t.start()
 
 func _physics_process(delta):
-	self.global_position += movement*speed
+	self.global_position += movement*speed                    # move the projectile
 	# Kill the projectile after the timer ends
 	if t.is_stopped():
 		get_parent().remove_child(self)

@@ -1,7 +1,13 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/arena_train.gd" type="Script" id=1]
 [ext_resource path="res://assets/ground.png" type="Texture" id=2]
+[ext_resource path="res://assets/Wall.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10, 10 )
 
 [node name="world" type="Node2D" index="0"]
 
@@ -16,5 +22,49 @@ position = Vector2( 609.413, 324.274 )
 scale = Vector2( 20.3438, 20.3438 )
 texture = ExtResource( 2 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
+
+[node name="testarea" type="Area2D" parent="." index="1"]
+
+position = Vector2( 680.543, 273.405 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="testarea" index="0"]
+
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="testarea" index="1"]
+
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 3 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="testkino" type="KinematicBody2D" parent="." index="2"]
+
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 763.165, 271.804 )
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+collision/safe_margin = 0.08
+_sections_unfolded = [ "Visibility" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="testkino" index="0"]
+
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="testkino" index="1"]
+
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 3 )
+_sections_unfolded = [ "Transform", "Visibility" ]
 
 
