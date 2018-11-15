@@ -20,18 +20,18 @@ var players = [
 	"Turing the Machine"
 ]
 var scores = [
-	1,
-	1,
-	1,
-	1,
-	1,
-	1,
-	1,
-	1,
-	1,
-	1,
-	1,
-	1
+	2941,
+	3,
+	132987,
+	2,
+	3345,
+	3344,
+	14848,
+	5,
+	3333,
+	79,
+	-9,
+	11691,
 ]
 var bots = [
 	load("res://icon.png"),
@@ -49,7 +49,23 @@ var bots = [
 ]
 
 func _ready():
-	var p = 0
+	assign_leaders()
+	sort()
+	pass
+
+func sort():
+	var temp
+	for i in range(1, scores.size()):
+		var j = i
+		while scores[j] > scores[j-1] and j > 0:
+			temp = scores[j]
+			scores[j] = scores[j-1]
+			scores[j-1] = temp
+			j -= 1
+	assign_leaders()
+
+func assign_leaders():
+	var i = 0
 	for leader in _leaders.get_children():
 		if leader.name == "label":
 			continue
@@ -57,8 +73,7 @@ func _ready():
 		var player_name = leader.get_node("Label")
 		var score = leader.get_node("Label2")
 		
-		bot.texture = bots[p]
-		print(bot.texture)
-		player_name.text = players[p]
-		score.text = str(scores[p])
-	pass
+		bot.texture = bots[i]
+		player_name.text = players[i]
+		score.text = str(scores[i])
+		i += 1
