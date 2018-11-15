@@ -51,11 +51,14 @@ var bots = [
 func _ready():
 	var p = 0
 	for leader in _leaders.get_children():
+		if leader.name == "label":
+			continue
 		var bot = leader.get_node("TextureRect")
 		var player_name = leader.get_node("Label")
 		var score = leader.get_node("Label2")
 		
 		bot.texture = bots[p]
+		print(bot.texture)
 		player_name.text = players[p]
 		score.text = str(scores[p])
 	pass
