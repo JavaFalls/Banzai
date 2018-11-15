@@ -39,7 +39,7 @@ tracks/1/keys = {
 "values": [ -96.2965, 95.7035 ]
 }
 
-[node name="atk_ranged" type="Area2D" index="0"]
+[node name="atk_ranged" type="Area2D"]
 
 rotation = -1.68069
 input_pickable = true

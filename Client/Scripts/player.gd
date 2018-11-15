@@ -38,7 +38,7 @@ func _physics_process(delta):
 		else:
 			set_rotation_degrees(0)
 
-	move_and_slide(direction*movement_speed, UP)
+	move_and_slide(direction.normalized()*movement_speed, UP)
 
 func get_state():
 	var state = PoolStringArray() 
