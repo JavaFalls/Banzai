@@ -8,7 +8,7 @@ onready var _leaders = get_node("leaders")
 var players = [
 	"Turing the Machine",
 	"Turing the Machine",
-	"Turing the Machine",
+	"A",
 	"Turing the Machine",
 	"Turing the Machine",
 	"Turing the Machine",
@@ -38,7 +38,7 @@ var bots = [
 	load("res://icon.png"),
 	load("res://icon.png"),
 	load("res://icon.png"),
-	load("res://icon.png"),
+	load("res://assets/Wall.png"),
 	load("res://icon.png"),
 	load("res://icon.png"),
 	load("res://icon.png"),
@@ -61,6 +61,14 @@ func sort():
 			temp = scores[j]
 			scores[j] = scores[j-1]
 			scores[j-1] = temp
+			
+			temp = players[j]
+			players[j] = players[j-1]
+			players[j-1] = temp
+			
+			temp = bots[j]
+			bots[j] = bots[j-1]
+			bots[j-1] = temp
 			j -= 1
 	assign_leaders()
 
