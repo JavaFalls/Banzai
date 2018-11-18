@@ -9,6 +9,9 @@ enum {PRIMARY, SECONDARY, ABILITY}
 # Bot builds keys
 enum {PLAYER BOT}
 
+# Loading screen
+var loader = preload("res://Scenes/loading.tscn")
+
 # Screen Position and Size
 var screen_size = OS.get_screen_size()
 var window_size = OS.get_window_size()
@@ -102,6 +105,11 @@ func _input(event):
 		get_tree().quit()
 	if Input.is_action_just_pressed("toggle_fullscreen"):
 		OS.window_fullscreen = !OS.window_fullscreen
+
+func load_scene(path):
+	get_tree().change_scene_to(loader)
+	yield(get_tree(), "node_added")
+	get_node("/root/loading").load_scene(path)
 
 func find_bot(bot):
 	for i in range(ai_builds.size()):
