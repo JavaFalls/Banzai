@@ -2,6 +2,7 @@ extends Node2D
 
 onready var player_scene = preload("res://Scenes/player.tscn")
 onready var bot_scene    = preload("res://Scenes/bot.tscn")
+onready var dummy_scene  = preload("res://Scenes/dummy.tscn")
 
 var fighter1                              # Players fighter or AI
 var fighter2                              # Opponent
@@ -14,10 +15,15 @@ func _ready():
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	
-	fighter2 = bot_scene.instance()
+	#fighter2 = bot_scene.instance()
+	fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 
+	fighter1.set_opponent(fighter2)
+	fighter2.set_opponent(fighter1)
+	
+	
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.
 #	# Update game logic here.

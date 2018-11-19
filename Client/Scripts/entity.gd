@@ -6,13 +6,13 @@ var movement_speed   =  300         # Movement speed of the entity
 var p                = Area2D      # New Projectile
 var timer            = Timer.new() # Timer for Firing cooldown
 var projectile_delay = .3          # Firing cooldown length
-var hit_points       = 0           # How many times the entity has been hit
+var hit_points       = 0           # The hitpoint counter for the fighter
 var direction        = Vector2()   # Direction the entity is moving
 var primary_weapon   = Vector2()
 var secondary_weapon = Vector2()
 var ability          = Vector2()
 var s                = Area2D
-var hitpoints        = 0           # The hitpoint counter for the fighter
+var opponent         = KinematicBody
 
 onready var player_node          = get_parent().get_node("player")  # A reference to the player node
 
@@ -27,7 +27,7 @@ func _ready():
 
 # Will be sent the weapon scene as a parameter
 func set_weapons(new_primary, new_secondary, new_ability):
-	if self.get_child_count() > 3:   # Don't remove children if there aren't any 
+	if self.get_child_count() > 4:   # Don't remove children if there aren't any 
 		self.remove_child(primary_weapon)
 		self.remove_child(secondary_weapon)
 		self.remove_child(ability)	
@@ -47,3 +47,9 @@ func get_trajectory():
 func increment_hitpoints(inc_num):
 	hit_points += inc_num
 	print(hit_points)
+	
+func set_opponent(new_opponent):
+	opponent = new_opponent
+	
+func get_opponent():
+	return opponent

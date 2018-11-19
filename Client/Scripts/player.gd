@@ -7,7 +7,7 @@ func _physics_process(delta):
 	direction = Vector2(0,0)
 	
 	if Input.is_action_pressed("primary_attack"):
-		primary_weapon.use()
+		primary_weapon.use() # do a signal here? send self as a parameter?
 	#	set_weapons(ranged_attack, heavy_attack, aby_evade)
 	if Input.is_action_pressed("secondary_attack"):
 		secondary_weapon.use()
