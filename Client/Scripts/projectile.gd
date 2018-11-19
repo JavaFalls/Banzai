@@ -12,7 +12,10 @@ onready var atk_range_node = get_parent().get_parent() # get atk_range which is 
 
 func _ready():
 #	set_fixed_process(true)
-	target = projectile_owner.get_opponent().get_position()
+	if projectile_owner.get_name() == "player":
+		target = get_global_mouse_position()
+	else:
+		target = projectile_owner.get_opponent().get_position()
 	self.global_position = atk_range_node.global_position
 	self.look_at(target)
 	movement = (target - atk_range_node.global_position).normalized()
