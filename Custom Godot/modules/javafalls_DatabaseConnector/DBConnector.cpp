@@ -1,15 +1,15 @@
 // Please see corresponding header file ("DBConnector.h") for function documentation.
 
 #include "DBConnector.h"
+#include "ustring.h"
+#include "variant.h"
+#include "array.h"
 #include "windows.h"
 #include "sql.h"
 #include "sqlext.h"
-#include "ustring.h"
 #include <string>
 #include <iostream>
 #include <fstream>
-
-using namespace std;
 
 // How long a string needs to be to hold an int that has been converted to a string, plus the null terminator
 #define STRING_INT_SIZE 11
@@ -177,7 +177,7 @@ String DBConnector::FetchPlayer(int player_ID) {
    return returnValue;
 }
 
-int DBConnector::InsertMech(int player_ID, int insertMechArgs[], String name) {
+int DBConnector::InsertMech(int player_ID, Array insertMechArgs, String name) {
    SQLHSTMT sqlStatementInsertMech;
    SQLHSTMT sqlStatementGetMechID;
    int newMechID = FALSE;
@@ -187,18 +187,18 @@ int DBConnector::InsertMech(int player_ID, int insertMechArgs[], String name) {
    char secondary_weapon_string[STRING_INT_SIZE];
    char utility_string[STRING_INT_SIZE];
    sprintf(player_ID_string, "%d", player_ID);
-   sprintf(model_ID_string, "%d", insertMechArgs[INSERTMECH_ARGS_MODEL_ID]);
-   sprintf(primary_weapon_string, "%d", insertMechArgs[INSERTMECH_ARGS_PRIMARY_WEAPON]);
-   sprintf(secondary_weapon_string, "%d", insertMechArgs[INSERTMECH_ARGS_SECONDARY_WEAPON]);
-   sprintf(utility_string, "%d", insertMechArgs[INSERTMECH_ARGS_UTILITY]);
+   sprintf(model_ID_string, "%d", (int)insertMechArgs[INSERTMECH_ARGS_MODEL_ID]);
+   sprintf(primary_weapon_string, "%d", (int)insertMechArgs[INSERTMECH_ARGS_PRIMARY_WEAPON]);
+   sprintf(secondary_weapon_string, "%d", (int)insertMechArgs[INSERTMECH_ARGS_SECONDARY_WEAPON]);
+   sprintf(utility_string, "%d", (int)insertMechArgs[INSERTMECH_ARGS_UTILITY]);
    std::string sqlGetNewMechID = "SELECT max(mech.mech_ID_PK)\n"
                   + (std::string)"  FROM javafalls.mech mech";
    std::string sqlCode;
-   if (insertMechArgs[INSERTMECH_ARGS_MODEL_ID] <= 0) {
+   if ((int)insertMechArgs[INSERTMECH_ARGS_MODEL_ID] <= 0) {
       // Model ID not provided, attempt to insert the model into the database ourselves
-      insertMechArgs[INSERTMECH_ARGS_MODEL_ID] = InsertAIModel(player_ID);
+      insertMechArgs[INSERTMECH_ARGS_MODEL_ID] = (Variant)InsertAIModel(player_ID);
       if (insertMechArgs[INSERTMECH_ARGS_MODEL_ID]) {
-         sprintf(model_ID_string, "%d", insertMechArgs[INSERTMECH_ARGS_MODEL_ID]);
+         sprintf(model_ID_string, "%d", (int)insertMechArgs[INSERTMECH_ARGS_MODEL_ID]);
       }
       else {
          return FALSE;
@@ -233,7 +233,7 @@ int DBConnector::InsertMech(int player_ID, int insertMechArgs[], String name) {
    DestroyCommand(sqlStatementGetMechID);
    return newMechID;
 }
-int DBConnector::UpdateMech(int mech_ID, int updateMechArgs[], String name, int updateAIModel) {
+int DBConnector::UpdateMech(int mech_ID, Array updateMechArgs, String name, int updateAIModel) {
    SQLHSTMT sqlStatement;
    char mech_ID_string[STRING_INT_SIZE];
    char player_ID_string[STRING_INT_SIZE];
@@ -243,12 +243,12 @@ int DBConnector::UpdateMech(int mech_ID, int updateMechArgs[], String name, int 
    char secondary_weapon_string[STRING_INT_SIZE];
    char utility_string[STRING_INT_SIZE];
    sprintf(mech_ID_string, "%d", mech_ID);
-   sprintf(player_ID_string, "%d", updateMechArgs[UPDATEMECH_ARGS_PLAYER_ID]);
-   sprintf(model_ID_string, "%d", updateMechArgs[UPDATEMECH_ARGS_MODEL_ID]);
-   sprintf(ranking_string, "%d", updateMechArgs[UPDATEMECH_ARGS_RANKING]);
-   sprintf(primary_weapon_string, "%d", updateMechArgs[UPDATEMECH_ARGS_PRIMARY_WEAPON]);
-   sprintf(secondary_weapon_string, "%d", updateMechArgs[UPDATEMECH_ARGS_SECONDARY_WEAPON]);
-   sprintf(utility_string, "%d", updateMechArgs[UPDATEMECH_ARGS_UTILITY]);
+   sprintf(player_ID_string, "%d", (int)updateMechArgs[UPDATEMECH_ARGS_PLAYER_ID]);
+   sprintf(model_ID_string, "%d", (int)updateMechArgs[UPDATEMECH_ARGS_MODEL_ID]);
+   sprintf(ranking_string, "%d", (int)updateMechArgs[UPDATEMECH_ARGS_RANKING]);
+   sprintf(primary_weapon_string, "%d", (int)updateMechArgs[UPDATEMECH_ARGS_PRIMARY_WEAPON]);
+   sprintf(secondary_weapon_string, "%d", (int)updateMechArgs[UPDATEMECH_ARGS_SECONDARY_WEAPON]);
+   sprintf(utility_string, "%d", (int)updateMechArgs[UPDATEMECH_ARGS_UTILITY]);
    std::string sqlCode = "UPDATE javafalls.mech mech\n"
           + (std::string)"   SET mech.player_ID        = coalesce(nullif(" + mech_ID_string + ", -1), mech.player_ID)\n"
           + (std::string)"     , mech.model_ID         = coalesce(nullif(" + model_ID_string + ", -1), mech.model_ID)\n"
@@ -383,11 +383,11 @@ int DBConnector::FetchAIModelUsingModelID(int model_ID) {
 int DBConnector::FetchAIModelUsingMechID(int mech_ID) {
    char mech_ID_string[STRING_INT_SIZE];
    sprintf(mech_ID_string, "%d", mech_ID);
-   string sqlQuery = "SELECT model.model\n"
-           + (string)"  FROM javafalls.ai_model model\n"
-           + (string)"  JOIN javafalls.mech mech\n"
-           + (string)"    ON mech.model_ID_FK = model.model_ID_PK\n"
-           + (string)" WHERE mech.mech_ID_PK = " + mech_ID_string;
+   std::string sqlQuery = "SELECT model.model\n"
+           + (std::string)"  FROM javafalls.ai_model model\n"
+           + (std::string)"  JOIN javafalls.mech mech\n"
+           + (std::string)"    ON mech.model_ID_FK = model.model_ID_PK\n"
+           + (std::string)" WHERE mech.mech_ID_PK = " + mech_ID_string;
    return FetchModel(sqlQuery);
 }
 
@@ -396,26 +396,26 @@ int DBConnector::FetchAIModelUsingMechID(int mech_ID) {
 /***********************************************************************************************************/
 // Assumes that the sqlCode only contains one bind parameter, and that that parameter is the AI model
 int DBConnector::StoreModel(std::string sqlCode) {
-   SQLHSTMT sqlStatement;
-   SQLCHAR  *fileData;
-   SQLCHAR  *p_FileData; // Used to walk through the fileData
-   SQLLEN   fileLength = 0;
-   char     dataByte;
-   ifstream inStream;
+   SQLHSTMT      sqlStatement;
+   SQLCHAR       *fileData;
+   SQLCHAR       *p_FileData; // Used to walk through the fileData
+   SQLLEN        fileLength = 0;
+   char          dataByte;
+   std::ifstream inStream;
    // 1. Read the model file into memory
    // Allocate space to store the file in memory
    try {
       fileData = new SQLCHAR[COLUMN_DATA_BUFFER];
       p_FileData = fileData;
    }
-   catch (bad_alloc exception) {
-      cout << "StoreModel() - Could not allocate space to store file in memory.\n";
+   catch (std::bad_alloc exception) {
+      std::cout << "StoreModel() - Could not allocate space to store file in memory.\n";
       return FALSE;
    }
    // Open the file and read its data
-   inStream.open(FILEPATH_IN_MODEL, ios::in | ios::binary);
+   inStream.open(FILEPATH_IN_MODEL, std::ios::in | std::ios::binary);
    if (!inStream) {
-      cout << "StoreModel() - Could not find file\n";
+      std::cout << "StoreModel() - Could not find file\n";
       delete[] fileData;
       return FALSE;
    }
@@ -427,7 +427,7 @@ int DBConnector::StoreModel(std::string sqlCode) {
          fileLength++;
       }
    }
-   cout << "Bytes read: " << fileLength << "\n";
+   std::cout << "Bytes read: " << fileLength << "\n";
    inStream.close();
 
    // 2. Store data in the database
@@ -456,16 +456,16 @@ int DBConnector::StoreModel(std::string sqlCode) {
    return SQL_SUCCEEDED(lastReturn);
 }
 int DBConnector::FetchModel(std::string sqlQuery) {
-   SQLHSTMT sqlStatement;
-   SQLLEN   indicator;  // Value returned by SQLGetData to tell us if the data is null or how many bytes the data is
-   char     *modelData; // 1 MB buffer that will store in memory the model from the database
-   ofstream outStream;  // Output stream to write the model to the disk
+   SQLHSTMT      sqlStatement;
+   SQLLEN        indicator;  // Value returned by SQLGetData to tell us if the data is null or how many bytes the data is
+   char          *modelData; // 1 MB buffer that will store in memory the model from the database
+   std::ofstream outStream;  // Output stream to write the model to the disk
    // 1. Allocate space for the model in memory
    try {
       modelData = new char[COLUMN_DATA_BUFFER];
    }
-   catch (bad_alloc exception) {
-      cout << "FetchModel() - Allocation failure for modelData, trying to allocate space for " << COLUMN_DATA_BUFFER << " characters\n";
+   catch (std::bad_alloc exception) {
+      std::cout << "FetchModel() - Allocation failure for modelData, trying to allocate space for " << COLUMN_DATA_BUFFER << " characters\n";
       return FALSE;
    }
    // 2. Load the model from the database into memory
@@ -481,14 +481,14 @@ int DBConnector::FetchModel(std::string sqlQuery) {
                                                 COLUMN_DATA_BUFFER,
                                                 &indicator))) {
          // 3. Write the model from memory to a file
-         outStream.open(FILEPATH_OUT_MODEL, ios::out | ios::binary);
+         outStream.open(FILEPATH_OUT_MODEL, std::ios::out | std::ios::binary);
          if (outStream) {
             for (int i = 0; i < indicator; i++) {
                outStream.put(modelData[i]);
             }
          }
          else {
-            cout << "FetchModel() - unable to open file to write model to.\n";
+            std::cout << "FetchModel() - unable to open file to write model to.\n";
             return FALSE;
          }
       }
@@ -605,25 +605,25 @@ String DBConnector::GetResults(SQLHSTMT sqlStatementHandle) {
       try {
          colNames = new std::string[numberOfColumns + 1]; // Allocate 1 extra spot to account for the fact that array indices start at 0 while column numbers start at 1
       }
-      catch (bad_alloc exception) {
-         cout << "GetResults() - Allocation failure for colNames, trying to allocate space for " << numberOfColumns << " objects\n";
+      catch (std::bad_alloc exception) {
+         std::cout << "GetResults() - Allocation failure for colNames, trying to allocate space for " << numberOfColumns << " objects\n";
          return jsonResult.c_str();
       }
       try {
          colDataTypes = new SQLSMALLINT[numberOfColumns + 1]; // Allocate 1 extra spot to account for the fact that array indices start at 0 while column numbers start at 1
       }
-      catch (bad_alloc exception) {
+      catch (std::bad_alloc exception) {
          delete[] colNames;
-         cout << "GetResults() - Allocation failure for colDataTypes, trying to allocate space for " << numberOfColumns << " SQLSMALLINTs\n";
+         std::cout << "GetResults() - Allocation failure for colDataTypes, trying to allocate space for " << numberOfColumns << " SQLSMALLINTs\n";
          return jsonResult.c_str();
       }
       try {
          colData = new char[COLUMN_DATA_BUFFER];
       }
-      catch (bad_alloc exception) {
+      catch (std::bad_alloc exception) {
          delete[] colNames;
          delete[] colDataTypes;
-         cout << "GetResults() - Allocation failure for colData, trying to allocate space for 1048576 characters\n";
+         std::cout << "GetResults() - Allocation failure for colData, trying to allocate space for 1048576 characters\n";
          return jsonResult.c_str();
       }
       // Get column names and data types
@@ -699,9 +699,8 @@ void DBConnector::_bind_methods() {
    ClassDB::bind_method(D_METHOD("UpdatePlayer", "player_ID", "name"), &DBConnector::UpdatePlayer);
    ClassDB::bind_method(D_METHOD("FetchPlayer", "player_ID"), &DBConnector::FetchPlayer);
 
-   ClassDB::bind_method(D_METHOD("testFail", "i1"), &DBConnector::testFail);
-   //ClassDB::bind_method(D_METHOD("InsertMech", "player_ID", "insertMechArgs", "name"), &DBConnector::InsertMech);
-   //ClassDB::bind_method(D_METHOD("UpdateMech", "mech_ID", "updateMechArgs", "name", "updateAIModel"), &DBConnector::UpdateMech);
+   ClassDB::bind_method(D_METHOD("InsertMech", "player_ID", "insertMechArgs", "name"), &DBConnector::InsertMech);
+   ClassDB::bind_method(D_METHOD("UpdateMech", "mech_ID", "updateMechArgs", "name", "updateAIModel"), &DBConnector::UpdateMech);
    ClassDB::bind_method(D_METHOD("FetchMech", "mech_ID", "fetchModelFile"), &DBConnector::FetchMech);
 
    ClassDB::bind_method(D_METHOD("InsertAIModel", "player_ID"), &DBConnector::InsertAIModel);
@@ -720,7 +719,7 @@ void DBConnector::_bind_methods() {
 /***********************************************************************************************************/
 DBConnector::DBConnector() {
    // Initialize basic values
-   conString = LIVEConnectionString;
+   conString = TESTConnectionString;
    connectionOpen = FALSE;
    lastReturn = SQL_ERROR;
    envHandle = SQL_NULL_HANDLE;
@@ -778,9 +777,9 @@ void DBConnector::PrintErrorDiagnostics(std::string functionName, SQLSMALLINT ha
    SQLCHAR message[BUFFER_LENGTH];
    SQLSMALLINT actualMessageLength;
 
-   cout << "--------------------------------------------------------\n";
-   cout << functionName << " failed. Printing diagnostic information\n";
-   if (handle == SQL_NULL_HANDLE) { cout << "NULL HANDLE DETECTED\n"; }
+   std::cout << "--------------------------------------------------------\n";
+   std::cout << functionName << " failed. Printing diagnostic information\n";
+   if (handle == SQL_NULL_HANDLE) { std::cout << "NULL HANDLE DETECTED\n"; }
    while (SQL_SUCCEEDED(SQLGetDiagRec(handleType,
                                       handle,
                                       recordNumber,
@@ -789,21 +788,11 @@ void DBConnector::PrintErrorDiagnostics(std::string functionName, SQLSMALLINT ha
                                       message,
                                       BUFFER_LENGTH,
                                       &actualMessageLength))) {
-      cout << "#" << recordNumber << ": " << state << " - " << message << "\n";
+      std::cout << "#" << recordNumber << ": " << state << " - " << message << "\n";
       recordNumber++;
    }
-   cout << functionName << " end diagonstic information\n";
-   cout << "--------------------------------------------------------\n";
-
-   //SQLRETURN SQLGetDiagRec(HandleType, Handle,
-   //   SQLSMALLINT     HandleType,
-   //   SQLHANDLE       Handle,
-   //   SQLSMALLINT     RecNumber,
-   //   SQLCHAR *       SQLState,
-   //   SQLINTEGER *    NativeErrorPtr,
-   //   SQLCHAR *       MessageText,
-   //   SQLSMALLINT     BufferLength,
-   //   SQLSMALLINT *   TextLengthPtr);
+   std::cout << functionName << " end diagonstic information\n";
+   std::cout << "--------------------------------------------------------\n";
    return;
 }
 

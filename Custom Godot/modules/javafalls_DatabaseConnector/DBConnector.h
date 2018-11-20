@@ -19,17 +19,17 @@
    Other notes:
 */
 
-#include "reference.h" // Needed to compile with Godot
+// Needed to compile with Godot
+#include "reference.h"
+#include "ustring.h"
+#include "variant.h"
+#include "array.h"
 #include "windows.h"
 #include "sql.h"
 #include "sqlext.h"
-#include "C:\Users\Adam\Documents\Word\Class PCC\Current Classes\CS451 Software Eng Project\Project Neitherlord\Banzai\Custom Godot\core\ustring.h"
 #include <string>
 
-using namespace std;
-
 class DBConnector : public Reference {
-//class DBConnector {
 private:
    GDCLASS(DBConnector, Reference);
    int connectionOpen;
@@ -119,10 +119,9 @@ public:
    int InsertPlayer(String name);
    int UpdatePlayer(int player_ID, String name);
    String FetchPlayer(int player_ID);
-   //int InsertMech(int player_ID, int model_ID, String name, int primary_weapon, int secondary_weapon, int utility);
-   int InsertMech(int player_ID, int insertMechArgs[], String name);
-   //int UpdateMech(int mech_ID, int player_ID, int model_ID, int ranking, String name, int primary_weapon, int secondary_weapon, int utility, int updateAIModel = TRUE);
-   int UpdateMech(int mech_ID, int updateMechArgs[], String name, int updateAIModel = TRUE);
+
+   int InsertMech(int player_ID, Array insertMechArgs, String name);
+   int UpdateMech(int mech_ID, Array updateMechArgs, String name, int updateAIModel = TRUE);
    String FetchMech(int mech_ID, int fetchModelFile = TRUE);
 
    int InsertAIModel(int player_ID); // Returns the model ID (a positive integer) of the newly stored model. Returns 0 if the model could not be inserted.
