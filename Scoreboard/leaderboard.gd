@@ -1,6 +1,10 @@
 extends Node
 
+onready var _http = get_node("HTTPRequest")
 onready var _leaders = get_node("leaders")
+onready var _timer = get_node("Timer")
+
+export(float, 0, 10) var request_pause = 1
 
 # An index in one array corresponds to all other arrays
 var players = [
@@ -48,10 +52,18 @@ var bots = [
 
 func _ready():
 	OS.center_window()
+	_timer.wait_time = request_pause
+	_timer.start()
+	_timer.connect("timeout", self, "request")
 	
 	assign_leaders()
 	sort()
-	pass
+
+func request():
+	rpc_id(1, "get_stats")
+
+sync func get_stats(stats):
+	return parse_json(stats)
 
 func sort():
 	var temp
