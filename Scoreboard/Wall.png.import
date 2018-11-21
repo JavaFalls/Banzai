@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/customize_button.png-ed6a203b36914f3a0be101dabc47ee60.stex"
+path="res://.import/Wall.png-76cbb924fb65c8833c17e120b497a969.stex"
 
 [deps]
 
-source_file="res://assets/menu/main_menu/customize_button.png"
-dest_files=[ "res://.import/customize_button.png-ed6a203b36914f3a0be101dabc47ee60.stex" ]
+source_file="res://Wall.png"
+dest_files=[ "res://.import/Wall.png-76cbb924fb65c8833c17e120b497a969.stex" ]
 
 [params]
 

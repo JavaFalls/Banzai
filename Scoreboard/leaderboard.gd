@@ -1,7 +1,5 @@
 extends Node
 
-onready var head = get_tree().get_root().get_node("/root/head")
-
 onready var _leaders = get_node("leaders")
 
 # An index in one array corresponds to all other arrays
@@ -38,7 +36,7 @@ var bots = [
 	load("res://icon.png"),
 	load("res://icon.png"),
 	load("res://icon.png"),
-	load("res://assets/Wall.png"),
+	load("res://Wall.png"),
 	load("res://icon.png"),
 	load("res://icon.png"),
 	load("res://icon.png"),
@@ -49,6 +47,8 @@ var bots = [
 ]
 
 func _ready():
+	OS.center_window()
+	
 	assign_leaders()
 	sort()
 	pass

@@ -11,7 +11,12 @@ config_version=3
 [application]
 
 config/name="Banzai Scoreboard"
+run/main_scene="res://leaderboard.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/stretch/mode="viewport"
 
 [rendering]
 
