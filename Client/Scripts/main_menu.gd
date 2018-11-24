@@ -7,10 +7,6 @@ onready var _background = get_node("MarginContainer/background")
 onready var _timer = get_node("timeout")
 
 func _ready():
-	get_tree().get_root().connect("size_changed", self, "_resize")
-	var size = OS.get_window_size()
-	_background.scale = Vector2(size.x / head.NORMAL_WIDTH, size.y / head.NORMAL_HEIGHT)
-	
 	get_node("logout_warning").dialog_text = (
 		"Are you sure you want to logout?  Your profile will be unusable,\n") + (
 		"and you have to start from scratch to play again.")
@@ -37,12 +33,7 @@ func scene_change(button):
 		"train":
 			get_tree().change_scene("res://Scenes/arena_train.tscn")
 		"fight":
-			get_tree().change_scene("res://Scenes/arena_battle.tscn")
-	pass
-
-func _resize():
-	var size = OS.get_window_size()
-	_background.scale = Vector2(size.x / head.NORMAL_WIDTH, size.y / head.NORMAL_HEIGHT)
+			head.load_scene("res://Scenes/arena_battle.tscn")
 	pass
 
 func screen_idle_timeout():
@@ -59,7 +50,7 @@ func logout():
 	pass
 
 func _on_logout_warning_confirmed():
-	head.save_bots(head.bots)
+#	head.save_bots(head.bots)
 	head.init_bots()
 	get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
