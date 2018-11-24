@@ -1,9 +1,10 @@
 // Please see corresponding header file ("DBConnector.h") for function documentation.
 
-#include "DBConnector.h"
 #include "ustring.h"
 #include "variant.h"
 #include "array.h"
+// Make sure that all includes from Godot files come before any other includes. Something in the compiler bombs out otherwise
+#include "DBConnector.h"
 #include "windows.h"
 #include "sql.h"
 #include "sqlext.h"
@@ -82,15 +83,6 @@ int DBConnector::CloseConnection() {
 int DBConnector::IsConnectionOpen() {
    return connectionOpen;
 }
-void DBConnector::BeginTransaction() {
-   SQLHSTMT sqlStatementStartTran;
-   if (!connectionOpen) {
-      OpenConnection();
-   }
-   sqlStatementStartTran = CreateCommand("BEGIN TRANSACTION;");
-   Execute(sqlStatementStartTran);
-   DestroyCommand(sqlStatementStartTran);
-}
 void DBConnector::Commit() {
    if (!SQL_SUCCEEDED(lastReturn = SQLEndTran(SQL_HANDLE_DBC,
                                               conHandle,
@@ -117,11 +109,10 @@ int DBConnector::InsertPlayer(String name) {
                     + (std::string)"  FROM javafalls.player player";
    std::string sqlInsert = "INSERT INTO javafalls.player\n"
             + (std::string)"            (name)\n"
-            + (std::string)"     VALUES (" + name.ascii().get_data() + ")";
+            + (std::string)"     VALUES ('" + name.ascii().get_data() + "')";
    SQLHSTMT sqlStatementGetPlayerID = CreateCommand(sqlGetNewPlayerID);
    SQLHSTMT sqlStatementInsert = CreateCommand(sqlInsert);
 
-   BeginTransaction();
    Execute(sqlStatementInsert);
    if (SQL_SUCCEEDED(lastReturn)) {
       Execute(sqlStatementGetPlayerID);
@@ -146,11 +137,10 @@ int DBConnector::UpdatePlayer(int player_ID, String name) {
    int succeeded = FALSE;
    char player_ID_string[STRING_INT_SIZE];
    sprintf(player_ID_string, "%d", player_ID);
-   std::string sqlCode = "UPDATE javafalls.player player\n"
-          + (std::string)"   SET player.name = " + name.ascii().get_data() + "\n"
+   std::string sqlCode = "UPDATE javafalls.player\n"
+          + (std::string)"   SET player.name = '" + name.ascii().get_data() + "'\n"
           + (std::string)" WHERE player.player_ID_PK = " + player_ID_string;
    SQLHSTMT sqlStatement = CreateCommand(sqlCode);
-   BeginTransaction();
    Execute(sqlStatement);
    if (SQL_SUCCEEDED(lastReturn)) {
       Commit();
@@ -206,9 +196,8 @@ int DBConnector::InsertMech(int player_ID, Array insertMechArgs, String name) {
    }
    sqlCode      = "INSERT INTO javafalls.mech\n"
    + (std::string)"            (player_ID_FK, model_ID_FK, ranking, name, primary_weapon, secondary_weapon, utility)\n"
-   + (std::string)"     VALUES (" + player_ID_string + ", " + model_ID_string + ", " + name.ascii().get_data() + ", " + primary_weapon_string + ", " + secondary_weapon_string + ", " + utility_string + ")";
+   + (std::string)"     VALUES (" + player_ID_string + ", " + model_ID_string + ", 0,'" + name.ascii().get_data() + "', " + primary_weapon_string + ", " + secondary_weapon_string + ", " + utility_string + ")";
 
-   BeginTransaction();
    sqlStatementInsertMech = CreateCommand(sqlCode);
    sqlStatementGetMechID  = CreateCommand(sqlGetNewMechID);
    Execute(sqlStatementInsertMech);
@@ -249,17 +238,16 @@ int DBConnector::UpdateMech(int mech_ID, Array updateMechArgs, String name, int 
    sprintf(primary_weapon_string, "%d", (int)updateMechArgs[UPDATEMECH_ARGS_PRIMARY_WEAPON]);
    sprintf(secondary_weapon_string, "%d", (int)updateMechArgs[UPDATEMECH_ARGS_SECONDARY_WEAPON]);
    sprintf(utility_string, "%d", (int)updateMechArgs[UPDATEMECH_ARGS_UTILITY]);
-   std::string sqlCode = "UPDATE javafalls.mech mech\n"
-          + (std::string)"   SET mech.player_ID        = coalesce(nullif(" + mech_ID_string + ", -1), mech.player_ID)\n"
-          + (std::string)"     , mech.model_ID         = coalesce(nullif(" + model_ID_string + ", -1), mech.model_ID)\n"
+   std::string sqlCode = "UPDATE javafalls.mech\n"
+          + (std::string)"   SET mech.player_ID_FK     = coalesce(nullif(" + mech_ID_string + ", -1), mech.player_ID_FK)\n"
+          + (std::string)"     , mech.model_ID_FK      = coalesce(nullif(" + model_ID_string + ", -1), mech.model_ID_FK)\n"
           + (std::string)"     , mech.ranking          = coalesce(nullif(" + ranking_string + ", -1), mech.ranking)\n"
-          + (std::string)"     , mech.name             = coalesce(trim(" + name.ascii().get_data() + "), mech.name)\n"
+          + (std::string)"     , mech.name             = coalesce(trim('" + name.ascii().get_data() + "'), mech.name)\n"
           + (std::string)"     , mech.primary_weapon   = coalesce(nullif(" + primary_weapon_string + ", -1), mech.primary_weapon)\n"
           + (std::string)"     , mech.secondary_weapon = coalesce(nullif(" + secondary_weapon_string + ", -1), mech.secondary_weapon)\n"
           + (std::string)"     , mech.utility          = coalesce(nullif(" + utility_string + ", -1), mech.utility)\n"
-          + (std::string)" WHERE mech.mech_ID = " + mech_ID_string;
+          + (std::string)" WHERE mech.mech_ID_PK = " + mech_ID_string;
 
-   BeginTransaction();
    sqlStatement = CreateCommand(sqlCode);
    Execute(sqlStatement);
    if (SQL_SUCCEEDED(lastReturn)) {
@@ -303,7 +291,6 @@ int DBConnector::InsertAIModel(int player_ID) {
           + (std::string)"            (player_ID_FK, model)\n"
           + (std::string)"     VALUES (" + player_ID_string + ", ?)\n";
 
-   BeginTransaction();
    if (StoreModel(sqlCode)) {
       sqlStatementGetModel = CreateCommand(sqlGetNewModelID);
       Execute(sqlStatementGetModel);
@@ -329,11 +316,10 @@ int DBConnector::UpdateAIModelUsingModelID(int model_ID) {
    int returnValue;
    char model_ID_string[STRING_INT_SIZE];
    sprintf(model_ID_string, "%d", model_ID);
-   std::string sqlCode = "UPDATE javafalls.ai_model model\n"
-          + (std::string)"   SET model.model = ?\n"
-          + (std::string)" WHERE model.model_ID_PK = " + model_ID_string;
+   std::string sqlCode = "UPDATE javafalls.ai_model\n"
+          + (std::string)"   SET ai_model.model = ?\n"
+          + (std::string)" WHERE ai_model.model_ID_PK = " + model_ID_string;
 
-   BeginTransaction();
    if (returnValue = StoreModel(sqlCode)) {
       Commit();
    }
@@ -346,11 +332,11 @@ int DBConnector::UpdateAIModelUsingMechID(int mech_ID) {
    int returnValue;
    char mech_ID_string[STRING_INT_SIZE];
    sprintf(mech_ID_string, "%d", mech_ID);
-   std::string sqlCode = "UPDATE javafalls.ai_model model\n"
-          + (std::string)"   SET model.model = ?\n"
-          + (std::string)" WHERE model.model_ID_PK = (SELECT mech.model_ID_FK\n"
-          + (std::string)"                              FROM javafalls.mech\n"
-          + (std::string)"                             WHERE javafalls.mech_ID_PK = " + mech_ID_string;
+   std::string sqlCode = "UPDATE javafalls.ai_model\n"
+          + (std::string)"   SET ai_model.model = ?\n"
+          + (std::string)" WHERE ai_model.model_ID_PK = (SELECT mech.model_ID_FK\n"
+          + (std::string)"                                 FROM javafalls.mech\n"
+          + (std::string)"                                WHERE mech.mech_ID_PK = " + mech_ID_string + ")";
 //   std::string   sqlOldMergeQuery = "MERGE INTO javafalls.ai_model AS target\n"
 //      + (std::string)"     USING (SELECT " + model_ID_string + ") AS source (model_ID_FK)\n"
 //      + (std::string)"        ON (target.model_ID_PK = source.model_ID_FK)\n"
@@ -363,7 +349,6 @@ int DBConnector::UpdateAIModelUsingMechID(int mech_ID) {
 //      + (std::string)"              " + player_ID_string + ",\n"
 //      + (std::string)"              ?);";
 
-   BeginTransaction();
    if (returnValue = StoreModel(sqlCode)) {
       Commit();
    }
@@ -531,6 +516,7 @@ int DBConnector::FetchIntAttribute(SQLHSTMT sqlStatementHandle, int columnNumber
 / Database Query Functions
 /***********************************************************************************************************/
 SQLHSTMT DBConnector::CreateCommand(std::string sqlString) {
+   std::cout << sqlString << '\n';
    SQLHSTMT sqlStatmentHandle;
    // If the connection is currently closed, try to open it
    if (!connectionOpen) {
@@ -728,8 +714,15 @@ DBConnector::DBConnector() {
    // Allocate an environment handle
    if (SQL_SUCCEEDED(lastReturn = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &envHandle))) {
       // Set up the environment attributes
-      lastReturn = SQLSetEnvAttr(envHandle, SQL_ATTR_ODBC_VERSION, (void *)SQL_OV_ODBC3, 0);
-      lastReturn = SQLAllocHandle(SQL_HANDLE_DBC, envHandle, &conHandle); // TODO: Possible crash and burn spot
+      if (!SQL_SUCCEEDED(lastReturn = SQLSetEnvAttr(envHandle, SQL_ATTR_ODBC_VERSION, (void *)SQL_OV_ODBC3, 0))) {
+         PrintErrorDiagnostics("DBConnector()", SQL_HANDLE_ENV, envHandle);
+      }
+      if (!SQL_SUCCEEDED(lastReturn = SQLAllocHandle(SQL_HANDLE_DBC, envHandle, &conHandle))) {
+         PrintErrorDiagnostics("DBConnector()", SQL_HANDLE_DBC, conHandle);
+      }
+      if (!SQL_SUCCEEDED(lastReturn = SQLSetConnectAttr(conHandle, SQL_ATTR_AUTOCOMMIT, FALSE, 0))) {
+         PrintErrorDiagnostics("DBConnector()", SQL_HANDLE_DBC, conHandle);
+      }
    }
    else {
       // Crash and burn, but do it gracefully.

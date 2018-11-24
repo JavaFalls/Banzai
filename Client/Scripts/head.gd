@@ -16,6 +16,12 @@ var window_size = OS.get_window_size()
 # Username
 var username = ""
 
+# Database
+var player_ID = null;
+var model_ID = null;
+var mech_ID = null;
+onready var DB = DBConnector.new()
+
 # Weapons/abilities
 onready var item_list = load("res://Scripts/item_list.gd")
 onready var primaries = item_list.new([
@@ -185,9 +191,50 @@ static func load_weapons():
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
 	init_bots()
+	_testDB()
+	
+	
+	
 
 func _input(event):
 	if Input.is_action_just_pressed("shutdown"):
+		if (DB.IsConnectionOpen()):
+			DB.CloseConnection()
 		get_tree().quit()
 	if Input.is_action_just_pressed("toggle_fullscreen"):
 		OS.window_fullscreen = !OS.window_fullscreen
+
+func _testDB():
+	# Test the DB functions
+	print("DB Testing begin")
+	print("==========================================")
+	print("Player funcs:=============================")
+	player_ID = DB.InsertPlayer("SuperPlayer9000")
+	print("player_ID: ", player_ID)
+	print("DB.FetchPlayer(): ", DB.FetchPlayer(player_ID))
+	print("DB.UpdatePlayer(): ", DB.UpdatePlayer(player_ID, "NewName2000"))
+	print("Mech funcs:===============================")
+	var mechInsArgArray = [0, 1, 2, 3]
+	mech_ID = DB.InsertMech(player_ID, mechInsArgArray, "mech9000")
+	print("mech_ID: ", mech_ID)
+	model_ID = mechInsArgArray[0]
+	print("model_ID: ", model_ID)
+	print("DB.FetchMech: ", DB.FetchMech(mech_ID, true))
+	var mechUpdArgArray = [player_ID, model_ID, 1000, 3, 0, 1]
+	print("DB.UpdateMech: ", DB.UpdateMech(mech_ID, mechUpdArgArray, "mech9001", true))
+	print("Model funcs:==============================")
+	model_ID = DB.InsertAIModel(player_ID)
+	print("Model_ID: ", model_ID)
+	print("DB.FetchAIModelUsingModelID(): ", DB.FetchAIModelUsingModelID(model_ID))
+	print("DB.FetchAIModelUsingMechID(): ", DB.FetchAIModelUsingMechID(mech_ID))
+	print("DB.UpdateAIModelUsingModelID(): ", DB.UpdateAIModelUsingModelID(model_ID))
+	print("DB.UpdateAIModelUsingMechID(): ", DB.UpdateAIModelUsingMechID(mech_ID))
+	print("Connection funcs:=========================")
+	print("DB.IsConnectionOpen(): ", DB.IsConnectionOpen())
+	print("DB.CloseConnection(): ", DB.CloseConnection())
+	print("DB.IsConnectionOpen(): ", DB.IsConnectionOpen())
+	print("DB.OpenConnection(): ", DB.OpenConnection())
+	print("DB.IsConnectionOpen(): ", DB.IsConnectionOpen())
+	print("DB.CloseConnection(): ", DB.CloseConnection())
+	print("DB.IsConnectionOpen(): ", DB.IsConnectionOpen())
+	print("==========================================")
