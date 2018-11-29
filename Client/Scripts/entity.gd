@@ -13,8 +13,7 @@ var secondary_weapon = Vector2()
 var ability          = Vector2()
 var s                = Area2D
 var opponent         = KinematicBody
-
-onready var player_node          = get_parent().get_node("player")  # A reference to the player node
+var is_player        = false
 
 onready var aby_shield    = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
 onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn") # The heavy scene to be instanced
@@ -46,10 +45,30 @@ func get_trajectory():
 	
 func increment_hitpoints(inc_num):
 	hit_points += inc_num
-	print(hit_points)
+	#print(hit_points)
 	
 func set_opponent(new_opponent):
 	opponent = new_opponent
 	
 func get_opponent():
 	return opponent
+
+func is_player():
+	return is_player
+	
+func set_is_player(choice):
+	is_player = choice
+	
+func get_state():
+	var state = PoolStringArray() 
+	state.append(self.get_position())
+	state.append(self.get_trajectory())
+	state.append(get_viewport().get_mouse_position())
+	state.append(Input.is_action_pressed("primary_attack"))
+	state.append(Input.is_action_pressed("secondary_attack"))
+	state.append(Input.is_action_pressed("ui_right"))
+	state.append(Input.is_action_pressed("ui_left"))
+	state.append(Input.is_action_pressed("ui_up"))
+	state.append(Input.is_action_pressed("ui_down"))
+	return state
+	

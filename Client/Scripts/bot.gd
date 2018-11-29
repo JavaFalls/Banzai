@@ -27,7 +27,7 @@ func send_nn_state():
 	var path = PoolStringArray() 
 	#print_timer.is_stopped():
 	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/nn12.py')
-	path.append(player_node.get_state())
+	path.append(opponent.get_state())
 	path.append(self.get_position())
 	path.append(self.get_trajectory())
 	#if print_timer.is_stopped():

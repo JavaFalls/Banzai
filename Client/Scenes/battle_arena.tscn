@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Scripts/arena_train.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/battle_arena.gd" type="Script" id=1]
 [ext_resource path="res://assets/ground.png" type="Texture" id=2]
 [ext_resource path="res://assets/Wall.png" type="Texture" id=3]
 
@@ -14,7 +14,7 @@ extents = Vector2( 8, 160 )
 custom_solver_bias = 0.0
 extents = Vector2( 232, 8 )
 
-[node name="world" type="Node2D" index="0"]
+[node name="battle_arena" type="Node2D"]
 
 script = ExtResource( 1 )
 
@@ -135,6 +135,7 @@ _sections_unfolded = [ "Transform" ]
 position = Vector2( -48, -4.00001 )
 scale = Vector2( 4.64, 0.0799999 )
 texture = ExtResource( 3 )
+_sections_unfolded = [ "Offset" ]
 
 [node name="top wall" type="RigidBody2D" parent="." index="4"]
 

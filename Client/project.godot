@@ -16,13 +16,14 @@ config/icon="res://icon.png"
 
 [autoload]
 
-head="*res://Scripts/Singletons/head.gd"
-viewport="res://Scripts/Singletons/viewport.gd"
-viewport2="*res://Scripts/Singletons/viewport2.gd"
+head="*res://Scripts/head.gd"
 
 [display]
 
-window/stretch/mode="viewport"
+window/size/width=400
+window/size/height=225
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
 
 [input]
 
@@ -50,9 +51,9 @@ shutdown=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":
  ]
 toggle_fullscreen=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777254,"unicode":0,"echo":false,"script":null)
  ]
+ability=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
+ ]
 
 [rendering]
 
-quality/intended_usage/framebuffer_allocation=0
-quality/2d/use_pixel_snap=true
 environment/default_environment="res://default_env.tres"

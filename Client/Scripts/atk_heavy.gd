@@ -9,5 +9,6 @@ func use():
 
 func _on_atk_heavy_body_entered(body):
 	if (body.get_name() != get_parent().get_name()):
-		body.increment_hitpoints(damage)
+		if body.get_name() == "player" or body.get_name() == "bot" or body.get_name() == "dummy":
+			body.increment_hitpoints(damage)
 		self.call_deferred("set_monitoring",false) 
