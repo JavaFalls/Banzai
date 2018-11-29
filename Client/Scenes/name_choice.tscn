@@ -1,0 +1,561 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/name_screen_control.gd" type="Script" id=1]
+
+[node name="name_screen" type="Node" index="0"]
+
+[node name="Control" type="Control" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1126.0
+margin_bottom = 660.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 1 )
+_sections_unfolded = [ "Anchor" ]
+
+[node name="Control" type="Control" parent="Control" index="0"]
+
+anchor_left = 0.09961
+anchor_top = 0.1
+anchor_right = 0.90039
+anchor_bottom = 0.9
+margin_left = -0.160858
+margin_top = 7.62939e-006
+margin_right = -0.839111
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor" ]
+
+[node name="name1" type="RichTextLabel" parent="Control/Control" index="0" groups=[
+"names",
+]]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.33074
+anchor_bottom = 0.0
+margin_right = 0.00326538
+margin_bottom = 35.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+bbcode_enabled = false
+bbcode_text = ""
+visible_characters = -1
+percent_visible = 1.0
+meta_underlined = true
+tab_size = 4
+text = "The first Name"
+scroll_active = true
+scroll_following = false
+selection_enabled = false
+override_selected_font_color = false
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="name2" type="RichTextLabel" parent="Control/Control" index="1" groups=[
+"names",
+]]
+
+anchor_left = 0.33074
+anchor_top = 0.0
+anchor_right = 0.65927
+anchor_bottom = 0.0
+margin_left = 0.00326538
+margin_right = -0.0022583
+margin_bottom = 35.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+bbcode_enabled = false
+bbcode_text = ""
+visible_characters = -1
+percent_visible = 1.0
+meta_underlined = true
+tab_size = 4
+text = "The second Name"
+scroll_active = true
+scroll_following = false
+selection_enabled = false
+override_selected_font_color = false
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="name3" type="RichTextLabel" parent="Control/Control" index="2" groups=[
+"names",
+]]
+
+anchor_left = 0.66038
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_left = -0.00238037
+margin_bottom = 35.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+bbcode_enabled = false
+bbcode_text = ""
+visible_characters = -1
+percent_visible = 1.0
+meta_underlined = true
+tab_size = 4
+text = "The third Name"
+scroll_active = true
+scroll_following = false
+selection_enabled = false
+override_selected_font_color = false
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="name1_names" type="Control" parent="Control/Control" index="3" groups=[
+"name_group",
+]]
+
+anchor_left = 0.05
+anchor_top = 0.07
+anchor_right = 0.05
+anchor_bottom = 0.07008
+margin_left = -0.0499954
+margin_top = 0.0400009
+margin_right = 153.95
+margin_bottom = 114.998
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button" type="Button" parent="Control/Control/name1_names" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 155.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Button2" type="Button" parent="Control/Control/name1_names" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 24.0
+margin_right = 155.0
+margin_bottom = 44.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Button3" type="Button" parent="Control/Control/name1_names" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 48.0
+margin_right = 155.0
+margin_bottom = 68.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button4" type="Button" parent="Control/Control/name1_names" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 72.0
+margin_right = 155.0
+margin_bottom = 92.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button5" type="Button" parent="Control/Control/name1_names" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 96.0
+margin_right = 155.0
+margin_bottom = 116.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="name2_names" type="Control" parent="Control/Control" index="4" groups=[
+"name_group",
+]]
+
+anchor_left = 0.37958
+anchor_top = 0.07
+anchor_right = 0.37958
+anchor_bottom = 0.07008
+margin_left = -0.00158691
+margin_top = 0.0400009
+margin_right = 153.998
+margin_bottom = 114.998
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button" type="Button" parent="Control/Control/name2_names" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 155.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Button2" type="Button" parent="Control/Control/name2_names" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 24.0
+margin_right = 155.0
+margin_bottom = 44.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Button3" type="Button" parent="Control/Control/name2_names" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 48.0
+margin_right = 155.0
+margin_bottom = 68.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button4" type="Button" parent="Control/Control/name2_names" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 72.0
+margin_right = 155.0
+margin_bottom = 92.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button5" type="Button" parent="Control/Control/name2_names" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 96.0
+margin_right = 155.0
+margin_bottom = 116.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="name3_names" type="Control" parent="Control/Control" index="5" groups=[
+"name_group",
+]]
+
+anchor_left = 0.70921
+anchor_top = 0.07
+anchor_right = 0.70921
+anchor_bottom = 0.07008
+margin_left = 0.00183105
+margin_top = 0.0400009
+margin_right = 154.002
+margin_bottom = 114.998
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button" type="Button" parent="Control/Control/name3_names" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 155.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Button2" type="Button" parent="Control/Control/name3_names" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 24.0
+margin_right = 155.0
+margin_bottom = 44.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Button3" type="Button" parent="Control/Control/name3_names" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 48.0
+margin_right = 155.0
+margin_bottom = 68.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button4" type="Button" parent="Control/Control/name3_names" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 72.0
+margin_right = 155.0
+margin_bottom = 92.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button5" type="Button" parent="Control/Control/name3_names" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 96.0
+margin_right = 155.0
+margin_bottom = 116.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+
