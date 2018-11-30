@@ -13,7 +13,7 @@ onready var _full_name = get_node("VBoxContainer/full_name")
 onready var _background = get_node("MarginContainer/background")
 
 # Disable all input reset
-var go = 0x0
+var go = false
 
 var names = [
 	["manufacturor", "name", "code"],
@@ -30,10 +30,6 @@ var names = [
 var full_name = {"M": "", "N": "", "C": ""}
 
 func _ready():
-	get_tree().get_root().connect("size_changed", self, "_resize")
-	var size = OS.get_window_size()
-	_background.scale = Vector2(size.x / head.NORMAL_WIDTH, size.y / head.NORMAL_HEIGHT)
-	
 	add_names()
 	for n in full_name:
 		_full_name.text += full_name[n] + " "
@@ -45,7 +41,7 @@ func _process(delta):
 func _input(event):
 	if event is InputEventKey and event.is_pressed():
 		if not go:
-			go = go ^ 0x1
+			go = true
 			_ready_button.show()
 			_ready_button.get_node("Tween").interpolate_property(
 				_ready_button, "rect_scale:y", 0, 1,
@@ -75,11 +71,6 @@ func _input(event):
 			_code.get_node("Tween").start()
 			
 			_full_name.show()
-	pass
-
-func _resize():
-	var size = OS.get_window_size()
-	_background.scale = Vector2(size.x / head.NORMAL_WIDTH, size.y / head.NORMAL_HEIGHT)
 	pass
 
 func add_names():

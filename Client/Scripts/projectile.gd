@@ -1,18 +1,23 @@
 extends Area2D
 
-var        vel = Vector2()
-export var speed = 10
-var        damage = 2
+export var speed    = 10
+var        damage   = 2
 var        movement = Vector2()
-onready var projectile_owner = get_parent().get_parent().get_parent().get_name()
+var        target   = Vector2()
+onready var projectile_owner = get_parent().get_parent().get_parent()
 onready var t = Timer.new()
-onready var parent_node = get_parent().get_parent() # get atk_range which is the parent of projectile_container
+onready var atk_range_node = get_parent().get_parent() # get atk_range which is the parent of projectile_container
+
 
 func _ready():
 #	set_fixed_process(true)
-	self.global_position = parent_node.global_position
-	self.look_at(get_global_mouse_position())
-	movement = (get_global_mouse_position() - parent_node.global_position).normalized()
+	if projectile_owner.is_player() == true: 
+		target = get_global_mouse_position()
+	else:
+		target = projectile_owner.get_opponent().get_position()
+	self.global_position = atk_range_node.global_position
+	self.look_at(target)
+	movement = (target - atk_range_node.global_position).normalized()
 	# Setup the timer
 	t.set_wait_time(1)
 	t.set_one_shot(true)
@@ -32,6 +37,7 @@ func _on_projectile_area_entered(area):
 	queue_free()
 
 func _on_projectile_body_entered(body):
-	if (body.get_name() != projectile_owner):
-		body.increment_hitpoints(damage)
+	if (body.get_name() != projectile_owner.get_name()):
+		if body.get_name() == "fighter1" or body.get_name() == "fighter2":
+			body.increment_hitpoints(damage)
 		self.queue_free()

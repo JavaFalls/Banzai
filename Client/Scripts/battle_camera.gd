@@ -10,7 +10,6 @@ export(float) var min_distance = 600
 export(float) var max_distance = 2000
 
 func _ready():
-	print(_player)
 	pass
 
 func _process(delta):
