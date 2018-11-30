@@ -74,13 +74,12 @@ def get_response_handle():
 # print("sending request")
 request_handle = get_request_handle()
 win32file.WriteFile(request_handle, str.encode(f'{request_string}'))
-#win32file.WriteFile(request_handle, request_string)
 
 # Get response from Server
 # print("get response")
 response_handle = get_response_handle()
 response = win32file.ReadFile(response_handle, 64*1024)
-print(f'{response}')
+print(response)
 
 # Close handles and quit
 win32file.CloseHandle(request_handle)

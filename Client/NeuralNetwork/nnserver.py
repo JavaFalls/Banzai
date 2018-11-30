@@ -1,7 +1,7 @@
 """ To use the pywin32 headers, run this command in a terminal
         pip install pywin32                                     """
 import win32pipe, win32file, pywintypes
-import sys
+import sys, math
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import load_model
@@ -55,7 +55,7 @@ def send_response(response):
                 print("Client Connected :)")
 
                 # Send response to Godot client
-                win32file.WriteFile(response_handle, str.encode(f"{response[1]}"))
+                win32file.WriteFile(response_handle, str.encode(f"{response}"))
 
                 win32pipe.DisconnectNamedPipe(response_handle)
                 # win32file.CloseHandle(response_handle)
@@ -71,33 +71,29 @@ def send_response(response):
 
 
 def react(game_state, model):
-   my_list = []
-   flat_list = []
-   next_list = []
-   actual_response_list = []
-   flat_actual_response_list = []
-   str_game_state = str(game_state)
-   my_list.append(str_game_state.replace(" ","").replace("[","").replace("]","").replace("(","").replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").split(","))
-   for sublist in my_list:
-      for item in sublist:
-         flat_list.append(item)
-   flat_list.pop(0)
-   flat_list.pop(0)
-   next_list.append(flat_list)
-   #print(next_list)
-   #response_list = model.predict(next_list)
-   #actual_response_list.append(response_list[4])
-   #actual_response_list.append(response_list[5])
-   #actual_response_list.append(response_list[6])
-   #actual_response_list.append(response_list[7])
-   #actual_response_list.append(response_list[8])
-   #actual_response_list.append(response_list[9])
-   #actual_response_list.append(response_list[10])
-   #actual_response_list.append(response_list[11])
-   #for sublist in actual_response_list:
-   #   for item in sublist:
-   #      flat_actual_response_list.append(item)
-   return(next_list)
+   #print(type(game_state))
+   input_list = []
+   output_list = []
+   response_list = []
+   for item in game_state:
+      input_list.append(item)
+   str_input_list = str(input_list)
+   input_list = str_input_list.replace(" ","").replace("[","").replace("]","").replace("(","")\
+   .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").split(",")
+   input_list.pop(0)
+   input_list.pop(0)
+   for item in input_list:
+           output_list.append(float(item))
+   response_list = model.predict(output_list)
+   output_list = []
+   for item in response_list:
+           for x in item:
+                   output_list.append(x)
+   
+
+           
+   
+   return(output_list)
 
 
 def save_bot(model):
@@ -125,7 +121,7 @@ def train(model):
     label = []
     
     for line in f:
-        mylist = line.replace(" ","").replace("/","").replace("[","").replace("]","").replace("(","").replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").split(",")
+        mylist = line.replace(" ","").replace("[","").replace("]","").replace("(","").replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").split(",")
         mylist.pop(0)
         if line_number%2 == 0:
             label.append(mylist)
@@ -144,6 +140,7 @@ def train(model):
        print(test[z], "\n", label[z])
     print(model.predict(test[4]))
 
+   
 bot = load_bot()
 response = []
 while True:
@@ -154,7 +151,6 @@ while True:
         while not request_completed:
                 try:
                         request = get_client_request()
-                        #print(request)
                         response = react(request, bot)
                         #print(f'{request}')
                         request_completed = True
@@ -164,6 +160,7 @@ while True:
 
         ### Process Request ###
         print("sending response")
+        print(response)
         send_response(response)
 
 # Close pipes
