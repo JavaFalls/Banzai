@@ -19,15 +19,18 @@
    Other notes:
 */
 
-// Needed to compile with Godot
 #include "reference.h"
 #include "ustring.h"
 #include "variant.h"
 #include "array.h"
+// Make sure that all includes from Godot files come before any other includes. Something in the compiler bombs out otherwise
 #include "windows.h"
 #include "sql.h"
 #include "sqlext.h"
 #include <string>
+
+#define CONNECTION_OVERRIDE_FILENAME "DBConnectionOverride.ODBCconString"
+#define MAX_CONNECTION_OVERRIDE_FILE_SIZE 300
 
 class DBConnector : public Reference {
 private:
@@ -35,7 +38,7 @@ private:
    int connectionOpen;
 
    // It is important to note that the connection strings should NOT contain extra spaces. For example, use "DRIVER={value}" NOT "DRIVER = {value}"
-   // Connection String to be used to connect to the MySQL Test DB environment (a MySQL DB) DEPRECATED
+   // DEPRECATED Connection String to be used to connect to the MySQL Test DB environment (a MySQL DB)
    const std::string MySQLTESTConnectionString = "DRIVER={MySQL ODBC 8.0 ANSI Driver};"
                                   + (std::string)"SERVER=localhost;"
                                   + (std::string)"DATABASE=javafalls;"
@@ -43,7 +46,7 @@ private:
                                   + (std::string)"PASSWORD=helpMe!IveRunOutOfTime32;" // In a real production this should probably be stored in an encrypted file and then decrypted by the program
                                   + (std::string)"OPTION=3;"; // I'm not sure what the OPTION attribute is for
 
-   // Connection String to be used to connect to the Test DB environment (a SQL Server DB)
+   // DEPRECATED Connection String to be used to connect to the Test DB environment (a SQL Server DB)
    const std::string TESTConnectionString = "DRIVER={ODBC Driver 13 for SQL Server};"
                              + (std::string)"SERVER=ADAM-LAPTOP\\JFTESTSERVER;"//TCP:172.16.2.5,1433;"
                              + (std::string)"Trusted_Connection=Yes;"
@@ -57,7 +60,7 @@ private:
                              + (std::string)"SERVER=cssqlserver;"//TCP:172.16.2.5,1433;"
                              + (std::string)"UID=sei_JavaFallsUser;"
                              + (std::string)"PWD=HnjMk,IkoRftOlpOlpTgy32;"
-                             //+ (std::string)"Trusted_Connection=Yes;" // use windows authentication
+                             //+ (std::string)"Trusted_Connection=Yes;" // this line, when uncommented, tells the connection to use windows authentication (if this line is included, don't include UID or PWD)
                              + (std::string)"DATABASE=SEI_JavaFalls;"
                              + (std::string)"Language=us_english;"
                              + (std::string)"Encrypt=Yes;"
@@ -120,7 +123,9 @@ public:
    int UpdatePlayer(int player_ID, String name);
    String FetchPlayer(int player_ID);
 
+   //int InsertMech(int player_ID, int model_ID, String name, int primary_weapon, int secondary_weapon, int utility);
    int InsertMech(int player_ID, Array insertMechArgs, String name);
+   //int UpdateMech(int mech_ID, int player_ID, int model_ID, int ranking, String name, int primary_weapon, int secondary_weapon, int utility, int updateAIModel = TRUE);
    int UpdateMech(int mech_ID, Array updateMechArgs, String name, int updateAIModel = TRUE);
    String FetchMech(int mech_ID, int fetchModelFile = TRUE);
 

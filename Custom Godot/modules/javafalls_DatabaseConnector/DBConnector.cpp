@@ -705,11 +705,31 @@ void DBConnector::_bind_methods() {
 /***********************************************************************************************************/
 DBConnector::DBConnector() {
    // Initialize basic values
-   conString = TESTConnectionString;
+   conString = LIVEConnectionString;
    connectionOpen = FALSE;
    lastReturn = SQL_ERROR;
    envHandle = SQL_NULL_HANDLE;
    conHandle = SQL_NULL_HANDLE;
+
+   // Override the default connection string if a DSN file was provided
+   std::ifstream inStream;
+   std::cout << "Searching for: " << CONNECTION_OVERRIDE_FILENAME << "\n";
+   inStream.open(CONNECTION_OVERRIDE_FILENAME, std::ios::in);
+   if (inStream) {
+      std::cout << CONNECTION_OVERRIDE_FILENAME << " found, overriding default connection string\n";
+      char OverrideConnectionString[MAX_CONNECTION_OVERRIDE_FILE_SIZE];
+      char *p_OverrideString = OverrideConnectionString;
+      char inChar;
+      inStream.get(inChar);
+      while (inStream) {
+         *p_OverrideString = inChar;
+         p_OverrideString++;
+         inStream.get(inChar);
+      }
+      conString = OverrideConnectionString;
+   }
+   inStream.close();
+   std::cout << "Connection string being used is: |" << conString << "|\n";
 
    // Allocate an environment handle
    if (SQL_SUCCEEDED(lastReturn = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &envHandle))) {
