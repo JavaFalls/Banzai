@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/menu_title.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/game_background_1.png" type="Texture" id=2]
+[ext_resource path="res://assets/bots/back.png" type="Texture" id=3]
 
-[node name="title_screen" type="Node"]
+[node name="title_screen" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
@@ -120,8 +121,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 820.0
-margin_bottom = 480.0
+margin_right = 320.0
+margin_bottom = 180.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -137,8 +138,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 270.0
-margin_bottom = 480.0
+margin_right = 104.0
+margin_bottom = 180.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -156,8 +157,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.0
-margin_right = 270.0
-margin_bottom = 480.0
+margin_right = 104.0
+margin_bottom = 180.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 focus_mode = 2
@@ -188,9 +189,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 274.0
-margin_right = 544.0
-margin_bottom = 480.0
+margin_left = 108.0
+margin_right = 212.0
+margin_bottom = 180.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -208,8 +209,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.0
-margin_right = 270.0
-margin_bottom = 480.0
+margin_right = 104.0
+margin_bottom = 180.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 focus_mode = 2
@@ -239,9 +240,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 548.0
-margin_right = 820.0
-margin_bottom = 480.0
+margin_left = 216.0
+margin_right = 320.0
+margin_bottom = 180.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -259,8 +260,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.0
-margin_right = 272.0
-margin_bottom = 480.0
+margin_right = 104.0
+margin_bottom = 180.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 focus_mode = 2
@@ -306,6 +307,11 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Size Flags" ]
+
+[node name="back" type="Sprite" parent="." index="3"]
+
+position = Vector2( 197, 99 )
+texture = ExtResource( 3 )
 
 [connection signal="pressed" from="VBoxContainer/ready" to="." method="create_user"]
 

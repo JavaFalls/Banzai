@@ -4,6 +4,15 @@ extends Node
 const NORMAL_HEIGHT = 900
 const NORMAL_WIDTH = 1600
 
+const resolutions = [
+	400,
+	512,
+	640,
+	800,
+	1024,
+	NORMAL_WIDTH
+]
+
 # Weapons keys
 enum {PRIMARY, SECONDARY, ABILITY}
 # Bot builds keys
