@@ -6,6 +6,9 @@ onready var head = get_tree().get_root().get_node("/root/head")
 onready var _background = get_node("Container/background")
 onready var _stats = get_node("stats")
 
+onready var _player_bot = get_node("player_bot")
+onready var _training_bot = get_node("training_bot")
+
 onready var _primary_current = get_node("primary_weapons/HBoxContainer/HBoxContainer/current")
 onready var _primary_next = get_node("primary_weapons/HBoxContainer/HBoxContainer/next")
 onready var _primary_prev = get_node("primary_weapons/HBoxContainer/HBoxContainer/previous")

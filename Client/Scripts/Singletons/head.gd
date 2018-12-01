@@ -125,11 +125,13 @@ func init_bots():
 		PLAYER: load("res://Scripts/Objects/bot_build.gd").new(
 			weapons["robot_face"],
 			weapons["robot_face"],
-			abilities["sword1"]
+			abilities["sword1"],
+			load("res://assets/bots/front.png")
 		),
 		BOT: load("res://Scripts/Objects/bot_build.gd").new(
 			weapons["robot_face"],
 			weapons["robot_face"],
-			abilities["sword1"]
+			abilities["sword1"],
+			load("res://assets/bots/front.png")
 		)
 	}
