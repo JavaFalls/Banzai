@@ -13,6 +13,7 @@ func _ready():
 	set_weapons(ranged_attack, quick_attack, aby_evade)
 	
 func _physics_process(delta):
+	randomize()
 	#print(get_opponent())
 	opponent_position = get_opponent().get_position()
 	relative_direction = get_position() - opponent_position

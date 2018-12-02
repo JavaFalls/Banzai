@@ -19,6 +19,9 @@ var window_size = OS.get_window_size()
 # Username
 var username = ""
 
+# Player bot's ranking score change
+var score_change = 0
+
 # Weapons/abilities
 onready var weapons = {
 	"robot_face": {

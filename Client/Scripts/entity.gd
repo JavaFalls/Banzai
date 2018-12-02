@@ -6,7 +6,7 @@ var movement_speed   =  300         # Movement speed of the entity
 var p                = Area2D      # New Projectile
 var timer            = Timer.new() # Timer for Firing cooldown
 var projectile_delay = .3          # Firing cooldown length
-var hit_points       = 0           # The hitpoint counter for the fighter
+var hit_points       = 10           # The hitpoint counter for the fighter
 var direction        = Vector2()   # Direction the entity is moving
 var primary_weapon   = Vector2()
 var secondary_weapon = Vector2()
@@ -14,6 +14,7 @@ var ability          = Vector2()
 var s                = Area2D
 var opponent         = KinematicBody
 var is_player        = false
+signal game_end
 
 onready var aby_shield    = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
 onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn") # The heavy scene to be instanced
@@ -43,8 +44,8 @@ func get_hit_points():
 func get_trajectory():
 	return direction
 	
-func increment_hitpoints(inc_num):
-	hit_points += inc_num
+func increment_hitpoints(damage):
+	hit_points -= damage
 	#print(hit_points)
 	
 func set_opponent(new_opponent):
@@ -72,3 +73,6 @@ func get_state():
 	state.append(Input.is_action_pressed("ui_down"))
 	return state
 	
+func _process(delta):
+	if get_hit_points() <= 0:
+		emit_signal("game_end")
