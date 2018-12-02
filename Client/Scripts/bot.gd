@@ -26,9 +26,10 @@ func send_nn_state():
 	var output = []
 	var path = PoolStringArray() 
 	var predictions = []
+	var err_nu
 	#print_timer.is_stopped():
 	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
-	path.append(player_node.get_state())
+	path.append(opponent.get_state())
 	path.append(self.get_position())
 	path.append(self.get_trajectory())
 	#if print_timer.is_stopped():
@@ -41,11 +42,13 @@ func send_nn_state():
     # Send the required information to the Neural Network
 
 	OS.execute('python', path, true, output)
-	for item in output:
-		for x in output:
-			predictions.append(x)
-			
-	print(predictions)
+	
+	predictions = output[0].split_floats(',', false)
+	for x in predictions:
+		x = int(x)
+		print(x)
+		
+		
 		
 	#	print_timer.set_wait_time(.3)
 	#	print_timer.start()

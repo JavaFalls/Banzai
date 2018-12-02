@@ -79,7 +79,12 @@ win32file.WriteFile(request_handle, str.encode(f'{request_string}'))
 # print("get response")
 response_handle = get_response_handle()
 response = win32file.ReadFile(response_handle, 64*1024)
-print(response)
+response_list = []
+
+x = str(response[1])
+x = x.replace("(","").replace(")","").replace("[","").replace("]","").replace("b","").replace("'","")
+print(x)
+
 
 # Close handles and quit
 win32file.CloseHandle(request_handle)
