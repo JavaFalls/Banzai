@@ -327,3 +327,5 @@ texture = ExtResource( 4 )
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer/MarginContainer2/name" to="." method="name_changed" binds= [ "N" ]]
 
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer/MarginContainer3/code" to="." method="name_changed" binds= [ "C" ]]
+
+
