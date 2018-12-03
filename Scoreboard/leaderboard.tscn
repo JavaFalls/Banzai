@@ -6,7 +6,7 @@
 [node name="Node" type="Node" index="0"]
 
 script = ExtResource( 1 )
-pause = 1.0
+request_pause = 1
 
 [node name="HTTPRequest" type="HTTPRequest" parent="." index="0"]
 

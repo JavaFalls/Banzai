@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/unstress.png-a372b3f07bc17c9c771e8bfb1a500748.stex"
+path="res://.import/front.png-48014e0ce6d2568a0a335aeccf7ae5d7.stex"
 
 [deps]
 
-source_file="res://assets/menu/main_menu/unstress.png"
-dest_files=[ "res://.import/unstress.png-a372b3f07bc17c9c771e8bfb1a500748.stex" ]
+source_file="res://assets/bots/front.png"
+dest_files=[ "res://.import/front.png-48014e0ce6d2568a0a335aeccf7ae5d7.stex" ]
 
 [params]
 
@@ -16,7 +16,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
@@ -25,5 +25,5 @@ process/premult_alpha=false
 process/HDR_as_SRGB=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

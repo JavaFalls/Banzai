@@ -10,8 +10,8 @@ export(float, 0, 10) var request_pause = 1
 var players = [
 	"Turing the Machine",
 	"Turing the Machine",
-	"A",
-	"Turing the Machine",
+	"A" + char(32) + "B",
+	"Turing the Machine and the really really long text name",
 	"Turing the Machine",
 	"Turing the Machine",
 	"Turing the Machine",

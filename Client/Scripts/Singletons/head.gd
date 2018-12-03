@@ -4,6 +4,15 @@ extends Node
 const NORMAL_HEIGHT = 900
 const NORMAL_WIDTH = 1600
 
+const resolutions = [
+	400,
+	512,
+	640,
+	800,
+	1024,
+	NORMAL_WIDTH
+]
+
 # Weapons keys
 enum {PRIMARY, SECONDARY, ABILITY}
 # Bot builds keys
@@ -59,7 +68,7 @@ onready var weapons = {
 onready var abilities = {
 	"sword1": {
 		"scene": null,
-		"texture": load("res://assets/sword.png"),
+		"texture": load("res://assets/bots/front.png"),
 		"name": "Sword1",
 		"attack": 0,
 		"armor": 0,
@@ -128,11 +137,13 @@ func init_bots():
 		PLAYER: load("res://Scripts/Objects/bot_build.gd").new(
 			weapons["robot_face"],
 			weapons["robot_face"],
-			abilities["sword1"]
+			abilities["sword1"],
+			load("res://assets/bots/front.png")
 		),
 		BOT: load("res://Scripts/Objects/bot_build.gd").new(
 			weapons["robot_face"],
 			weapons["robot_face"],
-			abilities["sword1"]
+			abilities["sword1"],
+			load("res://assets/bots/front.png")
 		)
 	}
