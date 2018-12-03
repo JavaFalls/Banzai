@@ -65,7 +65,7 @@ onready var weapons = {
 onready var abilities = {
 	"sword1": {
 		"scene": null,
-		"texture": load("res://assets/sword.png"),
+		"texture": load("res://assets/bots/front.png"),
 		"name": "Sword1",
 		"attack": 0,
 		"armor": 0,

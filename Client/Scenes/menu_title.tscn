@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/menu_title.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/game_background_1.png" type="Texture" id=2]
-[ext_resource path="res://assets/bots/back.png" type="Texture" id=3]
+[ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/bots/back.png" type="Texture" id=4]
+
+[sub_resource type="Theme" id=1]
+
+default_font = ExtResource( 3 )
 
 [node name="title_screen" type="Node" index="0"]
 
@@ -28,25 +33,27 @@ _sections_unfolded = [ "Anchor" ]
 
 [node name="background" type="Sprite" parent="MarginContainer" index="0"]
 
-position = Vector2( 500, 300 )
+position = Vector2( 511, 299 )
+scale = Vector2( 0.230208, 0.230208 )
 texture = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="RichTextLabel" type="RichTextLabel" parent="." index="1"]
 
-anchor_left = 0.21094
-anchor_top = 0.6773
-anchor_right = 0.40625
-anchor_bottom = 0.74667
-margin_left = -0.00254822
-margin_top = 1.62003
-margin_bottom = -0.00201416
+anchor_left = 0.21
+anchor_top = 0.67556
+anchor_right = 0.21
+anchor_bottom = 0.67556
+margin_top = -0.00100708
+margin_right = 222.0
+margin_bottom = 27.999
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 5
 size_flags_vertical = 5
+theme = SubResource( 1 )
 bbcode_enabled = false
 bbcode_text = ""
 visible_characters = -1
@@ -58,7 +65,7 @@ scroll_active = true
 scroll_following = false
 selection_enabled = false
 override_selected_font_color = false
-_sections_unfolded = [ "BBCode", "Rect", "Size Flags" ]
+_sections_unfolded = [ "BBCode", "Rect", "Size Flags", "Theme" ]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." index="2"]
 
@@ -311,7 +318,7 @@ _sections_unfolded = [ "Size Flags" ]
 [node name="back" type="Sprite" parent="." index="3"]
 
 position = Vector2( 197, 99 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 
 [connection signal="pressed" from="VBoxContainer/ready" to="." method="create_user"]
 

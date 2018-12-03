@@ -29,6 +29,10 @@ func set_buttons(x_coords):
 	var nodes = get_tree().get_nodes_in_group("name_group")
 	for n in range(nodes.size()):
 		for button in nodes[n].get_children():
+			var new_theme = Theme.new()
+			new_theme.default_font = load("res://themes/fonts/ROBOVOX_.tres")
+			button.theme = new_theme
+			
 			x_coords[button] = button.rect_global_position.x
 			button.rect_global_position.x = -button.rect_size.x
 			button.modulate.a = 0
