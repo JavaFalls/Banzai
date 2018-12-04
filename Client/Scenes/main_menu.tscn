@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/game_background_4.png" type="Texture" id=2]
@@ -6,21 +6,134 @@
 [ext_resource path="res://assets/menu/main_menu/train_button.png" type="Texture" id=4]
 [ext_resource path="res://assets/menu/main_menu/fight_button.png" type="Texture" id=5]
 [ext_resource path="res://assets/menu/main_menu/Banzai.png" type="Texture" id=6]
-[ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=7]
+[ext_resource path="res://Scenes/UI/menu_button.tscn" type="PackedScene" id=7]
+[ext_resource path="res://themes/fonts/ROBOVOX_.TTF" type="DynamicFontData" id=8]
+[ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=9]
 
-[sub_resource type="Theme" id=1]
-
-default_font = ExtResource( 3 )
-
-[sub_resource type="Theme" id=3]
+[sub_resource type="Theme" id=5]
 
 default_font = ExtResource( 3 )
 
-[sub_resource type="Theme" id=4]
+[sub_resource type="DynamicFont" id=1]
+
+size = 6
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 8 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[sub_resource type="StyleBoxFlat" id=4]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+bg_color = Color( 0, 0, 0, 0.627451 )
+draw_center = true
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
+border_color = Color( 0, 0, 0, 0 )
+border_blend = false
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 8
+expand_margin_left = 0.0
+expand_margin_right = 0.0
+expand_margin_top = 0.0
+expand_margin_bottom = 0.0
+shadow_color = Color( 0.584314, 0.2, 0.2, 0.6 )
+shadow_size = 2
+anti_aliasing = false
+anti_aliasing_size = 1
+
+[sub_resource type="StyleBoxFlat" id=2]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+bg_color = Color( 0, 0, 0, 1 )
+draw_center = true
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
+border_color = Color( 1, 1, 1, 0 )
+border_blend = false
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 8
+expand_margin_left = 0.0
+expand_margin_right = 0.0
+expand_margin_top = 0.0
+expand_margin_bottom = 0.0
+shadow_color = Color( 0.585938, 0.201416, 0.201416, 0.6 )
+shadow_size = 2
+anti_aliasing = false
+anti_aliasing_size = 1
+_sections_unfolded = [ "Border", "Shadow" ]
+
+[sub_resource type="StyleBoxFlat" id=3]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+bg_color = Color( 0, 0, 0, 0.627451 )
+draw_center = true
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
+border_color = Color( 0, 0, 0, 0 )
+border_blend = false
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 8
+expand_margin_left = 0.0
+expand_margin_right = 0.0
+expand_margin_top = 0.0
+expand_margin_bottom = 0.0
+shadow_color = Color( 0.584314, 0.2, 0.2, 0.6 )
+shadow_size = 2
+anti_aliasing = false
+anti_aliasing_size = 1
+_sections_unfolded = [ "Content Margin", "Shadow" ]
+
+[sub_resource type="Theme" id=6]
+
+resource_local_to_scene = true
+default_font = SubResource( 1 )
+Button/colors/font_color = Color( 0.996094, 0.983326, 0.178986, 0.627451 )
+Button/colors/font_color_disabled = Color( 1, 1, 1, 0.2 )
+Button/colors/font_color_hover = Color( 0.996078, 0.980392, 0.176471, 1 )
+Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
+Button/constants/hseparation = 2
+Button/fonts/font = SubResource( 1 )
+Button/styles/disabled = SubResource( 4 )
+Button/styles/focus = SubResource( 2 )
+Button/styles/hover = SubResource( 2 )
+Button/styles/normal = SubResource( 3 )
+Button/styles/pressed = SubResource( 2 )
+_sections_unfolded = [ "Button", "Button/colors", "Button/styles", "Resource" ]
+
+[sub_resource type="Theme" id=7]
 
 default_font = ExtResource( 3 )
 
-[sub_resource type="Theme" id=2]
+[sub_resource type="Theme" id=8]
+
+default_font = ExtResource( 3 )
+
+[sub_resource type="Theme" id=9]
 
 default_font = ExtResource( 3 )
 _sections_unfolded = [ "Resource" ]
@@ -84,7 +197,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 5
 size_flags_vertical = 5
-theme = SubResource( 1 )
+theme = SubResource( 5 )
 text = ""
 readonly = true
 highlight_current_line = false
@@ -101,18 +214,16 @@ caret_block_mode = false
 caret_blink = false
 caret_blink_speed = 0.65
 caret_moving_by_right_click = true
-_sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
 
 [node name="train_button" type="TextureButton" parent="Control" index="2"]
 
-anchor_left = 0.74609
-anchor_top = 0.58
-anchor_right = 0.99219
-anchor_bottom = 0.74667
-margin_left = -0.436005
-margin_top = -0.5
-margin_right = -2.87601
-margin_bottom = -1.00075
+anchor_left = 0.7475
+anchor_top = 0.57778
+anchor_right = 0.9825
+anchor_bottom = 0.73778
+margin_top = -0.00050354
+margin_right = -0.999969
+margin_bottom = -0.000488281
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -180,32 +291,7 @@ expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Rect", "Textures" ]
 
-[node name="leader_button" type="TextureButton" parent="Control" index="5"]
-
-anchor_left = 0.80078
-anchor_top = 0.08
-anchor_right = 0.9668
-anchor_bottom = 0.19667
-margin_left = -0.312012
-margin_right = -0.720001
-margin_bottom = -0.250748
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-texture_normal = ExtResource( 4 )
-expand = true
-stretch_mode = 5
-_sections_unfolded = [ "Rect", "Textures" ]
-
-[node name="custom_button" type="TextureButton" parent="Control" index="6"]
+[node name="custom_button" type="TextureButton" parent="Control" index="5"]
 
 anchor_left = 0.74609
 anchor_top = 0.20667
@@ -231,7 +317,7 @@ expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Rect", "Textures" ]
 
-[node name="TextureRect" type="TextureRect" parent="Control" index="7"]
+[node name="TextureRect" type="TextureRect" parent="Control" index="6"]
 
 anchor_left = 0.4
 anchor_top = 0.10222
@@ -253,7 +339,7 @@ expand = true
 stretch_mode = 5
 _sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
 
-[node name="logout_button" type="Button" parent="Control" index="8"]
+[node name="logout_button" type="Button" parent="Control" index="7"]
 
 anchor_left = 0.12
 anchor_top = 0.82222
@@ -277,7 +363,7 @@ text = "Logout"
 flat = false
 align = 1
 
-[node name="username" type="Label" parent="Control" index="9"]
+[node name="username" type="Label" parent="Control" index="8"]
 
 anchor_left = 0.31152
 anchor_top = 0.01833
@@ -299,37 +385,19 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="timeout" type="Timer" parent="." index="1"]
+[node name="menu_button" parent="Control" index="9" instance=ExtResource( 7 )]
 
-process_mode = 1
-wait_time = 300.0
-one_shot = true
-autostart = false
+anchor_left = 0.805
+anchor_top = 0.08444
+anchor_right = 0.915
+anchor_bottom = 0.15111
+margin_top = 0.000999451
+margin_right = 0.0
+margin_bottom = 0.00025177
+theme = SubResource( 6 )
+text = "Leader"
 
-[node name="was_warning" type="ConfirmationDialog" parent="." index="2"]
-
-visible = false
-anchor_left = 0.40137
-anchor_top = 0.44
-anchor_right = 0.59668
-anchor_bottom = 0.55667
-margin_left = -0.00286865
-margin_right = -0.000305176
-margin_bottom = -0.00201416
-rect_min_size = Vector2( 200, 70 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-popup_exclusive = false
-window_title = "Logout?"
-resizable = false
-dialog_hide_on_ok = true
-_sections_unfolded = [ "Anchor", "Dialog", "Margin", "Popup" ]
-
-[node name="logout_warning" type="Popup" parent="." index="3"]
+[node name="logout_warning" type="Popup" parent="." index="1"]
 
 editor/display_folded = true
 visible = false
@@ -378,7 +446,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = SubResource( 3 )
+theme = SubResource( 7 )
 align = 3
 valign = 1
 autowrap = true
@@ -410,8 +478,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.0
-margin_right = 58.0
-margin_bottom = 22.0
+margin_right = 57.0
+margin_bottom = 21.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -428,8 +496,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.0
-margin_right = 58.0
-margin_bottom = 22.0
+margin_right = 57.0
+margin_bottom = 21.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -437,7 +505,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = SubResource( 4 )
+theme = SubResource( 8 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -456,7 +524,7 @@ playback/active = false
 playback/repeat = false
 playback/speed = 1.0
 
-[node name="timeout_warning" type="Popup" parent="." index="4"]
+[node name="timeout_warning" type="Popup" parent="." index="2"]
 
 editor/display_folded = true
 visible = false
@@ -474,7 +542,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 popup_exclusive = false
-script = ExtResource( 7 )
+script = ExtResource( 9 )
 _sections_unfolded = [ "Anchor" ]
 
 [node name="ColorRect" type="ColorRect" parent="timeout_warning" index="0"]
@@ -508,7 +576,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = SubResource( 2 )
+theme = SubResource( 9 )
 align = 1
 clip_text = true
 percent_visible = 1.0
@@ -523,7 +591,14 @@ wait_time = 30.0
 one_shot = true
 autostart = false
 
-[node name="Tween" type="Tween" parent="." index="5"]
+[node name="timeout" type="Timer" parent="." index="3"]
+
+process_mode = 1
+wait_time = 300.0
+one_shot = true
+autostart = false
+
+[node name="Tween" type="Tween" parent="." index="4"]
 
 repeat = false
 playback_process_mode = 1
@@ -538,18 +613,16 @@ playback/speed = 1.0
 
 [connection signal="pressed" from="Control/stats_button" to="." method="scene_change" binds= [ "stats" ]]
 
-[connection signal="pressed" from="Control/leader_button" to="." method="scene_change" binds= [ "leader" ]]
-
 [connection signal="pressed" from="Control/custom_button" to="." method="scene_change" binds= [ "custom" ]]
 
 [connection signal="pressed" from="Control/logout_button" to="." method="logout"]
 
-[connection signal="timeout" from="timeout" to="." method="screen_idle_timeout"]
-
-[connection signal="confirmed" from="was_warning" to="." method="_on_logout_warning_confirmed"]
+[connection signal="pressed" from="Control/menu_button" to="." method="scene_change" binds= [ "leader" ]]
 
 [connection signal="pressed" from="logout_warning/button_face/Button" to="." method="_on_logout_warning_confirmed"]
 
 [connection signal="popup_hide" from="timeout_warning" to="." method="restart_timer"]
+
+[connection signal="timeout" from="timeout" to="." method="screen_idle_timeout"]
 
 
