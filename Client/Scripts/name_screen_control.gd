@@ -64,6 +64,12 @@ Signal methods
 func select_name(button, position):
 	sub_names[position] = button.text
 	get_tree().get_nodes_in_group("names")[position].text = button.text
+	if sub_names[0] != "" and sub_names[1] != "" and sub_names[2] != "":
+		get_node("menu_button").disabled = false
+
+func start():
+	head.username = get_username()
+	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 """
 Node methods
