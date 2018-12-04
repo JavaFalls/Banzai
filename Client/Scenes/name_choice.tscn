@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/name_screen_control.gd" type="Script" id=1]
 [ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=2]
@@ -12,6 +12,10 @@ default_font = ExtResource( 2 )
 default_font = ExtResource( 2 )
 
 [sub_resource type="Theme" id=3]
+
+default_font = ExtResource( 2 )
+
+[sub_resource type="Theme" id=4]
 
 default_font = ExtResource( 2 )
 
@@ -30,24 +34,27 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
-_sections_unfolded = [ "Anchor" ]
+_sections_unfolded = [ "Anchor", "Theme" ]
+speed = 1.0
+slide_delay = 0.2
 
 [node name="Control" type="Control" parent="Control" index="0"]
 
 anchor_left = 0.1
-anchor_top = 0.09778
+anchor_top = 0.07111
 anchor_right = 0.9
-anchor_bottom = 0.89778
+anchor_bottom = 0.98222
 margin_left = 3.8147e-006
-margin_top = -0.000499725
-margin_bottom = -0.00050354
+margin_top = 0.000250816
+margin_bottom = 0.00050354
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 7
 size_flags_vertical = 7
-_sections_unfolded = [ "Anchor", "Size Flags" ]
+theme = SubResource( 1 )
+_sections_unfolded = [ "Anchor", "Size Flags", "Theme" ]
 
 [node name="name1" type="RichTextLabel" parent="Control/Control" index="0" groups=[
 "names",
@@ -56,16 +63,16 @@ _sections_unfolded = [ "Anchor", "Size Flags" ]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.32813
-anchor_bottom = 0.1
+anchor_bottom = 0.09756
 margin_right = -0.00159454
-margin_bottom = 1.90735e-006
+margin_bottom = 0.000200272
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = SubResource( 1 )
+theme = SubResource( 2 )
 bbcode_enabled = false
 bbcode_text = ""
 visible_characters = -1
@@ -86,17 +93,17 @@ _sections_unfolded = [ "Anchor", "Rect", "Theme" ]
 anchor_left = 0.32813
 anchor_top = 0.0
 anchor_right = 0.65927
-anchor_bottom = 0.1
+anchor_bottom = 0.09756
 margin_left = -0.00159454
-margin_right = 0.0335999
-margin_bottom = 1.90735e-006
+margin_right = -1.9664
+margin_bottom = 0.000200272
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = SubResource( 2 )
+theme = SubResource( 3 )
 bbcode_enabled = false
 bbcode_text = ""
 visible_characters = -1
@@ -117,16 +124,17 @@ _sections_unfolded = [ "Anchor", "Rect", "Theme" ]
 anchor_left = 0.65938
 anchor_top = 0.0
 anchor_right = 1.0
-anchor_bottom = 0.1
+anchor_bottom = 0.09756
 margin_left = -0.00158691
-margin_bottom = 1.90735e-006
+margin_right = -2.0
+margin_bottom = 0.000200272
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = SubResource( 3 )
+theme = SubResource( 4 )
 bbcode_enabled = false
 bbcode_text = ""
 visible_characters = -1
@@ -144,13 +152,15 @@ _sections_unfolded = [ "Anchor", "Rect", "Theme" ]
 "name_group",
 ]]
 
+editor/display_folded = true
 anchor_left = 0.04688
-anchor_top = 0.1
+anchor_top = 0.09756
 anchor_right = 0.32813
 anchor_bottom = 1.0
 margin_left = -0.00160027
-margin_top = 1.90735e-006
+margin_top = 0.000200272
 margin_right = -0.00159454
+margin_bottom = -2.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -165,8 +175,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 155.0
-margin_bottom = 20.0
+margin_right = 90.0
+margin_bottom = 15.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -180,18 +190,19 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Visibility" ]
 
-[node name="Button2" type="Button" parent="Control/Control/name1_names" index="1"]
+[node name="Button8" type="Button" parent="Control/Control/name1_names" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 24.0
-margin_right = 155.0
-margin_bottom = 44.0
+margin_top = 19.0
+margin_right = 90.0
+margin_bottom = 34.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -205,18 +216,71 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Button2" type="Button" parent="Control/Control/name1_names" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 38.0
+margin_right = 90.0
+margin_bottom = 53.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Aristotle"
+flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Button3" type="Button" parent="Control/Control/name1_names" index="2"]
+[node name="Button10" type="Button" parent="Control/Control/name1_names" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 48.0
-margin_right = 155.0
-margin_bottom = 68.0
+margin_top = 57.0
+margin_right = 90.0
+margin_bottom = 72.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Aristotle"
+flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Button3" type="Button" parent="Control/Control/name1_names" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 76.0
+margin_right = 90.0
+margin_bottom = 91.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -230,18 +294,19 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Anchor", "Rect" ]
 
-[node name="Button4" type="Button" parent="Control/Control/name1_names" index="3"]
+[node name="Button9" type="Button" parent="Control/Control/name1_names" index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 72.0
-margin_right = 155.0
-margin_bottom = 92.0
+margin_top = 95.0
+margin_right = 90.0
+margin_bottom = 110.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -255,18 +320,19 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Anchor", "Rect" ]
 
-[node name="Button5" type="Button" parent="Control/Control/name1_names" index="4"]
+[node name="Button4" type="Button" parent="Control/Control/name1_names" index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 96.0
-margin_right = 155.0
-margin_bottom = 116.0
+margin_top = 114.0
+margin_right = 90.0
+margin_bottom = 129.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -280,6 +346,85 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button7" type="Button" parent="Control/Control/name1_names" index="7"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 133.0
+margin_right = 90.0
+margin_bottom = 148.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button5" type="Button" parent="Control/Control/name1_names" index="8"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 152.0
+margin_right = 90.0
+margin_bottom = 167.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button6" type="Button" parent="Control/Control/name1_names" index="9"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 171.0
+margin_right = 90.0
+margin_bottom = 186.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Anchor", "Rect" ]
 
@@ -287,13 +432,15 @@ _sections_unfolded = [ "Anchor", "Rect" ]
 "name_group",
 ]]
 
+editor/display_folded = true
 anchor_left = 0.37813
-anchor_top = 0.1
+anchor_top = 0.09756
 anchor_right = 0.65938
 anchor_bottom = 1.0
 margin_left = -0.00159454
-margin_top = 1.90735e-006
-margin_right = -0.00158691
+margin_top = 0.000200272
+margin_right = -0.00160217
+margin_bottom = -2.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -308,8 +455,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 155.0
-margin_bottom = 20.0
+margin_right = 90.0
+margin_bottom = 15.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -323,18 +470,19 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Visibility" ]
 
-[node name="Button2" type="Button" parent="Control/Control/name2_names" index="1"]
+[node name="Button10" type="Button" parent="Control/Control/name2_names" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 24.0
-margin_right = 155.0
-margin_bottom = 44.0
+margin_top = 19.0
+margin_right = 90.0
+margin_bottom = 34.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -348,18 +496,45 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Button2" type="Button" parent="Control/Control/name2_names" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 38.0
+margin_right = 90.0
+margin_bottom = 53.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Button3" type="Button" parent="Control/Control/name2_names" index="2"]
+[node name="Button7" type="Button" parent="Control/Control/name2_names" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 48.0
-margin_right = 155.0
-margin_bottom = 68.0
+margin_top = 57.0
+margin_right = 90.0
+margin_bottom = 72.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -373,18 +548,45 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Button3" type="Button" parent="Control/Control/name2_names" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 76.0
+margin_right = 90.0
+margin_bottom = 91.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Anchor", "Rect" ]
 
-[node name="Button4" type="Button" parent="Control/Control/name2_names" index="3"]
+[node name="Button9" type="Button" parent="Control/Control/name2_names" index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 72.0
-margin_right = 155.0
-margin_bottom = 92.0
+margin_top = 95.0
+margin_right = 90.0
+margin_bottom = 110.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -398,18 +600,19 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Anchor", "Rect" ]
 
-[node name="Button5" type="Button" parent="Control/Control/name2_names" index="4"]
+[node name="Button4" type="Button" parent="Control/Control/name2_names" index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 96.0
-margin_right = 155.0
-margin_bottom = 116.0
+margin_top = 114.0
+margin_right = 90.0
+margin_bottom = 129.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -423,6 +626,85 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button8" type="Button" parent="Control/Control/name2_names" index="7"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 133.0
+margin_right = 90.0
+margin_bottom = 148.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button5" type="Button" parent="Control/Control/name2_names" index="8"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 152.0
+margin_right = 90.0
+margin_bottom = 167.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button6" type="Button" parent="Control/Control/name2_names" index="9"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 171.0
+margin_right = 90.0
+margin_bottom = 186.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Anchor", "Rect" ]
 
@@ -431,10 +713,11 @@ _sections_unfolded = [ "Anchor", "Rect" ]
 ]]
 
 anchor_left = 0.70625
-anchor_top = 0.1
+anchor_top = 0.09756
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 1.90735e-006
+margin_top = 0.000200272
+margin_bottom = -2.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -449,8 +732,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 155.0
-margin_bottom = 20.0
+margin_right = 93.0
+margin_bottom = 15.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -464,18 +747,19 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Visibility" ]
 
-[node name="Button2" type="Button" parent="Control/Control/name3_names" index="1"]
+[node name="Button9" type="Button" parent="Control/Control/name3_names" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 24.0
-margin_right = 155.0
-margin_bottom = 44.0
+margin_top = 19.0
+margin_right = 93.0
+margin_bottom = 34.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -489,18 +773,45 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Button2" type="Button" parent="Control/Control/name3_names" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 38.0
+margin_right = 93.0
+margin_bottom = 53.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Button3" type="Button" parent="Control/Control/name3_names" index="2"]
+[node name="Button10" type="Button" parent="Control/Control/name3_names" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 48.0
-margin_right = 155.0
-margin_bottom = 68.0
+margin_top = 57.0
+margin_right = 93.0
+margin_bottom = 72.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -514,18 +825,45 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Button3" type="Button" parent="Control/Control/name3_names" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 76.0
+margin_right = 93.0
+margin_bottom = 91.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Anchor", "Rect" ]
 
-[node name="Button4" type="Button" parent="Control/Control/name3_names" index="3"]
+[node name="Button8" type="Button" parent="Control/Control/name3_names" index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 72.0
-margin_right = 155.0
-margin_bottom = 92.0
+margin_top = 95.0
+margin_right = 93.0
+margin_bottom = 110.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -539,18 +877,19 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Anchor", "Rect" ]
 
-[node name="Button5" type="Button" parent="Control/Control/name3_names" index="4"]
+[node name="Button4" type="Button" parent="Control/Control/name3_names" index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 96.0
-margin_right = 155.0
-margin_bottom = 116.0
+margin_top = 114.0
+margin_right = 94.0
+margin_bottom = 129.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -564,6 +903,85 @@ shortcut = null
 group = null
 text = "The Name even bigger"
 flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button6" type="Button" parent="Control/Control/name3_names" index="7"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 133.0
+margin_right = 94.0
+margin_bottom = 148.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button5" type="Button" parent="Control/Control/name3_names" index="8"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 152.0
+margin_right = 94.0
+margin_bottom = 167.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
+align = 1
+_sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="Button7" type="Button" parent="Control/Control/name3_names" index="9"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 171.0
+margin_right = 94.0
+margin_bottom = 186.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "The Name even bigger"
+flat = false
+clip_text = true
 align = 1
 _sections_unfolded = [ "Anchor", "Rect" ]
 

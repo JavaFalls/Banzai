@@ -1,13 +1,46 @@
 extends Control
 
-# Groups
-#  names -- the headers for the selectable names
-#  name_group -- the selectable names
+"""
+Groups
+	names -- the headers for the selectable names
+	name_group -- the selectable names
+"""
 
-var speed = 1.0
-var slide_delay = 0.2
+"""
+Exported variables
+"""
+export(float, 0.001, 1000.0) var speed = 1.0
+export(float, 0.0, 1000.0) var slide_delay = 0.2
 
-var names = ["", "", ""]
+"""
+Constants
+"""
+const names_0 = PoolStringArray([
+	"The name even","The name even",
+	"The name even","The name even",
+	"The name even","The name even",
+	"The name even","The name even",
+	"The name even","The name even"
+])
+const names_1 = PoolStringArray([
+	"The name even","The name even",
+	"The name even","The name even",
+	"Aristotle","The name even",
+	"The name even","The name even",
+	"Turing Machine","The name even"
+])
+const names_2 = PoolStringArray([
+	"The name even","The name even",
+	"The name even","The name even",
+	"Mr. Invincible","The name even",
+	"The name even","The name even",
+	"ez24/7","The name even"
+])
+
+"""
+Variables
+"""
+var sub_names = ["", "", ""]
 
 func _ready():
 	var to_x = {}
@@ -25,13 +58,25 @@ func _ready():
 	slide_buttons(to_x)
 	pass
 
+"""
+Signal methods
+"""
+func select_name(button, position):
+	sub_names[position] = button.text
+	get_tree().get_nodes_in_group("names")[position].text = button.text
+
+"""
+Node methods
+"""
 func set_buttons(x_coords):
 	var nodes = get_tree().get_nodes_in_group("name_group")
+	var names = [names_0, names_1, names_2]
+	
 	for n in range(nodes.size()):
+		var i = 0
 		for button in nodes[n].get_children():
-			var new_theme = Theme.new()
-			new_theme.default_font = load("res://themes/fonts/ROBOVOX_.tres")
-			button.theme = new_theme
+			button.text = names[n][i]
+			i += 1
 			
 			x_coords[button] = button.rect_global_position.x
 			button.rect_global_position.x = -button.rect_size.x
@@ -54,8 +99,5 @@ func slide_control(control, from, to, f_speed, delay):
 	yield(tween, "tween_completed")
 	tween.queue_free()
 
-func select_name(button, position):
-	names[position] = button.text
-
 func get_username():
-	return names[0] + " " + names[1] + " " + names[2]
+	return sub_names[0] + " " + sub_names[1] + " " + sub_names[2]
