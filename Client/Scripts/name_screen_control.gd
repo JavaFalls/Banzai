@@ -107,3 +107,34 @@ func slide_control(control, from, to, f_speed, delay):
 
 func get_username():
 	return sub_names[0] + " " + sub_names[1] + " " + sub_names[2]
+
+"""
+table of names:
+|---+-----+--+---+-----|
+|id |     | name | set |
+|---+-----+--+---+-----|
+
+dictionary:
+	id = set_number
+
+username:
+	0x 00 00 00 set of ids
+	   #A #B #C
+
+A is chosen
+Get all names with A
+Disable B and C selections
+"""
+func disable_selections(set):
+	if typeof(set) == TYPE_INT and set >= 0 and set <= 2:
+		var invalid_names = get_used_names(set) # database call
+		var nodes = get_tree().get_nodes_in_group("name_group")
+		
+		for n in range(nodes.size()):
+			if n != set:
+				for button in nodes[n].get_children():
+					for i in invalid_names:
+						button.disabled = (button.text == get_name(set, i)) # database call
+
+func get_userhex():
+	return

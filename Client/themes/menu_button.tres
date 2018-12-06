@@ -10,7 +10,7 @@ use_filter = false
 font_data = ExtResource( 1 )
 _sections_unfolded = [ "Font", "Settings" ]
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=2]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
@@ -38,7 +38,7 @@ shadow_size = 2
 anti_aliasing = false
 anti_aliasing_size = 1
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=3]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
@@ -67,7 +67,7 @@ anti_aliasing = false
 anti_aliasing_size = 1
 _sections_unfolded = [ "Border", "Shadow" ]
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=4]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
@@ -106,10 +106,10 @@ Button/colors/font_color_hover = Color( 0.996078, 0.980392, 0.176471, 1 )
 Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
 Button/constants/hseparation = 2
 Button/fonts/font = SubResource( 1 )
-Button/styles/disabled = SubResource( 4 )
-Button/styles/focus = SubResource( 2 )
-Button/styles/hover = SubResource( 2 )
-Button/styles/normal = SubResource( 3 )
-Button/styles/pressed = SubResource( 2 )
+Button/styles/disabled = SubResource( 2 )
+Button/styles/focus = SubResource( 3 )
+Button/styles/hover = SubResource( 3 )
+Button/styles/normal = SubResource( 4 )
+Button/styles/pressed = SubResource( 3 )
 _sections_unfolded = [ "Button", "Button/colors", "Button/styles", "Resource" ]
 
