@@ -33,7 +33,6 @@ func _physics_process(delta):
 		t.queue_free()
 
 func _on_projectile_area_entered(area):
-	print(area.get_name())
 	queue_free()
 
 func _on_projectile_body_entered(body):
