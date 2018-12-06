@@ -1,28 +1,23 @@
 extends Area2D
 
-var particles = Particles2D
-onready var cooldown_timer  = get_node("cooldown_timer") # Timer for evade cooldown
-onready var active_timer    = get_node("active_timer")   # How long the sprint is active
-onready var parent_node     = self.get_parent()
-onready var evade_particles = preload("res://Scenes/part_evade.tscn")
+var cooldown    = 1            # Time in seconds that the ability cannot be used after it has been used
+var time_active = .1           # Time in seconds that the ability will be active for
 
-var cooldown    = 1
-var time_active = .1
+onready var cooldown_timer  = get_node("cooldown_timer") # Timer for evade cooldown
+onready var active_timer    = get_node("active_timer")   # Timer for how long the ability is active
+onready var parent_node     = self.get_parent()          # The bot that uses this ability
 
 func _ready():
 	cooldown_timer.set_wait_time(cooldown)
 	active_timer.set_wait_time(time_active)
-	#particles = evade_particles.instance()
-	#parent_node.add_child(particles)
 
+# Called by the bots to activate the ability
 func use():
 	if cooldown_timer.is_stopped():
 		parent_node.movement_speed *= 5
-		#parent_node.get_node("part_evade").set_emitting(true)
 		active_timer.start()
-		
 		cooldown_timer.start()
 
+# Function called when the active_timer runs out
 func _on_active_timer_timeout():
 	parent_node.movement_speed /= 5
-	#parent_node.get_node("part_evade").set_emitting(false)

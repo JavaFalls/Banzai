@@ -16,4 +16,4 @@ func _ready():
 
 func use():
 	if !animation.is_playing():
-		animation.play("shield",-1, 1.0, false )
+		animation.play("shield",-1, 1.0, false)

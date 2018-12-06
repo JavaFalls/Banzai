@@ -2,30 +2,30 @@ extends KinematicBody2D
  
 const UP             = Vector2(0,0) # Indicates top-down view
 
-var movement_speed   =  300         # Movement speed of the entity
-var p                = Area2D      # New Projectile
-var timer            = Timer.new() # Timer for Firing cooldown
-var projectile_delay = .3          # Firing cooldown length
-var hit_points       = 10           # The hitpoint counter for the fighter
-var direction        = Vector2()   # Direction the entity is moving
-var primary_weapon   = Vector2()
-var secondary_weapon = Vector2()
-var ability          = Vector2()
-var s                = Area2D
-var opponent         = KinematicBody
-var is_player        = false
-signal game_end
+var movement_speed   = 250           # Movement speed of the entity
+var p                = Area2D        # New Projectile
+var timer            = Timer.new()   # Timer for Firing cooldown
+var projectile_delay = .3            # Firing cooldown length
+var hit_points       = 10            # The hit point counter for the fighter
+var direction        = Vector2()     # Direction the entity is moving
+var primary_weapon   = Vector2()     # Weapon that goes in the first weapon slot
+var secondary_weapon = Vector2()     # Weapon that goes in the second weapon slot
+var ability          = Vector2()     # Weapon that goes in the third weapon slot
+var opponent         = KinematicBody # The bots' opponent
+var is_player        = false         # Is the bot a player
+
+signal game_end # The signal indicate the the arena match is over
 
 onready var aby_shield    = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
-onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn") # The heavy scene to be instanced
-onready var quick_attack  = preload("res://Scenes/atk_quick.tscn") # The quick scene to be instanced
+onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn")  # The heavy scene to be instanced
+onready var quick_attack  = preload("res://Scenes/atk_quick.tscn")  # The quick scene to be instanced
 onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged scene to be instanced
-onready var aby_evade     = preload("res://Scenes/aby_evade.tscn") # The evade scene to be instanced
+onready var aby_evade     = preload("res://Scenes/aby_evade.tscn")  # The evade scene to be instanced
 
 func _ready():
 	set_weapons(ranged_attack, quick_attack, aby_evade)
 
-# Will be sent the weapon scene as a parameter
+# Function to change weapons; is sent weapon scene as a parameter
 func set_weapons(new_primary, new_secondary, new_ability):
 	if self.get_child_count() > 4:   # Don't remove children if there aren't any 
 		self.remove_child(primary_weapon)
@@ -46,7 +46,6 @@ func get_trajectory():
 	
 func increment_hitpoints(damage):
 	hit_points -= damage
-	#print(hit_points)
 	
 func set_opponent(new_opponent):
 	opponent = new_opponent
@@ -74,5 +73,5 @@ func get_state():
 	return state
 	
 func _process(delta):
-	if get_hit_points() <= 0:
+	if get_hit_points() <= 0 and opponent.get_hit_points() != 0:
 		emit_signal("game_end")
