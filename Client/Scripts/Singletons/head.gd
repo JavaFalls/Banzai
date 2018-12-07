@@ -34,6 +34,12 @@ var score_change = 0
 # Did figher 1 win the battle
 var battle_won = false
 
+# Database
+var player_ID = null;
+var model_ID = null;
+var bot_ID = null;
+onready var DB = DBConnector.new()
+
 # Weapons/abilities
 onready var weapons = {
 	"robot_face": {
@@ -111,12 +117,14 @@ var ai_builds
 
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
-	
 	init_bots()
+	_test_DB()
 	ai_builds = [bot_builds[BOT]]
 
 func _input(event):
 	if Input.is_action_just_pressed("shutdown"):
+		if (DB.is_connection_open()):
+			DB.close_connnection()
 		get_tree().quit()
 	if Input.is_action_just_pressed("toggle_fullscreen"):
 		OS.window_fullscreen = !OS.window_fullscreen
@@ -167,4 +175,38 @@ func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
 		score_change = -3
 	else:
 		score_change = -5
-	
+
+func _test_DB():
+	# Test the DB functions
+	print("DB Testing begin")
+	print("==========================================")
+	print("Player funcs:=============================")
+	player_ID = DB.new_player("SuperPlayer9000")
+	print("player_ID: ", player_ID)
+	print("DB.get_player(): ", DB.get_player(player_ID))
+	print("DB.update_player(): ", DB.update_player(player_ID, "NewName2000"))
+	print("Mech funcs:===============================")
+	var botInsArgArray = [0, 1, 2, 3]
+	bot_ID = DB.new_bot(player_ID, botInsArgArray, "mech9000")
+	print("bot_ID: ", bot_ID)
+	model_ID = botInsArgArray[0]
+	print("model_ID: ", model_ID)
+	print("DB.get_bot: ", DB.get_bot(bot_ID, true))
+	var botUpdArgArray = [player_ID, model_ID, 1000, 3, 0, 1]
+	print("DB.update_bot: ", DB.update_bot(bot_ID, botUpdArgArray, "mech9001", true))
+	print("Model funcs:==============================")
+	model_ID = DB.new_model(player_ID)
+	print("Model_ID: ", model_ID)
+	print("DB.get_model(): ", DB.get_model(model_ID))
+	print("DB.get_model_by_bot_id(): ", DB.get_model_by_bot_id(bot_ID))
+	print("DB.update_model(): ", DB.update_model(model_ID))
+	print("DB.update_model_by_bot_id(): ", DB.update_model_by_bot_id(bot_ID))
+	print("Connection funcs:=========================")
+	print("DB.is_connection_open(): ", DB.is_connection_open())
+	print("DB.close_connection(): ", DB.close_connection())
+	print("DB.is_connection_open(): ", DB.is_connection_open())
+	print("DB.open_connection(): ", DB.open_connection())
+	print("DB.is_connection_open(): ", DB.is_connection_open())
+	print("DB.close_connection(): ", DB.close_connection())
+	print("DB.is_connection_open(): ", DB.is_connection_open())
+	print("==========================================")
