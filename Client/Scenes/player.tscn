@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
-extents = Vector2( 10.4, 10.4 )
+extents = Vector2( 16, 16 )
 
 [node name="player" type="KinematicBody2D"]
 
@@ -19,14 +19,36 @@ _sections_unfolded = [ "Collision", "Material", "Pause", "Pickable", "Transform"
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
+position = Vector2( -1.19209e-007, -1.19209e-007 )
 scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 2 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
-scale = Vector2( 1.53846, 1.53846 )
 shape = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="projectile_container" type="Node" parent="." index="2"]
+
+[node name="Label" type="Label" parent="." index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -24.0
+margin_top = -32.0
+margin_right = 16.0
+margin_bottom = -18.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 

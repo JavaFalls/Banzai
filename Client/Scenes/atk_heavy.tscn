@@ -28,10 +28,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.4 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.4, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ true, false ]
+"values": [ true, false, false ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath(".:monitoring")
@@ -45,16 +45,42 @@ tracks/2/keys = {
 "update": 1,
 "values": [ true, false ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("CollisionPolygon2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:monitorable")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
 
-[node name="sword" type="Area2D"]
+[node name="atk_heavy" type="Area2D"]
 
 visible = false
+rotation = 1.428
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
 monitoring = false
+monitorable = false
 audio_bus_override = false
 audio_bus_name = "Master"
 script = ExtResource( 1 )
@@ -66,7 +92,7 @@ position = Vector2( -0.262501, -1.41364 )
 scale = Vector2( 2.32031, 1 )
 build_mode = 0
 polygon = PoolVector2Array( 14.0093, 1.35289, 12.68, 3.02355, 3.20904, 3.28058, 3.20904, -0.574795, 12.4585, -0.189259 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="anim_swing" type="AnimationPlayer" parent="." index="1"]
 
@@ -83,8 +109,8 @@ blend_times = [  ]
 position = Vector2( 16, 0 )
 rotation = 1.5708
 texture = ExtResource( 2 )
-_sections_unfolded = [ "Animation", "Transform" ]
+_sections_unfolded = [ "Animation", "Transform", "Visibility" ]
 
-[connection signal="area_entered" from="." to="." method="_on_sword_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_atk_heavy_body_entered"]
 
 

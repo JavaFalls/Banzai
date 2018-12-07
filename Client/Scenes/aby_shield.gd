@@ -4,14 +4,16 @@ extends Area2D
 # var a = 2
 # var b = "textvar"
 
+onready var animation = get_node("anim_shield")
+
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 	pass
 
-func _process(delta):
-	self.rotate(1)
+#func _process(delta):
 #	pass
 
 func use():
-	#play the animation that causes you to be immune
+	if !animation.is_playing():
+		animation.play("shield",-1, 1.0, false)
