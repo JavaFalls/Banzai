@@ -45,7 +45,7 @@ func scene_change(button):
 		"train":
 			get_tree().change_scene("res://Scenes/arena_train.tscn")
 		"fight":
-			head.load_scene("res://Scenes/arena_battle.tscn")
+			head.load_scene("res://Scenes/battle_arena.tscn")
 	pass
 
 func screen_idle_timeout():
