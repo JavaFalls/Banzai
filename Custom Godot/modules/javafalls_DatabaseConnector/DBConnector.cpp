@@ -26,14 +26,21 @@
 #define NEW_BOT_ARGS_PRIMARY_WEAPON 1
 #define NEW_BOT_ARGS_SECONDARY_WEAPON 2
 #define NEW_BOT_ARGS_UTILITY 3
-#define ARRAY_SIZE_NEW_BOT_ARGS 4
+#define NEW_BOT_ARGS_ARRAY_SIZE 4
 #define UPDATE_BOT_ARGS_PLAYER_ID 0
 #define UPDATE_BOT_ARGS_MODEL_ID 1
 #define UPDATE_BOT_ARGS_RANKING 2
 #define UPDATE_BOT_ARGS_PRIMARY_WEAPON 3
 #define UPDATE_BOT_ARGS_SECONDARY_WEAPON 4
 #define UPDATE_BOT_ARGS_UTILITY 5
-#define ARRAY_SIZE_UPDATE_BOT_ARGS 6
+#define UPDATE_BOT_ARGS_ARRAY_SIZE 6
+
+/***********************************************************************************************************
+/ Debug Control
+/***********************************************************************************************************/
+void DBConnector::set_debug_sql(Variant bool_print_sql) {
+   debug_sql = bool_print_sql;
+}
 
 /***********************************************************************************************************
 / Connection Management Functions
@@ -183,8 +190,8 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    sprintf(primary_weapon_string, "%d", (int)new_bot_args[NEW_BOT_ARGS_PRIMARY_WEAPON]);
    sprintf(secondary_weapon_string, "%d", (int)new_bot_args[NEW_BOT_ARGS_SECONDARY_WEAPON]);
    sprintf(utility_string, "%d", (int)new_bot_args[NEW_BOT_ARGS_UTILITY]);
-   std::string sql_get_new_bot_ID = "SELECT max(mech.mech_ID_PK)\n"
-                  + (std::string)"  FROM javafalls.mech mech";
+   std::string sql_get_new_bot_ID = "SELECT max(bot.bot_ID_PK)\n"
+                     + (std::string)"  FROM javafalls.bot bot";
    std::string sql_code;
    if ((int)new_bot_args[NEW_BOT_ARGS_MODEL_ID] <= 0) {
       // Model ID not provided, attempt to insert the model into the database ourselves
@@ -196,7 +203,7 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
          return FALSE;
       }
    }
-   sql_code      = "INSERT INTO javafalls.mech\n"
+   sql_code      = "INSERT INTO javafalls.bot\n"
     + (std::string)"            (player_ID_FK, model_ID_FK, ranking, name, primary_weapon, secondary_weapon, utility)\n"
     + (std::string)"     VALUES (" + player_ID_string + ", " + model_ID_string + ", 0,'" + name.ascii().get_data() + "', " + primary_weapon_string + ", " + secondary_weapon_string + ", " + utility_string + ")";
 
@@ -240,15 +247,15 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int 
    sprintf(primary_weapon_string, "%d", (int)update_bot_args[UPDATE_BOT_ARGS_PRIMARY_WEAPON]);
    sprintf(secondary_weapon_string, "%d", (int)update_bot_args[UPDATE_BOT_ARGS_SECONDARY_WEAPON]);
    sprintf(utility_string, "%d", (int)update_bot_args[UPDATE_BOT_ARGS_UTILITY]);
-   std::string sql_code = "UPDATE javafalls.mech\n"
-           + (std::string)"   SET mech.player_ID_FK     = coalesce(nullif(" + player_ID_string + ", -1), mech.player_ID_FK)\n"
-           + (std::string)"     , mech.model_ID_FK      = coalesce(nullif(" + bot_ID_string + ", -1), mech.model_ID_FK)\n"
-           + (std::string)"     , mech.ranking          = coalesce(nullif(" + ranking_string + ", -1), mech.ranking)\n"
-           + (std::string)"     , mech.name             = coalesce(trim('" + name.ascii().get_data() + "'), mech.name)\n"
-           + (std::string)"     , mech.primary_weapon   = coalesce(nullif(" + primary_weapon_string + ", -1), mech.primary_weapon)\n"
-           + (std::string)"     , mech.secondary_weapon = coalesce(nullif(" + secondary_weapon_string + ", -1), mech.secondary_weapon)\n"
-           + (std::string)"     , mech.utility          = coalesce(nullif(" + utility_string + ", -1), mech.utility)\n"
-           + (std::string)" WHERE mech.mech_ID_PK = " + bot_ID_string;
+   std::string sql_code = "UPDATE javafalls.bot\n"
+           + (std::string)"   SET bot.player_ID_FK     = coalesce(nullif(" + player_ID_string + ", -1), bot.player_ID_FK)\n"
+           + (std::string)"     , bot.model_ID_FK      = coalesce(nullif(" + model_ID_string + ", -1), bot.model_ID_FK)\n"
+           + (std::string)"     , bot.ranking          = coalesce(nullif(" + ranking_string + ", -1), bot.ranking)\n"
+           + (std::string)"     , bot.name             = coalesce(trim('" + name.ascii().get_data() + "'), bot.name)\n"
+           + (std::string)"     , bot.primary_weapon   = coalesce(nullif(" + primary_weapon_string + ", -1), bot.primary_weapon)\n"
+           + (std::string)"     , bot.secondary_weapon = coalesce(nullif(" + secondary_weapon_string + ", -1), bot.secondary_weapon)\n"
+           + (std::string)"     , bot.utility          = coalesce(nullif(" + utility_string + ", -1), bot.utility)\n"
+           + (std::string)" WHERE bot.bot_ID_PK = " + bot_ID_string;
 
    sql_statement = create_command(sql_code);
    execute(sql_statement);
@@ -267,9 +274,9 @@ String DBConnector::get_bot(int bot_ID, int get_model) {
    String return_value;
    char bot_ID_string[STRING_INT_SIZE];
    sprintf(bot_ID_string, "%d", bot_ID);
-   std::string sqlQuery = "SELECT mech.player_ID_FK, mech.model_ID_FK, mech.ranking, mech.name, mech.primary_weapon, mech.secondary_weapon, mech.utility\n"
-           + (std::string)"  FROM javafalls.mech mech\n"
-           + (std::string)" WHERE mech.mech_ID_PK = " + bot_ID_string;
+   std::string sqlQuery = "SELECT bot.player_ID_FK, bot.model_ID_FK, bot.ranking, bot.name, bot.primary_weapon, bot.secondary_weapon, bot.utility\n"
+           + (std::string)"  FROM javafalls.bot\n"
+           + (std::string)" WHERE bot.bot_ID_PK = " + bot_ID_string;
    SQLHSTMT sql_statement = create_command(sqlQuery);
    if (get_model) {
       get_model_by_bot_id(bot_ID);
@@ -337,9 +344,9 @@ int DBConnector::update_model_by_bot_id(int bot_id) {
    sprintf(bot_ID_string, "%d", bot_id);
    std::string sql_code = "UPDATE javafalls.ai_model\n"
            + (std::string)"   SET ai_model.model = ?\n"
-           + (std::string)" WHERE ai_model.model_ID_PK = (SELECT mech.model_ID_FK\n"
-           + (std::string)"                                 FROM javafalls.mech\n"
-           + (std::string)"                                WHERE mech.mech_ID_PK = " + bot_ID_string + ")";
+           + (std::string)" WHERE ai_model.model_ID_PK = (SELECT bot.model_ID_FK\n"
+           + (std::string)"                                 FROM javafalls.bot\n"
+           + (std::string)"                                WHERE bot.bot_ID_PK = " + bot_ID_string + ")";
 //   std::string   sqlOldMergeQuery = "MERGE INTO javafalls.ai_model AS target\n"
 //      + (std::string)"     USING (SELECT " + model_ID_string + ") AS source (model_ID_FK)\n"
 //      + (std::string)"        ON (target.model_ID_PK = source.model_ID_FK)\n"
@@ -373,9 +380,9 @@ int DBConnector::get_model_by_bot_id(int bot_id) {
    sprintf(bot_ID_string, "%d", bot_id);
    std::string sql_query = "SELECT model.model\n"
             + (std::string)"  FROM javafalls.ai_model model\n"
-            + (std::string)"  JOIN javafalls.mech mech\n"
-            + (std::string)"    ON mech.model_ID_FK = model.model_ID_PK\n"
-            + (std::string)" WHERE mech.mech_ID_PK = " + bot_ID_string;
+            + (std::string)"  JOIN javafalls.bot bot\n"
+            + (std::string)"    ON bot.model_ID_FK = model.model_ID_PK\n"
+            + (std::string)" WHERE bot.bot_ID_PK = " + bot_ID_string;
    return get_model_by_sql(sql_query);
 }
 
@@ -433,7 +440,6 @@ int DBConnector::store_model(std::string sql_code) {
          file_length++;
       }
    }
-   std::cout << "Bytes read: " << file_length << "\n";
    in_stream.close();
 
    // 2. Store data in the database
@@ -538,7 +544,9 @@ int DBConnector::get_int_attribute(SQLHSTMT sql_statement_handle, int column_num
 / Database Query Functions
 /***********************************************************************************************************/
 SQLHSTMT DBConnector::create_command(std::string sql_string) {
-   std::cout << sql_string << '\n';
+   if (debug_sql) {
+      std::cout << sql_string << '\n';
+   }
    SQLHSTMT sql_statement_handle;
    // If the connection is currently closed, try to open it
    if (!connection_open) {
@@ -703,13 +711,29 @@ String DBConnector::get_results(SQLHSTMT sql_statement_handle) {
 /***********************************************************************************************************/
 // Required by Godot, use to bind c++ methods into things that can be seen by GDScript
 void DBConnector::_bind_methods() {
+   // See GODOT documentation for _bind_methods() at: http://docs.godotengine.org/en/3.0/development/cpp/object_class.html
+
+   // Constants
+   BIND_CONSTANT(NEW_BOT_ARGS_MODEL_ID);
+   BIND_CONSTANT(NEW_BOT_ARGS_PRIMARY_WEAPON);
+   BIND_CONSTANT(NEW_BOT_ARGS_SECONDARY_WEAPON);
+   BIND_CONSTANT(NEW_BOT_ARGS_UTILITY);
+
+   BIND_CONSTANT(UPDATE_BOT_ARGS_PLAYER_ID);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_MODEL_ID);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_RANKING);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_PRIMARY_WEAPON);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_SECONDARY_WEAPON);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_UTILITY);
+
+   // Methods
    ClassDB::bind_method(D_METHOD("new_player", "name"), &DBConnector::new_player);
    ClassDB::bind_method(D_METHOD("update_player", "player_ID", "name"), &DBConnector::update_player);
    ClassDB::bind_method(D_METHOD("get_player", "player_ID"), &DBConnector::get_player);
 
    ClassDB::bind_method(D_METHOD("new_bot", "player_ID", "new_bot_args", "name"), &DBConnector::new_bot);
-   ClassDB::bind_method(D_METHOD("update_bot", "bot_ID", "update_bot_args", "name", "update_model"), &DBConnector::update_bot);
-   ClassDB::bind_method(D_METHOD("get_bot", "bot_ID", "get_model"), &DBConnector::get_bot);
+   ClassDB::bind_method(D_METHOD("update_bot", "bot_ID", "update_bot_args", "name", "update_model"), &DBConnector::update_bot, (Variant)DEFVAL(TRUE));
+   ClassDB::bind_method(D_METHOD("get_bot", "bot_ID", "get_model"), &DBConnector::get_bot, (Variant)DEFVAL(TRUE));
 
    ClassDB::bind_method(D_METHOD("new_model", "player_ID"), &DBConnector::new_model);
    ClassDB::bind_method(D_METHOD("update_model", "model_ID"), &DBConnector::update_model);
@@ -733,6 +757,7 @@ void DBConnector::_bind_methods() {
 /***********************************************************************************************************/
 DBConnector::DBConnector() {
    // Initialize basic values
+   debug_sql = FALSE;
    con_string = live_connection_string;
    connection_open = FALSE;
    last_return = SQL_ERROR;
