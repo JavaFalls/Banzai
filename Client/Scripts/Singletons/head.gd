@@ -201,6 +201,11 @@ func _test_DB():
 	print("DB.get_model_by_bot_id(): ", DB.get_model_by_bot_id(bot_ID))
 	print("DB.update_model(): ", DB.update_model(model_ID))
 	print("DB.update_model_by_bot_id(): ", DB.update_model_by_bot_id(bot_ID))
+	print("Score funcs:==============================")
+	print("DB.get_name_parts(1): ", DB.get_name_parts(1));
+	print("DB.get_bot_range(): ", DB.get_bot_range(bot_ID, 0, 500));
+	print("DB.get_max_score(): ", DB.get_max_score());
+	print("DB.get_min_score(): ", DB.get_min_score());
 	print("Connection funcs:=========================")
 	print("DB.is_connection_open(): ", DB.is_connection_open())
 	print("DB.close_connection(): ", DB.close_connection())

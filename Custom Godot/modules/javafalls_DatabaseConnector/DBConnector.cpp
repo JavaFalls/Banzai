@@ -112,14 +112,19 @@ void DBConnector::rollback() {
 /***********************************************************************************************************/
 // Basic Player Management
 int DBConnector::new_player(String name) {
+   const int PARAM_PLAYER_NAME = 1;
+
    int new_player_id = FALSE;
+   std::string string_name = name.ascii().get_data();
    std::string sql_get_new_player_ID = "SELECT max(player.player_ID_PK)\n"
                       + (std::string)"  FROM javafalls.player player";
    std::string sql_insert = "INSERT INTO javafalls.player\n"
              + (std::string)"            (name)\n"
-             + (std::string)"     VALUES ('" + name.ascii().get_data() + "')";
+             + (std::string)"     VALUES (?)";
+
    SQLHSTMT sql_statement_get_player_ID = create_command(sql_get_new_player_ID);
    SQLHSTMT sql_statement_insert = create_command(sql_insert);
+   bind_parameter(sql_statement_insert, PARAM_PLAYER_NAME, &string_name);//name.ascii().get_data());
 
    execute(sql_statement_insert);
    if (SQL_SUCCEEDED(last_return)) {
@@ -142,13 +147,17 @@ int DBConnector::new_player(String name) {
    return new_player_id;
 }
 int DBConnector::update_player(int player_ID, String name) {
+   const int SQL_PARAM_PLAYER_NAME = 1;
+   const int SQL_PARAM_PLAYER_ID = 2;
+
    int succeeded = FALSE;
-   char player_ID_string[STRING_INT_SIZE];
-   sprintf(player_ID_string, "%d", player_ID);
+   std::string string_name = name.ascii().get_data();
    std::string sql_code = "UPDATE javafalls.player\n"
-           + (std::string)"   SET player.name = '" + name.ascii().get_data() + "'\n"
-           + (std::string)" WHERE player.player_ID_PK = " + player_ID_string;
+           + (std::string)"   SET player.name = ?"//'" + name.ascii().get_data() + "'\n"
+           + (std::string)" WHERE player.player_ID_PK = ?";//" + player_ID_string;
    SQLHSTMT sql_statement = create_command(sql_code);
+   bind_parameter(sql_statement, SQL_PARAM_PLAYER_NAME, &string_name);
+   bind_parameter(sql_statement, SQL_PARAM_PLAYER_ID, &player_ID);
    execute(sql_statement);
    if (SQL_SUCCEEDED(last_return)) {
       commit();
@@ -162,53 +171,68 @@ int DBConnector::update_player(int player_ID, String name) {
    return succeeded;
 }
 String DBConnector::get_player(int player_ID) {
+   const int PARAM_PLAYER_ID = 1;
+
    String return_value;
-   char  player_ID_string[STRING_INT_SIZE];
-   sprintf(player_ID_string, "%d", player_ID);
    std::string sql_query = "SELECT player.name\n"
             + (std::string)"  FROM javafalls.player player\n"
-            + (std::string)" WHERE player.player_ID_PK = " + player_ID_string;
+            + (std::string)" WHERE player.player_ID_PK = ?";
+
    SQLHSTMT sql_statement = create_command(sql_query);
+   bind_parameter(sql_statement, PARAM_PLAYER_ID, &player_ID);
    execute(sql_statement);
    return_value = get_results(sql_statement);
    destroy_command(sql_statement);
+
    return return_value;
 }
 
 // Basic Bot Management
 int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
+   const int PARAM_INSERT_PLAYER_ID = 1;
+   const int PARAM_INSERT_MODEL_ID = 2;
+   const int PARAM_INSERT_RANKING = 3;
+   const int PARAM_INSERT_NAME = 4;
+   const int PARAM_INSERT_PRIMARY_WEAPON = 5;
+   const int PARAM_INSERT_SECONDARY_WEAPON = 6;
+   const int PARAM_INSERT_UTILITY = 7;
+
    SQLHSTMT sql_statement_new_bot;
    SQLHSTMT sql_statement_get_bot_ID;
    int new_bot_ID = FALSE;
-   char player_ID_string[STRING_INT_SIZE];
-   char model_ID_string[STRING_INT_SIZE];
-   char primary_weapon_string[STRING_INT_SIZE];
-   char secondary_weapon_string[STRING_INT_SIZE];
-   char utility_string[STRING_INT_SIZE];
-   sprintf(player_ID_string, "%d", player_ID);
-   sprintf(model_ID_string, "%d", (int)new_bot_args[NEW_BOT_ARGS_MODEL_ID]);
-   sprintf(primary_weapon_string, "%d", (int)new_bot_args[NEW_BOT_ARGS_PRIMARY_WEAPON]);
-   sprintf(secondary_weapon_string, "%d", (int)new_bot_args[NEW_BOT_ARGS_SECONDARY_WEAPON]);
-   sprintf(utility_string, "%d", (int)new_bot_args[NEW_BOT_ARGS_UTILITY]);
+   int ranking = 0;
+   int primary_weapon = (int)new_bot_args[NEW_BOT_ARGS_PRIMARY_WEAPON];
+   int secondary_weapon = (int)new_bot_args[NEW_BOT_ARGS_SECONDARY_WEAPON];
+   int utility = (int)new_bot_args[NEW_BOT_ARGS_UTILITY];
+   int model_ID = (int)new_bot_args[NEW_BOT_ARGS_MODEL_ID];
+
+   std::string string_name = name.ascii().get_data();
    std::string sql_get_new_bot_ID = "SELECT max(bot.bot_ID_PK)\n"
                      + (std::string)"  FROM javafalls.bot bot";
-   std::string sql_code;
-   if ((int)new_bot_args[NEW_BOT_ARGS_MODEL_ID] <= 0) {
-      // Model ID not provided, attempt to insert the model into the database ourselves
-      new_bot_args[NEW_BOT_ARGS_MODEL_ID] = (Variant)new_model(player_ID);
-      if (new_bot_args[NEW_BOT_ARGS_MODEL_ID]) {
-         sprintf(model_ID_string, "%d", (int)new_bot_args[NEW_BOT_ARGS_MODEL_ID]);
-      }
-      else {
-         return FALSE;
-      }
-   }
-   sql_code      = "INSERT INTO javafalls.bot\n"
-    + (std::string)"            (player_ID_FK, model_ID_FK, ranking, name, primary_weapon, secondary_weapon, utility)\n"
-    + (std::string)"     VALUES (" + player_ID_string + ", " + model_ID_string + ", 0,'" + name.ascii().get_data() + "', " + primary_weapon_string + ", " + secondary_weapon_string + ", " + utility_string + ")";
+   std::string sql_code = "INSERT INTO javafalls.bot\n"
+           + (std::string)"            (player_ID_FK, model_ID_FK, ranking, name, primary_weapon, secondary_weapon, utility)\n"
+           + (std::string)"     VALUES (           ?,           ?,       ?,    ?,              ?,                ?,       ?)";
 
    sql_statement_new_bot = create_command(sql_code);
    sql_statement_get_bot_ID = create_command(sql_get_new_bot_ID);
+
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_PLAYER_ID, &player_ID);
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_MODEL_ID, &model_ID);
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_RANKING, &ranking);
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_NAME, &string_name);
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_PRIMARY_WEAPON, &primary_weapon);
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_SECONDARY_WEAPON, &secondary_weapon);
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_UTILITY, &utility);
+   if (model_ID <= 0) {
+      // Model ID not provided, attempt to insert the model into the database ourselves
+      new_bot_args[NEW_BOT_ARGS_MODEL_ID] = (Variant)new_model(player_ID);
+      model_ID = (int)new_bot_args[NEW_BOT_ARGS_MODEL_ID];
+      if (!model_ID) {
+         // Insert of new model failed, return with an error
+         return FALSE;
+      }
+   }
+
    execute(sql_statement_new_bot);
    if (SQL_SUCCEEDED(last_return)) {
       execute(sql_statement_get_bot_ID);
@@ -232,32 +256,43 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    return new_bot_ID;
 }
 int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int update_model) {
+   const int PARAM_UPDATE_PLAYER_ID = 1;
+   const int PARAM_UPDATE_MODEL_ID = 2;
+   const int PARAM_UPDATE_RANKING = 3;
+   const int PARAM_UPDATE_NAME = 4;
+   const int PARAM_UPDATE_PRIMARY_WEAPON = 5;
+   const int PARAM_UPDATE_SECONDARY_WEAPON = 6;
+   const int PARAM_UPDATE_UTILITY = 7;
+   const int PARAM_UPDATE_BOT_ID = 8;
+
+   int player_ID = (int)update_bot_args[UPDATE_BOT_ARGS_PLAYER_ID];
+   int model_ID = (int)update_bot_args[UPDATE_BOT_ARGS_MODEL_ID];
+   int ranking = (int)update_bot_args[UPDATE_BOT_ARGS_RANKING];
+   std::string string_name = name.ascii().get_data();
+   int primary_weapon = (int)update_bot_args[UPDATE_BOT_ARGS_PRIMARY_WEAPON];
+   int secondary_weapon = (int)update_bot_args[UPDATE_BOT_ARGS_SECONDARY_WEAPON];
+   int utility = (int)update_bot_args[UPDATE_BOT_ARGS_UTILITY];
+
    SQLHSTMT sql_statement;
-   char bot_ID_string[STRING_INT_SIZE];
-   char player_ID_string[STRING_INT_SIZE];
-   char model_ID_string[STRING_INT_SIZE];
-   char ranking_string[STRING_INT_SIZE];
-   char primary_weapon_string[STRING_INT_SIZE];
-   char secondary_weapon_string[STRING_INT_SIZE];
-   char utility_string[STRING_INT_SIZE];
-   sprintf(bot_ID_string, "%d", bot_ID);
-   sprintf(player_ID_string, "%d", (int)update_bot_args[UPDATE_BOT_ARGS_PLAYER_ID]);
-   sprintf(model_ID_string, "%d", (int)update_bot_args[UPDATE_BOT_ARGS_MODEL_ID]);
-   sprintf(ranking_string, "%d", (int)update_bot_args[UPDATE_BOT_ARGS_RANKING]);
-   sprintf(primary_weapon_string, "%d", (int)update_bot_args[UPDATE_BOT_ARGS_PRIMARY_WEAPON]);
-   sprintf(secondary_weapon_string, "%d", (int)update_bot_args[UPDATE_BOT_ARGS_SECONDARY_WEAPON]);
-   sprintf(utility_string, "%d", (int)update_bot_args[UPDATE_BOT_ARGS_UTILITY]);
    std::string sql_code = "UPDATE javafalls.bot\n"
-           + (std::string)"   SET bot.player_ID_FK     = coalesce(nullif(" + player_ID_string + ", -1), bot.player_ID_FK)\n"
-           + (std::string)"     , bot.model_ID_FK      = coalesce(nullif(" + model_ID_string + ", -1), bot.model_ID_FK)\n"
-           + (std::string)"     , bot.ranking          = coalesce(nullif(" + ranking_string + ", -1), bot.ranking)\n"
-           + (std::string)"     , bot.name             = coalesce(trim('" + name.ascii().get_data() + "'), bot.name)\n"
-           + (std::string)"     , bot.primary_weapon   = coalesce(nullif(" + primary_weapon_string + ", -1), bot.primary_weapon)\n"
-           + (std::string)"     , bot.secondary_weapon = coalesce(nullif(" + secondary_weapon_string + ", -1), bot.secondary_weapon)\n"
-           + (std::string)"     , bot.utility          = coalesce(nullif(" + utility_string + ", -1), bot.utility)\n"
-           + (std::string)" WHERE bot.bot_ID_PK = " + bot_ID_string;
+           + (std::string)"   SET bot.player_ID_FK     = coalesce(nullif(?, -1),   bot.player_ID_FK)\n"
+           + (std::string)"     , bot.model_ID_FK      = coalesce(nullif(?, -1),   bot.model_ID_FK)\n"
+           + (std::string)"     , bot.ranking          = coalesce(nullif(?, -1),   bot.ranking)\n"
+           + (std::string)"     , bot.name             = coalesce(rtrim(ltrim(?)), bot.name)\n"
+           + (std::string)"     , bot.primary_weapon   = coalesce(nullif(?, -1),   bot.primary_weapon)\n"
+           + (std::string)"     , bot.secondary_weapon = coalesce(nullif(?, -1),   bot.secondary_weapon)\n"
+           + (std::string)"     , bot.utility          = coalesce(nullif(?, -1),   bot.utility)\n"
+           + (std::string)" WHERE bot.bot_ID_PK = ?";
 
    sql_statement = create_command(sql_code);
+   bind_parameter(sql_statement, PARAM_UPDATE_BOT_ID, &bot_ID);
+   bind_parameter(sql_statement, PARAM_UPDATE_PLAYER_ID, &player_ID);
+   bind_parameter(sql_statement, PARAM_UPDATE_MODEL_ID, &model_ID);
+   bind_parameter(sql_statement, PARAM_UPDATE_RANKING, &ranking);
+   bind_parameter(sql_statement, PARAM_UPDATE_NAME, &string_name);
+   bind_parameter(sql_statement, PARAM_UPDATE_PRIMARY_WEAPON, &primary_weapon);
+   bind_parameter(sql_statement, PARAM_UPDATE_SECONDARY_WEAPON, &secondary_weapon);
+   bind_parameter(sql_statement, PARAM_UPDATE_UTILITY, &utility);
    execute(sql_statement);
    if (SQL_SUCCEEDED(last_return)) {
       if (update_model) {
@@ -271,13 +306,17 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int 
    return SQL_SUCCEEDED(last_return);
 }
 String DBConnector::get_bot(int bot_ID, int get_model) {
+   const int PARAM_QUERY_BOT_ID = 1;
+
    String return_value;
    char bot_ID_string[STRING_INT_SIZE];
    sprintf(bot_ID_string, "%d", bot_ID);
    std::string sqlQuery = "SELECT bot.player_ID_FK, bot.model_ID_FK, bot.ranking, bot.name, bot.primary_weapon, bot.secondary_weapon, bot.utility\n"
            + (std::string)"  FROM javafalls.bot\n"
-           + (std::string)" WHERE bot.bot_ID_PK = " + bot_ID_string;
+           + (std::string)" WHERE bot.bot_ID_PK = ?";
+
    SQLHSTMT sql_statement = create_command(sqlQuery);
+   bind_parameter(sql_statement, PARAM_QUERY_BOT_ID, &bot_ID);
    if (get_model) {
       get_model_by_bot_id(bot_ID);
    }
@@ -290,18 +329,21 @@ String DBConnector::get_bot(int bot_ID, int get_model) {
 // Basic Model Management
 // Returns the model ID (a positive integer) of the newly stored model. Returns 0 if the model could not be inserted.
 int DBConnector::new_model(int player_ID) {
+   const int PARAM_INSERT_PLAYER_ID = 1;
+   const int PARAM_INSERT_MODEL = 2;
+
    int new_bot_ID = FALSE;
-   char player_ID_string[STRING_INT_SIZE];
-   char model_ID_string[STRING_INT_SIZE];
    SQLHSTMT sql_statement_get_model;
-   sprintf(player_ID_string, "%d", player_ID);
+   SQLHSTMT sql_statement_insert_model;
    std::string sql_get_new_model_ID = "SELECT max(model.model_ID_PK)\n"
                        + (std::string)"  FROM javafalls.ai_model model";
    std::string sql_code = "INSERT INTO javafalls.ai_model\n"
            + (std::string)"            (player_ID_FK, model)\n"
-           + (std::string)"     VALUES (" + player_ID_string + ", ?)\n";
+           + (std::string)"     VALUES (           ?,     ?)\n";
 
-   if (store_model(sql_code)) {
+   sql_statement_insert_model = create_command(sql_code);
+   bind_parameter(sql_statement_insert_model, PARAM_INSERT_PLAYER_ID, &player_ID);
+   if (store_model(sql_statement_insert_model, PARAM_INSERT_MODEL)) {
       sql_statement_get_model = create_command(sql_get_new_model_ID);
       execute(sql_statement_get_model);
       if (get_row(sql_statement_get_model)) {
@@ -323,14 +365,17 @@ int DBConnector::new_model(int player_ID) {
    return new_bot_ID;
 }
 int DBConnector::update_model(int model_ID) {
+   const int PARAM_UPDATE_MODEL = 1;
+   const int PARAM_UPDATE_MODEL_ID = 2;
+
    int return_value;
-   char model_ID_string[STRING_INT_SIZE];
-   sprintf(model_ID_string, "%d", model_ID);
    std::string sql_code = "UPDATE javafalls.ai_model\n"
           + (std::string)"   SET ai_model.model = ?\n"
-          + (std::string)" WHERE ai_model.model_ID_PK = " + model_ID_string;
+          + (std::string)" WHERE ai_model.model_ID_PK = ?";
 
-   if (return_value = store_model(sql_code)) {
+   SQLHSTMT sql_statement = create_command(sql_code);
+   bind_parameter(sql_statement, PARAM_UPDATE_MODEL_ID, &model_ID);
+   if (return_value = store_model(sql_statement, PARAM_UPDATE_MODEL)) {
       commit();
    }
    else {
@@ -338,15 +383,16 @@ int DBConnector::update_model(int model_ID) {
    }
    return return_value;
 }
-int DBConnector::update_model_by_bot_id(int bot_id) {
+int DBConnector::update_model_by_bot_id(int bot_ID) {
+   const int PARAM_MODEL = 1;
+   const int PARAM_BOT_ID = 2;
+
    int return_value;
-   char bot_ID_string[STRING_INT_SIZE];
-   sprintf(bot_ID_string, "%d", bot_id);
    std::string sql_code = "UPDATE javafalls.ai_model\n"
            + (std::string)"   SET ai_model.model = ?\n"
            + (std::string)" WHERE ai_model.model_ID_PK = (SELECT bot.model_ID_FK\n"
            + (std::string)"                                 FROM javafalls.bot\n"
-           + (std::string)"                                WHERE bot.bot_ID_PK = " + bot_ID_string + ")";
+           + (std::string)"                                WHERE bot.bot_ID_PK = ?)";
 //   std::string   sqlOldMergeQuery = "MERGE INTO javafalls.ai_model AS target\n"
 //      + (std::string)"     USING (SELECT " + model_ID_string + ") AS source (model_ID_FK)\n"
 //      + (std::string)"        ON (target.model_ID_PK = source.model_ID_FK)\n"
@@ -358,8 +404,10 @@ int DBConnector::update_model_by_bot_id(int bot_id) {
 //      + (std::string)"                 FROM javafalls.ai_model model),\n"
 //      + (std::string)"              " + player_ID_string + ",\n"
 //      + (std::string)"              ?);";
+   SQLHSTMT sql_statement = create_command(sql_code);
+   bind_parameter(sql_statement, PARAM_BOT_ID, &bot_ID);
 
-   if (return_value = store_model(sql_code)) {
+   if (return_value = store_model(sql_statement, PARAM_MODEL)) {
       commit();
    }
    else {
@@ -368,48 +416,100 @@ int DBConnector::update_model_by_bot_id(int bot_id) {
    return return_value;
 }
 int DBConnector::get_model(int model_ID) {
-   char model_ID_string[STRING_INT_SIZE];
-   sprintf(model_ID_string, "%d", model_ID);
+   const int PARAM_QUERY_MODEL_ID = 1;
+
    std::string sql_query = "SELECT model.model\n"
             + (std::string)"  FROM javafalls.ai_model model\n"
-            + (std::string)" WHERE model.model_ID_PK = " + model_ID_string;
-   return get_model_by_sql(sql_query);
+            + (std::string)" WHERE model.model_ID_PK = ?";
+
+   SQLHSTMT sql_statement = create_command(sql_query);
+   bind_parameter(sql_statement, PARAM_QUERY_MODEL_ID, &model_ID);
+   return get_model_by_sql(sql_statement);
 }
-int DBConnector::get_model_by_bot_id(int bot_id) {
-   char bot_ID_string[STRING_INT_SIZE];
-   sprintf(bot_ID_string, "%d", bot_id);
+int DBConnector::get_model_by_bot_id(int bot_ID) {
+   const int PARAM_QUERY_BOT_ID = 1;
+
    std::string sql_query = "SELECT model.model\n"
             + (std::string)"  FROM javafalls.ai_model model\n"
             + (std::string)"  JOIN javafalls.bot bot\n"
             + (std::string)"    ON bot.model_ID_FK = model.model_ID_PK\n"
-            + (std::string)" WHERE bot.bot_ID_PK = " + bot_ID_string;
-   return get_model_by_sql(sql_query);
+            + (std::string)" WHERE bot.bot_ID_PK = ?";
+
+   SQLHSTMT sql_statement = create_command(sql_query);
+   bind_parameter(sql_statement, PARAM_QUERY_BOT_ID, &bot_ID);
+   return get_model_by_sql(sql_statement);
 }
 
 // Returns a list of ids for the bots found in a certain score range (excludes bot id sent to the function)
 String DBConnector::get_bot_range(int bot_id, int min_score, int max_score) {
-   return "";
+   const int PARAM_BOT_ID = 1;
+   const int PARAM_MIN_SCORE = 2;
+   const int PARAM_MAX_SCORE = 3;
+
+   String return_value;
+   std::string sql_query = "SELECT bot.bot_ID_PK, bot.ranking"
+            + (std::string)"  FROM javafalls.bot"
+            + (std::string)" WHERE bot.bot_ID_PK != ?"
+            + (std::string)"   AND bot.ranking BETWEEN ? AND ?";
+   SQLHSTMT sql_statement = create_command(sql_query);
+   bind_parameter(sql_statement, PARAM_BOT_ID, &bot_id);
+   bind_parameter(sql_statement, PARAM_MIN_SCORE, &min_score);
+   bind_parameter(sql_statement, PARAM_MAX_SCORE, &max_score);
+   execute(sql_statement);
+   return_value = get_results(sql_statement);
+   destroy_command(sql_statement);
+   return return_value;
 }
 // Returns score of the bot with the highest score
 int DBConnector::get_max_score() {
-   return 0;
+   int return_value;
+   std::string sql_query = "SELECT max(bot.ranking)"
+            + (std::string)"  FROM javafalls.bot";
+   SQLHSTMT sql_statement = create_command(sql_query);
+   execute(sql_statement);
+   get_row(sql_statement);
+   return_value = get_int_attribute(sql_statement, 1);
+   destroy_command(sql_statement);
+   return return_value;
 }
 // Returns score of the bot with the lowest score
 int DBConnector::get_min_score() {
-   return 0;
+   int return_value;
+   std::string sql_query = "SELECT min(bot.ranking)"
+            + (std::string)"  FROM javafalls.bot";
+   SQLHSTMT sql_statement = create_command(sql_query);
+   execute(sql_statement);
+   get_row(sql_statement);
+   return_value = get_int_attribute(sql_statement, 1);
+   destroy_command(sql_statement);
+   return return_value;
 }
 
 // Get name parts for username login screen
 String DBConnector::get_name_parts(int section) {
-   return "";
+   const int PARAM_SECTION = 1;
+
+   String return_value;
+   std::string sql_query = "SELECT player_name.name"
+            + (std::string)"  FROM javafalls.player_name"
+            + (std::string)" WHERE player_name.section = ?";
+   SQLHSTMT sql_statement = create_command(sql_query);
+   bind_parameter(sql_statement, PARAM_SECTION, &section);
+   execute(sql_statement);
+   return_value = get_results(sql_statement);
+   destroy_command(sql_statement);
+   return return_value;
 }
 
 /***********************************************************************************************************
 / DB Interaction Helpers
 /***********************************************************************************************************/
-// Assumes that the sql_code only contains one bind parameter, and that that parameter is the AI model
-int DBConnector::store_model(std::string sql_code) {
-   SQLHSTMT      sql_statement;
+// Stores into the database the ai model found at FILEPATH_IN_MODEL.
+// Params:
+//  sql_statement = A statement to insert the model into the database. Any and all bind parameters other then the model should already be bound.
+//  param_model   = The parameter number in the sql_statement that tells the code where to place the ai model into the query
+// Notes: store_model calls destory_command(sql_statement) when it is finished. So you do not need to (and should not) call destory_command yourself on the statement passed to store_model().
+int DBConnector::store_model(SQLHSTMT sql_statement, int param_model) {
    SQLCHAR       *file_data;
    SQLCHAR       *p_file_data; // Used to walk through the fileData
    SQLLEN        file_length = 0;
@@ -443,9 +543,8 @@ int DBConnector::store_model(std::string sql_code) {
    in_stream.close();
 
    // 2. Store data in the database
-   sql_statement = create_command(sql_code);
    if(!SQL_SUCCEEDED(last_return = SQLBindParameter(sql_statement,
-                                                    1,
+                                                    (SQLSMALLINT)param_model,
                                                     SQL_PARAM_INPUT,
                                                     SQL_C_BINARY,
                                                     SQL_LONGVARBINARY,
@@ -467,8 +566,7 @@ int DBConnector::store_model(std::string sql_code) {
    delete[] file_data;
    return SQL_SUCCEEDED(last_return);
 }
-int DBConnector::get_model_by_sql(std::string sql_query) {
-   SQLHSTMT      sql_statement;
+int DBConnector::get_model_by_sql(SQLHSTMT sql_statement) {
    SQLLEN        indicator;  // Value returned by SQLGetData to tell us if the data is null or how many bytes the data is
    char          *model_data; // 1 MB buffer that will store in memory the model from the database
    std::ofstream out_stream;  // Output stream to write the model to the disk
@@ -481,7 +579,6 @@ int DBConnector::get_model_by_sql(std::string sql_query) {
       return FALSE;
    }
    // 2. Load the model from the database into memory
-   sql_statement = create_command(sql_query);
    execute(sql_statement);
    // Get the row
    if (SQL_SUCCEEDED(last_return = SQLFetch(sql_statement))) {
@@ -522,7 +619,7 @@ int DBConnector::get_model_by_sql(std::string sql_query) {
 int DBConnector::get_row(SQLHSTMT sql_statement_handle) {
    return SQL_SUCCEEDED(last_return = SQLFetch(sql_statement_handle));
 }
-int DBConnector::get_int_attribute(SQLHSTMT sql_statement_handle, int column_number) {
+int DBConnector::get_int_attribute(SQLHSTMT sql_statement_handle, int column_number) { // column_numbers start at 1
    int col_value;
    SQLLEN indicator;
    if (SQL_SUCCEEDED(last_return = SQLGetData(sql_statement_handle,
@@ -575,28 +672,46 @@ void DBConnector::destroy_command(SQLHSTMT sql_statement_handle) {
    int tries = 0;
    while (!SQL_SUCCEEDED(last_return = SQLFreeHandle(SQL_HANDLE_STMT, sql_statement_handle)) && tries < 1000) tries++;
 }
-// Note: SQLDescribeParam could come in handy here to get some/most of the data required for SQLBindParameter
-//void DBConnector::BindParameter(SQLHSTMT sqlStatementHandle, int paramNumber, std::string paramValue, int paramType) {
-//   if (SQL_SUCCEEDED(lastReturn = SQLBindParameter(sqlStatementHandle,
-//                                                   (SQLSMALLINT)paramNumber,
-//                                                   (SQLSMALLINT)paramType,
-//                                                   SQL_C_DEFAULT,
-//      SQLHSTMT        StatementHandle,
-//      SQLUSMALLINT    ParameterNumber,
-//      SQLSMALLINT     InputOutputType,
-//      SQLSMALLINT     ValueType,
-//      SQLSMALLINT     ParameterType,
-//      SQLULEN         ColumnSize,
-//      SQLSMALLINT     DecimalDigits,
-//      SQLPOINTER      ParameterValuePtr,
-//      SQLLEN          BufferLength,
-//      SQLLEN *        StrLen_or_IndPtr))) {
-//      // Success
-//   }
-//   else {
-//      PrintErrorDiagnostics("BindParameter()", SQL_HANDLE_STMT, p_SQLStatementHandle);
-//   }
-//}
+// Binds a value to a parameter.
+// sql_statement_handle = the already initialized handle to bind the parameter value to.
+// param_number = parameter number, ordered sequentially in increasing parameter order, starting at 1.
+// param_value = the value to bind to the parameter
+void DBConnector::bind_parameter(SQLHSTMT sql_statement_handle, int param_number, std::string *param_value, SQLSMALLINT param_input_output_type) {
+   if (SQL_SUCCEEDED(last_return = SQLBindParameter(sql_statement_handle,                //SQLHSTMT        StatementHandle,
+                                                    (SQLSMALLINT)param_number,           //SQLUSMALLINT    ParameterNumber,
+                                                    param_input_output_type,             //SQLSMALLINT     InputOutputType,
+                                                    SQL_C_CHAR,                          //SQLSMALLINT     ValueType,
+                                                    SQL_VARCHAR,                         //SQLSMALLINT     ParameterType,
+                                                    90,                                  //SQLULEN         ColumnSize,
+                                                    0, // Ignored for varchar parameters //SQLSMALLINT     DecimalDigits,
+                                                    (SQLPOINTER)param_value->c_str(),     //SQLPOINTER      ParameterValuePtr,
+                                                    param_value->length(),                //SQLLEN          BufferLength,
+                                                    &null_terminated_string))) {         //SQLLEN *        StrLen_or_IndPtr)
+      return;
+   }
+   else {
+      print_error_diagnostics("bind_parameter(SQLHSTMT, int, std::string, int)", SQL_HANDLE_STMT, sql_statement_handle);
+   }
+   return;
+}
+void DBConnector::bind_parameter(SQLHSTMT sql_statement_handle, int param_number, int *param_value, SQLSMALLINT param_input_output_type) {
+   if (SQL_SUCCEEDED(last_return = SQLBindParameter(sql_statement_handle,                //SQLHSTMT        StatementHandle,
+                                                    (SQLSMALLINT)param_number,           //SQLUSMALLINT    ParameterNumber,
+                                                    param_input_output_type,             //SQLSMALLINT     InputOutputType,
+                                                    SQL_C_SLONG,                         //SQLSMALLINT     ValueType,
+                                                    SQL_INTEGER,                         //SQLSMALLINT     ParameterType,
+                                                    0, // Ignored for integer parameters //SQLULEN         ColumnSize,
+                                                    0, // Ignored for integer parameters //SQLSMALLINT     DecimalDigits,
+                                                    (SQLPOINTER)param_value,            //SQLPOINTER      ParameterValuePtr,
+                                                    0, // Ignored for integer parameters //SQLLEN          BufferLength,
+                                                    &null_terminated_string))) {         //SQLLEN *        StrLen_or_IndPtr)
+      return;
+   }
+   else {
+      print_error_diagnostics("bind_parameter(SQLHSTMT, int, int, int)", SQL_HANDLE_STMT, sql_statement_handle);
+   }
+   return;
+}
 void DBConnector::execute(SQLHSTMT sql_statement_handle) {
    if (connection_open) {
       if (!SQL_SUCCEEDED(last_return = SQLExecute(sql_statement_handle))) {

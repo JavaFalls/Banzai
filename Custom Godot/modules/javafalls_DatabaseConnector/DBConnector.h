@@ -5,12 +5,6 @@
 
 /*
    TODO LIST:
-   UNTESTED Register constants with Godot
-   UNTESTED Register default argument values with Godot
-   UNTESTED Rename the 'mech' table to 'bot'
-   UNTESTED Create a Godot user on the test DB
-   UNTESTED Modify my dev connection string to use the Godot user
-   Update the live DB
    UNTESTED Create a table of names on the DB
    Create a thing to help users set up a DEV server
    Use bind parameters ... I mean it would be really embarrassing if someone SQL injected our code
@@ -26,11 +20,11 @@
      |   }  }  }  }  }  }  }  }  |                JJJ                   FFFFFFFF   LL LL
      |\_________________________/|                JJJ                   FFF        LL LL
      |\_________________________/|==\\            JJJ                   FFFFFF     LL LL
-     |\_____ _ ______ _ ________/|  ||            JJJ                   FFFFF      LL LL
-     |\_____ _ ______ _ ________/|  ||      JJJJ  JJJ  AAAA V   V  AAAA FFF   AAAA LL LL SSSSS
-     |\__________ ______________/|==//       JJ   JJJ AAAAA VV VV AAAAA FFF  AAAAA LL LL SSS
-     |\__________ ______________/|           JJJJJJJ  AA AA  V V  AA AA FFF  AA AA LL LL    SS
-     |\___ ______________ ______/|            JJJJJ   AAAAA   V   AAAAA FFF  AAAAA LL LL SSSSS
+     |\_____ _ ______ _ ________/|==\\\           JJJ                   FFFFF      LL LL
+     |\_____ _ ______ _ ________/|   ||     JJJJ  JJJ  AAAA V   V  AAAA FFF   AAAA LL LL SSSSS
+     |\__________ ______________/|   ||      JJ   JJJ AAAAA VV VV AAAAA FFF  AAAAA LL LL SSS
+     |\__________ ______________/|==///      JJJJJJJ  AA AA  V V  AA AA FFF  AA AA LL LL    SS
+     |\___ ______________ ______/|==//        JJJJJ   AAAAA   V   AAAAA FFF  AAAAA LL LL SSSSS
      \\________ _ _ ___________//
       \_______________________//
 
@@ -110,6 +104,7 @@ private:
 
    const int COLUMN_DATA_BUFFER = 1048576; // (1 MB). Amount of space to allocate to store data for each column in a result set
 
+   SQLLEN null_terminated_string = SQL_NTS; // Provides a single place to point to to tell the ODBC driver that input is a null terminated string.
    // Gets information about a column in a result set.
    // Params:
    //  - sqlStatementHandle = A valid SQLHSTMT that contains a SQL query
@@ -121,8 +116,8 @@ private:
    /******************************************************************************
    / DB Interaction Helpers
    /*****************************************************************************/
-   int store_model(std::string sql_code); // Executes the given SQLCode and attempts to write the AI model file to the database. Assumes that the AI model is the first SQL parameter in the sqlCode
-   int get_model_by_sql(std::string sql_query); // Executes the given SQLCode and attempts to write the AI model to a file. Assumes that the AI Model is in the first row, first column of the result set returned by the sqlQuery.
+   int store_model(SQLHSTMT sql_statement, int param_model); // Executes the given sql_statment and attempts to write the AI model file to the database. See further documentation at the declaration in DBConnector.cpp
+   int get_model_by_sql(SQLHSTMT sql_statement); // Executes the given sql_statement and attempts to write the AI model to a file. Assumes that the AI Model is in the first row, first column of the result set returned by the sqlQuery. Destroys the sql_statement when it it finished
    int get_row(SQLHSTMT sql_statement_handle);
    int get_int_attribute(SQLHSTMT sql_statement_handle, int column_number);
 protected:
@@ -158,7 +153,7 @@ public:
    //       { "player_ID_FK": 2009, "model_ID_FK" : 2017, "ranking" : 0, "name" : "mech9000", "primary_weapon" : 1, "secondary_weapon" : 2, "utility" : 3}
    //    ]
    // }
-   //
+   // Exceptions to the get_ rule are functions that only return one column, these functions typically return just the requested value instead of a JSON string.
    //
 
    // Basic player management
@@ -204,6 +199,9 @@ public:
    // Free the memory taken by a specific SQL command.
    // If you call create_command() do NOT forget to latter call destroy_command() on the SQLHSTMT provided by create_command()
    void destroy_command(SQLHSTMT sql_statement_handle);
+
+   void bind_parameter(SQLHSTMT sql_statement_handle, int param_number, std::string *param_value, SQLSMALLINT param_input_output_type = SQL_PARAM_INPUT);
+   void bind_parameter(SQLHSTMT sql_statement_handle, int param_number, int *param_value, SQLSMALLINT param_input_output_type = SQL_PARAM_INPUT);
 
    // Execute a statement on the database (don't forget to set up the statement handle first through create_command())
    void execute(SQLHSTMT sql_statement_handle);
