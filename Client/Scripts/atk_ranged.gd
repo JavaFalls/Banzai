@@ -18,5 +18,6 @@ func _ready():
 func use():
 	if cooldown_timer.is_stopped():
 		bullet = projectile.instance()
+		#bullet.set_target(self.get_parent().get_opponent().get_position())
 		projectile_container.add_child(bullet)
 		cooldown_timer.start()

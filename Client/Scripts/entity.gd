@@ -13,6 +13,7 @@ var secondary_weapon = Vector2()     # Weapon that goes in the second weapon slo
 var ability          = Vector2()     # Weapon that goes in the third weapon slot
 var opponent         = KinematicBody # The bots' opponent
 var is_player        = false         # Is the bot a player
+var psuedo_mouse     = Vector2()     # This is the players curser position/bot's predicted curser position
 
 signal game_end # The signal indicate the the arena match is over
 

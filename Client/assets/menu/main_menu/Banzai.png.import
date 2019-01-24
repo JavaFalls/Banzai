@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Banzai.png-c1d92bb4b4f08b0ea8d46b7e5a7e8062.stex"
+path="res://.import/Banzai.png-c81f23c428ce0ac646056d7e05fe5d6a.stex"
 
 [deps]
 
-source_file="res://Assets/menu/main_menu/Banzai.png"
-dest_files=[ "res://.import/Banzai.png-c1d92bb4b4f08b0ea8d46b7e5a7e8062.stex" ]
+source_file="res://assets/menu/main_menu/Banzai.png"
+dest_files=[ "res://.import/Banzai.png-c81f23c428ce0ac646056d7e05fe5d6a.stex" ]
 
 [params]
 
