@@ -31,6 +31,9 @@ var username = ""
 # Player bot's ranking score change
 var score_change = 0
 
+# Did figher 1 win the battle
+var battle_won = false
+
 # Weapons/abilities
 onready var weapons = {
 	"robot_face": {
@@ -147,3 +150,21 @@ func init_bots():
 			load("res://assets/bots/front.png")
 		)
 	}
+
+func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
+	var hit_points_diff = fighter1_hit_points - fighter2_hit_points
+	if hit_points_diff > 0:
+		battle_won = true
+	else:
+		battle_won = false
+	if hit_points_diff > 5:
+		score_change = 5
+	elif hit_points_diff > 0:
+		score_change = 3
+	elif hit_points_diff == 0:
+		score_change = 0
+	elif hit_points_diff > -5:
+		score_change = -3
+	else:
+		score_change = -5
+	

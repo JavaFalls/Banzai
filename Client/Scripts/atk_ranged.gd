@@ -1,8 +1,9 @@
 extends Area2D
 
-var cooldown_timer  = Timer.new()
-var ranged_cooldown = 0.3
-var bullet          = Area2D
+# The variables
+var cooldown_timer  = Timer.new() # Timer for firing cooldown
+var ranged_cooldown = 0.3         # Time for firing cooldown
+var bullet          = Area2D      # The name of the projectile instance
 
 onready var projectile           = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
 onready var projectile_container = get_node("projectile_container")
@@ -13,6 +14,7 @@ func _ready():
 	projectile_container.add_child(cooldown_timer)
 	cooldown_timer.stop()
 
+# Function that is called when the sword hits a body
 func use():
 	if cooldown_timer.is_stopped():
 		bullet = projectile.instance()

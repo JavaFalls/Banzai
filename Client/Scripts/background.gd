@@ -1,5 +1,7 @@
 extends Node2D
 
+# This script was made for fun
+
 # class member variables go here, for example:
 # var a = 2
 # var b = "textvar"
