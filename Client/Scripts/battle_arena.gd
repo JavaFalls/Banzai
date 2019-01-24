@@ -16,7 +16,7 @@ signal game_end
 
 func _ready():
     #add code here to choose who fights (player or AIs)
-	fighter1 = player_scene.instance()
+	fighter1 = dummy_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")

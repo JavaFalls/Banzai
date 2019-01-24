@@ -2,7 +2,7 @@ extends KinematicBody2D
  
 const UP             = Vector2(0,0) # Indicates top-down view
 
-var movement_speed   = 250           # Movement speed of the entity
+var movement_speed   = 100           # Movement speed of the entity
 var p                = Area2D        # New Projectile
 var timer            = Timer.new()   # Timer for Firing cooldown
 var projectile_delay = .3            # Firing cooldown length

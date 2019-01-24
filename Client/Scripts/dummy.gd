@@ -4,7 +4,7 @@ var relative_direction = Vector2()
 var move_random        = true               # Move randomly
 var move_aggressive    = false              # Move toward opponent's locatoin
 var move_defensive     = false              # Move away from the opponent's location
-var attack_primary     = false               # Use the primary attack as often as possible
+var attack_primary     = true               # Use the primary attack as often as possible
 var attack_secondary   = false              # Use the secondary attack as often as possible
 var use_ability        = true               # Use the ability as often as possible
 var opponent_position  = Vector2()          # The position of the opponent
@@ -16,7 +16,7 @@ func _physics_process(delta):
 	randomize()
 	#print(get_opponent())
 	opponent_position = get_opponent().get_position()
-	psuedo_mouse = opponent_position
+	psuedo_mouse = opponent_position + Vector2((randi() % 50) - 25, (randi() % 50) - 25)
 	relative_direction = get_position() - opponent_position
 	#direction = Vector2(0,0)
 	
