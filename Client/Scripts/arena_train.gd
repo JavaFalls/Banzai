@@ -17,7 +17,7 @@ func _ready():
 	fighter1.set_name("fighter1")
 	fighter1.set_is_player(true)
 	
-	#fighter2 = bot_scene.instance()
+	fighter2 = bot_scene.instance()
 	fighter2 = bot_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)

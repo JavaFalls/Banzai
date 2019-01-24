@@ -74,7 +74,7 @@ def build_model():
 
 
 def train(model):
-    f = open('gamestates', 'r+')
+    f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'r+')
     line_number = 1
     test  = []
     label = []
@@ -88,11 +88,12 @@ def train(model):
             test.append(mylist)
         line_number += 1
     f.close()
+    print(test)
 
-    for x in range(0, len(test)):
+    for x in range(0, len(test) - 1):
        for y in range(0, len(test[x])):
-          test[x][y] = int(test[x][y])
-          label[x][y] = int(label[x][y])
+          test[x][y] = float(test[x][y])
+          label[x][y] = float(label[x][y])
     for z in range(0,len(test) - 1):
        model.fit(x=test[z], y=label[z],  epochs=3, verbose=1, validation_split=0.3)
        print(test[z], "\n", label[z])
@@ -106,10 +107,10 @@ def main():
     
     bot = load_bot()
     #bot = build_model()
-    #train(bot)
-    #save_bot(bot)
+    train(bot)
+    save_bot(bot)
     #save_game_state(sys.argv)
-    react(sys.argv, bot)
+    #react(sys.argv, bot)
     return()
 
 main()
