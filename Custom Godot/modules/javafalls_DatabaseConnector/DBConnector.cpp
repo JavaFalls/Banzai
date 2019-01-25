@@ -1,4 +1,5 @@
-// Please see corresponding header file ("DBConnector.h") for function documentation.
+// DBConnector.cpp : Source code file for the DBConnector. Contains all function definitions.
+// Please see corresponding header file ("DBConnector.h") for function declarations and documentation.
 
 #include "ustring.h"
 #include "variant.h"
@@ -12,16 +13,13 @@
 #include <iostream>
 #include <fstream>
 
-// How long a string needs to be to hold an int that has been converted to a string, plus the null terminator
-#define STRING_INT_SIZE 11
-#define BLOB_MAX 2147483647
-// Filepath to use when storing a model to the database:
-#define FILEPATH_IN_MODEL "NeuralNetwork/my_model.h5"
-// Filepath to use when loading a model from the database:
-#define FILEPATH_OUT_MODEL "NeuralNetwork/my_model_new.h5"
+#define STRING_INT_SIZE    11                              // How long a string needs to be to hold an int that has been converted to a string, plus the null terminator
+#define BLOB_MAX           2147483647                      // Max size of a BLOB (binary large object) in SQL Server
+#define FILEPATH_IN_MODEL  "NeuralNetwork/my_model.h5"     // Filepath to use when storing a model to the database
+#define FILEPATH_OUT_MODEL "NeuralNetwork/my_model_new.h5" // Filepath to use when loading a model from the database:
 
 // Constants to access arrays of arguments used when a function that needs to be usable by Godot exceeds 5 arguments
-// Godot has a bug that prevents binding of functions with 6 or more agruments
+// Godot has a bug that prevents binding of functions with 6 or more arguments
 #define NEW_BOT_ARGS_MODEL_ID 0
 #define NEW_BOT_ARGS_PRIMARY_WEAPON 1
 #define NEW_BOT_ARGS_SECONDARY_WEAPON 2

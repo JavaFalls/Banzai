@@ -1,7 +1,31 @@
-// ATTENTION: Programmers of JavaFalls, if you are looking for the documentation on
+// Programmers of JavaFalls, if you are looking for the documentation on
 // the functions you use to interact with the database, please search for
 // 'DB Interaction functions intended for use by Godot' (without the quotes) in this
-// header file. For examples
+// header file. For examples see below.
+
+/*
+   DBConnector.h
+      c++ class used to connect to the JavaFalls database. Includes necessary connectors to work as a module for Godot.
+
+   Example GDScript usage:
+      In order to use the DB, a DBConnector object must be instantiated. This is done inside of the 'head' singleton and is instantiated as 'DB'.
+      Thus to access it, you can simply use 'head.DB'. Thus code to get a player from the database for instance, would look something like this:
+         var jsonString
+         var player_ID = 1
+         jsonString = head.DB.get_player(player_ID)
+         # Manipulate jsonString to get desired data about the player.
+   Example c++ usage:
+      //--- Example using functions already included in the DBConnector ---
+      int bot_ID = 1;
+      String bot; // Godot String to store the returned row in
+      DBConnector DB; // Instantiate DBConnector
+      bot = DB.get_bot(bot_ID);
+      DB.close_connection(); // Optional: This will go ahead and close the connection to the database. This also automatically happens when the DBConnector object is destructed (though closing it early will not interfere with the destruction process).
+      // Further manipulation of the bot String to get desired information about the bot.
+      //--- End example ---
+
+   Other notes:
+*/
 
 /*
    TODO LIST:
@@ -32,18 +56,6 @@
 
 #ifndef JAVAFALLSDBCONNECTOR_H
 #define JAVAFALLSDBCONNECTOR_H
-
-/*
-   DBConnector.h
-      c++ class used to connect to the JavaFalls database. Includes necessary connectors to work as a module for Godot.
-
-   Example GDScript usage:
-      In order to use the DB
-   Example c++ usage:
-
-
-   Other notes:
-*/
 
 #include "reference.h"
 #include "ustring.h"
@@ -147,7 +159,7 @@ public:
    // new_ functions return the PK value of the newly inserted row
    // Update functions return 1 if they complete and commit successfully, 0 if the fail and rollback
    // get_ functions return a JSON string containing an array of arrays that represent the rows and columns returned by the query
-   //  Sample json format: TODO
+   //  Sample json format:
    // {
    //    "data": [
    //       { "player_ID_FK": 2009, "model_ID_FK" : 2017, "ranking" : 0, "name" : "mech9000", "primary_weapon" : 1, "secondary_weapon" : 2, "utility" : 3}
@@ -156,26 +168,26 @@ public:
    // Exceptions to the get_ rule are functions that only return one column, these functions typically return just the requested value instead of a JSON string.
    //
 
-   // Basic player management
+   //// Basic player management
    int new_player(String name);
    int update_player(int player_ID, String name);
    String get_player(int player_ID);
 
-   // Basic bot management
+   //// Basic bot management
    int new_bot(int player_ID, Array new_bot_args, String name); // See NEW_BOT_ARGS_ constants to know better what to pass for the array
    int update_bot(int bot_ID, Array update_bot_args, String name, int update_model = TRUE); // See UPDATE_BOT_ARGS_ constants to know better what to pass for the array
    String get_bot(int bot_ID, int get_model = TRUE);
 
-   // Basic Model management
+   //// Basic Model management
    int new_model(int player_ID); // Returns the model_ID (a positive integer) of the newly stored model. Returns 0 if the model could not be inserted.
    int update_model(int model_ID);
    int update_model_by_bot_id(int bot_id);
-   // Exception to the normal behavior of a get_ function, instead of returning a JSON string, these return whether or not they completed succesfully.
+   // get_model and get_model_by_bot_id are exceptions to the normal behavior of a get_ function, instead of returning a JSON string, these return whether or not they completed succesfully.
    // The AI_Model itself is placed in a file in the NeuralNetwork folder
    int get_model(int model_ID);
    int get_model_by_bot_id(int bot_id);
 
-   ////  The following functions are stubs and not yet implemented
+   //// Score related functions
    // Returns a list of ids for the bots found in a certain score range (excludes bot id sent to the function)
    String get_bot_range(int bot_id, int min_score, int max_score);
    // Returns score of the bot with the highest score
@@ -183,6 +195,7 @@ public:
    // Returns score of the bot with the lowest score
    int get_min_score();
 
+   //// Other
    // Get name parts for username login screen
    String get_name_parts(int section);
 
