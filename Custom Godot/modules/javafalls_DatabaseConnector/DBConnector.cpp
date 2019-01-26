@@ -74,6 +74,7 @@ int DBConnector::close_connection() {
    int tries = 0;
    // Close the connection, unless of course the connection is already closed
    if (con_handle != SQL_NULL_HANDLE) {
+      rollback();
       while (!SQL_SUCCEEDED(last_return = SQLDisconnect(con_handle)) && tries < 1000) tries++; // If this loop terminates due to hitting the max number of tries we have some serious problems
       if (SQL_SUCCEEDED(last_return)) {
          connection_open = FALSE;
@@ -670,7 +671,7 @@ void DBConnector::destroy_command(SQLHSTMT sql_statement_handle) {
    int tries = 0;
    while (!SQL_SUCCEEDED(last_return = SQLFreeHandle(SQL_HANDLE_STMT, sql_statement_handle)) && tries < 1000) tries++;
 }
-// Binds a value to a parameter.
+// Binds a value to a parameter. Overloaded to handle both character and integer values.
 // sql_statement_handle = the already initialized handle to bind the parameter value to.
 // param_number = parameter number, ordered sequentially in increasing parameter order, starting at 1.
 // param_value = the value to bind to the parameter
@@ -682,8 +683,8 @@ void DBConnector::bind_parameter(SQLHSTMT sql_statement_handle, int param_number
                                                     SQL_VARCHAR,                         //SQLSMALLINT     ParameterType,
                                                     90,                                  //SQLULEN         ColumnSize,
                                                     0, // Ignored for varchar parameters //SQLSMALLINT     DecimalDigits,
-                                                    (SQLPOINTER)param_value->c_str(),     //SQLPOINTER      ParameterValuePtr,
-                                                    param_value->length(),                //SQLLEN          BufferLength,
+                                                    (SQLPOINTER)param_value->c_str(),    //SQLPOINTER      ParameterValuePtr,
+                                                    param_value->length(),               //SQLLEN          BufferLength,
                                                     &null_terminated_string))) {         //SQLLEN *        StrLen_or_IndPtr)
       return;
    }
@@ -700,7 +701,7 @@ void DBConnector::bind_parameter(SQLHSTMT sql_statement_handle, int param_number
                                                     SQL_INTEGER,                         //SQLSMALLINT     ParameterType,
                                                     0, // Ignored for integer parameters //SQLULEN         ColumnSize,
                                                     0, // Ignored for integer parameters //SQLSMALLINT     DecimalDigits,
-                                                    (SQLPOINTER)param_value,            //SQLPOINTER      ParameterValuePtr,
+                                                    (SQLPOINTER)param_value,             //SQLPOINTER      ParameterValuePtr,
                                                     0, // Ignored for integer parameters //SQLLEN          BufferLength,
                                                     &null_terminated_string))) {         //SQLLEN *        StrLen_or_IndPtr)
       return;

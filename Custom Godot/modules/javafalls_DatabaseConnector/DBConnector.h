@@ -130,8 +130,8 @@ private:
    /*****************************************************************************/
    int store_model(SQLHSTMT sql_statement, int param_model); // Executes the given sql_statment and attempts to write the AI model file to the database. See further documentation at the declaration in DBConnector.cpp
    int get_model_by_sql(SQLHSTMT sql_statement); // Executes the given sql_statement and attempts to write the AI model to a file. Assumes that the AI Model is in the first row, first column of the result set returned by the sqlQuery. Destroys the sql_statement when it it finished
-   int get_row(SQLHSTMT sql_statement_handle);
-   int get_int_attribute(SQLHSTMT sql_statement_handle, int column_number);
+   int get_row(SQLHSTMT sql_statement_handle); // Gets the next row from a result set so it can be read. Assumes that the sql query has already been run.
+   int get_int_attribute(SQLHSTMT sql_statement_handle, int column_number); // Returns the value of the specified column on the corrent row. Assumes that the sql query has already been run and a row fetched.
 protected:
    // Required by Godot, used to bind c++ methods into things that can be seen by GDScript
    static void _bind_methods();
@@ -141,7 +141,7 @@ public:
    /******************************************************************************
    / Debug Control
    /*****************************************************************************/
-   void set_debug_sql(Variant bool_print_sql); // Tells the DBConnector if it should print SQL command prior to execution
+   void set_debug_sql(Variant bool_print_sql); // Tells the DBConnector if it should print SQL commands prior to execution
 
    /******************************************************************************
    / Connection Management
