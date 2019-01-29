@@ -62,8 +62,6 @@ func set_is_player(choice):
 	
 func get_state():
 	var state = PoolStringArray() 
-	print("++++++++++++++++++++++position")
-	print(self.get_position())
 	state.append(self.get_position())
 	state.append(self.get_trajectory())
 	state.append(get_viewport().get_mouse_position())
