@@ -213,7 +213,7 @@ func _test_DB():
 	print("player_ID: ", player_ID)
 	print("DB.get_player(): ", DB.get_player(player_ID))
 	print("DB.update_player(): ", DB.update_player(player_ID, "NewName2000"))
-	print("Mech funcs:===============================")
+	print("Bot funcs:================================")
 	var botInsArgArray = [0, 1, 2, 3]
 	bot_ID = DB.new_bot(player_ID, botInsArgArray, "mech9000")
 	print("bot_ID: ", bot_ID)
