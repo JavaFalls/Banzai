@@ -1,15 +1,4 @@
-# for training  TEST: bot x,y,vectorx,vectory,mousex,mousey,botwasd then \n
-# and the      LABEL: playerx,y,vectorx,vectory,mousex,mousey,playerwasd
 
-#for predictions TEST: playerx,y,vectorx,vectory,mousex,mousey,playerwasd
-#                the reutrn is what the bot should strive to do
-
-
-
-
-
-
-	
 extends "res://Scripts/entity.gd"
 onready var bot_mouse_position = [0,0]
 onready var bot_state = self.get_bot_state()
@@ -17,12 +6,18 @@ onready var player = self.get_parent().get_child(2)
 onready var player_state = player.get_state()
 onready var predictions  = send_nn_state()
 onready var bot_wasd     = [0,0,0,0] 
+onready var game_state = get_node("game_state")
+
+
+#onready gamestate  
 func _ready():
 	pass
 	
 
 
 func _process(delta):
+	
+	print(self.game_state.get_training_state())
 	var predictions = send_nn_state()
 	if not predictions.empty():
 		#print(predictions)
