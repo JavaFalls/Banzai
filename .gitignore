@@ -46,7 +46,7 @@ Thumbs.db
 
 # Misc #
 ########
-*.ODBCconString
+.ODBCconString
 .pck
 
 # Append Visual Studio gitignore file #
