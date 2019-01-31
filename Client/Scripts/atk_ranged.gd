@@ -1,3 +1,9 @@
+#  This scene is instanced by a "subclass" (i.e. "player" or "bot") of the entity scene 
+#  using entity's set_weapons() function.  Everything in this scene exists for the purpose
+#  of the use() function, which is how this attack is used by the mechs.  This scene may
+#  instance many projectiles.
+## This attack fires a projectile at a target
+
 extends Area2D
 
 # The variables
@@ -6,7 +12,7 @@ var ranged_cooldown = 0.3         # Time for firing cooldown
 var bullet          = Area2D      # The name of the projectile instance
 
 onready var projectile           = preload("res://Scenes/projectile.tscn") # The projectile scene to be instanced
-onready var projectile_container = get_node("projectile_container")
+onready var projectile_container = get_node("projectile_container") # node to hold projectiles
 
 func _ready():
 	cooldown_timer.set_wait_time(ranged_cooldown)

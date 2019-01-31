@@ -1,3 +1,6 @@
+# The "subclass" of entity that the player controls and that the 
+# neural network trains on.
+
 extends "res://Scripts/entity.gd"
 
 var relative_mouse = Vector2()

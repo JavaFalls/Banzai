@@ -1,3 +1,6 @@
+# The "superclass" that "player", "bot", and "dummy" are derived from.
+# This scene contains the functions that the derived scenes have in common.
+
 extends KinematicBody2D
  
 const UP             = Vector2(0,0) # Indicates top-down view

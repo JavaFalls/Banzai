@@ -1,3 +1,5 @@
+# This projectile scene is instanced by the atk_range scene and targets
+# its owner's mouse position
 extends Area2D
 
 export var speed    = 10

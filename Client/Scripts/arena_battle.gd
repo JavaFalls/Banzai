@@ -1,3 +1,4 @@
+## This scene is no longer used in favor of "battle_arena" (name subject to change)
 extends Node2D
 
 onready var _camera = get_node("battle_camera")

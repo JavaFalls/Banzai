@@ -1,3 +1,8 @@
+#  This scene is instanced by a "subclass" (i.e. "player" or "bot") of the entity scene 
+#  using entity's set_weapons() function.  Everything in this scene exists for the purpose
+#  of the use() function, which is how this attack is used by the mechs.  
+## This attack quickly swings a weak sword.
+
 extends Area2D
 
 onready var animation = get_node("anim_swing") # Contains all of the sword animations
