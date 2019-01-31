@@ -2,21 +2,21 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/arrow_right.png-2a5a4695d75073f653868a12f3eebdb7.stex"
+path="res://.import/Banzai.png-8c72fa576b8f85b191b8e732c9977e1d.stex"
 
 [deps]
 
-source_file="res://assets/menu/main_menu/arrow_right.png"
-dest_files=[ "res://.import/arrow_right.png-2a5a4695d75073f653868a12f3eebdb7.stex" ]
+source_file="res://assets/menu/main_menu/test/Banzai.png"
+dest_files=[ "res://.import/Banzai.png-8c72fa576b8f85b191b8e732c9977e1d.stex" ]
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
-compress/normal_map=0
+compress/normal_map=2
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
@@ -25,5 +25,5 @@ process/premult_alpha=false
 process/HDR_as_SRGB=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

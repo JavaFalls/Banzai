@@ -3,12 +3,15 @@
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/game_background_4.png" type="Texture" id=2]
 [ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=3]
-[ext_resource path="res://assets/menu/main_menu/train_button.png" type="Texture" id=4]
-[ext_resource path="res://assets/menu/main_menu/fight_button.png" type="Texture" id=5]
-[ext_resource path="res://assets/menu/main_menu/Banzai.png" type="Texture" id=6]
+[ext_resource path="res://assets/menu/main_menu/test/train_button.png" type="Texture" id=4]
+[ext_resource path="res://assets/menu/main_menu/test/fight_button.png" type="Texture" id=5]
+[ext_resource path="res://assets/menu/main_menu/test/Banzai.png" type="Texture" id=6]
 [ext_resource path="res://Scenes/UI/menu_button.tscn" type="PackedScene" id=7]
 [ext_resource path="res://themes/fonts/ROBOVOX_.TTF" type="DynamicFontData" id=8]
 [ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=9]
+
+
+
 
 [sub_resource type="Theme" id=1]
 

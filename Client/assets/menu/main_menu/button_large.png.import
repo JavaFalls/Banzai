@@ -2,19 +2,19 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Banzai.png-c81f23c428ce0ac646056d7e05fe5d6a.stex"
+path="res://.import/button_large.png-2a49cb6368c80f7792894e03ca4a9f07.stex"
 
 [deps]
 
-source_file="res://assets/menu/main_menu/Banzai.png"
-dest_files=[ "res://.import/Banzai.png-c81f23c428ce0ac646056d7e05fe5d6a.stex" ]
+source_file="res://assets/menu/main_menu/button_large.png"
+dest_files=[ "res://.import/button_large.png-2a49cb6368c80f7792894e03ca4a9f07.stex" ]
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
-compress/normal_map=2
+compress/normal_map=0
 flags/repeat=0
 flags/filter=false
 flags/mipmaps=false

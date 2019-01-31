@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fight_button.png-2f97d004cf4a8cfe94a8b1f78fdc0e64.stex"
+path="res://.import/arrow_right.png-2091b05b2a67f7428db13c067818c695.stex"
 
 [deps]
 
-source_file="res://assets/menu/main_menu/fight_button.png"
-dest_files=[ "res://.import/fight_button.png-2f97d004cf4a8cfe94a8b1f78fdc0e64.stex" ]
+source_file="res://assets/menu/main_menu/test/arrow_right.png"
+dest_files=[ "res://.import/arrow_right.png-2091b05b2a67f7428db13c067818c695.stex" ]
 
 [params]
 
