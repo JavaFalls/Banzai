@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/arrow_right.png-2a5a4695d75073f653868a12f3eebdb7.stex"
+path="res://.import/arrow_right.png-5481b1d58ce9596b052249f3bb5011ae.stex"
 
 [deps]
 
-source_file="res://assets/menu/main_menu/arrow_right.png"
-dest_files=[ "res://.import/arrow_right.png-2a5a4695d75073f653868a12f3eebdb7.stex" ]
+source_file="res://Assets/menu/main_menu/test/arrow_right.png"
+dest_files=[ "res://.import/arrow_right.png-5481b1d58ce9596b052249f3bb5011ae.stex" ]
 
 [params]
 
