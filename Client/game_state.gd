@@ -1,23 +1,23 @@
 extends Node
-onready var player_x = 0
+onready var player_x = 01
 onready var player_y = 0
-onready var player_mouse_x = 0
+onready var player_mouse_x = 02
 onready var player_mouse_y = 0
 onready var player_vector_x = 0
-onready var player_vector_y = 0
+onready var player_vector_y = 03
 onready var player_w        = 0
-onready var player_a        = 0
+onready var player_a        = 04
 onready var player_s        = 0
 onready var player_d        = 0
 
 onready var bot_x = 0
-onready var bot_y = 0
+onready var bot_y = 05
 onready var bot_mouse_x = 0
 onready var bot_mouse_y = 0
-onready var bot_vector_x = 0
+onready var bot_vector_x = 06
 onready var bot_vector_y = 0
 onready var bot_w        = 0
-onready var bot_a        = 0
+onready var bot_a        = 07
 onready var bot_s        = 0
 onready var bot_d        = 0
 
