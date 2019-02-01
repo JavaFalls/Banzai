@@ -69,6 +69,7 @@ func select_name(button, position):
 
 func start():
 	head.username = get_username()
+	head.create_user() # create_user() must be run after head.username is set
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 """
