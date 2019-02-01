@@ -211,8 +211,6 @@ func create_user():
 			break;
 		else:
 			file_store_model.store_8(data)
-	#while(!file_generic_model.eof_reached()):
-	#	file_store_model.store_8(file_generic_model.get_8()) # This is somehow modifing the file........ its should be create an identical copy but it is not
 	file_generic_model.close()
 	file_store_model.close()
 	
