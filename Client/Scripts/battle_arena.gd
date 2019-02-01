@@ -17,6 +17,8 @@ signal game_end
 
 func _ready():
     #add code here to choose who fights (player or AIs)
+
+	
 	fighter1 = dummy_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
@@ -48,3 +50,14 @@ func post_game():
 	get_tree().change_scene("res://Scenes/post_battle.tscn")
 	fighter1.queue_free()
 	fighter2.queue_free()
+	
+# This function is called to choose an opponent
+# It returns the opponent bot's ID
+func get_opponent(bot_id):
+	var bot_rating = head.DB.get_bot(bot_id, false) # Current bot rating. Used as pivot point for matchmaking algorithm
+	# get bot ID
+	# get bot rating from DB
+	# Collect at most 10 bots within a range of 5 up and 5 down
+	# Randomly pick a bot ID and download that baby
+	# Load the bot into the Neural Network and initialize the opponent
+	# return

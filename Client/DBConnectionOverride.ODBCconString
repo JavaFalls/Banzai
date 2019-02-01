@@ -1,7 +1,0 @@
-DRIVER={ODBC Driver 13 for SQL Server};
-SERVER=ADAM-LAPTOP\JFTESTSERVER;
-Trusted_Connection=Yes;
-DATABASE=SEI_JavaFalls;
-Language=us_english;
-Encrypt=Yes;
-TrustServerCertificate=Yes;

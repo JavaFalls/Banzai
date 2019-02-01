@@ -1,3 +1,4 @@
+// Required by Godot so that it knows how to identify the DBConnector class
 #include "register_types.h"
 #include "class_db.h"
 #include "DBConnector.h"
