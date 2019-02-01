@@ -17,6 +17,9 @@ func _ready():
 	set_weapons(ranged_attack, heavy_attack, aby_evade)
 	
 func _physics_process(delta):
+	psuedo_primary   = 0
+	psuedo_secondary = 0
+	psuedo_ability   = 0
 	randomize()
 	#print(get_opponent())
 	opponent_position = get_opponent().get_position()
@@ -26,11 +29,14 @@ func _physics_process(delta):
 	
 	if attack_primary:
 		primary_weapon.use()
+		psuedo_primary = 1
 	#	set_weapons(ranged_attack, heavy_attack, aby_evade)
 	if attack_secondary:
 		secondary_weapon.use()
+		psuedo_secondary = 1
 	if use_ability:
 		ability.use()
+		psuedo_ability = 1
 		
 	if move_random:
 		if randi() % 20 == 0:

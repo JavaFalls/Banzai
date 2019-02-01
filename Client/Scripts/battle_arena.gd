@@ -37,6 +37,10 @@ func _ready():
 	connect("game_end", self, "post_game")
 	fighter1.connect("game_end", self, "post_game")
 	fighter2.connect("game_end", self, "post_game")
+	
+func _process(delta):
+	self.get_node("healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points(),1))
+	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points(),1))
 
 # This function is called when one of the fighters hits zero hit_points
 func post_game():
