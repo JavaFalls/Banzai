@@ -1,144 +1,31 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
-[ext_resource path="res://assets/menu/game_background_4.png" type="Texture" id=2]
-[ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=3]
-[ext_resource path="res://assets/menu/main_menu/test/train_button.png" type="Texture" id=4]
-[ext_resource path="res://assets/menu/main_menu/test/fight_button.png" type="Texture" id=5]
-[ext_resource path="res://assets/menu/main_menu/test/Banzai.png" type="Texture" id=6]
-[ext_resource path="res://Scenes/UI/menu_button.tscn" type="PackedScene" id=7]
-[ext_resource path="res://themes/fonts/ROBOVOX_.TTF" type="DynamicFontData" id=8]
+[ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
+[ext_resource path="res://assets/menu/main_menu/panel_left.png" type="Texture" id=3]
+[ext_resource path="res://assets/menu/main_menu/panel_right.png" type="Texture" id=4]
+[ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=5]
+[ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=6]
+[ext_resource path="res://themes/menu_button.tres" type="Theme" id=7]
+[ext_resource path="res://assets/menu/main_menu/button_large.png" type="Texture" id=8]
 [ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=9]
-
-
-
+[ext_resource path="res://assets/menu/main_menu/reference_main_menu.png" type="Texture" id=10]
 
 [sub_resource type="Theme" id=1]
 
-default_font = ExtResource( 3 )
+default_font = ExtResource( 5 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="Theme" id=2]
 
-size = 6
-use_mipmaps = false
-use_filter = false
-font_data = ExtResource( 8 )
-_sections_unfolded = [ "Font", "Settings" ]
+default_font = ExtResource( 5 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="Theme" id=3]
 
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-bg_color = Color( 0, 0, 0, 0.627451 )
-draw_center = true
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color( 0, 0, 0, 0 )
-border_blend = false
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0.584314, 0.2, 0.2, 0.6 )
-shadow_size = 2
-anti_aliasing = false
-anti_aliasing_size = 1
+default_font = ExtResource( 5 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="Theme" id=4]
 
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-bg_color = Color( 0, 0, 0, 1 )
-draw_center = true
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color( 1, 1, 1, 0 )
-border_blend = false
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0.585938, 0.201416, 0.201416, 0.6 )
-shadow_size = 2
-anti_aliasing = false
-anti_aliasing_size = 1
-_sections_unfolded = [ "Border", "Shadow" ]
-
-[sub_resource type="StyleBoxFlat" id=5]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-bg_color = Color( 0, 0, 0, 0.627451 )
-draw_center = true
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color( 0, 0, 0, 0 )
-border_blend = false
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0.584314, 0.2, 0.2, 0.6 )
-shadow_size = 2
-anti_aliasing = false
-anti_aliasing_size = 1
-_sections_unfolded = [ "Content Margin", "Shadow" ]
-
-[sub_resource type="Theme" id=6]
-
-resource_local_to_scene = true
-default_font = SubResource( 2 )
-Button/colors/font_color = Color( 0.996094, 0.983326, 0.178986, 0.627451 )
-Button/colors/font_color_disabled = Color( 1, 1, 1, 0.2 )
-Button/colors/font_color_hover = Color( 0.996078, 0.980392, 0.176471, 1 )
-Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
-Button/constants/hseparation = 2
-Button/fonts/font = SubResource( 2 )
-Button/styles/disabled = SubResource( 3 )
-Button/styles/focus = SubResource( 4 )
-Button/styles/hover = SubResource( 4 )
-Button/styles/normal = SubResource( 5 )
-Button/styles/pressed = SubResource( 4 )
-_sections_unfolded = [ "Button", "Button/colors", "Button/styles", "Resource" ]
-
-[sub_resource type="Theme" id=7]
-
-default_font = ExtResource( 3 )
-
-[sub_resource type="Theme" id=8]
-
-default_font = ExtResource( 3 )
-
-[sub_resource type="Theme" id=9]
-
-default_font = ExtResource( 3 )
+default_font = ExtResource( 5 )
 _sections_unfolded = [ "Resource" ]
 
 [node name="main_menu" type="Node" index="0"]
@@ -180,10 +67,19 @@ _sections_unfolded = [ "Anchor", "Size Flags" ]
 
 [node name="background" type="Sprite" parent="Control/MarginContainer" index="0"]
 
-position = Vector2( 1097, 607 )
-scale = Vector2( 0.25026, 0.25026 )
+position = Vector2( 1077, 601 )
 texture = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
+
+[node name="panel_left" type="Sprite" parent="Control/MarginContainer" index="1"]
+
+position = Vector2( 915, 687 )
+texture = ExtResource( 3 )
+
+[node name="panel_right" type="Sprite" parent="Control/MarginContainer" index="2"]
+
+position = Vector2( 1225, 600 )
+texture = ExtResource( 4 )
 
 [node name="description" type="TextEdit" parent="Control" index="1"]
 
@@ -191,7 +87,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.27
 anchor_bottom = 0.71556
-margin_right = 7.62939e-006
+margin_right = 7.62939e-06
 margin_bottom = -0.000991821
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -218,15 +114,16 @@ caret_blink = false
 caret_blink_speed = 0.65
 caret_moving_by_right_click = true
 
-[node name="train_button" type="TextureButton" parent="Control" index="2"]
+[node name="stats_button" type="TextureButton" parent="Control" index="2"]
 
-anchor_left = 0.7475
-anchor_top = 0.57778
-anchor_right = 0.9825
-anchor_bottom = 0.73778
-margin_top = -0.00050354
-margin_right = -0.999969
-margin_bottom = -0.000488281
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 341.0
+margin_top = 24.0
+margin_right = 389.0
+margin_bottom = 50.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -238,135 +135,232 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 4 )
-expand = true
+texture_normal = ExtResource( 6 )
+stretch_mode = 5
+_sections_unfolded = [ "Rect", "Textures" ]
+
+[node name="Label" type="Label" parent="Control/stats_button" index="0"]
+
+modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 48.0
+margin_bottom = 26.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "credits"
+align = 1
+valign = 1
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Theme", "Visibility" ]
+
+[node name="custom_button" type="TextureButton" parent="Control" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 341.0
+margin_top = 66.0
+margin_right = 389.0
+margin_bottom = 92.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 6 )
+stretch_mode = 5
+_sections_unfolded = [ "Rect", "Textures" ]
+
+[node name="Label" type="Label" parent="Control/custom_button" index="0"]
+
+modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 48.0
+margin_bottom = 26.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "equip"
+align = 1
+valign = 1
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="fight_button" type="TextureButton" parent="Control" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 341.0
+margin_top = 106.0
+margin_right = 389.0
+margin_bottom = 132.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 6 )
+stretch_mode = 5
+_sections_unfolded = [ "Rect", "Textures" ]
+
+[node name="Label" type="Label" parent="Control/fight_button" index="0"]
+
+modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 48.0
+margin_bottom = 26.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "battle"
+align = 1
+valign = 1
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="train_button" type="TextureButton" parent="Control" index="5"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 320.0
+margin_top = 181.0
+margin_right = 389.0
+margin_bottom = 210.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 8 )
 stretch_mode = 5
 _sections_unfolded = [ "Margin", "Rect", "Size Flags", "Textures" ]
 
-[node name="fight_button" type="TextureButton" parent="Control" index="3"]
+[node name="Label" type="Label" parent="Control/train_button" index="0"]
 
-anchor_left = 0.64063
-anchor_top = 0.76
-anchor_right = 0.99219
-anchor_bottom = 0.99333
-margin_left = -0.252014
-margin_right = -0.876007
-margin_bottom = -0.499252
+modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 69.0
+margin_bottom = 29.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
+mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-texture_normal = ExtResource( 5 )
-expand = true
-stretch_mode = 5
-_sections_unfolded = [ "Rect", "Textures" ]
-
-[node name="stats_button" type="TextureButton" parent="Control" index="4"]
-
-anchor_left = 0.74609
-anchor_top = 0.39333
-anchor_right = 0.99219
-anchor_bottom = 0.56
-margin_left = -0.436005
-margin_top = -0.499252
-margin_right = -2.87601
-margin_bottom = -1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-texture_normal = ExtResource( 4 )
-expand = true
-stretch_mode = 5
-_sections_unfolded = [ "Rect", "Textures" ]
-
-[node name="custom_button" type="TextureButton" parent="Control" index="5"]
-
-anchor_left = 0.74609
-anchor_top = 0.20667
-anchor_right = 0.99219
-anchor_bottom = 0.37333
-margin_left = -0.436005
-margin_top = -0.500751
-margin_right = -2.87601
-margin_bottom = 0.000747681
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-texture_normal = ExtResource( 4 )
-expand = true
-stretch_mode = 5
-_sections_unfolded = [ "Rect", "Textures" ]
-
-[node name="TextureRect" type="TextureRect" parent="Control" index="6"]
-
-anchor_left = 0.4
-anchor_top = 0.10222
-anchor_right = 0.6
-anchor_bottom = 0.32444
-margin_left = 1.52588e-005
-margin_top = 0.000499725
-margin_right = 1.52588e-005
-margin_bottom = 0.000999451
-rect_min_size = Vector2( 1, 1 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-texture = ExtResource( 6 )
-expand = true
-stretch_mode = 5
-_sections_unfolded = [ "Anchor", "Rect", "Size Flags" ]
-
-[node name="logout_button" type="Button" parent="Control" index="7"]
-
-anchor_left = 0.12
-anchor_top = 0.82222
-anchor_right = 0.26953
-anchor_bottom = 0.90333
-margin_top = 0.00050354
-margin_right = 0.188004
-margin_bottom = 1.75075
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Logout"
-flat = false
+size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "train"
 align = 1
+valign = 1
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
-[node name="username" type="Label" parent="Control" index="8"]
+[node name="logout_button" type="TextureButton" parent="Control" index="6"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 14.0
+margin_top = 186.0
+margin_right = 62.0
+margin_bottom = 212.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 6 )
+stretch_mode = 5
+_sections_unfolded = [ "Textures" ]
+
+[node name="Label" type="Label" parent="Control/logout_button" index="0"]
+
+modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 48.0
+margin_bottom = 26.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "logout"
+align = 1
+valign = 1
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="username" type="Label" parent="Control" index="7"]
 
 anchor_left = 0.31152
 anchor_top = 0.01833
@@ -388,18 +382,6 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="menu_button" parent="Control" index="9" instance=ExtResource( 7 )]
-
-anchor_left = 0.805
-anchor_top = 0.08444
-anchor_right = 0.915
-anchor_bottom = 0.15111
-margin_top = 0.000999451
-margin_right = 0.0
-margin_bottom = 0.00025177
-theme = SubResource( 6 )
-text = "Leader"
-
 [node name="logout_warning" type="Popup" parent="." index="1"]
 
 editor/display_folded = true
@@ -408,7 +390,7 @@ anchor_left = 0.3
 anchor_top = 0.3
 anchor_right = 0.7
 anchor_bottom = 0.7
-margin_left = 7.62939e-006
+margin_left = 7.62939e-06
 margin_top = 0.500008
 margin_bottom = 0.5
 rect_pivot_offset = Vector2( 0, 0 )
@@ -441,7 +423,7 @@ anchor_left = 0.025
 anchor_top = 0.0
 anchor_right = 0.975
 anchor_bottom = 0.75556
-margin_left = 2.38419e-007
+margin_left = 2.38419e-07
 margin_bottom = -0.000396729
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -449,7 +431,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = SubResource( 7 )
+theme = SubResource( 2 )
 align = 3
 valign = 1
 autowrap = true
@@ -508,7 +490,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = SubResource( 8 )
+theme = SubResource( 3 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -535,8 +517,8 @@ anchor_left = 0.3
 anchor_top = 0.4
 anchor_right = 0.7
 anchor_bottom = 0.60444
-margin_left = 7.62939e-006
-margin_top = 7.62939e-006
+margin_left = 7.62939e-06
+margin_top = 7.62939e-06
 margin_bottom = 0.00100708
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -570,7 +552,7 @@ anchor_left = 0.0375
 anchor_top = 0.08696
 anchor_right = 0.9625
 anchor_bottom = 0.91304
-margin_left = 4.76837e-007
+margin_left = 4.76837e-07
 margin_top = -0.00015974
 margin_bottom = 0.000160217
 rect_pivot_offset = Vector2( 0, 0 )
@@ -579,7 +561,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = SubResource( 9 )
+theme = SubResource( 4 )
 align = 1
 clip_text = true
 percent_visible = 1.0
@@ -610,17 +592,20 @@ playback/active = false
 playback/repeat = false
 playback/speed = 1.0
 
-[connection signal="pressed" from="Control/train_button" to="." method="scene_change" binds= [ "train" ]]
+[node name="reference_main_menu" type="Sprite" parent="." index="5"]
 
-[connection signal="pressed" from="Control/fight_button" to="." method="scene_change" binds= [ "fight" ]]
+position = Vector2( 201, -135 )
+texture = ExtResource( 10 )
 
 [connection signal="pressed" from="Control/stats_button" to="." method="scene_change" binds= [ "stats" ]]
 
 [connection signal="pressed" from="Control/custom_button" to="." method="scene_change" binds= [ "custom" ]]
 
-[connection signal="pressed" from="Control/logout_button" to="." method="logout"]
+[connection signal="pressed" from="Control/fight_button" to="." method="scene_change" binds= [ "fight" ]]
 
-[connection signal="pressed" from="Control/menu_button" to="." method="scene_change" binds= [ "leader" ]]
+[connection signal="pressed" from="Control/train_button" to="." method="scene_change" binds= [ "train" ]]
+
+[connection signal="pressed" from="Control/logout_button" to="." method="logout"]
 
 [connection signal="pressed" from="logout_warning/button_face/Button" to="." method="_on_logout_warning_confirmed"]
 
