@@ -6,17 +6,22 @@ extends "res://Scripts/entity.gd"
 var relative_mouse = Vector2()
 
 func _physics_process(delta):
-	psuedo_mouse = get_global_mouse_position()
-	relative_mouse = get_position() - get_viewport().get_mouse_position()
-	direction = Vector2(0,0)
+	psuedo_mouse     = get_global_mouse_position()
+	relative_mouse   = get_position() - get_viewport().get_mouse_position()
+	direction        = Vector2(0,0)
+	psuedo_ability   = 0
+	psuedo_secondary = 0
+	psuedo_primary   = 0
 	
 	if Input.is_action_pressed("primary_attack"):
-		primary_weapon.use() # do a signal here? send self as a parameter?
-	#	set_weapons(ranged_attack, heavy_attack, aby_evade)
+		primary_weapon.use() 
+		psuedo_primary = 1
 	if Input.is_action_pressed("secondary_attack"):
 		secondary_weapon.use()
+		psuedo_secondary = 1
 	if Input.is_action_pressed("ability"):
 		ability.use()
+		psuedo_ability = 1
 	if Input.is_action_pressed("ui_right"):
 		direction.x = 1
 	if Input.is_action_pressed("ui_left"):

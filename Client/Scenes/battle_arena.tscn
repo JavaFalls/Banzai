@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/battle_arena.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/background.gd" type="Script" id=2]
 [ext_resource path="res://assets/ground.png" type="Texture" id=3]
 [ext_resource path="res://assets/Wall.png" type="Texture" id=4]
+[ext_resource path="res://assets/health bars.png" type="Texture" id=5]
+[ext_resource path="res://assets/white block.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -21,14 +23,13 @@ script = ExtResource( 1 )
 
 [node name="background" type="Node2D" parent="." index="0"]
 
-editor/display_folded = true
 script = ExtResource( 2 )
 
 [node name="ground" type="Sprite" parent="background" index="0"]
 
 modulate = Color( 0, 0.49231, 0.851563, 1 )
-position = Vector2( 616, 160 )
-scale = Vector2( 9.5, 9.5 )
+position = Vector2( 616, 156 )
+scale = Vector2( 9.5, 9.75 )
 texture = ExtResource( 3 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
@@ -166,8 +167,30 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="top wall" index="1"]
 
-position = Vector2( -44, -4 )
+position = Vector2( -44, -16 )
 scale = Vector2( 4.72, 0.0799999 )
 texture = ExtResource( 4 )
+
+[node name="healthbar" type="Sprite" parent="." index="5"]
+
+position = Vector2( 200, 12 )
+scale = Vector2( 0.96, 1 )
+texture = ExtResource( 5 )
+
+[node name="health1" type="Sprite" parent="healthbar" index="0"]
+
+modulate = Color( 0, 1, 0, 1 )
+position = Vector2( -101.302, 0 )
+scale = Vector2( 11.6211, 1 )
+texture = ExtResource( 6 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="health2" type="Sprite" parent="healthbar" index="1"]
+
+modulate = Color( 0, 1, 0, 1 )
+position = Vector2( 102.083, -2.68221e-07 )
+scale = Vector2( 11.7188, 1 )
+texture = ExtResource( 6 )
+_sections_unfolded = [ "Visibility" ]
 
 

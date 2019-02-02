@@ -17,6 +17,9 @@ var ability          = Vector2()     # Weapon that goes in the third weapon slot
 var opponent         = KinematicBody # The bots' opponent
 var is_player        = false         # Is the bot a player
 var psuedo_mouse     = Vector2()     # This is the players curser position/bot's predicted curser position
+var psuedo_primary   = 0
+var psuedo_secondary = 0
+var psuedo_ability   = 0
 
 signal game_end # The signal indicate the the arena match is over
 
@@ -67,13 +70,10 @@ func get_state():
 	var state = PoolStringArray() 
 	state.append(self.get_position())
 	state.append(self.get_trajectory())
-	state.append(get_viewport().get_mouse_position())
+	state.append(psuedo_mouse)
 	state.append(Input.is_action_pressed("primary_attack"))
 	state.append(Input.is_action_pressed("secondary_attack"))
-	state.append(Input.is_action_pressed("ui_right"))
-	state.append(Input.is_action_pressed("ui_left"))
-	state.append(Input.is_action_pressed("ui_up"))
-	state.append(Input.is_action_pressed("ui_down"))
+	state.append(Input.is_action_pressed("ability"))
 	return state
 	
 func _process(delta):
