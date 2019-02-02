@@ -16,9 +16,8 @@ onready var dummy_scene  = preload("res://Scenes/dummy.tscn")
 signal game_end
 
 func _ready():
-    #add code here to choose who fights (player or AIs)
+    # Call get opponent here
 
-	
 	fighter1 = dummy_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
@@ -48,12 +47,19 @@ func post_game():
 	fighter2.queue_free()
 	
 # This function is called to choose an opponent
-# It returns the opponent bot's ID
+# It returns the opponent bot's data.
+# If no opponent is found, null is returned
 func get_opponent(bot_id):
-	var bot_rating = head.DB.get_bot(bot_id, false) # Current bot rating. Used as pivot point for matchmaking algorithm
-	# get bot ID
-	# get bot rating from DB
-	# Collect at most 10 bots within a range of 5 up and 5 down
-	# Randomly pick a bot ID and download that baby
-	# Load the bot into the Neural Network and initialize the opponent
-	# return
+	var opponent = null
+	var rank_width = 0
+	var bot_data = JSON.parse(head.DB.get_bot(bot_id, false)).result["data"][0] # Get all bot data from Database
+	
+	while opponent == null:
+		rank_width += 5
+		var opponent_list = JSON.parse(head.DB.get_bot_range(bot_id, bot_data["ranking"] - rank_width, bot_data["ranking"] + rank_width)).result["data"]
+		if opponent_list.size() > 0:
+			randomize()
+			opponent = opponent_list[randi()%opponent_list.size()+1]
+		else:
+			opponent = null
+	return opponent
