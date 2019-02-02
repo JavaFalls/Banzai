@@ -31,7 +31,6 @@
    TODO LIST:
    UNTESTED Create a table of names on the DB
    Create a thing to help users set up a DEV server
-   Use bind parameters ... I mean it would be really embarrassing if someone SQL injected our code
 */
 
 /*
@@ -194,6 +193,8 @@ public:
    int get_max_score();
    // Returns score of the bot with the lowest score
    int get_min_score();
+   // Returns scoreboard information for the current top 10 bots
+   String get_scoreboard_top_ten();
 
    //// Other
    // Get name parts for username login screen
