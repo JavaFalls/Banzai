@@ -1,0 +1,126 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Custom Nodes (Scenes)/scoreboard_entry.gd" type="Script" id=1]
+[ext_resource path="res://Graphics/leaderboard/tag_blue.png" type="Texture" id=2]
+[ext_resource path="res://Fonts/ROBOVOX_.tres" type="DynamicFont" id=3]
+
+[node name="scoreboard_entry" type="MarginContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 266.0
+margin_bottom = 17.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+_sections_unfolded = [ "Rect", "custom_constants" ]
+TEXTURE_TAG_BLUE = null
+TEXTURE_TAG_RED = null
+TEXTURE_TAG_GREEN = null
+
+[node name="banner_tag" type="Sprite" parent="." index="0"]
+
+texture = ExtResource( 2 )
+centered = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 269.0
+margin_bottom = 17.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/separation = 2
+alignment = 0
+_sections_unfolded = [ "Rect", "custom_constants" ]
+
+[node name="position" type="Label" parent="HBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 17.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 17, 17 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 3 )
+text = "10"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Grow Direction", "Margin", "Rect", "Size Flags", "custom_fonts" ]
+
+[node name="name" type="Label" parent="HBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 19.0
+margin_right = 207.0
+margin_bottom = 17.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 2
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 3 )
+text = "Super Mega Awesome Robot 9000 v22"
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin", "Size Flags", "custom_fonts" ]
+
+[node name="score" type="Label" parent="HBoxContainer" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 209.0
+margin_right = 269.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 60, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 10
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 3 )
+text = "10000"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Grow Direction", "Margin", "Rect", "Size Flags", "custom_fonts" ]
+
+

@@ -483,6 +483,25 @@ int DBConnector::get_min_score() {
    destroy_command(sql_statement);
    return return_value;
 }
+// Returns scoreboard information for the current top 10 bots
+String DBConnector::get_scoreboard_top_ten() {
+   String return_value;
+   std::string sql_query = "SELECT bot_info.position, player.name, bot_info.ranking, bot_info.bot_ID_PK"
+            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
+            + (std::string)"               bot.ranking,"
+            + (std::string)"               bot.bot_ID_PK, bot.player_ID_FK"
+            + (std::string)"          FROM javafalls.bot"
+            + (std::string)"       ) bot_info"
+            + (std::string)"  JOIN javafalls.player"
+            + (std::string)"    ON player_ID_PK = bot_info.player_ID_FK"
+            + (std::string)" WHERE bot_info.position <= 10"
+            + (std::string)" ORDER BY bot_info.position";
+   SQLHSTMT sql_statement = create_command(sql_query);
+   execute(sql_statement);
+   return_value = get_results(sql_statement);
+   destroy_command(sql_statement);
+   return return_value;
+}
 
 // Get name parts for username login screen
 String DBConnector::get_name_parts(int section) {
@@ -858,6 +877,7 @@ void DBConnector::_bind_methods() {
    ClassDB::bind_method(D_METHOD("get_bot_range", "bot_id", "min_score", "max_score"), &DBConnector::get_bot_range);
    ClassDB::bind_method(D_METHOD("get_max_score"), &DBConnector::get_max_score);
    ClassDB::bind_method(D_METHOD("get_min_score"), &DBConnector::get_min_score);
+   ClassDB::bind_method(D_METHOD("get_scoreboard_top_ten"), &DBConnector::get_scoreboard_top_ten);
 
    ClassDB::bind_method(D_METHOD("get_name_parts", "section"), &DBConnector::get_name_parts);
 

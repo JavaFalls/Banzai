@@ -1,1353 +1,210 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://leaderboard.gd" type="Script" id=1]
-[ext_resource path="res://leader_theme.tres" type="Theme" id=2]
+[ext_resource path="res://Graphics/leaderboard/background.png" type="Texture" id=2]
+[ext_resource path="res://Graphics/leaderboard/platform.png" type="Texture" id=3]
+[ext_resource path="res://Graphics/leaderboard/light.png" type="Texture" id=4]
+[ext_resource path="res://Graphics/bots/front.png" type="Texture" id=5]
+[ext_resource path="res://Fonts/ROBOVOX_.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Custom Nodes (Scenes)/scoreboard_entry.tscn" type="PackedScene" id=7]
 
 [node name="Node" type="Node" index="0"]
 
 script = ExtResource( 1 )
 request_pause = 1
 
-[node name="HTTPRequest" type="HTTPRequest" parent="." index="0"]
-
-download_file = ""
-use_threads = false
-body_size_limit = -1
-max_redirects = 8
-
-[node name="Timer" type="Timer" parent="." index="1"]
+[node name="Timer" type="Timer" parent="." index="0"]
 
 process_mode = 1
 wait_time = 1.0
 one_shot = false
 autostart = false
 
-[node name="title" type="Label" parent="." index="2"]
+[node name="graphics" type="Node" parent="." index="1"]
+
+[node name="background" type="Sprite" parent="graphics" index="0"]
+
+texture = ExtResource( 2 )
+centered = false
+
+[node name="platform" type="Sprite" parent="graphics" index="1"]
+
+position = Vector2( 307, 170 )
+texture = ExtResource( 3 )
+centered = false
+_sections_unfolded = [ "Offset", "Transform" ]
+
+[node name="light" type="Sprite" parent="graphics" index="2"]
+
+position = Vector2( 296, 0 )
+texture = ExtResource( 4 )
+centered = false
+_sections_unfolded = [ "Transform" ]
+
+[node name="robot" type="Sprite" parent="graphics" index="3"]
+
+position = Vector2( 327, 150 )
+texture = ExtResource( 5 )
+centered = false
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="text(MarginContainer)" type="MarginContainer" parent="." index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 0.15
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 400.0
+margin_bottom = 225.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+_sections_unfolded = [ "Margin", "Rect", "Size Flags", "custom_constants" ]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="text(MarginContainer)" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 400.0
+margin_bottom = 225.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/separation = 0
+alignment = 0
+_sections_unfolded = [ "custom_constants" ]
+
+[node name="TopBotList(VBoxContainer)" type="VBoxContainer" parent="text(MarginContainer)/HBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 269.0
+margin_bottom = 225.0
+rect_min_size = Vector2( 266, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/separation = 1
+alignment = 0
+_sections_unfolded = [ "Rect", "custom_constants" ]
+
+[node name="GameTitle" type="Label" parent="text(MarginContainer)/HBoxContainer/TopBotList(VBoxContainer)" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 269.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 0, 42 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-text = "Facility Honors"
+custom_fonts/font = ExtResource( 6 )
+text = "Battle Bots"
 align = 1
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Anchor" ]
+_sections_unfolded = [ "Rect", "custom_fonts" ]
 
-[node name="leaders" type="VBoxContainer" parent="." index="3"]
+[node name="scoreboard_entry1" parent="text(MarginContainer)/HBoxContainer/TopBotList(VBoxContainer)" index="1" instance=ExtResource( 7 )]
 
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.15
-anchor_right = 0.75
-anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-alignment = 1
-_sections_unfolded = [ "Anchor" ]
+margin_top = 43.0
+margin_right = 269.0
+margin_bottom = 60.0
 
-[node name="label" type="HBoxContainer" parent="leaders" index="0"]
+[node name="scoreboard_entry2" parent="text(MarginContainer)/HBoxContainer/TopBotList(VBoxContainer)" index="2" instance=ExtResource( 7 )]
 
-editor/display_folded = true
+margin_top = 61.0
+margin_right = 269.0
+margin_bottom = 78.0
+
+[node name="scoreboard_entry3" parent="text(MarginContainer)/HBoxContainer/TopBotList(VBoxContainer)" index="3" instance=ExtResource( 7 )]
+
+margin_top = 79.0
+margin_right = 269.0
+margin_bottom = 96.0
+
+[node name="scoreboard_entry4" parent="text(MarginContainer)/HBoxContainer/TopBotList(VBoxContainer)" index="4" instance=ExtResource( 7 )]
+
+margin_top = 97.0
+margin_right = 269.0
+margin_bottom = 114.0
+
+[node name="scoreboard_entry5" parent="text(MarginContainer)/HBoxContainer/TopBotList(VBoxContainer)" index="5" instance=ExtResource( 7 )]
+
+margin_top = 115.0
+margin_right = 269.0
+margin_bottom = 132.0
+
+[node name="scoreboard_entry6" parent="text(MarginContainer)/HBoxContainer/TopBotList(VBoxContainer)" index="6" instance=ExtResource( 7 )]
+
+margin_top = 133.0
+margin_right = 269.0
+margin_bottom = 150.0
+
+[node name="scoreboard_entry7" parent="text(MarginContainer)/HBoxContainer/TopBotList(VBoxContainer)" index="7" instance=ExtResource( 7 )]
+
+margin_top = 151.0
+margin_right = 269.0
+margin_bottom = 168.0
+
+[node name="scoreboard_entry8" parent="text(MarginContainer)/HBoxContainer/TopBotList(VBoxContainer)" index="8" instance=ExtResource( 7 )]
+
+margin_top = 169.0
+margin_right = 269.0
+margin_bottom = 186.0
+
+[node name="scoreboard_entry9" parent="text(MarginContainer)/HBoxContainer/TopBotList(VBoxContainer)" index="9" instance=ExtResource( 7 )]
+
+margin_top = 187.0
+margin_right = 269.0
+margin_bottom = 204.0
+
+[node name="scoreboard_entry10" parent="text(MarginContainer)/HBoxContainer/TopBotList(VBoxContainer)" index="10" instance=ExtResource( 7 )]
+
+margin_top = 205.0
+margin_right = 269.0
+margin_bottom = 222.0
+
+[node name="BotHighlight(VBoxContainer)" type="VBoxContainer" parent="text(MarginContainer)/HBoxContainer" index="1"]
+
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 768.0
-margin_bottom = 35.0
+margin_left = 269.0
+margin_right = 400.0
+margin_bottom = 225.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
+size_flags_horizontal = 3
+size_flags_vertical = 1
 alignment = 0
-_sections_unfolded = [ "Size Flags", "Theme" ]
-
-[node name="Container" type="Container" parent="leaders/label" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Container2" type="Container" parent="leaders/label" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-
-[node name="Label" type="Label" parent="leaders/label" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-text = "Score"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Container3" type="Container" parent="leaders/label" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-
-[node name="1" type="HBoxContainer" parent="leaders" index="1"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 39.0
-margin_right = 768.0
-margin_bottom = 74.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/1" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/1" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label2" type="Label" parent="leaders/1" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/1" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="2" type="HBoxContainer" parent="leaders" index="2"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 78.0
-margin_right = 768.0
-margin_bottom = 113.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/2" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/2" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label2" type="Label" parent="leaders/2" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/2" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="3" type="HBoxContainer" parent="leaders" index="3"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 117.0
-margin_right = 768.0
-margin_bottom = 152.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/3" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/3" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label2" type="Label" parent="leaders/3" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/3" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="4" type="HBoxContainer" parent="leaders" index="4"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 156.0
-margin_right = 768.0
-margin_bottom = 191.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/4" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/4" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label2" type="Label" parent="leaders/4" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/4" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="5" type="HBoxContainer" parent="leaders" index="5"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 195.0
-margin_right = 768.0
-margin_bottom = 230.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/5" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/5" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label2" type="Label" parent="leaders/5" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/5" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="6" type="HBoxContainer" parent="leaders" index="6"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 234.0
-margin_right = 768.0
-margin_bottom = 269.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/6" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/6" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label2" type="Label" parent="leaders/6" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/6" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="7" type="HBoxContainer" parent="leaders" index="7"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 273.0
-margin_right = 768.0
-margin_bottom = 308.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/7" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/7" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label2" type="Label" parent="leaders/7" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/7" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="8" type="HBoxContainer" parent="leaders" index="8"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 312.0
-margin_right = 768.0
-margin_bottom = 347.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/8" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/8" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label2" type="Label" parent="leaders/8" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/8" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="9" type="HBoxContainer" parent="leaders" index="9"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 351.0
-margin_right = 768.0
-margin_bottom = 386.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Rect", "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/9" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/9" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label2" type="Label" parent="leaders/9" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/9" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="10" type="HBoxContainer" parent="leaders" index="10"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 390.0
-margin_right = 768.0
-margin_bottom = 425.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Rect", "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/10" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/10" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label2" type="Label" parent="leaders/10" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/10" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="11" type="HBoxContainer" parent="leaders" index="11"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 429.0
-margin_right = 768.0
-margin_bottom = 464.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Rect", "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/11" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/11" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label2" type="Label" parent="leaders/11" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/11" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="12" type="HBoxContainer" parent="leaders" index="12"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 468.0
-margin_right = 768.0
-margin_bottom = 510.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.94
-theme = ExtResource( 2 )
-alignment = 0
-_sections_unfolded = [ "Rect", "Size Flags" ]
-
-[node name="TextureRect" type="TextureRect" parent="leaders/12" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 134.0
-margin_bottom = 42.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-size_flags_stretch_ratio = 0.65
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="Label" type="Label" parent="leaders/12" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 138.0
-margin_right = 345.0
-margin_bottom = 42.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label2" type="Label" parent="leaders/12" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 349.0
-margin_right = 556.0
-margin_bottom = 42.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Label3" type="Label" parent="leaders/12" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 560.0
-margin_right = 768.0
-margin_bottom = 42.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 7
-size_flags_vertical = 7
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+_sections_unfolded = [ "Grow Direction", "Rect", "Size Flags" ]
 
 
