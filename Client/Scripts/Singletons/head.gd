@@ -48,7 +48,7 @@ var battle_won = false
 var player_ID = null;
 var model_ID = null;
 var bot_ID = null;
-onready var DB = DBConnector.new()
+#onready var DB = DBConnector.new()
 
 # Weapons/abilities
 onready var weapons = {
@@ -128,13 +128,13 @@ var ai_builds
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
 	init_bots()
-	_test_DB()
+#	_test_DB()
 	ai_builds = [bot_builds[BOT]]
 
 func _input(event):
 	if Input.is_action_just_pressed("shutdown"):
-		if (DB.is_connection_open()):
-			DB.close_connection()
+#		if (DB.is_connection_open()):
+#			DB.close_connection()
 		get_tree().quit()
 	if Input.is_action_just_pressed("toggle_fullscreen"):
 		OS.window_fullscreen = !OS.window_fullscreen
@@ -196,7 +196,7 @@ func create_user():
 	# player -> model -> bot
 	
 	# 1. Create player
-	player_ID = DB.new_player(username)
+#	player_ID = DB.new_player(username)
 	
 	# 2. Create model
 	# - Load generic model
@@ -215,54 +215,54 @@ func create_user():
 	file_store_model.close()
 	
 	# - Store model
-	model_ID = DB.new_model(player_ID)
+#	model_ID = DB.new_model(player_ID)
 	
 	# 3. Create bot
 	var bot_insert_arg_array = [0, 0, 0, 0]
-	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_MODEL_ID] = model_ID
-	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_UTILITY] = DEFAULT_UTILITY
-	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_SECONDARY_WEAPON] = DEFAULT_SECONDARY
-	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_PRIMARY_WEAPON] = DEFAULT_PRIMARY
-	bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, "v1")
+#	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_MODEL_ID] = model_ID
+#	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_UTILITY] = DEFAULT_UTILITY
+#	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_SECONDARY_WEAPON] = DEFAULT_SECONDARY
+#	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_PRIMARY_WEAPON] = DEFAULT_PRIMARY
+#	bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, "v1")
 
 
 
-func _test_DB():
-	# Test the DB functions
-	print("DB Testing begin")
-	print("==========================================")
-	print("Player funcs:=============================")
-	player_ID = DB.new_player("SuperPlayer9000")
-	print("player_ID: ", player_ID)
-	print("DB.get_player(): ", DB.get_player(player_ID))
-	print("DB.update_player(): ", DB.update_player(player_ID, "NewName2000"))
-	print("Bot funcs:================================")
-	var botInsArgArray = [0, 1, 2, 3]
-	bot_ID = DB.new_bot(player_ID, botInsArgArray, "mech9000")
-	print("bot_ID: ", bot_ID)
-	model_ID = botInsArgArray[0]
-	print("model_ID: ", model_ID)
-	print("DB.get_bot: ", DB.get_bot(bot_ID, true))
-	var botUpdArgArray = [player_ID, model_ID, 1000, 3, 0, 1]
-	print("DB.update_bot: ", DB.update_bot(bot_ID, botUpdArgArray, "mech9001", true))
-	print("Model funcs:==============================")
-	model_ID = DB.new_model(player_ID)
-	print("Model_ID: ", model_ID)
-	print("DB.get_model(): ", DB.get_model(model_ID))
-	print("DB.get_model_by_bot_id(): ", DB.get_model_by_bot_id(bot_ID))
-	print("DB.update_model(): ", DB.update_model(model_ID))
-	print("DB.update_model_by_bot_id(): ", DB.update_model_by_bot_id(bot_ID))
-	print("Score funcs:==============================")
-	print("DB.get_name_parts(1): ", DB.get_name_parts(1));
-	print("DB.get_bot_range(): ", DB.get_bot_range(bot_ID, 0, 500));
-	print("DB.get_max_score(): ", DB.get_max_score());
-	print("DB.get_min_score(): ", DB.get_min_score());
-	print("Connection funcs:=========================")
-	print("DB.is_connection_open(): ", DB.is_connection_open())
-	print("DB.close_connection(): ", DB.close_connection())
-	print("DB.is_connection_open(): ", DB.is_connection_open())
-	print("DB.open_connection(): ", DB.open_connection())
-	print("DB.is_connection_open(): ", DB.is_connection_open())
-	print("DB.close_connection(): ", DB.close_connection())
-	print("DB.is_connection_open(): ", DB.is_connection_open())
-	print("==========================================")
+#func _test_DB():
+#	# Test the DB functions
+#	print("DB Testing begin")
+#	print("==========================================")
+#	print("Player funcs:=============================")
+#	player_ID = DB.new_player("SuperPlayer9000")
+#	print("player_ID: ", player_ID)
+#	print("DB.get_player(): ", DB.get_player(player_ID))
+#	print("DB.update_player(): ", DB.update_player(player_ID, "NewName2000"))
+#	print("Bot funcs:================================")
+#	var botInsArgArray = [0, 1, 2, 3]
+#	bot_ID = DB.new_bot(player_ID, botInsArgArray, "mech9000")
+#	print("bot_ID: ", bot_ID)
+#	model_ID = botInsArgArray[0]
+#	print("model_ID: ", model_ID)
+#	print("DB.get_bot: ", DB.get_bot(bot_ID, true))
+#	var botUpdArgArray = [player_ID, model_ID, 1000, 3, 0, 1]
+#	print("DB.update_bot: ", DB.update_bot(bot_ID, botUpdArgArray, "mech9001", true))
+#	print("Model funcs:==============================")
+#	model_ID = DB.new_model(player_ID)
+#	print("Model_ID: ", model_ID)
+#	print("DB.get_model(): ", DB.get_model(model_ID))
+#	print("DB.get_model_by_bot_id(): ", DB.get_model_by_bot_id(bot_ID))
+#	print("DB.update_model(): ", DB.update_model(model_ID))
+#	print("DB.update_model_by_bot_id(): ", DB.update_model_by_bot_id(bot_ID))
+#	print("Score funcs:==============================")
+#	print("DB.get_name_parts(1): ", DB.get_name_parts(1));
+#	print("DB.get_bot_range(): ", DB.get_bot_range(bot_ID, 0, 500));
+#	print("DB.get_max_score(): ", DB.get_max_score());
+#	print("DB.get_min_score(): ", DB.get_min_score());
+#	print("Connection funcs:=========================")
+#	print("DB.is_connection_open(): ", DB.is_connection_open())
+#	print("DB.close_connection(): ", DB.close_connection())
+#	print("DB.is_connection_open(): ", DB.is_connection_open())
+#	print("DB.open_connection(): ", DB.open_connection())
+#	print("DB.is_connection_open(): ", DB.is_connection_open())
+#	print("DB.close_connection(): ", DB.close_connection())
+#	print("DB.is_connection_open(): ", DB.is_connection_open())
+#	print("==========================================")
