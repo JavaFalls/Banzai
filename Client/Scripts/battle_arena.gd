@@ -9,7 +9,7 @@ var start_pos1 = Vector2(200,48)   # Where the first fighter spawns
 var start_pos2 = Vector2(200,175)  # Where the second fighter spawns
 
 onready var player_scene = preload("res://Scenes/player.tscn")
-onready var bot_scene    = preload("res://Scenes/bot.tscn")
+#onready var bot_scene    = preload("res://Scenes/bot.tscn")
 onready var dummy_scene  = preload("res://Scenes/dummy.tscn")
 
 # The signal that is emitted when a fighter's hit_points reach zero
