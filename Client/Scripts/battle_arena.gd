@@ -2,6 +2,10 @@
 
 extends Node2D
 
+#Constants
+const UPPER_LIMIT = 1500
+const LOWER_LIMIT = 0
+
 # The variables
 var fighter1                       # Player's fighter or AI
 var fighter2                       # Opponent
@@ -16,9 +20,9 @@ onready var dummy_scene  = preload("res://Scenes/dummy.tscn")
 signal game_end
 
 func _ready():
-    #add code here to choose who fights (player or AIs)
+    # Call get opponent here
+	print(get_opponent(525))
 
-	
 	fighter1 = dummy_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
@@ -52,12 +56,32 @@ func post_game():
 	fighter2.queue_free()
 	
 # This function is called to choose an opponent
-# It returns the opponent bot's ID
+# It returns the opponent bot's data.
+# If no opponent is found, null is returned
 func get_opponent(bot_id):
-	var bot_rating = head.DB.get_bot(bot_id, false) # Current bot rating. Used as pivot point for matchmaking algorithm
-	# get bot ID
-	# get bot rating from DB
-	# Collect at most 10 bots within a range of 5 up and 5 down
-	# Randomly pick a bot ID and download that baby
-	# Load the bot into the Neural Network and initialize the opponent
-	# return
+	var opponent = null
+	var rank_width = 0
+	var bot_data = JSON.parse(head.DB.get_bot(bot_id, false)).result["data"][0] # Get all bot data from Database
+	var lowest_rank = bot_data["ranking"]
+	var upper_rank  = bot_data["ranking"]
+	
+	# Search for opponents as long as the rank range is not exited
+	while (opponent == null) && ((lowest_rank != LOWER_LIMIT) || (upper_rank != UPPER_LIMIT)):
+		rank_width += 5
+		lowest_rank = (bot_data["ranking"] - rank_width)
+		upper_rank  = (bot_data["ranking"] + rank_width)
+		
+		if lowest_rank < LOWER_LIMIT:
+			lowest_rank = LOWER_LIMIT
+		if upper_rank > UPPER_LIMIT:
+			upper_rank = UPPER_LIMIT
+		
+		# Get possible opponents from the Database
+		var opponent_list = JSON.parse(head.DB.get_bot_range(bot_id, lowest_rank, upper_rank)).result["data"]
+
+		if opponent_list.size() > 0:
+			randomize()
+			opponent = opponent_list[randi()%opponent_list.size()+1]
+		else:
+			opponent = null
+	return opponent
