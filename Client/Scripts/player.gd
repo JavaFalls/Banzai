@@ -2,7 +2,7 @@
 # neural network trains on.
 
 extends "res://Scripts/entity.gd"
-
+onready var game_state = self.get_parent().get_child(1) #Currently child 1 is game state apparently. this is temporary code it needs to set gamestate automatically to the right child
 var relative_mouse = Vector2()
 
 func _physics_process(delta):
@@ -46,6 +46,7 @@ func _physics_process(delta):
 			set_rotation_degrees(180)
 		else:
 			set_rotation_degrees(0)
-
+	#print(self.get_parent().get_children())
+	game_state.set_player_state(self)
 	move_and_slide(direction.normalized()*movement_speed, UP)
 	get_node("Label").set_text(str(get_hit_points()))

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/arena_train.gd" type="Script" id=1]
 [ext_resource path="res://assets/ground.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/game_state.gd" type="Script" id=3]
 
 [node name="world" type="Node2D" index="0"]
 
@@ -16,5 +17,9 @@ position = Vector2( 609.413, 324.274 )
 scale = Vector2( 20.3438, 20.3438 )
 texture = ExtResource( 2 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
+
+[node name="game_state" type="Node" parent="." index="1"]
+
+script = ExtResource( 3 )
 
 
