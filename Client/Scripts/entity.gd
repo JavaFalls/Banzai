@@ -20,6 +20,7 @@ var psuedo_mouse     = Vector2()     # This is the players curser position/bot's
 var psuedo_primary   = 0
 var psuedo_secondary = 0
 var psuedo_ability   = 0
+var in_peril         = 0
 
 signal game_end # The signal indicate the the arena match is over
 
@@ -51,7 +52,7 @@ func get_hit_points():
 func get_trajectory():
 	return direction
 	
-func increment_hitpoints(damage):
+func increment_hitpoints(damage): # this decremements now because we make health go down.
 	hit_points -= damage
 	
 func set_opponent(new_opponent):
