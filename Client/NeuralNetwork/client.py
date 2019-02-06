@@ -74,8 +74,6 @@ def save_game_state(game_state):
 # while True:
 
 # save game state for later training
-print(sys.argv)
-print("client output=================================")
 save_game_state(sys.argv)
 
 # Connect to server

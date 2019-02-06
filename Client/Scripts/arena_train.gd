@@ -42,9 +42,12 @@ func send_nn_state():
 	print(game_state.get_training_state())
 	path.append(game_state.get_training_state())
 	OS.execute('python', path, true, output)
+	print("OUT_PUT=================================================")
+	print(output)
 	output = output[0].split_floats(',', false)
 	for x in output:
 		x = round(x)
 		x = int(x)
 		predictions.append(x)
+	print(predictions)
 	return predictions

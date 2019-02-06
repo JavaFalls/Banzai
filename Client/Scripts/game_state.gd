@@ -61,34 +61,38 @@ func get_training_state():
 	
 func set_bot_state(bot):
 	self.bot_position = bot.get_position()
-	bot_position[0] = int(bot_position[0])
-	bot_position[1] = int(bot_position[1])
+	bot_position[0]   = int(bot_position[0])
+	bot_position[1]   = int(bot_position[1])
 	self.bot_mouse    = bot.get_psuedo_mouse()
+	bot_mouse[0]      = int(bot_mouse[0])
+	bot_mouse[1]      = int(bot_mouse[1])
 	self.bot_vector   = bot.get_trajectory()
 
 	
 func set_player_state(player):
 	self.player_position = player.get_position()
-	player_position[0] = int(player_position[0])
-	player_position[1] = int(player_position[1])
-	self.player_mouse    = player.get_global_mouse_position()
+	player_position[0]   = int(player_position[0])
+	player_position[1]   = int(player_position[1])
+	self.player_mouse    = player.get_psuedo_mouse()
+	player_mouse[0]      = int(player_mouse[0])
+	player_mouse[1]      = int(player_mouse[1])
 	self.player_vector   = player.get_trajectory()
 
 func set_predictions(predictions):
-	predicted_player_x = 01
-	predicted_player_y = 0
-	predicted_player_mouse_x = 02
-	predicted_player_mouse_y = 0
-	predicted_player_vector_x = 0
-	predicted_player_vector_y = 03
-	
-	predicted_bot_x = 0
-	predicted_bot_y = 05
-	predicted_bot_mouse_x = 0
-	predicted_bot_mouse_y = 0
-	predicted_bot_vector_x = 06
-	predicted_bot_vector_y = 0
-
+#	predicted_player_x = 01
+#	predicted_player_y = 0
+#	predicted_player_mouse_x = 02
+#	predicted_player_mouse_y = 0
+#	predicted_player_vector_x = 0
+#	predicted_player_vector_y = 03
+#
+#	predicted_bot_x = 0
+#	predicted_bot_y = 05
+#	predicted_bot_mouse_x = 0
+#	predicted_bot_mouse_y = 0
+#	predicted_bot_vector_x = 06
+#	predicted_bot_vector_y = 0
+    pass
 	
 func _ready():
 	# Called when the node is added to the scene for the first time.
