@@ -756,7 +756,7 @@ String DBConnector::get_results(SQLHSTMT sql_statement_handle) {
       }
       catch (std::bad_alloc exception) {
          std::cout << "get_results() - Allocation failure for colNames, trying to allocate space for " << number_of_columns << " objects\n";
-         return json_result.c_str();
+         return "";
       }
       try {
          col_data_types = new SQLSMALLINT[number_of_columns + 1]; // Allocate 1 extra spot to account for the fact that array indices start at 0 while column numbers start at 1
@@ -764,7 +764,7 @@ String DBConnector::get_results(SQLHSTMT sql_statement_handle) {
       catch (std::bad_alloc exception) {
          delete[] col_names;
          std::cout << "get_results() - Allocation failure for colDataTypes, trying to allocate space for " << number_of_columns << " SQLSMALLINTs\n";
-         return json_result.c_str();
+         return "";
       }
       try {
          col_data = new char[COLUMN_DATA_BUFFER];
@@ -773,7 +773,7 @@ String DBConnector::get_results(SQLHSTMT sql_statement_handle) {
          delete[] col_names;
          delete[] col_data_types;
          std::cout << "get_results() - Allocation failure for colData, trying to allocate space for 1048576 characters\n";
-         return json_result.c_str();
+         return "";
       }
       // Get column names and data types
       for (i = 1; i <= number_of_columns; i++) {
@@ -825,6 +825,9 @@ String DBConnector::get_results(SQLHSTMT sql_statement_handle) {
                      break;
                   }
                }
+            }
+            else {
+               return "";
             }
          }
          json_result.append("}");
