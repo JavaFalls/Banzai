@@ -19,7 +19,7 @@ default_font = ExtResource( 2 )
 
 default_font = ExtResource( 2 )
 
-[node name="name_screen" type="Node" index="0"]
+[node name="name_screen" type="Node"]
 
 [node name="Control" type="Control" parent="." index="0"]
 

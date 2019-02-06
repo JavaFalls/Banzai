@@ -15,10 +15,6 @@ func _ready():
 	get_node("logout_warning/button_face/Button").connect("mouse_entered", self, "hover_logout_confirm", [true])
 	get_node("logout_warning/button_face/Button").connect("mouse_exited", self, "hover_logout_confirm", [false])
 	
-	get_node("Control/description").text = (
-		"Add description of\n" +
-		"the program.")
-	
 	get_node("Control/username").text = head.username
 	pass
 
