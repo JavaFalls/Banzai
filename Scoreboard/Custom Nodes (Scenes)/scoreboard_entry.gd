@@ -47,14 +47,14 @@ func set_tag_color(new_color):
 func get_position():
 	return get_node(NP_LBL_POSITION).text
 func set_position(new_position):
-	get_node(NP_LBL_POSITION).text = new_position
+	get_node(NP_LBL_POSITION).text = String(new_position)
 
 func get_name():
 	return get_node(NP_LBL_NAME).text
 func set_name(new_name):
-	get_node(NP_LBL_NAME).text = text
+	get_node(NP_LBL_NAME).text = new_name
 
 func get_score():
 	return get_node(NP_LBL_SCORE).text
 func set_score(new_score):
-	get_node(NP_LBL_SCORE).text = new_score
+	get_node(NP_LBL_SCORE).text = String(new_score)
