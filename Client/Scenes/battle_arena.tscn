@@ -17,7 +17,7 @@ extents = Vector2( 8, 160 )
 custom_solver_bias = 0.0
 extents = Vector2( 232, 8 )
 
-[node name="battle_arena" type="Node2D" index="0"]
+[node name="battle_arena" type="Node2D"]
 
 script = ExtResource( 1 )
 
@@ -28,7 +28,7 @@ script = ExtResource( 2 )
 [node name="ground" type="Sprite" parent="background" index="0"]
 
 modulate = Color( 0, 0.49231, 0.851563, 1 )
-position = Vector2( 616, 156 )
+position = Vector2( 620, 156 )
 scale = Vector2( 9.5, 9.75 )
 texture = ExtResource( 3 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
@@ -54,6 +54,7 @@ linear_velocity = Vector2( 0, 0 )
 linear_damp = -1.0
 angular_velocity = 0.0
 angular_damp = -1.0
+_sections_unfolded = [ "Collision" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="left wall" index="0"]
 
@@ -173,24 +174,27 @@ texture = ExtResource( 4 )
 
 [node name="healthbar" type="Sprite" parent="." index="5"]
 
-position = Vector2( 200, 12 )
+position = Vector2( 204, 8 )
 scale = Vector2( 0.96, 1 )
 texture = ExtResource( 5 )
 
 [node name="health1" type="Sprite" parent="healthbar" index="0"]
 
 modulate = Color( 0, 1, 0, 1 )
-position = Vector2( -101.302, 0 )
+position = Vector2( -195.833, -8 )
 scale = Vector2( 11.6211, 1 )
 texture = ExtResource( 6 )
-_sections_unfolded = [ "Transform", "Visibility" ]
+centered = false
+_sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 
 [node name="health2" type="Sprite" parent="healthbar" index="1"]
 
 modulate = Color( 0, 1, 0, 1 )
-position = Vector2( 102.083, -2.68221e-07 )
-scale = Vector2( 11.7188, 1 )
+position = Vector2( 195.319, 7.9668 )
+rotation = 3.14159
+scale = Vector2( 11.627, 0.990555 )
 texture = ExtResource( 6 )
-_sections_unfolded = [ "Visibility" ]
+centered = false
+_sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 
 

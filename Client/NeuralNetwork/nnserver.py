@@ -72,16 +72,20 @@ def send_response(response):
 
 def react(game_state, model):
    #print(type(game_state))
+   print("game_state=====================")
+   print(game_state)
    input_list = []
    output_list = []
    response_list = []
    for item in game_state:
       input_list.append(item)
    str_input_list = str(input_list)
-   input_list = str_input_list.replace(" ","").replace("[","").replace("]","").replace("(","")\
-   .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").split(",")
+   input_list = str_input_list.replace(" ","").replace("''","'0'").replace("[]", "0").replace("[","").replace("]","").replace("(","")\
+   .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")         
    input_list.pop(0)
    input_list.pop(0)
+   print("input_;ist=====================")
+   print(input_list)
    for item in input_list:
            output_list.append(float(item))
    response_list = model.predict(output_list)
