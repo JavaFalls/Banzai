@@ -152,7 +152,6 @@ _sections_unfolded = [ "Anchor", "Rect", "Theme" ]
 "name_group",
 ]]
 
-editor/display_folded = true
 anchor_left = 0.04688
 anchor_top = 0.09756
 anchor_right = 0.32813
@@ -192,7 +191,7 @@ text = "The Name even bigger"
 flat = false
 clip_text = true
 align = 1
-_sections_unfolded = [ "Visibility" ]
+_sections_unfolded = [ "Rect", "Visibility" ]
 
 [node name="Button8" type="Button" parent="Control/Control/name1_names" index="1"]
 
@@ -985,5 +984,27 @@ flat = false
 clip_text = true
 align = 1
 _sections_unfolded = [ "Anchor", "Rect" ]
+
+[node name="menu_button" type="Button" parent="Control" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 12.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+flat = false
+align = 1
 
 

@@ -1,17 +1,15 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scenes/UI/slide_button.gd" type="Script" id=1]
-[ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=2]
+[ext_resource path="res://themes/menu_button.tres" type="Theme" id=2]
 
-[sub_resource type="Theme" id=1]
-
-default_font = ExtResource( 2 )
-
-[node name="slide_button" type="Path2D" index="0"]
+[node name="slide_button" type="Path2D"]
 
 self_modulate = Color( 0.5, 0.6, 1, 0.7 )
 curve = null
 script = ExtResource( 1 )
+text = "text"
+length = -1
 duration = 0.0
 delay = 0.0
 transition_type = null
@@ -44,7 +42,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = SubResource( 1 )
+theme = ExtResource( 2 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -53,5 +51,25 @@ text = "text"
 flat = false
 align = 1
 _sections_unfolded = [ "Rect", "Theme" ]
+
+[node name="TextureButton" type="TextureButton" parent="PathFollow2D" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 36.0
+margin_bottom = 15.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
 
 

@@ -224,7 +224,7 @@ default_font = ExtResource( 11 )
 default_font = ExtResource( 11 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="main_menu" type="Node" index="0"]
+[node name="main_menu" type="Node"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
