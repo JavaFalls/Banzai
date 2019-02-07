@@ -40,6 +40,17 @@ var model_ID = null;
 var bot_ID = null;
 onready var DB = DBConnector.new()
 
+# Bot Info
+var bot = {
+	"bot_ID"    : 0000,
+	"name"      : "",
+	"player_ID" : 0000,
+	"ranking"   : 0000,
+	"primary"   : 0001,
+	"secondary" : 0002,
+	"utility"   : 0003
+}
+
 # Weapons/abilities
 onready var weapons = {
 	"robot_face": {
