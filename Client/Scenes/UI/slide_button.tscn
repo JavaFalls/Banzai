@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/UI/slide_button.gd" type="Script" id=1]
-[ext_resource path="res://themes/menu_button.tres" type="Theme" id=2]
+[ext_resource path="res://themes/button_text.tres" type="Theme" id=2]
+[ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=3]
 
-[node name="slide_button" type="Path2D"]
+[node name="slide_button" type="Path2D" index="0"]
 
 self_modulate = Color( 0.5, 0.6, 1, 0.7 )
 curve = null
@@ -33,8 +34,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 36.0
-margin_bottom = 15.0
+margin_right = 35.0
+margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -48,28 +49,30 @@ enabled_focus_mode = 2
 shortcut = null
 group = null
 text = "text"
-flat = false
+flat = true
 align = 1
 _sections_unfolded = [ "Rect", "Theme" ]
 
-[node name="TextureButton" type="TextureButton" parent="PathFollow2D" index="1"]
+[node name="NinePatchRect" type="NinePatchRect" parent="PathFollow2D/Button" index="0"]
 
+show_behind_parent = true
 anchor_left = 0.0
 anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 36.0
-margin_bottom = 15.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
+mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
+texture = ExtResource( 3 )
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+_sections_unfolded = [ "Patch Margin", "Visibility" ]
+
+[connection signal="pressed" from="PathFollow2D/Button" to="." method="_on_Button_pressed"]
 
 
