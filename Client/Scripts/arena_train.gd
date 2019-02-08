@@ -20,7 +20,7 @@ func _ready():
 	fighter1.set_name("fighter1")
 	fighter1.set_is_player(true)
 
-	fighter2 = bot_scene.instance()
+
 	fighter2 = bot_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
@@ -33,12 +33,14 @@ func _ready():
 
 func _process(delta):
 	send_nn_state()
+	#gamestate.set_predictions(send_nn_state())
 
 func send_nn_state():
 	var output = []
 	var path = PoolStringArray() 
 	var predictions = []
 	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
+	#path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
 	print(game_state.get_training_state())
 	path.append(game_state.get_training_state())
 	OS.execute('python', path, true, output)
