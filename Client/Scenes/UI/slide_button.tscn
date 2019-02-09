@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/UI/slide_button.gd" type="Script" id=1]
-[ext_resource path="res://themes/button_text.tres" type="Theme" id=2]
-[ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=3]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=2]
+[ext_resource path="res://assets/menu/name_choice/button_long.png" type="Texture" id=3]
 
 [node name="slide_button" type="Path2D"]
 
@@ -38,21 +38,20 @@ margin_right = 35.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 theme = ExtResource( 2 )
 toggle_mode = false
-enabled_focus_mode = 2
+enabled_focus_mode = 0
 shortcut = null
 group = null
 text = "text"
 flat = true
 clip_text = true
 align = 1
-_sections_unfolded = [ "Rect", "Theme" ]
+_sections_unfolded = [ "Theme" ]
 
 [node name="NinePatchRect" type="NinePatchRect" parent="PathFollow2D/Button" index="0"]
 
@@ -68,10 +67,14 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 texture = ExtResource( 3 )
-patch_margin_left = 10
-patch_margin_top = 10
-patch_margin_right = 10
-patch_margin_bottom = 10
-_sections_unfolded = [ "Patch Margin", "Visibility" ]
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+_sections_unfolded = [ "Visibility" ]
+
+[connection signal="mouse_entered" from="PathFollow2D/Button" to="." method="_on_Button_mouse_entered"]
+
+[connection signal="mouse_exited" from="PathFollow2D/Button" to="." method="_on_Button_mouse_exited"]
 
 

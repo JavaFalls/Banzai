@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -7,7 +7,7 @@
 [ext_resource path="res://assets/menu/main_menu/backlight.png" type="Texture" id=5]
 [ext_resource path="res://assets/menu/main_menu/platform.png" type="Texture" id=6]
 [ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=7]
-[ext_resource path="res://themes/button_text.tres" type="Theme" id=8]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=8]
 [ext_resource path="res://assets/menu/main_menu/button_large.png" type="Texture" id=9]
 [ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=10]
 [ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=11]
@@ -92,18 +92,14 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Background", "Glow" ]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=7]
 
 size = 30
 use_mipmaps = false
 use_filter = false
+extra_spacing_char = 1
 font_data = ExtResource( 10 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
-
-[sub_resource type="Theme" id=3]
-
-resource_local_to_scene = true
-default_font = SubResource( 2 )
 
 [sub_resource type="Theme" id=4]
 
@@ -490,21 +486,24 @@ anchor_bottom = 0.0
 margin_left = 101.0
 margin_top = 21.0
 margin_right = 299.0
-margin_bottom = 48.0
+margin_bottom = 49.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = SubResource( 3 )
-text = "Rikitocin Yaki"
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+text = "Neural Knights"
 align = 1
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Theme" ]
 
 [node name="logout_warning" type="Popup" parent="." index="1"]
 

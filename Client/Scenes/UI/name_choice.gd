@@ -2,6 +2,8 @@ extends Node
 
 var sub_names = ["", "", ""]
 
+onready var names = get_node("names").get_children()
+
 func _ready():
 	var delay = 1.0
 	var name_pos = 0 # for sub_names
@@ -17,11 +19,15 @@ func _ready():
 func get_username():
 	return sub_names[0] + " " + sub_names[1] + " " + sub_names[2]
 
+var one_pass = false
 func select_name(text, position):
 	sub_names[position] = text
-#	get_tree().get_nodes_in_group("names")[position].text = button.text
-	if sub_names[0] != "" and sub_names[1] != "" and sub_names[2] != "":
-		get_node("confirm_button").disabled = false
+	names[position].text = text
+	if not one_pass and sub_names[0] != "" and sub_names[1] != "" and sub_names[2] != "":
+		var confirm = get_node("confirm_button")
+		confirm.disabled = false
+		confirm.get_child(0).text = "R\nE\nA\nD\nY";
+		one_pass = true
 
 func start():
 	head.username = get_username()

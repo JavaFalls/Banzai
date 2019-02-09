@@ -9,6 +9,10 @@ export(int, 0, 3) onready var ease_type = Tween.EASE_OUT
 
 export(Theme) var theme
 
+onready var texture_node = get_node("PathFollow2D/Button/NinePatchRect")
+onready var idle_texture = preload("res://assets/menu/name_choice/button_long.png")
+onready var hover_texture = preload("res://assets/menu/name_choice/button_long_selected.png")
+
 func _ready():
 	var button = get_node("PathFollow2D/Button")
 	button.text = text
@@ -22,3 +26,9 @@ func slide():
 	tween.interpolate_property(get_child(0), ":unit_offset", 0.0, 1.0, duration, transition_type, ease_type, delay)
 	add_child(tween)
 	tween.start()
+
+func _on_Button_mouse_entered():
+	texture_node.set_texture(hover_texture) 
+
+func _on_Button_mouse_exited():
+	texture_node.set_texture(idle_texture)
