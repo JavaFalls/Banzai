@@ -19,7 +19,9 @@ from tensorflow.keras.models import load_model
 def save_game_state(game_state):
    str_game_state = str(game_state)
    
-   f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
+   #f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
+   f = open('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
+
    f.write(str_game_state + "\n")
    f.close()   
    
@@ -56,7 +58,8 @@ def save_bot(model):
    model.save('my_model1.h5')
 
 def load_bot():
-   model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model1.h5')
+   #model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model1.h5')
+   model = load_model('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/my_model1.h5')
    return model
 
 def build_model():
@@ -74,13 +77,15 @@ def build_model():
 
 
 def train(model):
-    f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'r+')
+    #f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'r+')
+    f = open('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/gamestates', 'r+')
     line_number = 1
     test  = []
     label = []
     
     for line in f:
-        mylist = line.replace(" ","").replace("[","").replace("]","").replace("(","").replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").split(",")
+        mylist = line.replace(" ","").replace("''","'0'").replace("[]", "0,0").replace("[","").replace("]","").replace("(","")\
+   .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",") 
         mylist.pop(0)
         if line_number%2 == 0:
             label.append(mylist)

@@ -19,17 +19,17 @@ onready var bot_psuedo_secondary = 0
 onready var bot_psuedo_ability   = 0
 onready var bot_in_peril         = 0
 
-onready var predicted_player_position = [] # Predicted player location
-onready var predicted_player_mouse    = [] # Predicted player mouse position
-onready var predicted_player_vector   = [] # Predicted player movement vector
+onready var predicted_player_position = Vector2() # Predicted player location
+onready var predicted_player_mouse    = Vector2() # Predicted player mouse position
+onready var predicted_player_vector   = Vector2() # Predicted player movement vector
 onready var predicted_player_psuedo_primary   = 0
 onready var predicted_player_psuedo_secondary = 0
 onready var predicted_player_psuedo_ability   = 0
 onready var predicted_player_in_peril         = 0
 
-onready var predicted_bot_position = [] # Predicted bot location
-onready var predicted_bot_mouse    = [] # Predicted bot mouse position
-onready var predicted_bot_vector   = [] # Predicted bot movement vector 
+onready var predicted_bot_position = Vector2() # Predicted bot location
+onready var predicted_bot_mouse    = Vector2() # Predicted bot mouse position
+onready var predicted_bot_vector   = Vector2() # Predicted bot movement vector 
 onready var predicted_bot_psuedo_primary   = 0
 onready var predicted_bot_psuedo_secondary = 0
 onready var predicted_bot_psuedo_ability   = 0
@@ -107,27 +107,22 @@ func set_player_state(player):
 	
 
 func set_predictions(predictions):
-	predicted_bot_position[0]      = predictions[0]
-	predicted_bot_position[1]      = predictions[1]
-	predicted_bot_mouse[0]         = predictions[2]
-	predicted_bot_mouse[1]         = predictions[3]
-	predicted_bot_vector[0]        = predictions[4]
-	predicted_bot_vector[1]        = predictions[5]
-	predicted_bot_psuedo_primary   = predictions[6]
-	predicted_bot_psuedo_secondary = predictions[7]
-	predicted_bot_psuedo_ability   = predictions[8]
-	predicted_bot_in_peril         = predictions[9]
-	
-	predicted_player_position[0]      = predictions[10]
-	predicted_player_position[1]      = predictions[11]
-	predicted_player_mouse[0]         = predictions[12]
-	predicted_player_mouse[1]         = predictions[13]
-	predicted_player_vector[0]        = predictions[14]
-	predicted_player_vector[1]        = predictions[15]
-	predicted_player_psuedo_primary   = predictions[16]
-	predicted_player_psuedo_secondary = predictions[17]
-	predicted_player_psuedo_ability   = predictions[18]
-	predicted_player_in_peril         = predictions[19]
+	if predictions:
+		predicted_bot_position      = Vector2(predictions[0], predictions[1])
+		predicted_bot_mouse         = Vector2(predictions[2], predictions[3])
+		predicted_bot_vector        = Vector2(predictions[4], predictions[5])
+		predicted_bot_psuedo_primary   = predictions[6]
+		predicted_bot_psuedo_secondary = predictions[7]
+		predicted_bot_psuedo_ability   = predictions[8]
+		predicted_bot_in_peril         = predictions[9]
+		
+		predicted_player_position      = Vector2(predictions[10], predictions[11])
+		predicted_player_mouse         = Vector2(predictions[12], predictions[13])
+		predicted_player_vector        = Vector2(predictions[14], predictions[15])
+		predicted_player_psuedo_primary   = predictions[16]
+		predicted_player_psuedo_secondary = predictions[17]
+		predicted_player_psuedo_ability   = predictions[18]
+		predicted_player_in_peril         = predictions[19]
 	
 
 func _ready():

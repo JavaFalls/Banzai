@@ -32,24 +32,25 @@ func _ready():
 
 
 func _process(delta):
-	send_nn_state()
-	#gamestate.set_predictions(send_nn_state())
+#	send_nn_state()
+	game_state.set_predictions(send_nn_state())
 
 func send_nn_state():
 	var output = []
 	var path = PoolStringArray() 
 	var predictions = []
-	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
-	#path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
-	print(game_state.get_training_state())
+	#path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
+	path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
+#	print(game_state.get_training_state())
 	path.append(game_state.get_training_state())
+#	print(path)
 	OS.execute('python', path, true, output)
 	#print("OUT_PUT=================================================")
-	#print(output)
+#	print(output)
 	output = output[0].split_floats(',', false)
 	for x in output:
 		x = round(x)
 		x = int(x)
 		predictions.append(x)
-	#print(predictions)
+#	print(predictions)
 	return predictions

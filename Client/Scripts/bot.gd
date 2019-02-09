@@ -1,5 +1,4 @@
 extends "res://Scripts/entity.gd"
-onready var psuedo_bot_mouse = [0,0]
 
 onready var game_state = self.get_parent().get_child(1)
 
@@ -16,13 +15,11 @@ func _process(delta):
 	return
 
 func _physics_process(delta):
-	if not game_state.predicted_bot_mouse.empty():
-		psuedo_mouse     = Vector2(game_state.predicted_bot_mouse[0],game_state.predicted_bot_mouse[1])
-		relative_mouse   = get_position() - psuedo_mouse
-	if not game_state.predicted_bot_vector.empty():
-		direction        = Vector2(game_state.predicted_bot_vector[0],game_state.predicted_bot_vector[1])
-	else:
-		direction        = Vector2(0,0)
+	psuedo_mouse     = game_state.predicted_bot_mouse
+	relative_mouse   = get_position() - psuedo_mouse
+	direction        = game_state.predicted_bot_vector
+	
+
 	psuedo_ability       = 0
 	psuedo_secondary     = 0
 	psuedo_primary       = 0
@@ -66,7 +63,7 @@ func _physics_process(delta):
 	return
 
 func get_psuedo_mouse():
-	return psuedo_bot_mouse		
+	return self.psuedo_mouse		
 		
 		
 		

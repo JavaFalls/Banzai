@@ -24,13 +24,13 @@ func _ready():
     # Call get opponent here
 #	print(get_opponent(525))
 
-	fighter1 = dummy_scene.instance()
+	fighter1 = player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
 
 	#fighter2 = bot_scene.instance()
-	fighter2 = dummy_scene.instance()
+	fighter2 = bot_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	#fighter2.attack_primary = false
@@ -48,6 +48,7 @@ func _ready():
 func _process(delta):
 	self.get_node("healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points(),1))
 	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points(),1))
+	game_state.set_predictions(send_nn_state())
 
 # This function is called when one of the fighters hits zero hit_points
 func post_game():
@@ -86,3 +87,23 @@ func get_opponent(bot_id):
 		else:
 			opponent = null
 	return opponent
+	
+func send_nn_state():
+	var output = []
+	var path = PoolStringArray() 
+	var predictions = []
+	#path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
+	path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
+#	print(game_state.get_training_state())
+	path.append(game_state.get_training_state())
+#	print(path)
+	OS.execute('python', path, true, output)
+	#print("OUT_PUT=================================================")
+#	print(output)
+	output = output[0].split_floats(',', false)
+	for x in output:
+#		x = round(x)
+#		x = int(x)
+		predictions.append(x)
+	print(predictions)
+	return predictions
