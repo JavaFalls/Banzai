@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -7,13 +7,13 @@
 [ext_resource path="res://assets/menu/main_menu/backlight.png" type="Texture" id=5]
 [ext_resource path="res://assets/menu/main_menu/platform.png" type="Texture" id=6]
 [ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=7]
-[ext_resource path="res://themes/menu_button.tres" type="Theme" id=8]
+[ext_resource path="res://themes/button_text.tres" type="Theme" id=8]
 [ext_resource path="res://assets/menu/main_menu/button_large.png" type="Texture" id=9]
-[ext_resource path="res://themes/fonts/ROBOVOX_.TTF" type="DynamicFontData" id=10]
+[ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=10]
 [ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=11]
 [ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=12]
 
-[sub_resource type="Environment" id=10]
+[sub_resource type="Environment" id=1]
 
 background_mode = 4
 background_sky_custom_fov = 0.0
@@ -92,134 +92,28 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Background", "Glow" ]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=2]
 
-size = 6
+size = 30
 use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 10 )
-_sections_unfolded = [ "Font", "Settings" ]
+_sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
-[sub_resource type="StyleBoxFlat" id=2]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-bg_color = Color( 0, 0, 0, 0.627451 )
-draw_center = true
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color( 0, 0, 0, 0 )
-border_blend = false
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0.584314, 0.2, 0.2, 0.6 )
-shadow_size = 2
-anti_aliasing = false
-anti_aliasing_size = 1
-
-[sub_resource type="StyleBoxFlat" id=3]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-bg_color = Color( 0, 0, 0, 1 )
-draw_center = true
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color( 1, 1, 1, 0 )
-border_blend = false
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0.585938, 0.201416, 0.201416, 0.6 )
-shadow_size = 2
-anti_aliasing = false
-anti_aliasing_size = 1
-_sections_unfolded = [ "Border", "Shadow" ]
-
-[sub_resource type="StyleBoxFlat" id=4]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-bg_color = Color( 0, 0, 0, 0.627451 )
-draw_center = true
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color( 0, 0, 0, 0 )
-border_blend = false
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0.584314, 0.2, 0.2, 0.6 )
-shadow_size = 2
-anti_aliasing = false
-anti_aliasing_size = 1
-_sections_unfolded = [ "Content Margin", "Shadow" ]
-
-[sub_resource type="DynamicFont" id=5]
-
-size = 18
-use_mipmaps = false
-use_filter = false
-font_data = ExtResource( 10 )
-_sections_unfolded = [ "Font", "Settings" ]
-
-[sub_resource type="Theme" id=6]
+[sub_resource type="Theme" id=3]
 
 resource_local_to_scene = true
-default_font = SubResource( 5 )
-Button/colors/font_color = Color( 1, 1, 1, 1 )
-Button/colors/font_color_disabled = Color( 1, 1, 1, 0.2 )
-Button/colors/font_color_hover = Color( 0.996078, 0.980392, 0.176471, 1 )
-Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
-Button/constants/hseparation = 2
-Button/fonts/font = SubResource( 1 )
-Button/styles/disabled = SubResource( 2 )
-Button/styles/focus = SubResource( 3 )
-Button/styles/hover = SubResource( 3 )
-Button/styles/normal = SubResource( 4 )
-Button/styles/pressed = SubResource( 3 )
-_sections_unfolded = [ "Button", "Button/colors", "Button/styles", "Resource" ]
+default_font = SubResource( 2 )
 
-[sub_resource type="Theme" id=7]
+[sub_resource type="Theme" id=4]
 
 default_font = ExtResource( 11 )
 
-[sub_resource type="Theme" id=8]
+[sub_resource type="Theme" id=5]
 
 default_font = ExtResource( 11 )
 
-[sub_resource type="Theme" id=9]
+[sub_resource type="Theme" id=6]
 
 default_font = ExtResource( 11 )
 _sections_unfolded = [ "Resource" ]
@@ -317,7 +211,7 @@ _sections_unfolded = [ "Material", "Transform" ]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Control/MarginContainer" index="6"]
 
-environment = SubResource( 10 )
+environment = SubResource( 1 )
 
 [node name="stats_button" type="TextureButton" parent="Control" index="1"]
 
@@ -573,8 +467,8 @@ anchor_right = 0.69434
 anchor_bottom = 0.10167
 margin_left = -0.608002
 margin_top = -0.12425
-margin_right = -0.735992
-margin_bottom = -0.87575
+margin_right = 0.264008
+margin_bottom = 0.12425
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -603,7 +497,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = SubResource( 6 )
+theme = SubResource( 3 )
 text = "Rikitocin Yaki"
 align = 1
 valign = 1
@@ -661,7 +555,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = SubResource( 7 )
+theme = SubResource( 4 )
 align = 3
 valign = 1
 autowrap = true
@@ -720,7 +614,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = SubResource( 8 )
+theme = SubResource( 5 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -791,7 +685,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = SubResource( 9 )
+theme = SubResource( 6 )
 align = 1
 clip_text = true
 percent_visible = 1.0

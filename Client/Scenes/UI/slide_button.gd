@@ -22,7 +22,3 @@ func slide():
 	tween.interpolate_property(get_child(0), ":unit_offset", 0.0, 1.0, duration, transition_type, ease_type, delay)
 	add_child(tween)
 	tween.start()
-
-
-func _on_Button_pressed():
-	print(self.name)
