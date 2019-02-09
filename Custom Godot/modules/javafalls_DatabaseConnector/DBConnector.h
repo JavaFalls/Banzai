@@ -195,6 +195,10 @@ public:
    int get_min_score();
    // Returns scoreboard information for the current top 10 bots
    String get_scoreboard_top_ten();
+   // Returns the position on the scoreboard of a specified bot
+   int get_scoreboard_position(int bot_id);
+   // Returns all of the robots in the specified range on the scoreboard
+   String get_scoreboard_range(int min_position, int max_position);
 
    //// Other
    // Get name parts for username login screen

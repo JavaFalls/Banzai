@@ -43,14 +43,13 @@ func _ready():
 func request():
 	# Get data
 	var raw_JSON = DB.get_scoreboard_top_ten()
-	print(raw_JSON)
 	if (raw_JSON != ""):
 		var scoreboard_dictionary = JSON.parse(raw_JSON).result["data"]
 		
 		# Place data on scoreboard
 		var i = 0
 		for scoreboard_entry in _leaders.get_children():
-			scoreboard_entry.set_name(scoreboard_dictionary[i]["name"] + " " + String(scoreboard_dictionary[i]["bot_ID_PK"]))
+			scoreboard_entry.set_name(scoreboard_dictionary[i]["name"])
 			scoreboard_entry.set_score(scoreboard_dictionary[i]["ranking"])
 			
 			i += 1

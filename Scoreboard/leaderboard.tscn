@@ -88,13 +88,33 @@ custom_constants/separation = 0
 alignment = 0
 _sections_unfolded = [ "custom_constants" ]
 
-[node name="left_side_of_screen" type="VBoxContainer" parent="screen_layout/HBoxContainer" index="0"]
+[node name="spacer" type="VSeparator" parent="screen_layout/HBoxContainer" index="0"]
+
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 3.0
+margin_bottom = 225.0
+rect_min_size = Vector2( 3, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 4
+size_flags_vertical = 1
+custom_constants/separation = 0
+_sections_unfolded = [ "Theme", "custom_styles" ]
+
+[node name="left_side_of_screen" type="VBoxContainer" parent="screen_layout/HBoxContainer" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 266.0
+margin_left = 3.0
+margin_right = 269.0
 margin_bottom = 225.0
 rect_min_size = Vector2( 266, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
@@ -197,13 +217,13 @@ margin_bottom = 161.0
 margin_top = 162.0
 margin_bottom = 179.0
 
-[node name="right_side_of_screen" type="VBoxContainer" parent="screen_layout/HBoxContainer" index="1"]
+[node name="right_side_of_screen" type="VBoxContainer" parent="screen_layout/HBoxContainer" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 266.0
+margin_left = 269.0
 margin_right = 400.0
 margin_bottom = 225.0
 rect_pivot_offset = Vector2( 0, 0 )

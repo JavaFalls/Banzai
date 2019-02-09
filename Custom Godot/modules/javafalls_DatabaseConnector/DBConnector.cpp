@@ -502,6 +502,50 @@ String DBConnector::get_scoreboard_top_ten() {
    destroy_command(sql_statement);
    return return_value;
 }
+// Returns the position on the scoreboard of a specified bot
+int DBConnector::get_scoreboard_position(int bot_id) {
+   const int PARAM_BOT_ID = 1;
+   
+   int return_value;
+   std::string sql_query = "SELECT bot_info.position"
+            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
+            + (std::string)"               bot.ranking,"
+            + (std::string)"               bot.bot_ID_PK, bot.player_ID_FK"
+            + (std::string)"          FROM javafalls.bot"
+            + (std::string)"       ) bot_info"
+            + (std::string)" WHERE bot_info.bot_ID_PK = ?";
+   SQLHSTMT sql_statement = create_command(sql_query);
+   bind_parameter(sql_statement, PARAM_BOT_ID, &bot_id);
+   execute(sql_statement);
+   get_row(sql_statement);
+   return_value = get_int_attribute(sql_statement, 1);
+   destroy_command(sql_statement);
+   return return_value;
+}
+// Returns all of the robots in the specified range on the scoreboard
+String DBConnector::get_scoreboard_range(int min_position, int max_position) {
+   const int PARAM_MIN_POSITION = 1;
+   const int PARAM_MAX_POSITION = 2;
+   
+   String return_value;
+   std::string sql_query = "SELECT bot_info.position, player.name, bot_info.ranking, bot_info.bot_ID_PK"
+            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
+            + (std::string)"               bot.ranking,"
+            + (std::string)"               bot.bot_ID_PK, bot.player_ID_FK"
+            + (std::string)"          FROM javafalls.bot"
+            + (std::string)"       ) bot_info"
+            + (std::string)"  JOIN javafalls.player"
+            + (std::string)"    ON player_ID_PK = bot_info.player_ID_FK"
+            + (std::string)" WHERE bot_info.position BETWEEN ? AND ?"
+            + (std::string)" ORDER BY bot_info.position";
+   SQLHSTMT sql_statement = create_command(sql_query);
+   bind_parameter(sql_statement, PARAM_MIN_POSITION, &min_position);
+   bind_parameter(sql_statement, PARAM_MAX_POSITION, &max_position);
+   execute(sql_statement);
+   return_value = get_results(sql_statement);
+   destroy_command(sql_statement);
+   return return_value;
+}
 
 // Get name parts for username login screen
 String DBConnector::get_name_parts(int section) {
@@ -881,6 +925,8 @@ void DBConnector::_bind_methods() {
    ClassDB::bind_method(D_METHOD("get_max_score"), &DBConnector::get_max_score);
    ClassDB::bind_method(D_METHOD("get_min_score"), &DBConnector::get_min_score);
    ClassDB::bind_method(D_METHOD("get_scoreboard_top_ten"), &DBConnector::get_scoreboard_top_ten);
+   ClassDB::bind_method(D_METHOD("get_scoreboard_position", "bot_id"), &DBConnector::get_scoreboard_position);
+   ClassDB::bind_method(D_METHOD("get_scoreboard_range", "min_position", "max_position"), &DBConnector::get_scoreboard_range);
 
    ClassDB::bind_method(D_METHOD("get_name_parts", "section"), &DBConnector::get_name_parts);
 
