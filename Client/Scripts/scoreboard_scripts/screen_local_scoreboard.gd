@@ -10,6 +10,10 @@ const NP_SCOREBOARD_UP = "ui_layout/HBoxContainer/left_side_of_screen/scoreboard
 const NP_SCOREBOARD_DOWN = "ui_layout/HBoxContainer/left_side_of_screen/scoreboard/scoreboard_entry_down"
 const NP_SCOREBOARD = "ui_layout/HBoxContainer/left_side_of_screen/scoreboard"
 
+const NP_PLAYER_HIGHLIGHT_NAME = "player_bot_highlight/player_name"
+const NP_PLAYER_HIGHLIGHT_POSITION = "player_bot_highlight/position"
+const NP_PLAYER_HIGHLIGHT_SCORE = "player_bot_highlight/score"
+
 const PLAYER_BOT_DEFAULT_DISPLAY_SPOT = 5 # The scoreboard_entry that the player's bot will be displayed on when the screen first loads
 const MIN_DISPLAY_POSITION = 0 # The scoreboard won't scroll past this point
 const DB_GRAB_POSITIONS = 50 # How many positions to load around the current display position
@@ -45,6 +49,7 @@ func _ready():
 	if (display_position < MIN_DISPLAY_POSITION):
 		display_position = MIN_DISPLAY_POSITION
 	get_scoreboard_dictionary()
+	update_player_bot_highlight()
 	update_scoreboard_ui()
 
 func _input(event):
@@ -57,6 +62,7 @@ func _input(event):
 #-------------------------------------------------------------------------------
 func request():
 	get_scoreboard_dictionary()
+	update_player_bot_highlight()
 	update_scoreboard_ui()
 
 func scoreboard_entry_up_on_click():
@@ -64,6 +70,9 @@ func scoreboard_entry_up_on_click():
 
 func scoreboard_entry_down_on_click():
 	move_scoreboard_display(1)
+
+func _on_back_button_pressed():
+	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 # Functions:
 #-------------------------------------------------------------------------------
@@ -107,6 +116,15 @@ func update_scoreboard_ui():
 				scoreboard_entry.set_tag_color(scoreboard_entry.TAG_GREEN)
 		
 		i += 1
+
+# Updates the player's bot information with the latest data from the database
+func update_player_bot_highlight():
+	get_node(NP_PLAYER_HIGHLIGHT_POSITION).text = "Rank: " + String(head.DB.get_scoreboard_position(head.bot_ID))
+	
+	var score_raw_JSON = head.DB.get_bot(head.bot_ID, false)
+	if (score_raw_JSON != ""):
+		get_node(NP_PLAYER_HIGHLIGHT_SCORE).text = "Score: " + String(JSON.parse(score_raw_JSON).result["data"][0]["ranking"])
+	pass
 
 # Updates the scoreboard display by moving the displayed positions by the specified amount
 func move_scoreboard_display(amount):

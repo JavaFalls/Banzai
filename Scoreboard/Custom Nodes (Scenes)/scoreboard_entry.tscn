@@ -1,12 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Custom Nodes (Scenes)/scoreboard_entry.gd" type="Script" id=1]
 [ext_resource path="res://Graphics/leaderboard/tag_blue.png" type="Texture" id=2]
 [ext_resource path="res://Graphics/leaderboard/tag_orange.png" type="Texture" id=3]
 [ext_resource path="res://Graphics/leaderboard/tag_green.png" type="Texture" id=4]
-[ext_resource path="res://Fonts/ROBOVOX_.tres" type="DynamicFont" id=5]
 
-[node name="scoreboard_entry" type="MarginContainer"]
+[node name="scoreboard_entry" type="MarginContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -68,7 +67,6 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 5 )
 align = 1
 valign = 1
 percent_visible = 1.0
@@ -91,7 +89,6 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 2
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 5 )
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
@@ -114,7 +111,6 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 10
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 5 )
 text = "-"
 align = 1
 valign = 1

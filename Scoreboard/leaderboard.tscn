@@ -5,7 +5,7 @@
 [ext_resource path="res://Graphics/leaderboard/platform.png" type="Texture" id=3]
 [ext_resource path="res://Graphics/leaderboard/light.png" type="Texture" id=4]
 [ext_resource path="res://Graphics/bots/front.png" type="Texture" id=5]
-[ext_resource path="res://Fonts/ROBOVOX_.tres" type="DynamicFont" id=6]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=6]
 [ext_resource path="res://Custom Nodes (Scenes)/scoreboard_entry.tscn" type="PackedScene" id=7]
 
 [node name="Node" type="Node" index="0"]
@@ -64,11 +64,8 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_constants/margin_right = 0
-custom_constants/margin_top = 0
-custom_constants/margin_left = 0
-custom_constants/margin_bottom = 0
-_sections_unfolded = [ "Margin", "Rect", "Size Flags", "custom_constants" ]
+theme = ExtResource( 6 )
+_sections_unfolded = [ "Margin", "Rect", "Size Flags", "Theme", "custom_constants" ]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="screen_layout" index="0"]
 
@@ -76,6 +73,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_left = 8.0
 margin_right = 400.0
 margin_bottom = 225.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -105,7 +103,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 4
 size_flags_vertical = 1
 custom_constants/separation = 0
-_sections_unfolded = [ "Theme", "custom_styles" ]
+_sections_unfolded = [ "Rect", "Theme", "custom_styles" ]
 
 [node name="left_side_of_screen" type="VBoxContainer" parent="screen_layout/HBoxContainer" index="1"]
 
@@ -142,14 +140,13 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 6 )
 text = "Battle Bots"
 align = 1
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Rect", "custom_fonts" ]
+_sections_unfolded = [ "Rect", "Theme", "custom_fonts" ]
 
 [node name="leaders" type="VBoxContainer" parent="screen_layout/HBoxContainer/left_side_of_screen" index="1"]
 
@@ -224,7 +221,7 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 269.0
-margin_right = 400.0
+margin_right = 392.0
 margin_bottom = 225.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false

@@ -6,8 +6,8 @@
 [ext_resource path="res://assets/local_scoreboard/platform.png" type="Texture" id=4]
 [ext_resource path="res://assets/bots/front.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/Screens/instance_scenes/scoreboard_entry.tscn" type="PackedScene" id=6]
-[ext_resource path="res://assets/local_scoreboard/button_small.png" type="Texture" id=7]
-[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=8]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=7]
+[ext_resource path="res://assets/local_scoreboard/button_small.png" type="Texture" id=8]
 
 [node name="screen_local_scoreboard" type="Node" index="0"]
 
@@ -225,15 +225,17 @@ margin_top = 198.0
 margin_bottom = 215.0
 TAG_TYPE = 2
 
-[node name="right_side_of_screen" type="VBoxContainer" parent="ui_layout/HBoxContainer" index="2"]
+[node name="player_bot_highlight" type="VBoxContainer" parent="." index="3"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 269.0
-margin_right = 269.0
-margin_bottom = 222.0
+margin_left = 287.0
+margin_right = 400.0
+margin_bottom = 225.0
+rect_min_size = Vector2( 113, 225 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -242,10 +244,147 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 custom_constants/separation = 0
 alignment = 0
-_sections_unfolded = [ "Grow Direction", "Margin", "Size Flags", "custom_constants" ]
+_sections_unfolded = [ "Margin", "Rect", "custom_constants" ]
 
-[node name="back_button" type="TextureButton" parent="." index="3"]
+[node name="top_margin" type="HSeparator" parent="player_bot_highlight" index="0"]
 
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 113.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_constants/separation = 0
+_sections_unfolded = [ "Rect", "Size Flags", "custom_constants", "custom_styles" ]
+
+[node name="player_name" type="Label" parent="player_bot_highlight" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 21.0
+margin_top = 20.0
+margin_right = 92.0
+margin_bottom = 34.0
+rect_min_size = Vector2( 71, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "Your Results"
+align = 1
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin", "Rect", "Size Flags", "Theme" ]
+
+[node name="separator" type="HSeparator" parent="player_bot_highlight" index="2"]
+
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 34.0
+margin_right = 113.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 0, 8 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_constants/separation = 0
+_sections_unfolded = [ "Rect", "Size Flags", "Visibility" ]
+
+[node name="position" type="Label" parent="player_bot_highlight" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 21.0
+margin_top = 42.0
+margin_right = 92.0
+margin_bottom = 56.0
+rect_min_size = Vector2( 71, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "Rank: 1"
+align = 1
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="separator2" type="HSeparator" parent="player_bot_highlight" index="4"]
+
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 56.0
+margin_right = 113.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 8 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/separation = 0
+_sections_unfolded = [ "Margin", "Rect", "Size Flags", "Visibility", "custom_constants" ]
+
+[node name="score" type="Label" parent="player_bot_highlight" index="5"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 21.0
+margin_top = 64.0
+margin_right = 92.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 71, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "Score: 98500"
+align = 1
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="back_button" type="TextureButton" parent="." index="4"]
+
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -265,7 +404,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 7 )
+texture_normal = ExtResource( 8 )
 _sections_unfolded = [ "Offset", "Rect", "Size Flags", "Textures", "Theme", "Transform" ]
 
 [node name="Label" type="Label" parent="back_button" index="0"]
@@ -283,7 +422,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 8 )
+theme = ExtResource( 7 )
 text = "back"
 align = 1
 valign = 1
@@ -292,5 +431,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Material", "Rect", "Theme", "Visibility", "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
+
+[connection signal="pressed" from="back_button" to="." method="_on_back_button_pressed"]
 
 
