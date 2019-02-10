@@ -26,7 +26,7 @@ func select_name(text, position):
 	if not one_pass and sub_names[0] != "" and sub_names[1] != "" and sub_names[2] != "":
 		var confirm = get_node("confirm_button")
 		confirm.disabled = false
-		confirm.get_child(0).text = "R\nE\nA\nD\nY";
+		confirm.get_child(0).get_child(0).play("ready")
 		one_pass = true
 
 func start():

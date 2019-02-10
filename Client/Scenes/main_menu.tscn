@@ -92,7 +92,7 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Background", "Glow" ]
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=2]
 
 size = 30
 use_mipmaps = false
@@ -101,15 +101,15 @@ extra_spacing_char = 1
 font_data = ExtResource( 10 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
+[sub_resource type="Theme" id=3]
+
+default_font = ExtResource( 11 )
+
 [sub_resource type="Theme" id=4]
 
 default_font = ExtResource( 11 )
 
 [sub_resource type="Theme" id=5]
-
-default_font = ExtResource( 11 )
-
-[sub_resource type="Theme" id=6]
 
 default_font = ExtResource( 11 )
 _sections_unfolded = [ "Resource" ]
@@ -493,7 +493,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 2
@@ -554,7 +554,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = SubResource( 4 )
+theme = SubResource( 3 )
 align = 3
 valign = 1
 autowrap = true
@@ -613,7 +613,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = SubResource( 5 )
+theme = SubResource( 4 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -684,7 +684,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = SubResource( 6 )
+theme = SubResource( 5 )
 align = 1
 clip_text = true
 percent_visible = 1.0
