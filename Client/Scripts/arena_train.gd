@@ -39,8 +39,8 @@ func send_nn_state():
 	var output = []
 	var path = PoolStringArray() 
 	var predictions = []
-	#path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
-	path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
+	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
+	#path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
 #	print(game_state.get_training_state())
 	path.append(game_state.get_training_state())
 #	print(path)
