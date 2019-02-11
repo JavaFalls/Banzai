@@ -53,9 +53,10 @@ func _process(delta):
 # This function is called when one of the fighters hits zero hit_points
 func post_game():
 	head.battle_winner_calc(fighter1.get_hit_points(), fighter2.get_hit_points())
-	get_tree().change_scene("res://Scenes/post_battle.tscn")
 	fighter1.queue_free()
 	fighter2.queue_free()
+	get_tree().change_scene("res://Scenes/post_battle.tscn")
+
 	
 # This function is called to choose an opponent
 # It returns the opponent bot's data.
@@ -103,7 +104,7 @@ func send_nn_state():
 	output = output[0].split_floats(',', false)
 	for x in output:
 #		x = round(x)
-#		x = int(x)
+		x = int(x)
 		predictions.append(x)
 	print(predictions)
 	return predictions
