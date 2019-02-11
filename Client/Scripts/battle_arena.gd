@@ -16,14 +16,14 @@ onready var player_scene = preload("res://Scenes/player.tscn")
 onready var bot_scene    = preload("res://Scenes/bot.tscn")
 onready var dummy_scene  = preload("res://Scenes/dummy.tscn")
 onready var game_state   = get_node("game_state")
-
+onready var f = File.new()
 # The signal that is emitted when a fighter's hit_points reach zero
 signal game_end
 
 func _ready():
+	f.open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 3)
     # Call get opponent here
-#	print(get_opponent(525))
-
+#	print(get_opponent(525)))
 	fighter1 = player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
@@ -49,6 +49,7 @@ func _process(delta):
 	self.get_node("healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points(),1))
 	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points(),1))
 	game_state.set_predictions(send_nn_state())
+	print(game_state.get_predictions())
 
 # This function is called when one of the fighters hits zero hit_points
 func post_game():
@@ -92,18 +93,21 @@ func send_nn_state():
 	var output = []
 	var path = PoolStringArray() 
 	var predictions = []
-	#path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
-	path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
-#	print(game_state.get_training_state())
+#	###############################TRAIN####################################################
+#   Dont use this its too ineficient. 
+	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
+	#path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
 	path.append(game_state.get_training_state())
-#	print(path)
+	f.store_string(str(path) + "\n")
+	
+	###############################BATTLE####################################################
+	path = PoolStringArray()
+	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
+	#path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
+	path.append(game_state.get_training_state())
 	OS.execute('python', path, true, output)
+	
 	#print("OUT_PUT=================================================")
 #	print(output)
 	output = output[0].split_floats(',', false)
-	for x in output:
-#		x = round(x)
-#		x = int(x)
-		predictions.append(x)
-	print(predictions)
-	return predictions
+	return output

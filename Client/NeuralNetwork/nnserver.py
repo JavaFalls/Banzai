@@ -104,8 +104,8 @@ def save_bot(model):
    model.save('my_model1.h5')
 
 def load_bot():
-   #model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model1.h5')
-   model = load_model('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/my_model1.h5')
+   model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model1.h5')
+   #model = load_model('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/my_model1.h5')
    return model
 
 def build_model():
@@ -113,8 +113,9 @@ def build_model():
    keras.layers.Dense(9, activation=tf.nn.relu),
    keras.layers.Dense(9, activation=tf.nn.relu),
    keras.layers.Dense(1)])
+   optimizer = tf.train.RMSPropOptimizer(0.11)
    model.compile(loss='mse',
-                 optimizer="Adam",
+                 optimizer="Ada" ,
                  metrics=['mae'])
       
    return model
