@@ -10,12 +10,12 @@ self_modulate = Color( 0.5, 0.6, 1, 0.7 )
 curve = null
 script = ExtResource( 1 )
 text = "text"
-length = -1
+max_chars = -1
+box_width = -1
 duration = 0.0
 delay = 0.0
 transition_type = null
 ease_type = null
-theme = null
 
 [node name="PathFollow2D" type="PathFollow2D" parent="." index="0"]
 

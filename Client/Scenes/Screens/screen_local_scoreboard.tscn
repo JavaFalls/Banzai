@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/scoreboard_scripts/screen_local_scoreboard.gd" type="Script" id=1]
 [ext_resource path="res://assets/local_scoreboard/background.png" type="Texture" id=2]
@@ -6,8 +6,10 @@
 [ext_resource path="res://assets/local_scoreboard/platform.png" type="Texture" id=4]
 [ext_resource path="res://assets/bots/front.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/Screens/instance_scenes/scoreboard_entry.tscn" type="PackedScene" id=6]
-[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=7]
+[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=7]
 [ext_resource path="res://assets/local_scoreboard/button_small.png" type="Texture" id=8]
+[ext_resource path="res://assets/local_scoreboard/button_small_hover.png" type="Texture" id=9]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=10]
 
 [node name="screen_local_scoreboard" type="Node" index="0"]
 
@@ -47,6 +49,31 @@ position = Vector2( 327, 131 )
 texture = ExtResource( 5 )
 centered = false
 _sections_unfolded = [ "Transform" ]
+
+[node name="Light2D" type="Light2D" parent="graphics" index="4"]
+
+position = Vector2( 342.176, 83.9789 )
+enabled = true
+editor_only = false
+texture = ExtResource( 3 )
+offset = Vector2( 0, 0 )
+texture_scale = 1.0
+color = Color( 1, 1, 1, 1 )
+energy = 0.8
+mode = 0
+range_height = 0.0
+range_z_min = -1024
+range_z_max = 1024
+range_layer_min = 0
+range_layer_max = 0
+range_item_cull_mask = 1
+shadow_enabled = true
+shadow_color = Color( 1, 1, 1, 0 )
+shadow_buffer_size = 2048
+shadow_gradient_length = 0.0
+shadow_filter = 0
+shadow_filter_smooth = 0.0
+shadow_item_cull_mask = 1
 
 [node name="ui_layout" type="MarginContainer" parent="." index="2"]
 
@@ -147,7 +174,6 @@ _sections_unfolded = [ "Rect", "Visibility" ]
 
 [node name="scoreboard" type="VBoxContainer" parent="ui_layout/HBoxContainer/left_side_of_screen" index="1"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -282,14 +308,15 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Your Results"
 align = 1
 autowrap = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Margin", "Rect", "Size Flags", "Theme" ]
+_sections_unfolded = [ "Margin", "Rect", "Size Flags", "custom_colors" ]
 
 [node name="separator" type="HSeparator" parent="player_bot_highlight" index="2"]
 
@@ -328,7 +355,8 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Rank: 1"
 align = 1
 autowrap = true
@@ -374,7 +402,8 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Score: 98500"
 align = 1
 autowrap = true
@@ -384,7 +413,6 @@ max_lines_visible = -1
 
 [node name="back_button" type="TextureButton" parent="." index="4"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -405,6 +433,7 @@ enabled_focus_mode = 2
 shortcut = null
 group = null
 texture_normal = ExtResource( 8 )
+texture_hover = ExtResource( 9 )
 _sections_unfolded = [ "Offset", "Rect", "Size Flags", "Textures", "Theme", "Transform" ]
 
 [node name="Label" type="Label" parent="back_button" index="0"]
@@ -422,7 +451,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+theme = ExtResource( 10 )
 text = "back"
 align = 1
 valign = 1

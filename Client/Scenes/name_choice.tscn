@@ -10,7 +10,7 @@
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=8]
 [ext_resource path="res://Scenes/UI/slide_button.tscn" type="PackedScene" id=9]
 
-[sub_resource type="Animation" id=31]
+[sub_resource type="Animation" id=1]
 
 length = 0.8
 loop = false
@@ -38,210 +38,210 @@ D
 Y" ]
 }
 
-[sub_resource type="Curve2D" id=1]
+[sub_resource type="Curve2D" id=2]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, -16.2173, 12.9441, 0, 0, 3, -24 )
 }
 
-[sub_resource type="Curve2D" id=2]
+[sub_resource type="Curve2D" id=3]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 43, -44 )
 }
 
-[sub_resource type="Curve2D" id=3]
+[sub_resource type="Curve2D" id=4]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, -9.81966, -0.446348, 0, 0, 83, -64 )
 }
 
-[sub_resource type="Curve2D" id=4]
+[sub_resource type="Curve2D" id=5]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, -34.4476, -0.415031, 0, 0, 123, -84 )
 }
 
-[sub_resource type="Curve2D" id=5]
+[sub_resource type="Curve2D" id=6]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, -49.8037, 0.415031, 0, 0, 163, -104 )
 }
 
-[sub_resource type="Curve2D" id=6]
+[sub_resource type="Curve2D" id=7]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, -68.4801, 0, 0, 0, 203, -124 )
 }
 
-[sub_resource type="Curve2D" id=7]
+[sub_resource type="Curve2D" id=8]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, -103.343, 0.830062, 0, 0, 243, -144 )
 }
 
-[sub_resource type="Curve2D" id=8]
+[sub_resource type="Curve2D" id=9]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, -163.522, -0.415031, 0, 0, 283, -164 )
 }
 
-[sub_resource type="Curve2D" id=9]
+[sub_resource type="Curve2D" id=10]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, -232.002, -0.415031, 0, 0, 323, -184 )
 }
 
-[sub_resource type="Curve2D" id=10]
+[sub_resource type="Curve2D" id=11]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, -325.799, -0.830062, 0, 0, 363, -204 )
 }
 
-[sub_resource type="Curve2D" id=11]
+[sub_resource type="Curve2D" id=12]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -24 )
 }
 
-[sub_resource type="Curve2D" id=12]
+[sub_resource type="Curve2D" id=13]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -44 )
 }
 
-[sub_resource type="Curve2D" id=13]
+[sub_resource type="Curve2D" id=14]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -64 )
 }
 
-[sub_resource type="Curve2D" id=14]
+[sub_resource type="Curve2D" id=15]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -84 )
 }
 
-[sub_resource type="Curve2D" id=15]
+[sub_resource type="Curve2D" id=16]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -104 )
 }
 
-[sub_resource type="Curve2D" id=16]
+[sub_resource type="Curve2D" id=17]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -124 )
 }
 
-[sub_resource type="Curve2D" id=17]
+[sub_resource type="Curve2D" id=18]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -144 )
 }
 
-[sub_resource type="Curve2D" id=18]
+[sub_resource type="Curve2D" id=19]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -164 )
 }
 
-[sub_resource type="Curve2D" id=19]
+[sub_resource type="Curve2D" id=20]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -184 )
 }
 
-[sub_resource type="Curve2D" id=20]
+[sub_resource type="Curve2D" id=21]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -204 )
 }
 
-[sub_resource type="Curve2D" id=21]
+[sub_resource type="Curve2D" id=22]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 25.5949, 12.6732, 0, 0, -50, -24 )
 }
 
-[sub_resource type="Curve2D" id=22]
+[sub_resource type="Curve2D" id=23]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 11.9277, 0, 0, 0, -90, -44 )
 }
 
-[sub_resource type="Curve2D" id=23]
+[sub_resource type="Curve2D" id=24]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 32.2148, 0, 0, 0, -130, -64 )
 }
 
-[sub_resource type="Curve2D" id=24]
+[sub_resource type="Curve2D" id=25]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 62.2375, 0.305086, 0, 0, -170, -84 )
 }
 
-[sub_resource type="Curve2D" id=25]
+[sub_resource type="Curve2D" id=26]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 91.2207, 0, 0, 0, -210, -104 )
 }
 
-[sub_resource type="Curve2D" id=26]
+[sub_resource type="Curve2D" id=27]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 114.407, -0.610172, 0, 0, -250, -124 )
 }
 
-[sub_resource type="Curve2D" id=27]
+[sub_resource type="Curve2D" id=28]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 159.255, 0.305086, 0, 0, -290, -144 )
 }
 
-[sub_resource type="Curve2D" id=28]
+[sub_resource type="Curve2D" id=29]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 196.17, 0.305086, 0, 0, -330, -164 )
 }
 
-[sub_resource type="Curve2D" id=29]
+[sub_resource type="Curve2D" id=30]
 
 bake_interval = 5.0
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 234.907, -2.07515, 0, 0, -370, -184 )
 }
 
-[sub_resource type="Curve2D" id=30]
+[sub_resource type="Curve2D" id=31]
 
 bake_interval = 5.0
 _data = {
@@ -309,7 +309,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 7 )
-custom_colors/font_color = Color( 0.113725, 0.356863, 0.933333, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 align = 1
 valign = 1
 percent_visible = 1.0
@@ -324,7 +324,7 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/ready = SubResource( 31 )
+anims/ready = SubResource( 1 )
 blend_times = [  ]
 _sections_unfolded = [ "Playback Options" ]
 
@@ -1060,6 +1060,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="names" type="HBoxContainer" parent="." index="5"]
 
+editor/display_folded = true
 modulate = Color( 0.294118, 0.984314, 0.419608, 1 )
 anchor_left = 0.0
 anchor_top = 0.0
@@ -1143,89 +1144,96 @@ max_lines_visible = -1
 "buttons",
 ]]
 
-editor/display_folded = true
-
 [node name="slide_button10" parent="buttons1" index="0" instance=ExtResource( 9 )]
 
 position = Vector2( 2, 227 )
-curve = SubResource( 1 )
+curve = SubResource( 2 )
 _sections_unfolded = [ "Material" ]
 text = "Longest"
-length = 120
+box_width = 120
 duration = 2.0
 
 [node name="slide_button9" parent="buttons1" index="1" instance=ExtResource( 9 )]
 
 position = Vector2( -38, 227 )
-curve = SubResource( 2 )
+curve = SubResource( 3 )
 _sections_unfolded = [ "Material" ]
 text = "Longest"
-length = 120
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button8" parent="buttons1" index="2" instance=ExtResource( 9 )]
 
 position = Vector2( -78, 227 )
-curve = SubResource( 3 )
+curve = SubResource( 4 )
 _sections_unfolded = [ "Material" ]
 text = "Longest"
-length = 120
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button7" parent="buttons1" index="3" instance=ExtResource( 9 )]
 
 position = Vector2( -118, 227 )
-curve = SubResource( 4 )
+curve = SubResource( 5 )
 text = "Longest"
-length = 120
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button6" parent="buttons1" index="4" instance=ExtResource( 9 )]
 
 position = Vector2( -158, 227 )
-curve = SubResource( 5 )
-text = "Longest"
-length = 120
+curve = SubResource( 6 )
+text = "About 13 chars"
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button5" parent="buttons1" index="5" instance=ExtResource( 9 )]
 
 position = Vector2( -198, 227 )
-curve = SubResource( 6 )
+curve = SubResource( 7 )
 text = "Longest"
-length = 120
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button4" parent="buttons1" index="6" instance=ExtResource( 9 )]
 
 position = Vector2( -238, 227 )
-curve = SubResource( 7 )
+curve = SubResource( 8 )
 text = "Longest"
-length = 120
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button3" parent="buttons1" index="7" instance=ExtResource( 9 )]
 
 position = Vector2( -278, 227 )
-curve = SubResource( 8 )
+curve = SubResource( 9 )
 text = "Longest"
-length = 120
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button2" parent="buttons1" index="8" instance=ExtResource( 9 )]
 
 position = Vector2( -318, 227 )
-curve = SubResource( 9 )
+curve = SubResource( 10 )
 text = "Longest"
-length = 120
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button" parent="buttons1" index="9" instance=ExtResource( 9 )]
 
 position = Vector2( -358, 227 )
-curve = SubResource( 10 )
+curve = SubResource( 11 )
 text = "Longest"
-length = 120
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="buttons2" type="Node2D" parent="." index="7" groups=[
@@ -1237,71 +1245,82 @@ editor/display_folded = true
 [node name="slide_button" parent="buttons2" index="0" instance=ExtResource( 9 )]
 
 position = Vector2( 138, 227 )
-curve = SubResource( 11 )
-length = 120
+curve = SubResource( 12 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button2" parent="buttons2" index="1" instance=ExtResource( 9 )]
 
 position = Vector2( 138, 227 )
-curve = SubResource( 12 )
-length = 120
+curve = SubResource( 13 )
+text = "About 13 chars"
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button3" parent="buttons2" index="2" instance=ExtResource( 9 )]
 
 position = Vector2( 138, 227 )
-curve = SubResource( 13 )
-length = 120
+curve = SubResource( 14 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button4" parent="buttons2" index="3" instance=ExtResource( 9 )]
 
 position = Vector2( 138, 227 )
-curve = SubResource( 14 )
-length = 120
+curve = SubResource( 15 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button5" parent="buttons2" index="4" instance=ExtResource( 9 )]
 
 position = Vector2( 138, 227 )
-curve = SubResource( 15 )
-length = 120
+curve = SubResource( 16 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button6" parent="buttons2" index="5" instance=ExtResource( 9 )]
 
 position = Vector2( 138, 227 )
-curve = SubResource( 16 )
-length = 120
+curve = SubResource( 17 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button7" parent="buttons2" index="6" instance=ExtResource( 9 )]
 
 position = Vector2( 138, 227 )
-curve = SubResource( 17 )
-length = 120
+curve = SubResource( 18 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button8" parent="buttons2" index="7" instance=ExtResource( 9 )]
 
 position = Vector2( 138, 227 )
-curve = SubResource( 18 )
-length = 120
+curve = SubResource( 19 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button9" parent="buttons2" index="8" instance=ExtResource( 9 )]
 
 position = Vector2( 138, 227 )
-curve = SubResource( 19 )
-length = 120
+curve = SubResource( 20 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button10" parent="buttons2" index="9" instance=ExtResource( 9 )]
 
 position = Vector2( 138, 227 )
-curve = SubResource( 20 )
-length = 120
+curve = SubResource( 21 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="buttons3" type="Node2D" parent="." index="8" groups=[
@@ -1313,72 +1332,82 @@ editor/display_folded = true
 [node name="slide_button" parent="buttons3" index="0" instance=ExtResource( 9 )]
 
 position = Vector2( 309, 227 )
-curve = SubResource( 21 )
-length = 120
+curve = SubResource( 22 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button2" parent="buttons3" index="1" instance=ExtResource( 9 )]
 
 position = Vector2( 349, 227 )
-curve = SubResource( 22 )
-length = 120
+curve = SubResource( 23 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button3" parent="buttons3" index="2" instance=ExtResource( 9 )]
 
 position = Vector2( 389, 227 )
-curve = SubResource( 23 )
-length = 120
+curve = SubResource( 24 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button4" parent="buttons3" index="3" instance=ExtResource( 9 )]
 
 position = Vector2( 429, 227 )
-curve = SubResource( 24 )
-length = 120
+curve = SubResource( 25 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button5" parent="buttons3" index="4" instance=ExtResource( 9 )]
 
 position = Vector2( 469, 227 )
-curve = SubResource( 25 )
-length = 120
+curve = SubResource( 26 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button6" parent="buttons3" index="5" instance=ExtResource( 9 )]
 
 position = Vector2( 509, 227 )
-curve = SubResource( 26 )
-length = 120
+curve = SubResource( 27 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button7" parent="buttons3" index="6" instance=ExtResource( 9 )]
 
 position = Vector2( 549, 227 )
-curve = SubResource( 27 )
-length = 120
+curve = SubResource( 28 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button8" parent="buttons3" index="7" instance=ExtResource( 9 )]
 
 position = Vector2( 589, 227 )
-curve = SubResource( 28 )
-length = 120
+curve = SubResource( 29 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button9" parent="buttons3" index="8" instance=ExtResource( 9 )]
 
 position = Vector2( 629, 227 )
-curve = SubResource( 29 )
-length = 120
+curve = SubResource( 30 )
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [node name="slide_button10" parent="buttons3" index="9" instance=ExtResource( 9 )]
 
 position = Vector2( 669, 227 )
-curve = SubResource( 30 )
-text = "really long name its too much"
-length = 120
+curve = SubResource( 31 )
+text = "About 13 chars"
+max_chars = 9
+box_width = 120
 duration = 2.0
 
 [connection signal="pressed" from="confirm_button" to="." method="start"]
