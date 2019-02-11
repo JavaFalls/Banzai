@@ -111,7 +111,7 @@ func set_player_state(player):
 func set_predictions(predictions):
 	if predictions:
 		predicted_bot_position      = Vector2(predictions[0] * screen_x, predictions[1] * screen_y)
-		predicted_bot_mouse         = Vector2(predictions[2] * screen_x, predictions[3])
+		predicted_bot_mouse         = Vector2(predictions[2] * screen_x, predictions[3] * screen_y)
 		predicted_bot_vector        = Vector2(predictions[4], predictions[5])
 		predicted_bot_psuedo_primary   = predictions[6]
 		predicted_bot_psuedo_secondary = predictions[7]
