@@ -11,7 +11,7 @@ func _ready():
 
 
 func _process(delta):
-	game_state.set_bot_state(self)
+	game_state.set_bot_state(self) # This will be set_bot or set_player depending on if its the player's bot or not
 	return
 
 func _physics_process(delta):
@@ -60,12 +60,7 @@ func _physics_process(delta):
 #		if predictions[11] == 1 and predictions[12] == 1:
 #			direction.y = 0	
 	move_and_slide(direction.normalized()*movement_speed, UP)
-	return
-
-func get_psuedo_mouse():
-	return self.psuedo_mouse		
-		
-		
+	return	
 		
 func send_nn_state():
 	var output = []

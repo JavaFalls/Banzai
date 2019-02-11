@@ -11,6 +11,7 @@ var fighter1                       # Player's fighter or AI
 var fighter2                       # Opponent
 var start_pos1 = Vector2(200,48)   # Where the first fighter spawns
 var start_pos2 = Vector2(200,175)  # Where the second fighter spawns
+var health                         # The starting health of a mech for use with HUD
 
 onready var player_scene = preload("res://Scenes/player.tscn")
 onready var bot_scene    = preload("res://Scenes/bot.tscn")
@@ -29,7 +30,6 @@ func _ready():
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
 
-	#fighter2 = bot_scene.instance()
 	fighter2 = bot_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
@@ -45,9 +45,11 @@ func _ready():
 	fighter1.connect("game_end", self, "post_game")
 	fighter2.connect("game_end", self, "post_game")
 	
+	health = fighter1.get_hit_points()
+	
 func _process(delta):
-	self.get_node("healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points(),1))
-	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points(),1))
+	self.get_node("healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
+	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
 	game_state.set_predictions(send_nn_state())
 
 # This function is called when one of the fighters hits zero hit_points
@@ -104,7 +106,7 @@ func send_nn_state():
 	output = output[0].split_floats(',', false)
 	for x in output:
 #		x = round(x)
-		x = int(x)
+#		x = int(x)
 		predictions.append(x)
 	print(predictions)
 	return predictions

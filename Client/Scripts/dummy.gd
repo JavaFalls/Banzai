@@ -13,8 +13,13 @@ var use_ability        = true               # Use the ability as often as possib
 var opponent_position  = Vector2()          # The position of the opponent
 var inaccuracy         = 150                # Allowed range of variance from the true target
 
+onready var game_state = self.get_parent().get_child(1)
+
 func _ready():
 	set_weapons(ranged_attack, heavy_attack, aby_evade)
+	
+func _process(delta):
+	game_state.set_bot_state(self)
 	
 func _physics_process(delta):
 	psuedo_primary   = 0
