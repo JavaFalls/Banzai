@@ -25,12 +25,12 @@ func _ready():
 	f.open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 3)
     # Call get opponent here
 #	print(get_opponent(525)))
-	fighter1 = player_scene.instance()
+	fighter1 = player_scene.instance() #player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
 
-	fighter2 = bot_scene.instance()
+	fighter2 = bot_scene.instance() # fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	#fighter2.attack_primary = false

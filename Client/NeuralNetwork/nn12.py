@@ -99,7 +99,7 @@ def train(model):
           test[x][y] = float(test[x][y])
           label[x][y] = float(label[x][y])
     for z in range(0,len(test) - 1):
-       model.fit(x=test[z], y=label[z],  epochs=3 , verbose=1, validation_split=0.3)
+       model.fit(x=test[z], y=label[z],  epochs=30 , verbose=1, validation_split=0.3)
        
     
 
@@ -110,7 +110,7 @@ def main():
     
     #bot = load_bot()
     bot = build_model()
-    #train(bot)
+    train(bot)
     save_bot(bot)
     #save_game_state(sys.argv)
     #react(sys.argv, bot)
