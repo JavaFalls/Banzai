@@ -10,7 +10,7 @@ const LOWER_LIMIT = 0
 var fighter1                       # Player's fighter or AI
 var fighter2                       # Opponent
 var start_pos1 = Vector2(200,48)   # Where the first fighter spawns
-var start_pos2 = Vector2(200,175)  # Where the second fighter spawns
+var start_pos2 = Vector2(200,105)  # Where the second fighter spawns
 
 onready var player_scene = preload("res://Scenes/player.tscn")
 onready var bot_scene    = preload("res://Scenes/bot.tscn")

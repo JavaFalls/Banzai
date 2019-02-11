@@ -55,22 +55,21 @@ def react(game_state, model):
    
 
 def save_bot(model):
-   model.save('my_model1.h5')
+   model.save('my_model.h5')
 
 def load_bot():
-   model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model1.h5')
+   model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model.h5')
    #model = load_model('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/my_model1.h5')
    return model
 
 def build_model():
-   model = keras.Sequential([keras.layers.Dense( 6, activation=tf.nn.relu, input_shape=(1,)),
-   keras.layers.Dense(9, activation=tf.nn.relu),
+   model = keras.Sequential([keras.layers.Dense( 1, activation=tf.nn.relu, input_shape=(1,)),
    keras.layers.Dense(9, activation=tf.nn.relu),
    keras.layers.Dense(1)])
 
-   optimizer = tf.train.RMSPropOptimizer(0.01)
+
    model.compile(loss='mse',
-                 optimizer=optimizer,
+                 optimizer='Adam',
                  metrics=['mae'])
       
    return model
@@ -100,7 +99,7 @@ def train(model):
           test[x][y] = float(test[x][y])
           label[x][y] = float(label[x][y])
     for z in range(0,len(test) - 1):
-       model.fit(x=test[z], y=label[z],  epochs=5, verbose=1, validation_split=0.3)
+       model.fit(x=test[z], y=label[z],  epochs=3 , verbose=1, validation_split=0.3)
        
     
 
@@ -109,9 +108,9 @@ def main():
 
     # Recieve the request and figure out what godot is asking for.
     
-    bot = load_bot()
-    #bot = build_model()
-    train(bot)
+    #bot = load_bot()
+    bot = build_model()
+    #train(bot)
     save_bot(bot)
     #save_game_state(sys.argv)
     #react(sys.argv, bot)

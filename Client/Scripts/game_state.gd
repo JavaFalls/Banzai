@@ -126,6 +126,9 @@ func set_predictions(predictions):
 		predicted_player_psuedo_ability   = predictions[18]
 		predicted_player_in_peril         = predictions[19]
 		
+		
+		
+		
 func get_predictions():
 	var pred = []
 	pred.append(predicted_player_position)

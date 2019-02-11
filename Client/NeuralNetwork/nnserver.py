@@ -109,13 +109,12 @@ def load_bot():
    return model
 
 def build_model():
-   model = keras.Sequential([keras.layers.Dense( 6, activation=tf.nn.relu, input_shape=(1,)),
-   keras.layers.Dense(9, activation=tf.nn.relu),
+   model = keras.Sequential([keras.layers.Dense( 1, activation=tf.nn.relu, input_shape=(1,)),
    keras.layers.Dense(9, activation=tf.nn.relu),
    keras.layers.Dense(1)])
    optimizer = tf.train.RMSPropOptimizer(0.11)
    model.compile(loss='mse',
-                 optimizer="Ada" ,
+                 optimizer= optimizer ,
                  metrics=['mae'])
       
    return model
