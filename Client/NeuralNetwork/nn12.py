@@ -65,6 +65,7 @@ def load_bot():
 def build_model():
    model = keras.Sequential([keras.layers.Dense( 1, activation=tf.nn.relu, input_shape=(1,)),
    keras.layers.Dense(9, activation=tf.nn.relu),
+   keras.layers.Dense(9, activation=tf.nn.relu),
    keras.layers.Dense(1)])
 
 
@@ -108,8 +109,8 @@ def main():
 
     # Recieve the request and figure out what godot is asking for.
     
-    #bot = load_bot()
-    bot = build_model()
+    bot = load_bot()
+    #bot = build_model()
     train(bot)
     save_bot(bot)
     #save_game_state(sys.argv)

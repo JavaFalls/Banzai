@@ -47,7 +47,7 @@ func get_battle_state():
 	game_state.append(self.bot_psuedo_secondary)
 	game_state.append(self.bot_psuedo_ability)
 	game_state.append(self.bot_in_peril)
-	
+
 	game_state.append(self.player_position)
 	game_state.append(self.player_mouse)
 	game_state.append(self.player_vector)
@@ -55,8 +55,8 @@ func get_battle_state():
 	game_state.append(self.player_psuedo_secondary)
 	game_state.append(self.player_psuedo_ability)
 	game_state.append(self.player_in_peril)
-	
-	return game_state
+	return game_state 
+
 	
 # Sent to the NN to teach it
 func get_training_state():

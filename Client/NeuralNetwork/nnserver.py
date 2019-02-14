@@ -111,6 +111,7 @@ def load_bot():
 def build_model():
    model = keras.Sequential([keras.layers.Dense( 1, activation=tf.nn.relu, input_shape=(1,)),
    keras.layers.Dense(9, activation=tf.nn.relu),
+   keras.layers.Dense(9, activation=tf.nn.relu),
    keras.layers.Dense(1)])
    model.compile(loss='mse',
                  optimizer= 'Adam' ,

@@ -107,7 +107,7 @@ func send_nn_state():
 	path = PoolStringArray()
 	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
 	#path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
-	path.append(game_state.get_training_state())
+	path.append(game_state.get_battle_state())
 	OS.execute('python', path, true, output)
 
 	#print("OUT_PUT=================================================")
