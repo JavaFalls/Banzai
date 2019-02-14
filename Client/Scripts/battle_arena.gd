@@ -21,7 +21,6 @@ signal game_end
 
 func _ready():
     # Call get opponent here
-#	print(get_opponent(525))
 
 	fighter1 = dummy_scene.instance()
 	self.add_child(fighter1)
@@ -58,30 +57,30 @@ func post_game():
 # This function is called to choose an opponent
 # It returns the opponent bot's data.
 # If no opponent is found, null is returned
-#func get_opponent(bot_id):
-#	var opponent = null
-#	var rank_width = 0
-#	var bot_data = JSON.parse(head.DB.get_bot(bot_id, false)).result["data"][0] # Get all bot data from Database
-#	var lowest_rank = bot_data["ranking"]
-#	var upper_rank  = bot_data["ranking"]
-#	
-#	# Search for opponents as long as the rank range is not exited
-#	while (opponent == null) && ((lowest_rank != LOWER_LIMIT) || (upper_rank != UPPER_LIMIT)):
-#		rank_width += 5
-#		lowest_rank = (bot_data["ranking"] - rank_width)
-#		upper_rank  = (bot_data["ranking"] + rank_width)
-#		
-#		if lowest_rank < LOWER_LIMIT:
-#			lowest_rank = LOWER_LIMIT
-#		if upper_rank > UPPER_LIMIT:
-#			upper_rank = UPPER_LIMIT
-#		
-#		# Get possible opponents from the Database
-#		var opponent_list = JSON.parse(head.DB.get_bot_range(bot_id, lowest_rank, upper_rank)).result["data"]
-#
-#		if opponent_list.size() > 0:
-#			randomize()
-#			opponent = opponent_list[randi()%opponent_list.size()+1]
-#		else:
-#			opponent = null
-#	return opponent
+func get_opponent(bot_id):
+	var opponent = null
+	var rank_width = 0
+	var bot_data = JSON.parse(head.DB.get_bot(bot_id, false)).result["data"][0] # Get all bot data from Database
+	var lowest_rank = bot_data["ranking"]
+	var upper_rank  = bot_data["ranking"]
+
+	# Search for opponents as long as the rank range is not exited
+	while (opponent == null) && ((lowest_rank != LOWER_LIMIT) || (upper_rank != UPPER_LIMIT)):
+		rank_width += 5
+		lowest_rank = (bot_data["ranking"] - rank_width)
+		upper_rank  = (bot_data["ranking"] + rank_width)
+
+		if lowest_rank < LOWER_LIMIT:
+			lowest_rank = LOWER_LIMIT
+		if upper_rank > UPPER_LIMIT:
+			upper_rank = UPPER_LIMIT
+
+		# Get possible opponents from the Database
+		var opponent_list = JSON.parse(head.DB.get_bot_range(bot_id, lowest_rank, upper_rank)).result["data"]
+
+		if opponent_list.size() > 0:
+			randomize()
+			opponent = opponent_list[randi()%opponent_list.size()+1]
+		else:
+			opponent = null
+	return opponent
