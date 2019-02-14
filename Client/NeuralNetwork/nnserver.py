@@ -80,7 +80,7 @@ def react(game_state, model):
    for item in game_state:
       input_list.append(item)
    str_input_list = str(input_list)
-   input_list = str_input_list.replace(" ","").replace("''","'0'").replace("[]", "0").replace("[","").replace("]","").replace("(","")\
+   input_list = str_input_list.replace(" ","").replace("''","'0'").replace("[]", "0,0").replace("[","").replace("]","").replace("(","")\
    .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")         
    input_list.pop(0)
    input_list.pop(0)
@@ -101,19 +101,20 @@ def react(game_state, model):
 
 
 def save_bot(model):
-   model.save('my_model1.h5')
+   model.save('my_model.h5')
 
 def load_bot():
-   model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model1.h5')
+   model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model.h5')
+   #model = load_model('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/my_model1.h5')
    return model
 
 def build_model():
-   model = keras.Sequential([keras.layers.Dense( 6, activation=tf.nn.relu, input_shape=(1,)),
+   model = keras.Sequential([keras.layers.Dense( 1, activation=tf.nn.relu, input_shape=(1,)),
    keras.layers.Dense(9, activation=tf.nn.relu),
    keras.layers.Dense(9, activation=tf.nn.relu),
    keras.layers.Dense(1)])
    model.compile(loss='mse',
-                 optimizer="Adam",
+                 optimizer= 'Adam' ,
                  metrics=['mae'])
       
    return model

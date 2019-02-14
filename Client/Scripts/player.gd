@@ -50,6 +50,3 @@ func _physics_process(delta):
 	game_state.set_player_state(self)
 	move_and_slide(direction.normalized()*movement_speed, UP)
 	get_node("Label").set_text(str(get_hit_points()))
-
-func get_psuedo_mouse():
-	return psuedo_mouse
