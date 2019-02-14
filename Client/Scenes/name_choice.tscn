@@ -8,7 +8,8 @@
 [ext_resource path="res://assets/menu/name_choice/button_panel_ready_focus.png" type="Texture" id=6]
 [ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=7]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=8]
-[ext_resource path="res://Scenes/UI/slide_button.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/UI Nodes/slide_button.tscn" type="PackedScene" id=9]
+
 
 [sub_resource type="Animation" id=1]
 

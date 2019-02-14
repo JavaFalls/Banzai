@@ -1,5 +1,8 @@
 extends Node
 
+# Get head singleton
+#onready var head = get_tree().get_root().get_node("/root/head")
+
 var sub_names = ["", "", ""]
 
 onready var names = get_node("names").get_children()
