@@ -17,18 +17,20 @@ onready var player_scene = preload("res://Scenes/player.tscn")
 onready var bot_scene    = preload("res://Scenes/bot.tscn")
 onready var dummy_scene  = preload("res://Scenes/dummy.tscn")
 onready var game_state   = get_node("game_state")
-onready var f = File.new()
+onready var f            = File.new()
+
 # The signal that is emitted when a fighter's hit_points reach zero
 signal game_end
 
 func _ready():
-	f.open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 3)
+	f.open('res://NeuralNetwork/gamestates', 3)
     # Call get opponent here
 #	print(get_opponent(525)))
 	fighter1 = player_scene.instance() #player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
+	fighter1.is_player = 1
 
 	fighter2 = bot_scene.instance() # fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
@@ -97,20 +99,20 @@ func send_nn_state():
 	var path = PoolStringArray()
 	var predictions = []
 #	###############################TRAIN####################################################
-#   Dont use this its too ineficient.
-	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
-	#path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
-	path.append(game_state.get_training_state())
-	f.store_string(str(path) + "\n")
+#   Don't use this. It's too ineficient.
+#	path.append(ProjectSettings.globalize_path('res://NeuralNetwork/client.py'))
+#	path.append(game_state.get_training_state())
+#	f.store_string(str(path) + "\n")
 
 	###############################BATTLE####################################################
 	path = PoolStringArray()
-	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
-	#path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
-	path.append(game_state.get_training_state())
+#	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
+#	path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
+	path.append(ProjectSettings.globalize_path('res://NeuralNetwork/client.py'))
+	path.append(game_state.get_battle_state())
 	OS.execute('python', path, true, output)
 
-	#print("OUT_PUT=================================================")
+#	print("OUT_PUT=================================================")
 #	print(output)
 	output = output[0].split_floats(',', false)
 	return output

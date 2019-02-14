@@ -13,12 +13,12 @@ onready var dummy_scene  = preload("res://Scenes/dummy.tscn")
 onready var game_state   = get_node("game_state")
 
 func _ready():
-	# The player's bot or AI
+#	 The player's bot or AI
 	fighter1 = player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
-	fighter1.set_is_player(true)
+	fighter1.is_player = 1
 
 
 	fighter2 = bot_scene.instance()
@@ -26,7 +26,7 @@ func _ready():
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
 
-	# Set the opponents for the respective fighters
+#	 Set the opponents for the respective fighters
 	fighter1.set_opponent(fighter2)
 	fighter2.set_opponent(fighter1)
 
@@ -39,13 +39,13 @@ func send_nn_state():
 	var output = []
 	var path = PoolStringArray() 
 	var predictions = []
-	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
-	#path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
+#	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
+	path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
 #	print(game_state.get_training_state())
 	path.append(game_state.get_training_state())
 #	print(path)
 	OS.execute('python', path, true, output)
-	#print("OUT_PUT=================================================")
+#	print("OUT_PUT=================================================")
 #	print(output)
 	output = output[0].split_floats(',', false)
 	for x in output:

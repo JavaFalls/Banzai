@@ -19,8 +19,8 @@ from tensorflow.keras.models import load_model
 def save_game_state(game_state):
    str_game_state = str(game_state)
    
-   f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
-   #f = open('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
+   # f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
+   f = open('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
 
    f.write(str_game_state + "\n")
    f.close()   
@@ -58,12 +58,13 @@ def save_bot(model):
    model.save('my_model.h5')
 
 def load_bot():
-   model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model.h5')
-   #model = load_model('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/my_model1.h5')
+   # model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model.h5')
+   model = load_model('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/my_model1.h5')
    return model
 
 def build_model():
    model = keras.Sequential([keras.layers.Dense( 1, activation=tf.nn.relu, input_shape=(1,)),
+   keras.layers.Dense(9, activation=tf.nn.relu),
    keras.layers.Dense(9, activation=tf.nn.relu),
    keras.layers.Dense(1)])
 
@@ -76,8 +77,8 @@ def build_model():
 
 
 def train(model):
-    f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'r+')
-    #f = open('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/gamestates', 'r+')
+    # f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'r+')
+    f = open('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/gamestates', 'r+')
     line_number = 1
     test  = []
     label = []
@@ -99,7 +100,7 @@ def train(model):
           test[x][y] = float(test[x][y])
           label[x][y] = float(label[x][y])
     for z in range(0,len(test) - 1):
-       model.fit(x=test[z], y=label[z],  epochs=30 , verbose=1, validation_split=0.3)
+       model.fit(x=test[z], y=label[z],  epochs=3 , verbose=1, validation_split=0.3)
        
     
 

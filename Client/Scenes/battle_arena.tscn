@@ -188,7 +188,7 @@ position = Vector2( -195.833, -8 )
 scale = Vector2( 11.6211, 1 )
 texture = ExtResource( 7 )
 centered = false
-_sections_unfolded = [ "Offset", "Transform", "Visibility" ]
+_sections_unfolded = [ "Animation", "Offset", "Transform", "Visibility" ]
 
 [node name="health2" type="Sprite" parent="healthbar" index="1"]
 

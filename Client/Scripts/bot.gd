@@ -18,8 +18,6 @@ func _physics_process(delta):
 	psuedo_mouse     = game_state.predicted_bot_mouse
 	relative_mouse   = get_position() - psuedo_mouse
 	direction        = game_state.predicted_bot_vector
-	
-
 	psuedo_ability       = 0
 	psuedo_secondary     = 0
 	psuedo_primary       = 0

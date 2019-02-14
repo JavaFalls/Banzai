@@ -4,7 +4,6 @@ import win32pipe, win32file, pywintypes
 import sys
 
 
-
 # Collect command line arguments and place them into an iterable list
 request_string = sys.argv
 def get_request_handle():
@@ -69,8 +68,8 @@ def get_response_handle():
 def save_game_state(game_state):
    str_game_state = str(game_state)
    
-   f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
-   #f = open('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
+   # f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
+   f = open('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
    f.write(str_game_state + "\n")
    f.close() 
 
