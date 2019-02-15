@@ -22,6 +22,8 @@ const FILEPATH_LOAD_BOT_MODEL = "res://NeuralNetwork/my_model_new.h5" # where an
 const DEFAULT_UTILITY = 0
 const DEFAULT_PRIMARY = 0
 const DEFAULT_SECONDARY = 0
+const DEFAULT_PRIMARY_COLOR = Color(0, 1, 0)
+const DEFAULT_SECONDARY_COLOR = Color(1, 0, 1)
 
 # Weapons keys
 enum {PRIMARY, SECONDARY, ABILITY}
@@ -218,11 +220,13 @@ func create_user():
 	model_ID = DB.new_model(player_ID)
 	
 	# 3. Create bot
-	var bot_insert_arg_array = [0, 0, 0, 0]
+	var bot_insert_arg_array = [0, 0, 0, 0, 0, 0]
 	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_MODEL_ID] = model_ID
 	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_UTILITY] = DEFAULT_UTILITY
 	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_SECONDARY_WEAPON] = DEFAULT_SECONDARY
 	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_PRIMARY_WEAPON] = DEFAULT_PRIMARY
+	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_PRIMARY_COLOR] = DEFAULT_PRIMARY_COLOR.to_rgba32()
+	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_SECONDARY_COLOR] = DEFAULT_SECONDARY_COLOR.to_rgba32()
 	bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, "v1")
 
 
@@ -237,13 +241,13 @@ func _test_DB():
 	print("DB.get_player(): ", DB.get_player(player_ID))
 	print("DB.update_player(): ", DB.update_player(player_ID, "NewName2000"))
 	print("Bot funcs:================================")
-	var botInsArgArray = [0, 1, 2, 3]
+	var botInsArgArray = [0, 1, 2, 3, Color(1, 1, 1, 1).to_rgba32(), Color(1, 1, 1, 1).to_rgba32()]
 	bot_ID = DB.new_bot(player_ID, botInsArgArray, "mech9000")
 	print("bot_ID: ", bot_ID)
 	model_ID = botInsArgArray[0]
 	print("model_ID: ", model_ID)
 	print("DB.get_bot: ", DB.get_bot(bot_ID, true))
-	var botUpdArgArray = [player_ID, model_ID, 1000, 3, 0, 1]
+	var botUpdArgArray = [player_ID, model_ID, 1000, 3, 0, 1, Color(0, 0, 0, 1).to_rgba32(), Color(1, 1, .5, 1).to_rgba32()]
 	print("DB.update_bot: ", DB.update_bot(bot_ID, botUpdArgArray, "mech9001", true))
 	print("Model funcs:==============================")
 	model_ID = DB.new_model(player_ID)

@@ -24,14 +24,18 @@
 #define NEW_BOT_ARGS_PRIMARY_WEAPON 1
 #define NEW_BOT_ARGS_SECONDARY_WEAPON 2
 #define NEW_BOT_ARGS_UTILITY 3
-#define NEW_BOT_ARGS_ARRAY_SIZE 4
+#define NEW_BOT_ARGS_PRIMARY_COLOR 4
+#define NEW_BOT_ARGS_SECONDARY_COLOR 5
+#define NEW_BOT_ARGS_ARRAY_SIZE 6
 #define UPDATE_BOT_ARGS_PLAYER_ID 0
 #define UPDATE_BOT_ARGS_MODEL_ID 1
 #define UPDATE_BOT_ARGS_RANKING 2
 #define UPDATE_BOT_ARGS_PRIMARY_WEAPON 3
 #define UPDATE_BOT_ARGS_SECONDARY_WEAPON 4
 #define UPDATE_BOT_ARGS_UTILITY 5
-#define UPDATE_BOT_ARGS_ARRAY_SIZE 6
+#define UPDATE_BOT_ARGS_PRIMARY_COLOR 6
+#define UPDATE_BOT_ARGS_SECONDARY_COLOR 7
+#define UPDATE_BOT_ARGS_ARRAY_SIZE 8
 
 /***********************************************************************************************************
 / Debug Control
@@ -116,7 +120,7 @@ int DBConnector::new_player(String name) {
    int new_player_id = FALSE;
    std::string string_name = name.ascii().get_data();
    std::string sql_get_new_player_ID = "SELECT max(player.player_ID_PK)\n"
-                      + (std::string)"  FROM javafalls.player player";
+                        + (std::string)"  FROM javafalls.player player";
    std::string sql_insert = "INSERT INTO javafalls.player\n"
              + (std::string)"            (name)\n"
              + (std::string)"     VALUES (?)";
@@ -195,6 +199,8 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    const int PARAM_INSERT_PRIMARY_WEAPON = 5;
    const int PARAM_INSERT_SECONDARY_WEAPON = 6;
    const int PARAM_INSERT_UTILITY = 7;
+   const int PARAM_INSERT_PRIMARY_COLOR = 8;
+   const int PARAM_INSERT_SECONDARY_COLOR = 9;
 
    SQLHSTMT sql_statement_new_bot;
    SQLHSTMT sql_statement_get_bot_ID;
@@ -204,13 +210,15 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    int secondary_weapon = (int)new_bot_args[NEW_BOT_ARGS_SECONDARY_WEAPON];
    int utility = (int)new_bot_args[NEW_BOT_ARGS_UTILITY];
    int model_ID = (int)new_bot_args[NEW_BOT_ARGS_MODEL_ID];
+   unsigned int primary_color = (unsigned int)new_bot_args[NEW_BOT_ARGS_PRIMARY_COLOR];
+   unsigned int secondary_color = (unsigned int)new_bot_args[NEW_BOT_ARGS_SECONDARY_COLOR];
 
    std::string string_name = name.ascii().get_data();
    std::string sql_get_new_bot_ID = "SELECT max(bot.bot_ID_PK)\n"
                      + (std::string)"  FROM javafalls.bot bot";
    std::string sql_code = "INSERT INTO javafalls.bot\n"
-           + (std::string)"            (player_ID_FK, model_ID_FK, ranking, name, primary_weapon, secondary_weapon, utility)\n"
-           + (std::string)"     VALUES (           ?,           ?,       ?,    ?,              ?,                ?,       ?)";
+           + (std::string)"            (player_ID_FK, model_ID_FK, ranking, name, primary_weapon, secondary_weapon, utility, primary_color, secondary_color)\n"
+           + (std::string)"     VALUES (           ?,           ?,       ?,    ?,              ?,                ?,       ?,             ?,               ?)";
 
    sql_statement_new_bot = create_command(sql_code);
    sql_statement_get_bot_ID = create_command(sql_get_new_bot_ID);
@@ -222,6 +230,8 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    bind_parameter(sql_statement_new_bot, PARAM_INSERT_PRIMARY_WEAPON, &primary_weapon);
    bind_parameter(sql_statement_new_bot, PARAM_INSERT_SECONDARY_WEAPON, &secondary_weapon);
    bind_parameter(sql_statement_new_bot, PARAM_INSERT_UTILITY, &utility);
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_PRIMARY_COLOR, (int *)&primary_color); // SQL Server does not support unsigned integers, so trick it into thinking the int is signed
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_SECONDARY_COLOR, (int *)&secondary_color);
    if (model_ID <= 0) {
       // Model ID not provided, attempt to insert the model into the database ourselves
       new_bot_args[NEW_BOT_ARGS_MODEL_ID] = (Variant)new_model(player_ID);
@@ -262,7 +272,9 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int 
    const int PARAM_UPDATE_PRIMARY_WEAPON = 5;
    const int PARAM_UPDATE_SECONDARY_WEAPON = 6;
    const int PARAM_UPDATE_UTILITY = 7;
-   const int PARAM_UPDATE_BOT_ID = 8;
+   const int PARAM_UPDATE_PRIMARY_COLOR = 8;
+   const int PARAM_UPDATE_SECONDARY_COLOR = 9;
+   const int PARAM_UPDATE_BOT_ID = 10;
 
    int player_ID = (int)update_bot_args[UPDATE_BOT_ARGS_PLAYER_ID];
    int model_ID = (int)update_bot_args[UPDATE_BOT_ARGS_MODEL_ID];
@@ -271,6 +283,8 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int 
    int primary_weapon = (int)update_bot_args[UPDATE_BOT_ARGS_PRIMARY_WEAPON];
    int secondary_weapon = (int)update_bot_args[UPDATE_BOT_ARGS_SECONDARY_WEAPON];
    int utility = (int)update_bot_args[UPDATE_BOT_ARGS_UTILITY];
+   unsigned int primary_color = (unsigned int)update_bot_args[UPDATE_BOT_ARGS_PRIMARY_COLOR];
+   unsigned int secondary_color = (unsigned int)update_bot_args[UPDATE_BOT_ARGS_SECONDARY_COLOR];
 
    SQLHSTMT sql_statement;
    std::string sql_code = "UPDATE javafalls.bot\n"
@@ -281,6 +295,8 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int 
            + (std::string)"     , bot.primary_weapon   = coalesce(nullif(?, -1),   bot.primary_weapon)\n"
            + (std::string)"     , bot.secondary_weapon = coalesce(nullif(?, -1),   bot.secondary_weapon)\n"
            + (std::string)"     , bot.utility          = coalesce(nullif(?, -1),   bot.utility)\n"
+           + (std::string)"     , bot.primary_color    = coalesce(nullif(?, -1),   bot.primary_color)\n"
+           + (std::string)"     , bot.secondary_color  = coalesce(nullif(?, -1),   bot.secondary_color)\n"
            + (std::string)" WHERE bot.bot_ID_PK = ?";
 
    sql_statement = create_command(sql_code);
@@ -292,6 +308,8 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int 
    bind_parameter(sql_statement, PARAM_UPDATE_PRIMARY_WEAPON, &primary_weapon);
    bind_parameter(sql_statement, PARAM_UPDATE_SECONDARY_WEAPON, &secondary_weapon);
    bind_parameter(sql_statement, PARAM_UPDATE_UTILITY, &utility);
+   bind_parameter(sql_statement, PARAM_UPDATE_PRIMARY_COLOR, (int *)&primary_color); // SQL Server does not support unsigned integers, so trick it into thinking the int is signed
+   bind_parameter(sql_statement, PARAM_UPDATE_SECONDARY_COLOR, (int *)&secondary_color);
    execute(sql_statement);
    if (SQL_SUCCEEDED(last_return)) {
       if (update_model) {
@@ -310,7 +328,9 @@ String DBConnector::get_bot(int bot_ID, int get_model) {
    String return_value;
    char bot_ID_string[STRING_INT_SIZE];
    sprintf(bot_ID_string, "%d", bot_ID);
-   std::string sqlQuery = "SELECT bot.player_ID_FK, bot.model_ID_FK, bot.ranking, bot.name, bot.primary_weapon, bot.secondary_weapon, bot.utility\n"
+   std::string sqlQuery = "SELECT bot.player_ID_FK, bot.model_ID_FK, bot.ranking, bot.name\n"
+           + (std::string)"     , bot.primary_weapon, bot.secondary_weapon, bot.utility\n"
+           + (std::string)"     , bot.primary_color, bot.secondary_color\n"
            + (std::string)"  FROM javafalls.bot\n"
            + (std::string)" WHERE bot.bot_ID_PK = ?";
 
@@ -898,6 +918,9 @@ void DBConnector::_bind_methods() {
    BIND_CONSTANT(NEW_BOT_ARGS_PRIMARY_WEAPON);
    BIND_CONSTANT(NEW_BOT_ARGS_SECONDARY_WEAPON);
    BIND_CONSTANT(NEW_BOT_ARGS_UTILITY);
+   BIND_CONSTANT(NEW_BOT_ARGS_PRIMARY_COLOR);
+   BIND_CONSTANT(NEW_BOT_ARGS_SECONDARY_COLOR);
+   BIND_CONSTANT(NEW_BOT_ARGS_ARRAY_SIZE);
 
    BIND_CONSTANT(UPDATE_BOT_ARGS_PLAYER_ID);
    BIND_CONSTANT(UPDATE_BOT_ARGS_MODEL_ID);
@@ -905,6 +928,9 @@ void DBConnector::_bind_methods() {
    BIND_CONSTANT(UPDATE_BOT_ARGS_PRIMARY_WEAPON);
    BIND_CONSTANT(UPDATE_BOT_ARGS_SECONDARY_WEAPON);
    BIND_CONSTANT(UPDATE_BOT_ARGS_UTILITY);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_PRIMARY_COLOR);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_SECONDARY_COLOR);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_ARRAY_SIZE);
 
    // Methods
    ClassDB::bind_method(D_METHOD("new_player", "name"), &DBConnector::new_player);
