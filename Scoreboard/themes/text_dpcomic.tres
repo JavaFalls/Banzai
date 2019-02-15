@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=2 format=2]
+
+[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=1]
+
+[resource]
+
+resource_local_to_scene = true
+default_font = ExtResource( 1 )
+
