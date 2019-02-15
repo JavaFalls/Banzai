@@ -71,10 +71,10 @@ def build_model():
    keras.layers.Dense(1)
    ])
 
-   optimizer = tf.train.RMSPropOptimizer(0.01)
+   optimizer = tf.train.RMSPropOptimizer(0.11)
    model.compile(loss='mse',
-                 optimizer=optimizer,
-                 metrics=['mae'])
+                 optimizer=optimizer ,
+                 metrics=['mse'])
    return model
 
 data_entries = [] # list containing each data entry

@@ -1,9 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/battle_arena.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/background.gd" type="Script" id=2]
 [ext_resource path="res://assets/ground.png" type="Texture" id=3]
-[ext_resource path="res://assets/Wall.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/game_state.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/Wall.png" type="Texture" id=5]
+[ext_resource path="res://assets/health bars.png" type="Texture" id=6]
+[ext_resource path="res://assets/white block.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -21,18 +24,19 @@ script = ExtResource( 1 )
 
 [node name="background" type="Node2D" parent="." index="0"]
 
-editor/display_folded = true
 script = ExtResource( 2 )
 
 [node name="ground" type="Sprite" parent="background" index="0"]
 
 modulate = Color( 0, 0.49231, 0.851563, 1 )
-position = Vector2( 616, 160 )
-scale = Vector2( 9.5, 9.5 )
+position = Vector2( 620, 156 )
+scale = Vector2( 9.5, 9.75 )
 texture = ExtResource( 3 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
-[node name="left wall" type="RigidBody2D" parent="." index="1"]
+[node name="game_state" parent="." index="1" instance=ExtResource( 4 )]
+
+[node name="left wall" type="RigidBody2D" parent="." index="2"]
 
 position = Vector2( 0, 160 )
 input_pickable = false
@@ -53,6 +57,7 @@ linear_velocity = Vector2( 0, 0 )
 linear_damp = -1.0
 angular_velocity = 0.0
 angular_damp = -1.0
+_sections_unfolded = [ "Collision" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="left wall" index="0"]
 
@@ -63,10 +68,10 @@ shape = SubResource( 1 )
 
 position = Vector2( 4, 0 )
 scale = Vector2( 0.08, 3.2 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
-[node name="right wall" type="RigidBody2D" parent="." index="2"]
+[node name="right wall" type="RigidBody2D" parent="." index="3"]
 
 position = Vector2( 400, 168 )
 input_pickable = false
@@ -98,11 +103,11 @@ shape = SubResource( 1 )
 
 position = Vector2( -4, -8 )
 scale = Vector2( 0.08, 3.2 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 
-[node name="bottom wall" type="RigidBody2D" parent="." index="3"]
+[node name="bottom wall" type="RigidBody2D" parent="." index="4"]
 
-position = Vector2( 288, 225 )
+position = Vector2( 288, 224 )
 input_pickable = false
 collision_layer = 1
 collision_mask = 1
@@ -133,10 +138,10 @@ _sections_unfolded = [ "Transform" ]
 
 position = Vector2( -48, -4.00001 )
 scale = Vector2( 4.64, 0.0799999 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 _sections_unfolded = [ "Offset" ]
 
-[node name="top wall" type="RigidBody2D" parent="." index="4"]
+[node name="top wall" type="RigidBody2D" parent="." index="5"]
 
 position = Vector2( 288, 8 )
 input_pickable = false
@@ -166,8 +171,33 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="top wall" index="1"]
 
-position = Vector2( -44, -4 )
+position = Vector2( -44, -16 )
 scale = Vector2( 4.72, 0.0799999 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
+
+[node name="healthbar" type="Sprite" parent="." index="6"]
+
+position = Vector2( 204, 8 )
+scale = Vector2( 0.96, 1 )
+texture = ExtResource( 6 )
+
+[node name="health1" type="Sprite" parent="healthbar" index="0"]
+
+modulate = Color( 0, 1, 0, 1 )
+position = Vector2( -195.833, -8 )
+scale = Vector2( 11.6211, 1 )
+texture = ExtResource( 7 )
+centered = false
+_sections_unfolded = [ "Animation", "Offset", "Transform", "Visibility" ]
+
+[node name="health2" type="Sprite" parent="healthbar" index="1"]
+
+modulate = Color( 0, 1, 0, 1 )
+position = Vector2( 195.319, 7.9668 )
+rotation = 3.14159
+scale = Vector2( 11.627, 0.990555 )
+texture = ExtResource( 7 )
+centered = false
+_sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 
 

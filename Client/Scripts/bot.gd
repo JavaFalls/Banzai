@@ -1,74 +1,51 @@
-
 extends "res://Scripts/entity.gd"
-onready var bot_mouse_position = [0,0]
-onready var bot_state = self.get_bot_state()
-onready var player = self.get_parent().get_child(2)
-onready var player_state = player.get_state()
-onready var predictions  = send_nn_state()
-onready var bot_wasd     = [0,0,0,0] 
-onready var game_state = get_node("game_state")
+
+onready var game_state = self.get_parent().get_child(1)
+
+var relative_mouse = Vector2()
 
 
-#onready gamestate  
 func _ready():
 	pass
 	
 
 
 func _process(delta):
-	
-	print(self.game_state.get_training_state())
-	var predictions = send_nn_state()
-	if not predictions.empty():
-		#print(predictions)
-		direction = Vector2(0,0)
-		if predictions[10] == 1:
-			direction.x = 1
-		if predictions[9] == 1:
-			direction.x = -1
-		if predictions[9] == 1 and predictions[10] == 1:
-			direction.x = 0
-
-		if predictions[12] == 1:
-			direction.y = -1
-		if predictions[11] == 1:
-			direction.y = 1
-		if predictions[11] == 1 and predictions[12] == 1:
-			direction.y = 0
-									
+	if is_player:
+		game_state.set_player_state(self)
+	else:
+		game_state.set_bot_state(self)
+	return
 
 func _physics_process(delta):
-	direction = move_and_slide(direction.normalized()*movement_speed, UP)
+	psuedo_mouse     = game_state.predicted_bot_mouse
+	relative_mouse   = self.get_position() - psuedo_mouse
+	direction        = game_state.predicted_bot_vector
+	psuedo_ability       = 0
+	psuedo_secondary     = 0
+	psuedo_primary       = 0
 	
-func get_bot_state():
+	if game_state.predicted_bot_psuedo_primary:
+		primary_weapon.use() 
+		psuedo_primary = 1
+	if game_state.predicted_bot_psuedo_secondary:
+		secondary_weapon.use()
+		psuedo_secondary = 1
+	if game_state.predicted_bot_psuedo_ability:
+		ability.use()
+		psuedo_ability = 1
 	
-	var state = PoolStringArray() 
-	state.append(self.get_position())
-	state.append(self.get_trajectory())
-	state.append(bot_mouse_position)
-	return state
-		
-		
-		
-		
-func send_nn_state():
-	var output = []
-	var path = PoolStringArray() 
-	var predictions = []
-	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
-	path.append(player.get_state())
-	path.append(self.get_state())
-	
-	
+	if (abs(relative_mouse.x) > abs(relative_mouse.y)):
+		if relative_mouse.x > 0:
+			set_rotation_degrees(90)
+		else:
+			set_rotation_degrees(270)
+	else:
+		if relative_mouse.y > 0:
+			set_rotation_degrees(180)
+		else:
+			set_rotation_degrees(0)
 
-	if (player_state.size() > 0 && bot_state.size() > 0):
-		OS.execute('python', path, true, output)
+	move_and_slide(direction.normalized()*movement_speed, UP)
+	return	
 		
-		output = output[0].split_floats(',', false)
-		for x in output:
-			x = round(x)
-			x = int(x)
-			predictions.append(x)
-		print(predictions)
-		
-		return predictions

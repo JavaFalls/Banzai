@@ -6,17 +6,18 @@ extends KinematicBody2D
 const UP             = Vector2(0,0) # Indicates top-down view
 
 var movement_speed   = 100           # Movement speed of the entity
-var p                = Area2D        # New Projectile
-var timer            = Timer.new()   # Timer for Firing cooldown
-var projectile_delay = .3            # Firing cooldown length
-var hit_points       = 10            # The hit point counter for the fighter
+var hit_points       = 100            # The hit point counter for the fighter
 var direction        = Vector2()     # Direction the entity is moving
 var primary_weapon   = Vector2()     # Weapon that goes in the first weapon slot
 var secondary_weapon = Vector2()     # Weapon that goes in the second weapon slot
 var ability          = Vector2()     # Weapon that goes in the third weapon slot
 var opponent         = KinematicBody # The bots' opponent
-var is_player        = false         # Is the bot a player
-var psuedo_mouse     = Vector2()     # This is the players curser position/bot's predicted curser position
+var is_player        = 0        # Is the mech controlled by a player
+var psuedo_mouse     = Vector2(0,0)  # This is the players curser position/bot's predicted curser position
+var psuedo_primary   = 0             # Is the primary weapon key pressed?
+var psuedo_secondary = 0             # Is the secondary weapon key pressed?
+var psuedo_ability   = 0             # Is the ability weapon key pressed?
+var in_peril         = 0             # Is the mech about to be hit by a projectile?
 
 signal game_end # The signal indicate the the arena match is over
 
@@ -32,7 +33,7 @@ func _ready():
 # Function to change weapons; is sent weapon scene as a parameter
 func set_weapons(new_primary, new_secondary, new_ability):
 	if self.get_child_count() > 4:   # Don't remove children if there aren't any 
-		self.remove_child(primary_weapon)
+		self.remove_child(primary_weapon)  #queue_free()?
 		self.remove_child(secondary_weapon)
 		self.remove_child(ability)	
 	primary_weapon   = new_primary.instance()
@@ -48,7 +49,7 @@ func get_hit_points():
 func get_trajectory():
 	return direction
 	
-func increment_hitpoints(damage):
+func increment_hitpoints(damage): # this decremements now because we make health go down.
 	hit_points -= damage
 	
 func set_opponent(new_opponent):
@@ -56,24 +57,24 @@ func set_opponent(new_opponent):
 	
 func get_opponent():
 	return opponent
-
-func is_player():
-	return is_player
 	
-func set_is_player(choice):
-	is_player = choice
+func get_psuedo_mouse():
+	return psuedo_mouse
+
+#func is_player():
+#	return is_player
+	
+#func set_is_player(choice):
+#	is_player = choice
 	
 func get_state():
 	var state = PoolStringArray() 
 	state.append(self.get_position())
 	state.append(self.get_trajectory())
-	state.append(get_viewport().get_mouse_position())
+	state.append(psuedo_mouse)
 	state.append(Input.is_action_pressed("primary_attack"))
 	state.append(Input.is_action_pressed("secondary_attack"))
-	state.append(Input.is_action_pressed("ui_right"))
-	state.append(Input.is_action_pressed("ui_left"))
-	state.append(Input.is_action_pressed("ui_up"))
-	state.append(Input.is_action_pressed("ui_down"))
+	state.append(Input.is_action_pressed("ability"))
 	return state
 	
 func _process(delta):

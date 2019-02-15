@@ -50,7 +50,18 @@ var battle_won = false
 var player_ID = null;
 var model_ID = null;
 var bot_ID = null;
-onready var DB = DBConnector.new()
+#onready var DB = DBConnector.new()
+
+# Bot Info
+var bot = {
+	"bot_ID"    : 0000,
+	"name"      : "",
+	"player_ID" : 0000,
+	"ranking"   : 0000,
+	"primary"   : 0001,
+	"secondary" : 0002,
+	"utility"   : 0003
+}
 
 # Weapons/abilities
 onready var weapons = {
@@ -130,16 +141,16 @@ var ai_builds
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
 	init_bots()
-	_test_DB()
+	#_test_DB()
 	ai_builds = [bot_builds[BOT]]
 
-func _input(event):
-	if Input.is_action_just_pressed("shutdown"):
-		if (DB.is_connection_open()):
-			DB.close_connection()
-		get_tree().quit()
-	if Input.is_action_just_pressed("toggle_fullscreen"):
-		OS.window_fullscreen = !OS.window_fullscreen
+#func _input(event):
+#	if Input.is_action_just_pressed("shutdown"):
+#		if (DB.is_connection_open()):
+#			DB.close_connection()
+#		get_tree().quit()
+#	if Input.is_action_just_pressed("toggle_fullscreen"):
+#		OS.window_fullscreen = !OS.window_fullscreen
 
 func load_scene(path):
 	get_tree().change_scene_to(loader)

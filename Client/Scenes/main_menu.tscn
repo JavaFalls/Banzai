@@ -382,6 +382,7 @@ texture_normal = ExtResource( 9 )
 stretch_mode = 5
 _sections_unfolded = [ "Margin", "Rect", "Size Flags", "Textures" ]
 
+
 [node name="Label" type="Label" parent="Control/train_button" index="0"]
 
 modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
