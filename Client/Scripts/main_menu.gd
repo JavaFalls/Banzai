@@ -43,7 +43,7 @@ func scene_change(button):
 		"stats":
 			get_tree().change_scene("res://Scenes/stats.tscn")
 		"train":
-			get_tree().change_scene("res://Scenes/arena_train.tscn")
+			get_tree().change_scene("res://Scenes/Load_training.tscn")
 		"fight":
 			head.load_scene("res://Scenes/battle_arena.tscn")
 	pass

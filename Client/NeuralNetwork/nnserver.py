@@ -1,7 +1,7 @@
 """ To use the pywin32 headers, run this command in a terminal
         pip install pywin32                                     """
 import win32pipe, win32file, pywintypes
-import sys, math
+import sys, math, os
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import load_model
@@ -104,8 +104,7 @@ def save_bot(model):
    model.save('my_model.h5')
 
 def load_bot():
-   model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model.h5')
-   #model = load_model('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/my_model1.h5')
+   model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
    return model
 
 def build_model():
