@@ -50,7 +50,7 @@ var battle_won = false
 var player_ID = null;
 var model_ID = null;
 var bot_ID = null;
-#onready var DB = DBConnector.new()
+onready var DB = DBConnector.new()
 
 # Bot Info
 var bot = {
