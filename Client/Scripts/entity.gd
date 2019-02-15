@@ -1,8 +1,11 @@
+# The "superclass" that "player", "bot", and "dummy" are derived from.
+# This scene contains the functions that the derived scenes have in common.
+
 extends KinematicBody2D
  
 const UP             = Vector2(0,0) # Indicates top-down view
 
-var movement_speed   = 250           # Movement speed of the entity
+var movement_speed   = 100           # Movement speed of the entity
 var p                = Area2D        # New Projectile
 var timer            = Timer.new()   # Timer for Firing cooldown
 var projectile_delay = .3            # Firing cooldown length
@@ -13,6 +16,7 @@ var secondary_weapon = Vector2()     # Weapon that goes in the second weapon slo
 var ability          = Vector2()     # Weapon that goes in the third weapon slot
 var opponent         = KinematicBody # The bots' opponent
 var is_player        = false         # Is the bot a player
+var psuedo_mouse     = Vector2()     # This is the players curser position/bot's predicted curser position
 
 signal game_end # The signal indicate the the arena match is over
 

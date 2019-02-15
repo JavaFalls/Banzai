@@ -2,11 +2,9 @@
         pip install pywin32                                     """
 import win32pipe, win32file, pywintypes
 import sys
-from os import system
 
 # Collect command line arguments and place them into an iterable list
 request_string = sys.argv
-
 def get_request_handle():
     successful = False
     while not successful:
@@ -66,7 +64,19 @@ def get_response_handle():
                         print("Closed Pipe")
                         successful = True
 
+def save_game_state(game_state):
+   str_game_state = str(game_state)
+   
+   f = open('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/gamestates', 'a') #absolute path here
+   f.write(str_game_state + "\n")
+   f.close() 
+
 # while True:
+
+# save game state for later training
+print(sys.argv)
+print("client output=================================")
+save_game_state(sys.argv)
 
 # Connect to server
 # print("Client Code\n\n")
@@ -79,7 +89,6 @@ win32file.WriteFile(request_handle, str.encode(f'{request_string}'))
 # Get response from Server
 # print("get response")
 response_handle = get_response_handle()
-# win32pipe.WaitNamedPipe(r'\\.\pipe\ResponseToClient', win32pipe.NMPWAIT_WAIT_FOREVER)
 response = win32file.ReadFile(response_handle, 64*1024)
 response_list = []
 

@@ -1,3 +1,6 @@
+# This "subclass" of entity simulates certain actions that a mech may do
+# for the purpose of training against.
+
 extends "res://Scripts/entity.gd"
 
 var relative_direction = Vector2()
@@ -8,6 +11,7 @@ var attack_primary     = true               # Use the primary attack as often as
 var attack_secondary   = false              # Use the secondary attack as often as possible
 var use_ability        = true               # Use the ability as often as possible
 var opponent_position  = Vector2()          # The position of the opponent
+var inaccuracy         = 150                # Allowed range of variance from the true target
 
 func _ready():
 	set_weapons(ranged_attack, heavy_attack, aby_evade)
@@ -16,6 +20,7 @@ func _physics_process(delta):
 	randomize()
 	#print(get_opponent())
 	opponent_position = get_opponent().get_position()
+	psuedo_mouse = opponent_position + Vector2((randi() % inaccuracy) - (inaccuracy/2), (randi() % inaccuracy) - (inaccuracy/2))
 	relative_direction = get_position() - opponent_position
 	#direction = Vector2(0,0)
 	

@@ -1,11 +1,12 @@
+# This scene is meant to be the training area and battle area for player and ai mechs
+
 extends Node2D
 
 # The variables
-var fighter1                       # Players fighter or AI
+var fighter1                       # Player's fighter or AI
 var fighter2                       # Opponent
 var start_pos1 = Vector2(200,48)   # Where the first fighter spawns
 var start_pos2 = Vector2(200,175)  # Where the second fighter spawns
-var hit_points_difference          # how many points above the opponent is fighter1 (may be negative)
 
 onready var player_scene = preload("res://Scenes/player.tscn")
 onready var bot_scene    = preload("res://Scenes/bot.tscn")

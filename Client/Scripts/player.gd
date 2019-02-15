@@ -1,8 +1,12 @@
+# The "subclass" of entity that the player controls and that the 
+# neural network trains on.
+
 extends "res://Scripts/entity.gd"
 
 var relative_mouse = Vector2()
 
 func _physics_process(delta):
+	psuedo_mouse = get_global_mouse_position()
 	relative_mouse = get_position() - get_viewport().get_mouse_position()
 	direction = Vector2(0,0)
 	

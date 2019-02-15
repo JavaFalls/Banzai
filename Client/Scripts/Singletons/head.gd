@@ -13,6 +13,18 @@ const resolutions = [
 	NORMAL_WIDTH
 ]
 
+# DB Related constants
+const FILEPATH_GENERIC_BOT_MODEL = "res://NeuralNetwork/generic_model.h5" # where we store the generic_model used to create brand new default robots
+const FILEPATH_STORE_BOT_MODEL = "res://NeuralNetwork/my_model.h5" # where the DBConnector will go to look up an ai_model to store in the DB
+const FILEPATH_LOAD_BOT_MODEL = "res://NeuralNetwork/my_model_new.h5" # where an ai_model just loaded from the DB is stored
+
+# The abilities used by a default robot
+const DEFAULT_UTILITY = 0
+const DEFAULT_PRIMARY = 0
+const DEFAULT_SECONDARY = 0
+const DEFAULT_PRIMARY_COLOR = Color(0, 1, 0)
+const DEFAULT_SECONDARY_COLOR = Color(1, 0, 1)
+
 # Weapons keys
 enum {PRIMARY, SECONDARY, ABILITY}
 # Bot builds keys
@@ -176,6 +188,49 @@ func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
 	else:
 		score_change = -5
 
+#--------------------------------------------
+# DB Functions
+#--------------------------------------------
+# Creates a new user in the database with a default bot setup.
+# Expectes head.username to already be set
+func create_user():
+	# Due to foreign key constraints, we must create data in the DB in the following order:
+	# player -> model -> bot
+	
+	# 1. Create player
+	player_ID = DB.new_player(username)
+	
+	# 2. Create model
+	# - Load generic model
+	var data
+	var file_generic_model = File.new()
+	var file_store_model = File.new()
+	file_generic_model.open(FILEPATH_GENERIC_BOT_MODEL, File.READ)
+	file_store_model.open(FILEPATH_STORE_BOT_MODEL, File.WRITE)
+	while(true):
+		data = file_generic_model.get_8()
+		if(file_generic_model.eof_reached()):
+			break;
+		else:
+			file_store_model.store_8(data)
+	file_generic_model.close()
+	file_store_model.close()
+	
+	# - Store model
+	model_ID = DB.new_model(player_ID)
+	
+	# 3. Create bot
+	var bot_insert_arg_array = [0, 0, 0, 0, 0, 0]
+	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_MODEL_ID] = model_ID
+	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_UTILITY] = DEFAULT_UTILITY
+	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_SECONDARY_WEAPON] = DEFAULT_SECONDARY
+	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_PRIMARY_WEAPON] = DEFAULT_PRIMARY
+	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_PRIMARY_COLOR] = DEFAULT_PRIMARY_COLOR.to_rgba32()
+	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_SECONDARY_COLOR] = DEFAULT_SECONDARY_COLOR.to_rgba32()
+	bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, "v1")
+
+
+
 func _test_DB():
 	# Test the DB functions
 	print("DB Testing begin")
@@ -186,13 +241,13 @@ func _test_DB():
 	print("DB.get_player(): ", DB.get_player(player_ID))
 	print("DB.update_player(): ", DB.update_player(player_ID, "NewName2000"))
 	print("Bot funcs:================================")
-	var botInsArgArray = [0, 1, 2, 3]
+	var botInsArgArray = [0, 1, 2, 3, Color(1, 1, 1, 1).to_rgba32(), Color(1, 1, 1, 1).to_rgba32()]
 	bot_ID = DB.new_bot(player_ID, botInsArgArray, "mech9000")
 	print("bot_ID: ", bot_ID)
 	model_ID = botInsArgArray[0]
 	print("model_ID: ", model_ID)
 	print("DB.get_bot: ", DB.get_bot(bot_ID, true))
-	var botUpdArgArray = [player_ID, model_ID, 1000, 3, 0, 1]
+	var botUpdArgArray = [player_ID, model_ID, 1000, 3, 0, 1, Color(0, 0, 0, 1).to_rgba32(), Color(1, 1, .5, 1).to_rgba32()]
 	print("DB.update_bot: ", DB.update_bot(bot_ID, botUpdArgArray, "mech9001", true))
 	print("Model funcs:==============================")
 	model_ID = DB.new_model(player_ID)
