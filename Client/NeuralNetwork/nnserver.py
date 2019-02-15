@@ -1,7 +1,7 @@
 """ To use the pywin32 headers, run this command in a terminal
         pip install pywin32                                     """
 import win32pipe, win32file, pywintypes
-import sys, math
+import sys, math, os
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import load_model
@@ -75,7 +75,7 @@ def react(game_state, model):
       input_list.append(item)
    str_input_list = str(input_list)
    input_list = str_input_list.replace(" ","").replace("''","'0'").replace("[]", "0,0").replace("[","").replace("]","").replace("(","")\
-   .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")         
+   .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")
    input_list.pop(0)
    input_list.pop(0)
    print("input_;ist=====================")
@@ -90,8 +90,7 @@ def react(game_state, model):
    return(output_list)
 
 def load_bot():
-   #model = load_model('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/my_model - trained on 55k.h5')
-   model = load_model('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/my_model.h5')
+   model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
    return model
 
 bot = load_bot()
