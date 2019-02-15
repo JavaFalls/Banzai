@@ -47,6 +47,10 @@ func _physics_process(delta):
 		else:
 			set_rotation_degrees(0)
 	#print(self.get_parent().get_children())
-	game_state.set_player_state(self)
+	
+	if is_player:
+		game_state.set_player_state(self)
+	else:
+		game_state.set_bot_state(self)
 	move_and_slide(direction.normalized()*movement_speed, UP)
 	get_node("Label").set_text(str(get_hit_points()))

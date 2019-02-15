@@ -131,21 +131,21 @@ func set_predictions(predictions):
 		
 func get_predictions():
 	var pred = []
-	pred.append(predicted_player_position)
-	pred.append(predicted_player_mouse)
-	pred.append(predicted_player_vector)
-	pred.append(predicted_player_psuedo_primary)
-	pred.append(predicted_player_psuedo_secondary)
-	pred.append(predicted_player_psuedo_ability)
-	pred.append(predicted_player_in_peril)
+	pred.append((predicted_player_position))
+	pred.append((predicted_player_mouse))
+	pred.append((predicted_player_vector))
+	pred.append((predicted_player_psuedo_primary))
+	pred.append(round(predicted_player_psuedo_secondary))
+	pred.append(round(predicted_player_psuedo_ability))
+	pred.append(round(predicted_player_in_peril))
 
-	pred.append(predicted_bot_position)
-	pred.append(predicted_bot_mouse)
-	pred.append(predicted_bot_vector)
-	pred.append(predicted_bot_psuedo_primary)
-	pred.append(predicted_bot_psuedo_secondary)
-	pred.append(predicted_bot_psuedo_ability)
-	pred.append(predicted_bot_in_peril)
+	pred.append((predicted_bot_position))
+	pred.append((predicted_bot_mouse))
+	pred.append((predicted_bot_vector))
+	pred.append((predicted_bot_psuedo_primary))
+	pred.append(round(predicted_bot_psuedo_secondary))
+	pred.append(round(predicted_bot_psuedo_ability))
+	pred.append(round(predicted_bot_in_peril))
 	return pred
 
 func _ready():

@@ -11,7 +11,10 @@ func _ready():
 
 
 func _process(delta):
-	game_state.set_bot_state(self) # This will be set_bot or set_player depending on if its the player's bot or not
+	if is_player:
+		game_state.set_player_state(self)
+	else:
+		game_state.set_bot_state(self)
 	return
 
 func _physics_process(delta):

@@ -1,5 +1,8 @@
 extends Node2D
 
+# The Bot
+var Bot = JSON.parse(head.DB.get_bot(head.bot_ID, true)).result["data"][0]
+
 # The variables
 var fighter1                             # Player or his AI bot
 var fighter2                             # Opponent of player or AI bot
@@ -29,6 +32,10 @@ func _ready():
 #	 Set the opponents for the respective fighters
 	fighter1.set_opponent(fighter2)
 	fighter2.set_opponent(fighter1)
+
+# Called after game ends
+func game_end():
+	head.DB.update_bot(Bot["Bot_ID"])
 
 
 func _process(delta):
