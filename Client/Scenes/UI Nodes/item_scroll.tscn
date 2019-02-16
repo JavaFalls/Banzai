@@ -2,11 +2,11 @@
 
 [ext_resource path="res://Scenes/UI Nodes/item_scroll.gd" type="Script" id=1]
 [ext_resource path="res://assets/bots/front.png" type="Texture" id=2]
-[ext_resource path="res://assets/bots/side - right.png" type="Texture" id=3]
-[ext_resource path="res://assets/bots/side-left.png" type="Texture" id=4]
+[ext_resource path="res://assets/bots/side-left.png" type="Texture" id=3]
+[ext_resource path="res://assets/bots/side - right.png" type="Texture" id=4]
 [ext_resource path="res://assets/bots/back.png" type="Texture" id=5]
 
-[node name="item_scroll" type="MarginContainer"]
+[node name="item_scroll" type="MarginContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -70,7 +70,6 @@ _sections_unfolded = [ "Textures" ]
 
 [node name="items" type="HBoxContainer" parent="HBoxContainer" index="1"]
 
-show_behind_parent = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -87,31 +86,138 @@ size_flags_vertical = 3
 alignment = 0
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="prev" type="TextureRect" parent="HBoxContainer/items" index="0"]
+[node name="prev" type="CenterContainer" parent="HBoxContainer/items" index="0"]
+
+editor/display_folded = true
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 25.0
+margin_bottom = 31.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+use_top_left = false
+
+[node name="Control" type="Control" parent="HBoxContainer/items/prev" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 31.0
+margin_left = 12.0
+margin_top = 15.0
+margin_right = 12.0
+margin_bottom = 15.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="current" type="CenterContainer" parent="HBoxContainer/items" index="1"]
+
+editor/display_folded = true
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 29.0
+margin_right = 54.0
+margin_bottom = 31.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+use_top_left = false
+
+[node name="Control" type="Control" parent="HBoxContainer/items/current" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 12.0
+margin_top = 15.0
+margin_right = 12.0
+margin_bottom = 15.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="next" type="CenterContainer" parent="HBoxContainer/items" index="2"]
+
+editor/display_folded = true
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 58.0
+margin_right = 83.0
+margin_bottom = 31.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+use_top_left = false
+
+[node name="Control" type="Control" parent="HBoxContainer/items/next" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 12.0
+margin_top = 15.0
+margin_right = 12.0
+margin_bottom = 15.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="items_other" type="HBoxContainer" parent="HBoxContainer" index="2"]
+
+editor/display_folded = true
+visible = false
+show_behind_parent = true
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 34.0
+margin_right = 169.0
 margin_bottom = 31.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-texture = ExtResource( 2 )
-stretch_mode = 6
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+_sections_unfolded = [ "Size Flags" ]
 
-[node name="current" type="TextureRect" parent="HBoxContainer/items" index="1"]
+[node name="prev2" type="TextureRect" parent="HBoxContainer/items_other" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 35.0
-margin_right = 57.0
+margin_right = 22.0
 margin_bottom = 31.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -122,7 +228,25 @@ size_flags_vertical = 1
 texture = ExtResource( 3 )
 stretch_mode = 6
 
-[node name="next" type="TextureRect" parent="HBoxContainer/items" index="2"]
+[node name="prev" type="TextureRect" parent="HBoxContainer/items_other" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 26.0
+margin_right = 57.0
+margin_bottom = 31.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 2 )
+stretch_mode = 6
+
+[node name="current" type="TextureRect" parent="HBoxContainer/items_other" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -140,7 +264,43 @@ size_flags_vertical = 1
 texture = ExtResource( 4 )
 stretch_mode = 6
 
-[node name="go_to_next" type="TextureButton" parent="HBoxContainer" index="2"]
+[node name="next" type="TextureRect" parent="HBoxContainer/items_other" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 87.0
+margin_right = 109.0
+margin_bottom = 31.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 3 )
+stretch_mode = 6
+
+[node name="next2" type="TextureRect" parent="HBoxContainer/items_other" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 113.0
+margin_right = 135.0
+margin_bottom = 31.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 3 )
+stretch_mode = 6
+
+[node name="go_to_next" type="TextureButton" parent="HBoxContainer" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -162,6 +322,50 @@ shortcut = null
 group = null
 texture_normal = ExtResource( 5 )
 _sections_unfolded = [ "Textures" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+blend_times = [  ]
+
+[node name="Sprite" type="Sprite" parent="." index="2" groups=[
+"item_textures",
+]]
+
+position = Vector2( 11.512, -21.8024 )
+texture = ExtResource( 4 )
+
+[node name="Sprite2" type="Sprite" parent="." index="3" groups=[
+"item_textures",
+]]
+
+position = Vector2( 11.512, -21.8024 )
+texture = ExtResource( 4 )
+
+[node name="Sprite3" type="Sprite" parent="." index="4" groups=[
+"item_textures",
+]]
+
+position = Vector2( 11.512, -21.8024 )
+texture = ExtResource( 4 )
+
+[node name="Sprite4" type="Sprite" parent="." index="5" groups=[
+"item_textures",
+]]
+
+position = Vector2( 11.512, -21.8024 )
+texture = ExtResource( 4 )
+
+[node name="Sprite5" type="Sprite" parent="." index="6" groups=[
+"item_textures",
+]]
+
+position = Vector2( 11.512, -21.8024 )
+texture = ExtResource( 4 )
 
 [connection signal="pressed" from="HBoxContainer/go_to_prev" to="." method="_on_go_to_prev_pressed"]
 

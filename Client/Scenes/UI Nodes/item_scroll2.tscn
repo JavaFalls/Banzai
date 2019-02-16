@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/UI Nodes/item_scroll2.gd" type="Script" id=1]
+
+[node name="item_scroll" type="Node2D"]
+
+script = ExtResource( 1 )
+scroll_time = 0.2
+
+[node name="item0" type="Sprite" parent="." index="0"]
+
+editor/display_folded = true
+modulate = Color( 1, 1, 1, 0 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Tween" type="Tween" parent="item0" index="0"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="item1" type="Sprite" parent="." index="1"]
+
+editor/display_folded = true
+
+[node name="Tween" type="Tween" parent="item1" index="0"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="item2" type="Sprite" parent="." index="2"]
+
+editor/display_folded = true
+
+[node name="Tween" type="Tween" parent="item2" index="0"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="item3" type="Sprite" parent="." index="3"]
+
+editor/display_folded = true
+
+[node name="Tween" type="Tween" parent="item3" index="0"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="item4" type="Sprite" parent="." index="4"]
+
+editor/display_folded = true
+modulate = Color( 1, 1, 1, 0 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Tween" type="Tween" parent="item4" index="0"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+

@@ -4,14 +4,22 @@ const CONTROL_SIZE = Vector2(150, 30)
 
 var items = []
 var current = 0
-var animation_player
 
 onready var prev_item_node = get_node("HBoxContainer/items/prev")
 onready var current_item_node = get_node("HBoxContainer/items/current")
 onready var next_item_node = get_node("HBoxContainer/items/next")
+onready var animator = get_node("AnimationPlayer")
 
 func _ready():
-	pass
+	rect_size = CONTROL_SIZE
+	
+	### test for sprite nodes
+	var item_sprites = get_tree().get_nodes_in_group("item_textures")
+	item_sprites[1].global_position = prev_item_node.get_child(0).rect_global_position
+	item_sprites[2].global_position = current_item_node.get_child(0).rect_global_position
+	item_sprites[3].global_position = next_item_node.get_child(0).rect_global_position
+	item_sprites[0].global_position = item_sprites[1].global_position - Vector2(item_sprites[1].texture.get_width(), 0)
+	item_sprites[4].global_position = item_sprites[3].global_position + Vector2(item_sprites[3].texture.get_width(), 0)
 
 # Signal methods
 #---------------
