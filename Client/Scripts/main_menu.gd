@@ -33,7 +33,7 @@ Various nodes' signal methods
 func scene_change(button):
 	match (button):
 		"leader":
-			get_tree().change_scene("res://Scenes/leaderboard.tscn")
+			get_tree().change_scene("res://Scenes/Screens/local_scoreboard.tscn")
 		"custom":
 			get_tree().change_scene("res://Scenes/build.tscn")
 		"stats":
