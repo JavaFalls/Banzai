@@ -127,8 +127,8 @@ private:
    /******************************************************************************
    / DB Interaction Helpers
    /*****************************************************************************/
-   int store_model(SQLHSTMT sql_statement, int param_model); // Executes the given sql_statment and attempts to write the AI model file to the database. See further documentation at the declaration in DBConnector.cpp
-   int get_model_by_sql(SQLHSTMT sql_statement); // Executes the given sql_statement and attempts to write the AI model to a file. Assumes that the AI Model is in the first row, first column of the result set returned by the sqlQuery. Destroys the sql_statement when it it finished
+   int store_model(SQLHSTMT sql_statement, int param_model, String model_file_name); // Executes the given sql_statment and attempts to write the AI model file to the database. See further documentation at the declaration in DBConnector.cpp
+   int get_model_by_sql(SQLHSTMT sql_statement, String model_file_name); // Executes the given sql_statement and attempts to write the AI model to a file. Assumes that the AI Model is in the first row, first column of the result set returned by the sqlQuery. Destroys the sql_statement when it it finished
    int get_row(SQLHSTMT sql_statement_handle); // Gets the next row from a result set so it can be read. Assumes that the sql query has already been run.
    int get_int_attribute(SQLHSTMT sql_statement_handle, int column_number); // Returns the value of the specified column on the corrent row. Assumes that the sql query has already been run and a row fetched.
 protected:
@@ -157,6 +157,12 @@ public:
    /*****************************************************************************/
    // new_ functions return the PK value of the newly inserted row
    // Update functions return 1 if they complete and commit successfully, 0 if the fail and rollback
+   //    - If you do not want to update all of the fields modified by the update_() function, then pass a null value to the fields you do not want to update
+   //        Nulls are:
+   //          String: Empty String ("")
+   //          Integers: -1 (NULL_INT)
+   //          Colors:    0 (NULL_COLOR)
+   //        NULL_ constants are made available to Godot through the DBConnector object. (example: head.DB.NULL_COLOR)
    // get_ functions return a JSON string containing an array of arrays that represent the rows and columns returned by the query
    //  Sample json format:
    // {
@@ -174,17 +180,17 @@ public:
 
    //// Basic bot management
    int new_bot(int player_ID, Array new_bot_args, String name); // See NEW_BOT_ARGS_ constants to know better what to pass for the array
-   int update_bot(int bot_ID, Array update_bot_args, String name, int update_model = TRUE); // See UPDATE_BOT_ARGS_ constants to know better what to pass for the array
-   String get_bot(int bot_ID, int get_model = TRUE);
+   int update_bot(int bot_ID, Array update_bot_args, String name, String model_file_name = ""); // See UPDATE_BOT_ARGS_ constants to know better what to pass for the array
+   String get_bot(int bot_ID, String model_file_name = "");
 
    //// Basic Model management
-   int new_model(int player_ID); // Returns the model_ID (a positive integer) of the newly stored model. Returns 0 if the model could not be inserted.
-   int update_model(int model_ID);
-   int update_model_by_bot_id(int bot_id);
+   int new_model(int player_ID, String model_file_name); // Returns the model_ID (a positive integer) of the newly stored model. Returns 0 if the model could not be inserted.
+   int update_model(int model_ID, String model_file_name);
+   int update_model_by_bot_id(int bot_id, String model_file_name);
    // get_model and get_model_by_bot_id are exceptions to the normal behavior of a get_ function, instead of returning a JSON string, these return whether or not they completed succesfully.
    // The AI_Model itself is placed in a file in the NeuralNetwork folder
-   int get_model(int model_ID);
-   int get_model_by_bot_id(int bot_id);
+   int get_model(int model_ID, String model_file_name);
+   int get_model_by_bot_id(int bot_id, String model_file_name);
 
    //// Score related functions
    // Returns a list of ids for the bots found in a certain score range (excludes bot id sent to the function)

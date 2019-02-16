@@ -121,7 +121,7 @@ func update_scoreboard_ui():
 func update_player_bot_highlight():
 	get_node(NP_PLAYER_HIGHLIGHT_POSITION).text = "Rank: " + String(head.DB.get_scoreboard_position(head.bot_ID))
 	
-	var score_raw_JSON = head.DB.get_bot(head.bot_ID, false)
+	var score_raw_JSON = head.DB.get_bot(head.bot_ID)
 	if (score_raw_JSON != ""):
 		get_node(NP_PLAYER_HIGHLIGHT_SCORE).text = "Score: " + String(JSON.parse(score_raw_JSON).result["data"][0]["ranking"])
 	pass
@@ -129,7 +129,6 @@ func update_player_bot_highlight():
 # Updates the scoreboard display by moving the displayed positions by the specified amount
 func move_scoreboard_display(amount):
 	display_position += amount
-	print(display_position)
 	if (display_position < MIN_DISPLAY_POSITION):
 		display_position = MIN_DISPLAY_POSITION
 	elif(scoreboard_dictionary_size < MAX_SCOREBOARD_DICTIONARY_SIZE && display_position - scoreboard_dictionary_index_offset >= scoreboard_dictionary_size):
