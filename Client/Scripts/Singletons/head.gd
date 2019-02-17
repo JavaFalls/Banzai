@@ -64,8 +64,8 @@ var bot = {
 }
 
 # Weapons/abilities
-enum WEAPONS {ROBOT_FACE, SWORD, RED_BLOCK}
-enum ABILITES {SWORD1, SWORD2, SWORD3}
+enum WPN {ROBOT_FACE, SWORD, RED_BLOCK}
+enum ABL {SWORD1, SWORD2, SWORD3}
 
 onready var weapons = [
 	{ # Robot face
