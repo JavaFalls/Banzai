@@ -13,10 +13,14 @@
 #include <iostream>
 #include <fstream>
 
-#define STRING_INT_SIZE    11                              // How long a string needs to be to hold an int that has been converted to a string, plus the null terminator
-#define BLOB_MAX           2147483647                      // Max size of a BLOB (binary large object) in SQL Server
-#define FILEPATH_IN_MODEL  "NeuralNetwork/my_model.h5"     // Filepath to use when storing a model to the database
-#define FILEPATH_OUT_MODEL "NeuralNetwork/my_model_new.h5" // Filepath to use when loading a model from the database:
+#define STRING_INT_SIZE        11                 // How long a string needs to be to hold an int that has been converted to a string, plus the null terminator
+#define BLOB_MAX               2147483647         // Max size of a BLOB (binary large object) in SQL Server
+#define FILENAME_GENERIC_MODEL "generic_model.h5" // Filename to use when storing a brand new network in the DBs
+#define FILEPATH_MODEL_FOLDER  "NeuralNetwork/"   // Folder used to store models
+
+// Values used in place of nulls when putting data in the database
+# define NULL_COLOR 0
+# define NULL_INT   -1
 
 // Constants to access arrays of arguments used when a function that needs to be usable by Godot exceeds 5 arguments
 // Godot has a bug that prevents binding of functions with 6 or more arguments
@@ -24,14 +28,22 @@
 #define NEW_BOT_ARGS_PRIMARY_WEAPON 1
 #define NEW_BOT_ARGS_SECONDARY_WEAPON 2
 #define NEW_BOT_ARGS_UTILITY 3
-#define NEW_BOT_ARGS_ARRAY_SIZE 4
+#define NEW_BOT_ARGS_PRIMARY_COLOR 4
+#define NEW_BOT_ARGS_SECONDARY_COLOR 5
+#define NEW_BOT_ARGS_ACCENT_COLOR 6
+#define NEW_BOT_ARGS_LIGHT_COLOR 7
+#define NEW_BOT_ARGS_ARRAY_SIZE 8
 #define UPDATE_BOT_ARGS_PLAYER_ID 0
 #define UPDATE_BOT_ARGS_MODEL_ID 1
 #define UPDATE_BOT_ARGS_RANKING 2
 #define UPDATE_BOT_ARGS_PRIMARY_WEAPON 3
 #define UPDATE_BOT_ARGS_SECONDARY_WEAPON 4
 #define UPDATE_BOT_ARGS_UTILITY 5
-#define UPDATE_BOT_ARGS_ARRAY_SIZE 6
+#define UPDATE_BOT_ARGS_PRIMARY_COLOR 6
+#define UPDATE_BOT_ARGS_SECONDARY_COLOR 7
+#define UPDATE_BOT_ARGS_ACCENT_COLOR 8
+#define UPDATE_BOT_ARGS_LIGHT_COLOR 9
+#define UPDATE_BOT_ARGS_ARRAY_SIZE 10
 
 /***********************************************************************************************************
 / Debug Control
@@ -116,7 +128,7 @@ int DBConnector::new_player(String name) {
    int new_player_id = FALSE;
    std::string string_name = name.ascii().get_data();
    std::string sql_get_new_player_ID = "SELECT max(player.player_ID_PK)\n"
-                      + (std::string)"  FROM javafalls.player player";
+                        + (std::string)"  FROM javafalls.player player";
    std::string sql_insert = "INSERT INTO javafalls.player\n"
              + (std::string)"            (name)\n"
              + (std::string)"     VALUES (?)";
@@ -195,6 +207,10 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    const int PARAM_INSERT_PRIMARY_WEAPON = 5;
    const int PARAM_INSERT_SECONDARY_WEAPON = 6;
    const int PARAM_INSERT_UTILITY = 7;
+   const int PARAM_INSERT_PRIMARY_COLOR = 8;
+   const int PARAM_INSERT_SECONDARY_COLOR = 9;
+   const int PARAM_INSERT_ACCENT_COLOR = 10;
+   const int PARAM_INSERT_LIGHT_COLOR = 11;
 
    SQLHSTMT sql_statement_new_bot;
    SQLHSTMT sql_statement_get_bot_ID;
@@ -204,13 +220,17 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    int secondary_weapon = (int)new_bot_args[NEW_BOT_ARGS_SECONDARY_WEAPON];
    int utility = (int)new_bot_args[NEW_BOT_ARGS_UTILITY];
    int model_ID = (int)new_bot_args[NEW_BOT_ARGS_MODEL_ID];
+   unsigned int primary_color = (unsigned int)new_bot_args[NEW_BOT_ARGS_PRIMARY_COLOR];
+   unsigned int secondary_color = (unsigned int)new_bot_args[NEW_BOT_ARGS_SECONDARY_COLOR];
+   unsigned int accent_color = (unsigned int)new_bot_args[NEW_BOT_ARGS_ACCENT_COLOR];
+   unsigned int light_color = (unsigned int)new_bot_args[NEW_BOT_ARGS_LIGHT_COLOR];
 
    std::string string_name = name.ascii().get_data();
    std::string sql_get_new_bot_ID = "SELECT max(bot.bot_ID_PK)\n"
                      + (std::string)"  FROM javafalls.bot bot";
    std::string sql_code = "INSERT INTO javafalls.bot\n"
-           + (std::string)"            (player_ID_FK, model_ID_FK, ranking, name, primary_weapon, secondary_weapon, utility)\n"
-           + (std::string)"     VALUES (           ?,           ?,       ?,    ?,              ?,                ?,       ?)";
+           + (std::string)"            (player_ID_FK, model_ID_FK, ranking, name, primary_weapon, secondary_weapon, utility, primary_color, secondary_color, accent_color, light_color)\n"
+           + (std::string)"     VALUES (           ?,           ?,       ?,    ?,              ?,                ?,       ?,             ?,               ?,            ?,           ?)";
 
    sql_statement_new_bot = create_command(sql_code);
    sql_statement_get_bot_ID = create_command(sql_get_new_bot_ID);
@@ -222,9 +242,13 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    bind_parameter(sql_statement_new_bot, PARAM_INSERT_PRIMARY_WEAPON, &primary_weapon);
    bind_parameter(sql_statement_new_bot, PARAM_INSERT_SECONDARY_WEAPON, &secondary_weapon);
    bind_parameter(sql_statement_new_bot, PARAM_INSERT_UTILITY, &utility);
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_PRIMARY_COLOR, (int *)&primary_color); // SQL Server does not support unsigned integers, so trick it into thinking the int is signed
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_SECONDARY_COLOR, (int *)&secondary_color);
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_ACCENT_COLOR, (int *)&accent_color);
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_LIGHT_COLOR, (int *)&light_color);
    if (model_ID <= 0) {
       // Model ID not provided, attempt to insert the model into the database ourselves
-      new_bot_args[NEW_BOT_ARGS_MODEL_ID] = (Variant)new_model(player_ID);
+      new_bot_args[NEW_BOT_ARGS_MODEL_ID] = (Variant)new_model(player_ID, String(FILENAME_GENERIC_MODEL));
       model_ID = (int)new_bot_args[NEW_BOT_ARGS_MODEL_ID];
       if (!model_ID) {
          // Insert of new model failed, return with an error
@@ -254,7 +278,7 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    destroy_command(sql_statement_get_bot_ID);
    return new_bot_ID;
 }
-int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int update_model) {
+int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, String model_file_name) {
    const int PARAM_UPDATE_PLAYER_ID = 1;
    const int PARAM_UPDATE_MODEL_ID = 2;
    const int PARAM_UPDATE_RANKING = 3;
@@ -262,7 +286,11 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int 
    const int PARAM_UPDATE_PRIMARY_WEAPON = 5;
    const int PARAM_UPDATE_SECONDARY_WEAPON = 6;
    const int PARAM_UPDATE_UTILITY = 7;
-   const int PARAM_UPDATE_BOT_ID = 8;
+   const int PARAM_UPDATE_PRIMARY_COLOR = 8;
+   const int PARAM_UPDATE_SECONDARY_COLOR = 9;
+   const int PARAM_UPDATE_ACCENT_COLOR = 10;
+   const int PARAM_UPDATE_LIGHT_COLOR = 11;
+   const int PARAM_UPDATE_BOT_ID = 12;
 
    int player_ID = (int)update_bot_args[UPDATE_BOT_ARGS_PLAYER_ID];
    int model_ID = (int)update_bot_args[UPDATE_BOT_ARGS_MODEL_ID];
@@ -271,6 +299,10 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int 
    int primary_weapon = (int)update_bot_args[UPDATE_BOT_ARGS_PRIMARY_WEAPON];
    int secondary_weapon = (int)update_bot_args[UPDATE_BOT_ARGS_SECONDARY_WEAPON];
    int utility = (int)update_bot_args[UPDATE_BOT_ARGS_UTILITY];
+   unsigned int primary_color = (unsigned int)update_bot_args[UPDATE_BOT_ARGS_PRIMARY_COLOR];
+   unsigned int secondary_color = (unsigned int)update_bot_args[UPDATE_BOT_ARGS_SECONDARY_COLOR];
+   unsigned int accent_color = (unsigned int)update_bot_args[UPDATE_BOT_ARGS_ACCENT_COLOR];
+   unsigned int light_color = (unsigned int)update_bot_args[UPDATE_BOT_ARGS_LIGHT_COLOR];
 
    SQLHSTMT sql_statement;
    std::string sql_code = "UPDATE javafalls.bot\n"
@@ -281,6 +313,10 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int 
            + (std::string)"     , bot.primary_weapon   = coalesce(nullif(?, -1),   bot.primary_weapon)\n"
            + (std::string)"     , bot.secondary_weapon = coalesce(nullif(?, -1),   bot.secondary_weapon)\n"
            + (std::string)"     , bot.utility          = coalesce(nullif(?, -1),   bot.utility)\n"
+           + (std::string)"     , bot.primary_color    = coalesce(nullif(?, 0),    bot.primary_color)\n"
+           + (std::string)"     , bot.secondary_color  = coalesce(nullif(?, 0),    bot.secondary_color)\n"
+           + (std::string)"     , bot.accent_color     = coalesce(nullif(?, 0),    bot.accent_color)\n"
+           + (std::string)"     , bot.light_color      = coalesce(nullif(?, 0),    bot.light_color)\n"
            + (std::string)" WHERE bot.bot_ID_PK = ?";
 
    sql_statement = create_command(sql_code);
@@ -292,10 +328,14 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int 
    bind_parameter(sql_statement, PARAM_UPDATE_PRIMARY_WEAPON, &primary_weapon);
    bind_parameter(sql_statement, PARAM_UPDATE_SECONDARY_WEAPON, &secondary_weapon);
    bind_parameter(sql_statement, PARAM_UPDATE_UTILITY, &utility);
+   bind_parameter(sql_statement, PARAM_UPDATE_PRIMARY_COLOR, (int *)&primary_color); // SQL Server does not support unsigned integers, so trick it into thinking the int is signed
+   bind_parameter(sql_statement, PARAM_UPDATE_SECONDARY_COLOR, (int *)&secondary_color);
+   bind_parameter(sql_statement, PARAM_UPDATE_ACCENT_COLOR, (int *)&accent_color);
+   bind_parameter(sql_statement, PARAM_UPDATE_LIGHT_COLOR, (int *)&light_color);
    execute(sql_statement);
    if (SQL_SUCCEEDED(last_return)) {
-      if (update_model) {
-         update_model_by_bot_id(bot_ID); // Includes a commit or rollback
+      if (model_file_name.length()) {
+         update_model_by_bot_id(bot_ID, model_file_name); // Includes a commit or rollback
       }
    }
    else {
@@ -304,20 +344,22 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, int 
    destroy_command(sql_statement);
    return SQL_SUCCEEDED(last_return);
 }
-String DBConnector::get_bot(int bot_ID, int get_model) {
+String DBConnector::get_bot(int bot_ID, String model_file_name) {
    const int PARAM_QUERY_BOT_ID = 1;
 
    String return_value;
    char bot_ID_string[STRING_INT_SIZE];
    sprintf(bot_ID_string, "%d", bot_ID);
-   std::string sqlQuery = "SELECT bot.player_ID_FK, bot.model_ID_FK, bot.ranking, bot.name, bot.primary_weapon, bot.secondary_weapon, bot.utility\n"
+   std::string sqlQuery = "SELECT bot.player_ID_FK, bot.model_ID_FK, bot.ranking, bot.name\n"
+           + (std::string)"     , bot.primary_weapon, bot.secondary_weapon, bot.utility\n"
+           + (std::string)"     , bot.primary_color, bot.secondary_color, bot.accent_color, bot.light_color\n"
            + (std::string)"  FROM javafalls.bot\n"
            + (std::string)" WHERE bot.bot_ID_PK = ?";
 
    SQLHSTMT sql_statement = create_command(sqlQuery);
    bind_parameter(sql_statement, PARAM_QUERY_BOT_ID, &bot_ID);
-   if (get_model) {
-      get_model_by_bot_id(bot_ID);
+   if (model_file_name.length()) {
+      get_model_by_bot_id(bot_ID, model_file_name);
    }
    execute(sql_statement);
    return_value = get_results(sql_statement);
@@ -327,7 +369,7 @@ String DBConnector::get_bot(int bot_ID, int get_model) {
 
 // Basic Model Management
 // Returns the model ID (a positive integer) of the newly stored model. Returns 0 if the model could not be inserted.
-int DBConnector::new_model(int player_ID) {
+int DBConnector::new_model(int player_ID, String model_file_name) {
    const int PARAM_INSERT_PLAYER_ID = 1;
    const int PARAM_INSERT_MODEL = 2;
 
@@ -342,7 +384,7 @@ int DBConnector::new_model(int player_ID) {
 
    sql_statement_insert_model = create_command(sql_code);
    bind_parameter(sql_statement_insert_model, PARAM_INSERT_PLAYER_ID, &player_ID);
-   if (store_model(sql_statement_insert_model, PARAM_INSERT_MODEL)) {
+   if (store_model(sql_statement_insert_model, PARAM_INSERT_MODEL, model_file_name)) {
       sql_statement_get_model = create_command(sql_get_new_model_ID);
       execute(sql_statement_get_model);
       if (get_row(sql_statement_get_model)) {
@@ -363,7 +405,7 @@ int DBConnector::new_model(int player_ID) {
    }
    return new_bot_ID;
 }
-int DBConnector::update_model(int model_ID) {
+int DBConnector::update_model(int model_ID, String model_file_name) {
    const int PARAM_UPDATE_MODEL = 1;
    const int PARAM_UPDATE_MODEL_ID = 2;
 
@@ -374,7 +416,7 @@ int DBConnector::update_model(int model_ID) {
 
    SQLHSTMT sql_statement = create_command(sql_code);
    bind_parameter(sql_statement, PARAM_UPDATE_MODEL_ID, &model_ID);
-   if (return_value = store_model(sql_statement, PARAM_UPDATE_MODEL)) {
+   if (return_value = store_model(sql_statement, PARAM_UPDATE_MODEL, model_file_name)) {
       commit();
    }
    else {
@@ -382,7 +424,7 @@ int DBConnector::update_model(int model_ID) {
    }
    return return_value;
 }
-int DBConnector::update_model_by_bot_id(int bot_ID) {
+int DBConnector::update_model_by_bot_id(int bot_ID, String model_file_name) {
    const int PARAM_MODEL = 1;
    const int PARAM_BOT_ID = 2;
 
@@ -406,7 +448,7 @@ int DBConnector::update_model_by_bot_id(int bot_ID) {
    SQLHSTMT sql_statement = create_command(sql_code);
    bind_parameter(sql_statement, PARAM_BOT_ID, &bot_ID);
 
-   if (return_value = store_model(sql_statement, PARAM_MODEL)) {
+   if (return_value = store_model(sql_statement, PARAM_MODEL, model_file_name)) {
       commit();
    }
    else {
@@ -414,7 +456,7 @@ int DBConnector::update_model_by_bot_id(int bot_ID) {
    }
    return return_value;
 }
-int DBConnector::get_model(int model_ID) {
+int DBConnector::get_model(int model_ID, String model_file_name) {
    const int PARAM_QUERY_MODEL_ID = 1;
 
    std::string sql_query = "SELECT model.model\n"
@@ -423,9 +465,9 @@ int DBConnector::get_model(int model_ID) {
 
    SQLHSTMT sql_statement = create_command(sql_query);
    bind_parameter(sql_statement, PARAM_QUERY_MODEL_ID, &model_ID);
-   return get_model_by_sql(sql_statement);
+   return get_model_by_sql(sql_statement, model_file_name);
 }
-int DBConnector::get_model_by_bot_id(int bot_ID) {
+int DBConnector::get_model_by_bot_id(int bot_ID, String model_file_name) {
    const int PARAM_QUERY_BOT_ID = 1;
 
    std::string sql_query = "SELECT model.model\n"
@@ -436,7 +478,7 @@ int DBConnector::get_model_by_bot_id(int bot_ID) {
 
    SQLHSTMT sql_statement = create_command(sql_query);
    bind_parameter(sql_statement, PARAM_QUERY_BOT_ID, &bot_ID);
-   return get_model_by_sql(sql_statement);
+   return get_model_by_sql(sql_statement, model_file_name);
 }
 
 // Returns a list of ids for the bots found in a certain score range (excludes bot id sent to the function)
@@ -483,6 +525,69 @@ int DBConnector::get_min_score() {
    destroy_command(sql_statement);
    return return_value;
 }
+// Returns scoreboard information for the current top 10 bots
+String DBConnector::get_scoreboard_top_ten() {
+   String return_value;
+   std::string sql_query = "SELECT bot_info.position, player.name, bot_info.ranking, bot_info.bot_ID_PK"
+            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
+            + (std::string)"               bot.ranking,"
+            + (std::string)"               bot.bot_ID_PK, bot.player_ID_FK"
+            + (std::string)"          FROM javafalls.bot"
+            + (std::string)"       ) bot_info"
+            + (std::string)"  JOIN javafalls.player"
+            + (std::string)"    ON player_ID_PK = bot_info.player_ID_FK"
+            + (std::string)" WHERE bot_info.position <= 10"
+            + (std::string)" ORDER BY bot_info.position";
+   SQLHSTMT sql_statement = create_command(sql_query);
+   execute(sql_statement);
+   return_value = get_results(sql_statement);
+   destroy_command(sql_statement);
+   return return_value;
+}
+// Returns the position on the scoreboard of a specified bot
+int DBConnector::get_scoreboard_position(int bot_id) {
+   const int PARAM_BOT_ID = 1;
+   
+   int return_value;
+   std::string sql_query = "SELECT bot_info.position"
+            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
+            + (std::string)"               bot.ranking,"
+            + (std::string)"               bot.bot_ID_PK, bot.player_ID_FK"
+            + (std::string)"          FROM javafalls.bot"
+            + (std::string)"       ) bot_info"
+            + (std::string)" WHERE bot_info.bot_ID_PK = ?";
+   SQLHSTMT sql_statement = create_command(sql_query);
+   bind_parameter(sql_statement, PARAM_BOT_ID, &bot_id);
+   execute(sql_statement);
+   get_row(sql_statement);
+   return_value = get_int_attribute(sql_statement, 1);
+   destroy_command(sql_statement);
+   return return_value;
+}
+// Returns all of the robots in the specified range on the scoreboard
+String DBConnector::get_scoreboard_range(int min_position, int max_position) {
+   const int PARAM_MIN_POSITION = 1;
+   const int PARAM_MAX_POSITION = 2;
+   
+   String return_value;
+   std::string sql_query = "SELECT bot_info.position, player.name, bot_info.ranking, bot_info.bot_ID_PK"
+            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
+            + (std::string)"               bot.ranking,"
+            + (std::string)"               bot.bot_ID_PK, bot.player_ID_FK"
+            + (std::string)"          FROM javafalls.bot"
+            + (std::string)"       ) bot_info"
+            + (std::string)"  JOIN javafalls.player"
+            + (std::string)"    ON player_ID_PK = bot_info.player_ID_FK"
+            + (std::string)" WHERE bot_info.position BETWEEN ? AND ?"
+            + (std::string)" ORDER BY bot_info.position";
+   SQLHSTMT sql_statement = create_command(sql_query);
+   bind_parameter(sql_statement, PARAM_MIN_POSITION, &min_position);
+   bind_parameter(sql_statement, PARAM_MAX_POSITION, &max_position);
+   execute(sql_statement);
+   return_value = get_results(sql_statement);
+   destroy_command(sql_statement);
+   return return_value;
+}
 
 // Get name parts for username login screen
 String DBConnector::get_name_parts(int section) {
@@ -508,12 +613,13 @@ String DBConnector::get_name_parts(int section) {
 //  sql_statement = A statement to insert the model into the database. Any and all bind parameters other then the model should already be bound.
 //  param_model   = The parameter number in the sql_statement that tells the code where to place the ai model into the query
 // Notes: store_model calls destory_command(sql_statement) when it is finished. So you do not need to (and should not) call destory_command yourself on the statement passed to store_model().
-int DBConnector::store_model(SQLHSTMT sql_statement, int param_model) {
+int DBConnector::store_model(SQLHSTMT sql_statement, int param_model, String model_file_name) {
    SQLCHAR       *file_data;
    SQLCHAR       *p_file_data; // Used to walk through the fileData
    SQLLEN        file_length = 0;
    char          data_byte;
    std::ifstream in_stream;
+   std::string   filepath = FILEPATH_MODEL_FOLDER + std::string(model_file_name.ascii().get_data());
    // 1. Read the model file into memory
    // Allocate space to store the file in memory
    try {
@@ -522,13 +628,15 @@ int DBConnector::store_model(SQLHSTMT sql_statement, int param_model) {
    }
    catch (std::bad_alloc exception) {
       std::cout << "store_model() - Could not allocate space to store file in memory.\n";
+      destroy_command(sql_statement);
       return FALSE;
    }
    // Open the file and read its data
-   in_stream.open(FILEPATH_IN_MODEL, std::ios::in | std::ios::binary);
+   in_stream.open(filepath, std::ios::in | std::ios::binary);
    if (!in_stream) {
-      std::cout << "store_model() - Could not find file\n";
+      std::cout << "store_model() - Could not find " << filepath << "\n";
       delete[] file_data;
+      destroy_command(sql_statement);
       return FALSE;
    }
    while (in_stream) {
@@ -565,10 +673,12 @@ int DBConnector::store_model(SQLHSTMT sql_statement, int param_model) {
    delete[] file_data;
    return SQL_SUCCEEDED(last_return);
 }
-int DBConnector::get_model_by_sql(SQLHSTMT sql_statement) {
+int DBConnector::get_model_by_sql(SQLHSTMT sql_statement, String model_file_name) {
    SQLLEN        indicator;  // Value returned by SQLGetData to tell us if the data is null or how many bytes the data is
    char          *model_data; // 1 MB buffer that will store in memory the model from the database
    std::ofstream out_stream;  // Output stream to write the model to the disk
+   int           return_value = TRUE;
+   std::string   filepath = FILEPATH_MODEL_FOLDER + std::string(model_file_name.ascii().get_data());
    // 1. Allocate space for the model in memory
    try {
       model_data = new char[COLUMN_DATA_BUFFER];
@@ -589,7 +699,7 @@ int DBConnector::get_model_by_sql(SQLHSTMT sql_statement) {
                                                  COLUMN_DATA_BUFFER,
                                                  &indicator))) {
          // 3. Write the model from memory to a file
-         out_stream.open(FILEPATH_OUT_MODEL, std::ios::out | std::ios::binary);
+         out_stream.open(filepath, std::ios::out | std::ios::binary);
          if (out_stream) {
             for (int i = 0; i < indicator; i++) {
                out_stream.put(model_data[i]);
@@ -597,23 +707,23 @@ int DBConnector::get_model_by_sql(SQLHSTMT sql_statement) {
             out_stream.close();
          }
          else {
-            std::cout << "get_model_by_sql() - unable to open file to write model to.\n";
-            return FALSE;
+            std::cout << "get_model_by_sql() - unable to open " << filepath << " to write model to.\n";
+            return_value = FALSE;
          }
       }
       else if (last_return != SQL_NO_DATA) {
          print_error_diagnostics("get_model_by_sql()", SQL_HANDLE_STMT, sql_statement);
-         return FALSE;
+         return_value = FALSE;
       }
    }
    else if (last_return != SQL_NO_DATA) {
       print_error_diagnostics("get_model_by_sql()", SQL_HANDLE_STMT, sql_statement);
-      return FALSE;
+      return_value = FALSE;
    }
    destroy_command(sql_statement);
 
    delete[] model_data;
-   return TRUE;
+   return return_value;
 }
 int DBConnector::get_row(SQLHSTMT sql_statement_handle) {
    return SQL_SUCCEEDED(last_return = SQLFetch(sql_statement_handle));
@@ -737,7 +847,7 @@ String DBConnector::get_results(SQLHSTMT sql_statement_handle) {
       }
       catch (std::bad_alloc exception) {
          std::cout << "get_results() - Allocation failure for colNames, trying to allocate space for " << number_of_columns << " objects\n";
-         return json_result.c_str();
+         return "";
       }
       try {
          col_data_types = new SQLSMALLINT[number_of_columns + 1]; // Allocate 1 extra spot to account for the fact that array indices start at 0 while column numbers start at 1
@@ -745,7 +855,7 @@ String DBConnector::get_results(SQLHSTMT sql_statement_handle) {
       catch (std::bad_alloc exception) {
          delete[] col_names;
          std::cout << "get_results() - Allocation failure for colDataTypes, trying to allocate space for " << number_of_columns << " SQLSMALLINTs\n";
-         return json_result.c_str();
+         return "";
       }
       try {
          col_data = new char[COLUMN_DATA_BUFFER];
@@ -754,7 +864,7 @@ String DBConnector::get_results(SQLHSTMT sql_statement_handle) {
          delete[] col_names;
          delete[] col_data_types;
          std::cout << "get_results() - Allocation failure for colData, trying to allocate space for 1048576 characters\n";
-         return json_result.c_str();
+         return "";
       }
       // Get column names and data types
       for (i = 1; i <= number_of_columns; i++) {
@@ -807,6 +917,9 @@ String DBConnector::get_results(SQLHSTMT sql_statement_handle) {
                   }
                }
             }
+            else {
+               return "";
+            }
          }
          json_result.append("}");
          row_number++;
@@ -828,10 +941,18 @@ void DBConnector::_bind_methods() {
    // See GODOT documentation for _bind_methods() at: http://docs.godotengine.org/en/3.0/development/cpp/object_class.html
 
    // Constants
+   BIND_CONSTANT(NULL_COLOR);
+   BIND_CONSTANT(NULL_INT);
+   
    BIND_CONSTANT(NEW_BOT_ARGS_MODEL_ID);
    BIND_CONSTANT(NEW_BOT_ARGS_PRIMARY_WEAPON);
    BIND_CONSTANT(NEW_BOT_ARGS_SECONDARY_WEAPON);
    BIND_CONSTANT(NEW_BOT_ARGS_UTILITY);
+   BIND_CONSTANT(NEW_BOT_ARGS_PRIMARY_COLOR);
+   BIND_CONSTANT(NEW_BOT_ARGS_SECONDARY_COLOR);
+   BIND_CONSTANT(NEW_BOT_ARGS_ACCENT_COLOR);
+   BIND_CONSTANT(NEW_BOT_ARGS_LIGHT_COLOR);
+   BIND_CONSTANT(NEW_BOT_ARGS_ARRAY_SIZE);
 
    BIND_CONSTANT(UPDATE_BOT_ARGS_PLAYER_ID);
    BIND_CONSTANT(UPDATE_BOT_ARGS_MODEL_ID);
@@ -839,6 +960,11 @@ void DBConnector::_bind_methods() {
    BIND_CONSTANT(UPDATE_BOT_ARGS_PRIMARY_WEAPON);
    BIND_CONSTANT(UPDATE_BOT_ARGS_SECONDARY_WEAPON);
    BIND_CONSTANT(UPDATE_BOT_ARGS_UTILITY);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_PRIMARY_COLOR);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_SECONDARY_COLOR);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_ACCENT_COLOR);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_LIGHT_COLOR);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_ARRAY_SIZE);
 
    // Methods
    ClassDB::bind_method(D_METHOD("new_player", "name"), &DBConnector::new_player);
@@ -846,18 +972,21 @@ void DBConnector::_bind_methods() {
    ClassDB::bind_method(D_METHOD("get_player", "player_ID"), &DBConnector::get_player);
 
    ClassDB::bind_method(D_METHOD("new_bot", "player_ID", "new_bot_args", "name"), &DBConnector::new_bot);
-   ClassDB::bind_method(D_METHOD("update_bot", "bot_ID", "update_bot_args", "name", "update_model"), &DBConnector::update_bot, (Variant)DEFVAL(TRUE));
-   ClassDB::bind_method(D_METHOD("get_bot", "bot_ID", "get_model"), &DBConnector::get_bot, (Variant)DEFVAL(TRUE));
+   ClassDB::bind_method(D_METHOD("update_bot", "bot_ID", "update_bot_args", "name", "model_file_name"), &DBConnector::update_bot, (Variant)DEFVAL(""));
+   ClassDB::bind_method(D_METHOD("get_bot", "bot_ID", "model_file_name"), &DBConnector::get_bot, (Variant)DEFVAL(""));
 
-   ClassDB::bind_method(D_METHOD("new_model", "player_ID"), &DBConnector::new_model);
-   ClassDB::bind_method(D_METHOD("update_model", "model_ID"), &DBConnector::update_model);
-   ClassDB::bind_method(D_METHOD("update_model_by_bot_id", "bot_ID"), &DBConnector::update_model_by_bot_id);
-   ClassDB::bind_method(D_METHOD("get_model", "model_ID"), &DBConnector::get_model);
-   ClassDB::bind_method(D_METHOD("get_model_by_bot_id", "bot_ID"), &DBConnector::get_model_by_bot_id);
+   ClassDB::bind_method(D_METHOD("new_model", "player_ID", "model_file_name"), &DBConnector::new_model);
+   ClassDB::bind_method(D_METHOD("update_model", "model_ID", "model_file_name"), &DBConnector::update_model);
+   ClassDB::bind_method(D_METHOD("update_model_by_bot_id", "bot_ID", "model_file_name"), &DBConnector::update_model_by_bot_id);
+   ClassDB::bind_method(D_METHOD("get_model", "model_ID", "model_file_name"), &DBConnector::get_model);
+   ClassDB::bind_method(D_METHOD("get_model_by_bot_id", "bot_ID", "model_file_name"), &DBConnector::get_model_by_bot_id);
 
    ClassDB::bind_method(D_METHOD("get_bot_range", "bot_id", "min_score", "max_score"), &DBConnector::get_bot_range);
    ClassDB::bind_method(D_METHOD("get_max_score"), &DBConnector::get_max_score);
    ClassDB::bind_method(D_METHOD("get_min_score"), &DBConnector::get_min_score);
+   ClassDB::bind_method(D_METHOD("get_scoreboard_top_ten"), &DBConnector::get_scoreboard_top_ten);
+   ClassDB::bind_method(D_METHOD("get_scoreboard_position", "bot_id"), &DBConnector::get_scoreboard_position);
+   ClassDB::bind_method(D_METHOD("get_scoreboard_range", "min_position", "max_position"), &DBConnector::get_scoreboard_range);
 
    ClassDB::bind_method(D_METHOD("get_name_parts", "section"), &DBConnector::get_name_parts);
 
@@ -895,8 +1024,10 @@ DBConnector::DBConnector() {
       }
       con_string = override_connection_string;
    }
+   else {
+      std::cout << "Connection override not found. Using default connection string\n";
+   }
    in_stream.close();
-   std::cout << "Connection string being used is: \n" << con_string << "\n";
 
    // Allocate an environment handle
    if (SQL_SUCCEEDED(last_return = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env_handle))) {
