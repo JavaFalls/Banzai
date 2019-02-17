@@ -28,7 +28,7 @@ const DEFAULT_SECONDARY_COLOR = Color(1, 0, 1)
 # Weapons keys
 enum {PRIMARY, SECONDARY, ABILITY}
 # Bot builds keys
-enum {PLAYER BOT}
+enum {PLAYER, BOT}
 
 # Loading screen
 var loader = preload("res://Scenes/loading.tscn")
@@ -64,75 +64,54 @@ var bot = {
 }
 
 # Weapons/abilities
-onready var weapons = {
-	"robot_face": {
+enum WEAPONS {ROBOT_FACE, SWORD, RED_BLOCK}
+enum ABILITES {SWORD1, SWORD2, SWORD3}
+
+onready var weapons = [
+	{ # Robot face
 		"scene": null,
 		"texture": load("res://assets/icon.png"),
 		"name": "Robot Face",
-		"attack": 1,
-		"armor": 2,
-		"range": 3,
-		"points": 4,
-		"weight": 5
+		"stats": 0
 	},
-	"sword": {
+	{ # Sword
 		"scene": null,
 		"texture": load("res://assets/sword.png"),
 		"name": "Sword",
-		"attack": 2,
-		"armor": 4,
-		"range": 3,
-		"points": 6,
-		"weight": 15
+		"stats": 0
 	},
-	"red_block": {
+	{ # Red block
 		"scene": null,
 		"texture": load("res://assets/wall.png"),
 		"name": "Nothing Particular",
-		"attack": 0,
-		"armor": 20,
-		"range": 2,
-		"points": 8,
-		"weight": 1
+		"stats": 0
 	}
-}
+]
 
-onready var abilities = {
-	"sword1": {
+onready var abilities = [
+	{ # Sword 1
 		"scene": null,
 		"texture": load("res://assets/bots/front.png"),
 		"name": "Sword1",
-		"attack": 0,
-		"armor": 0,
-		"range": 2,
-		"points": 0,
-		"weight": 1
+		"stats": 0
 	},
-	"sword2": {
+	{ # Sword 2
 		"scene": null,
 		"texture": load("res://assets/sword.png"),
 		"name": "Sword2",
-		"attack": 0,
-		"armor": 0,
-		"range": 0,
-		"points": 0,
-		"weight": 0
+		"stats": 0
 	},
-	"sword3": {
+	{ # Sword 3
 		"scene": null,
 		"texture": load("res://assets/sword.png"),
 		"name": "Sword3",
-		"attack": 0,
-		"armor": 1,
-		"range": 1,
-		"points": 0,
-		"weight": 1
+		"stats": 0
 	}
-}
+]
 
-onready var primary_list = load("res://Scripts/Objects/item_list.gd").new(weapons.values())
-onready var secondary_list = load("res://Scripts/Objects/item_list.gd").new(weapons.values())
-onready var ability_list = load("res://Scripts/Objects/item_list.gd").new(abilities.values())
+onready var primary_list = load("res://Scripts/Objects/item_list.gd").new(weapons)
+onready var secondary_list = load("res://Scripts/Objects/item_list.gd").new(weapons)
+onready var ability_list = load("res://Scripts/Objects/item_list.gd").new(abilities)
 
 # Bots
 var bot_builds
