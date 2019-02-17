@@ -86,13 +86,23 @@ func set_bot_state(bot):
 	self.bot_mouse    = bot.get_psuedo_mouse()
 	bot_mouse[0]      = bot_mouse[0] / 400
 	bot_mouse[1]      = bot_mouse[1] / 225
-	self.bot_vector   = bot.get_trajectory()
+	self.bot_vector   = (bot.get_trajectory()+Vector2(1,1))/Vector2(2,2)
 	bot_psuedo_primary   = bot.psuedo_primary
 	bot_psuedo_secondary = bot.psuedo_secondary
 	bot_psuedo_ability   = bot.psuedo_ability
 	bot_in_peril         = bot.in_peril
 	
-
+#	self.bot_position = bot.get_position()
+#	bot_position[0]   = randf()
+#	bot_position[1]   = randf()
+#	self.bot_mouse    = bot.get_psuedo_mouse()
+#	bot_mouse[0]      = randf()
+#	bot_mouse[1]      = randf()
+#	self.bot_vector   = Vector2(randf(),randf())
+#	bot_psuedo_primary   = randf()
+#	bot_psuedo_secondary = randf()
+#	bot_psuedo_ability   = randf()
+#	bot_in_peril         = randf()
 	
 func set_player_state(player):
 	self.player_position = player.get_position()
@@ -101,26 +111,54 @@ func set_player_state(player):
 	self.player_mouse    = player.get_psuedo_mouse()
 	player_mouse[0]      = player_mouse[0] / 400
 	player_mouse[1]      = player_mouse[1] / 225
-	self.player_vector   = player.get_trajectory()
+	self.player_vector   = (player.get_trajectory()+Vector2(1,1))/Vector2(2,2)
 	player_psuedo_primary   = player.psuedo_primary
 	player_psuedo_secondary = player.psuedo_secondary
 	player_psuedo_ability   = player.psuedo_ability
 	player_in_peril         = player.in_peril
 	
+#	self.player_position = player.get_position()
+#	player_position[0]   = randf()
+#	player_position[1]   = randf()
+#	self.player_mouse    = player.get_psuedo_mouse()
+#	player_mouse[0]      = randf()
+#	player_mouse[1]      = randf()
+#	self.player_vector   = Vector2(randf(),randf())
+#	player_psuedo_primary   = randf()
+#	player_psuedo_secondary = randf()
+#	player_psuedo_ability   = randf()
+#	player_in_peril         = randf()
+
 
 func set_predictions(predictions):
 	if predictions:
-		predicted_bot_position      = Vector2(predictions[0] * screen_x, predictions[1] * screen_y)
+#		predicted_bot_position      = Vector2(predictions[0] * screen_x, predictions[1] * screen_y)
+#		predicted_bot_mouse         = Vector2(predictions[2] * screen_x, predictions[3] * screen_y)
+#		predicted_bot_vector        = Vector2((predictions[4]*2)-1, (predictions[5]*2)-1)
+#		predicted_bot_psuedo_primary   = predictions[6]
+#		predicted_bot_psuedo_secondary = predictions[7]
+#		predicted_bot_psuedo_ability   = predictions[8]
+#		predicted_bot_in_peril         = predictions[9]
+#
+#		predicted_player_position      = Vector2(predictions[10] * screen_x, predictions[11] * screen_y)
+#		predicted_player_mouse         = Vector2(predictions[12] * screen_x, predictions[13] * screen_y)
+#		predicted_player_vector        = Vector2((predictions[14]*2)-1, (predictions[15]*2)-1)
+#		predicted_player_psuedo_primary   = predictions[16]
+#		predicted_player_psuedo_secondary = predictions[17]
+#		predicted_player_psuedo_ability   = predictions[18]
+#		predicted_player_in_peril         = predictions[19]
+
+		predicted_bot_position      = Vector2(round(predictions[0] * screen_x), round(predictions[1] * screen_y))
 		predicted_bot_mouse         = Vector2(predictions[2] * screen_x, predictions[3] * screen_y)
-		predicted_bot_vector        = Vector2(predictions[4], predictions[5])
-		predicted_bot_psuedo_primary   = predictions[6]
-		predicted_bot_psuedo_secondary = predictions[7]
+		predicted_bot_vector        = Vector2((round(predictions[4]*2)-1), (round(predictions[5]*2)-1))
+		predicted_bot_psuedo_primary   = (predictions[6])
+		predicted_bot_psuedo_secondary = ((predictions[7]))
 		predicted_bot_psuedo_ability   = predictions[8]
-		predicted_bot_in_peril         = predictions[9]
+		predicted_bot_in_peril         = ((predictions[9]))
 		
 		predicted_player_position      = Vector2(predictions[10] * screen_x, predictions[11] * screen_y)
 		predicted_player_mouse         = Vector2(predictions[12] * screen_x, predictions[13] * screen_y)
-		predicted_player_vector        = Vector2(predictions[14], predictions[15])
+		predicted_player_vector        = Vector2((predictions[14]*2)-1, (predictions[15]*2)-1)
 		predicted_player_psuedo_primary   = predictions[16]
 		predicted_player_psuedo_secondary = predictions[17]
 		predicted_player_psuedo_ability   = predictions[18]
@@ -135,17 +173,17 @@ func get_predictions():
 	pred.append((predicted_player_mouse))
 	pred.append((predicted_player_vector))
 	pred.append((predicted_player_psuedo_primary))
-	pred.append(round(predicted_player_psuedo_secondary))
-	pred.append(round(predicted_player_psuedo_ability))
-	pred.append(round(predicted_player_in_peril))
+	pred.append((predicted_player_psuedo_secondary))
+	pred.append((predicted_player_psuedo_ability))
+	pred.append((predicted_player_in_peril))
 
 	pred.append((predicted_bot_position))
 	pred.append((predicted_bot_mouse))
 	pred.append((predicted_bot_vector))
 	pred.append((predicted_bot_psuedo_primary))
-	pred.append(round(predicted_bot_psuedo_secondary))
-	pred.append(round(predicted_bot_psuedo_ability))
-	pred.append(round(predicted_bot_in_peril))
+	pred.append((predicted_bot_psuedo_secondary))
+	pred.append((predicted_bot_psuedo_ability))
+	pred.append((predicted_bot_in_peril))
 	return pred
 
 func _ready():

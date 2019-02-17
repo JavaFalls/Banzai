@@ -15,6 +15,7 @@ import sys
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import load_model
+from tensorflow.keras.optimizers import Adam
 
 def save_game_state(game_state):
    str_game_state = str(game_state)
@@ -63,14 +64,12 @@ def load_bot():
    return model
 
 def build_model():
-   model = keras.Sequential([keras.layers.Dense( 1, input_shape=(1,)),
-   keras.layers.Dense(40),
+   model = keras.Sequential([keras.layers.Dense( 33, activation=tf.nn.relu, input_shape=(1,)),
    keras.layers.Dense(1)])
 
-   model.compile(loss='mse',
-                 optimizer='Adam',
-                 metrics=['mae'])
-      
+   model.compile(Adam(lr=.01), loss='mse',
+                 metrics=['accuracy'])
+   print(model.summary())
    return model
 
 
@@ -98,7 +97,7 @@ def train(model):
           test[x][y] = float(test[x][y])
           label[x][y] = float(label[x][y])
     for z in range(0,len(test) - 1):
-       model.fit(x=test[z], y=label[z],  epochs=3 , verbose=0, validation_split=0.5)
+       model.fit(x=test[z], y=label[z],  epochs=10 , verbose=2, validation_split=0.7, shuffle = False)
     print("fitting done")
        
     
