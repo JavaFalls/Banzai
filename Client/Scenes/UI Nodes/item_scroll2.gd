@@ -1,12 +1,13 @@
 extends Node2D
 
-export(float, 0.0, 5.0) var scroll_time = 0.2
+export(float, 0.0, 5.0) var scroll_time = 0.2 setget set_scroll_time
 
 var data_points = [Vector2(0,0)] # Set these points before anything else
 
 var items = [] setget set_items # Will be a list dictionaries each with a texture property
-var current = 0
+var current = 0 setget set_current
 
+var shifting = false
 signal shift_completed
 
 onready var sprites = [
@@ -40,33 +41,55 @@ func _input(event):
 # Signals
 #---------------
 func _on_go_to_prev_pressed():
-	if current-1 < 0:
-		set_current(items.size() - 1)
-	else:
-		set_current(current-1)
-	sprites.front().modulate.a = 1.0
-	move_left()
+	if not shifting:
+		if current-1 < 0:
+			set_current(items.size() - 1)
+		else:
+			set_current(current-1)
+		sprites.front().modulate.a = 1.0
+		move_left()
+		shifting = true
+		yield(self, "shift_completed")
+		shifting = false
 
 func _on_go_to_next_pressed():
-	if current+1 >= items.size():
-		set_current(0)
-	else:
-		set_current(current+1)
-	sprites.back().modulate.a = 1.0
-	move_right()
+	if not shifting:
+		if current+1 >= items.size():
+			set_current(0)
+		else:
+			set_current(current+1)
+		sprites.back().modulate.a = 1.0
+		move_right()
+		shifting = true
+		yield(self, "shift_completed")
+		shifting = false
 
 # Setters
 #-------------
 func set_data_points(margin, data_width):
 	for n in range(1, 5, 1):
 		data_points.append(Vector2(n * (data_width + margin),0))
+		sprites[n].position = data_points[n]
+	var rb = get_node("go_to_next")
+	rb.rect_position = data_points.back() - (rb.rect_size/2)
 
 func set_items(new_items):
 	items = new_items
+	sprites[0].texture = prev_item(2)["texture"]
+	sprites[1].texture = prev_item()["texture"]
+	sprites[2].texture = current_item()["texture"]
+	sprites[3].texture = next_item()["texture"]
+	sprites[4].texture = next_item(2)["texture"]
 
 func set_current(index):
 	if typeof(index) != TYPE_NIL:
 		current = index
+
+func set_scroll_time(time):
+	if time <= 0.0:
+		scroll_time = 0.000001
+	else:
+		scroll_time = time
 
 # Getting items by current
 #-------------
@@ -126,11 +149,11 @@ func move_right():
 func update_items(pop_first):
 	if pop_first:
 		sprites.push_back(sprites.pop_front())
-		sprites.back().position = data_points[4]
+		sprites.back().position = data_points.back()
 		sprites.back().texture = next_item(2)["texture"]
 	else:
 		sprites.push_front(sprites.pop_back())
-		sprites.front().position = data_points[0]
+		sprites.front().position = data_points.front()
 		sprites.front().texture = prev_item(2)["texture"]
 	sprites.front().modulate.a = 0.0
 	sprites.back().modulate.a = 0.0
