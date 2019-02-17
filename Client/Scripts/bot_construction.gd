@@ -15,6 +15,5 @@ var w = [
 ]
 
 func _ready():
-	get_node("primary_weapons").items = head.weapons.values()
 	get_node("item_scroll").set_data_points(3, 30)
 	get_node("item_scroll").set_items(w)

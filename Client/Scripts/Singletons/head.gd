@@ -148,15 +148,15 @@ func save_bot(new_bot):
 func init_bots():
 	bot_builds = {
 		PLAYER: load("res://Scripts/Objects/bot_build.gd").new(
-			weapons["robot_face"],
-			weapons["robot_face"],
-			abilities["sword1"],
+			weapons[WPN.ROBOT_FACE],
+			weapons[WPN.ROBOT_FACE],
+			abilities[ABL.SWORD1],
 			load("res://assets/bots/front.png")
 		),
 		BOT: load("res://Scripts/Objects/bot_build.gd").new(
-			weapons["robot_face"],
-			weapons["robot_face"],
-			abilities["sword1"],
+			weapons[WPN.ROBOT_FACE],
+			weapons[WPN.ROBOT_FACE],
+			abilities[ABL.SWORD1],
 			load("res://assets/bots/front.png")
 		)
 	}
