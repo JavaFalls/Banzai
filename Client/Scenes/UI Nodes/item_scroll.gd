@@ -22,6 +22,8 @@ onready var sprites = [
 	get_node("item4")
 ]
 
+# Godot functions
+#----------------
 func _ready():
 	match arrow_color:
 		COLORS.BLUE:

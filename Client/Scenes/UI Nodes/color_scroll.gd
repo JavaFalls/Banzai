@@ -1,6 +1,7 @@
 extends MarginContainer
 
 export(PoolColorArray) var colors
+export(float) var indicator_offset = 0.0 # The time offset for flashing
 
 var current = 0
 
@@ -11,11 +12,16 @@ onready var color_boxes = [
 	get_node("HBoxContainer/colors/color3"),
 	get_node("HBoxContainer/colors/color4")
 ]
+onready var selected_sprite = get_node("HBoxContainer/colors/color2/selected_sprite")
 
+# Godot functions
+#----------------
 func _ready():
 	if colors.size() == 0:
 		colors.append(Color(0))
 	reset_color_boxes()
+	
+	selected_sprite.get_material().set_shader_param("offset", indicator_offset)
 
 # Signal methods
 #---------------

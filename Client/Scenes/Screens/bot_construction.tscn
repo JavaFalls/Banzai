@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/bot_construction.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/bot_construction/reference_customize_screen.png" type="Texture" id=2]
@@ -8,9 +8,32 @@
 [ext_resource path="res://assets/menu/bot_construction/platform.png" type="Texture" id=6]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=7]
 [ext_resource path="res://Scenes/UI Nodes/item_scroll.tscn" type="PackedScene" id=8]
-[ext_resource path="res://assets/menu/bot_construction/button_large.png" type="Texture" id=9]
+[ext_resource path="res://Scenes/UI Nodes/color_scroll.tscn" type="PackedScene" id=9]
+[ext_resource path="res://themes/color_scroll.shader" type="Shader" id=10]
+[ext_resource path="res://assets/menu/bot_construction/button_large.png" type="Texture" id=11]
 
-[node name="Node" type="Node"]
+[sub_resource type="ShaderMaterial" id=1]
+
+render_priority = 0
+shader = ExtResource( 10 )
+shader_param/offset = null
+_sections_unfolded = [ "Resource", "shader_param" ]
+
+[sub_resource type="ShaderMaterial" id=2]
+
+render_priority = 0
+shader = ExtResource( 10 )
+shader_param/offset = null
+_sections_unfolded = [ "Resource", "shader_param" ]
+
+[sub_resource type="ShaderMaterial" id=3]
+
+render_priority = 0
+shader = ExtResource( 10 )
+shader_param/offset = null
+_sections_unfolded = [ "Resource", "shader_param" ]
+
+[node name="Node" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
@@ -33,6 +56,7 @@ _sections_unfolded = [ "Visibility" ]
 
 [node name="backlight" type="Sprite" parent="." index="3"]
 
+editor/display_folded = true
 modulate = Color( 1, 1, 1, 0.501961 )
 position = Vector2( 336.634, 54.2086 )
 scale = Vector2( 0.731183, 0.582888 )
@@ -161,7 +185,46 @@ position = Vector2( 163, 116 )
 _sections_unfolded = [ "Transform" ]
 arrow_color = 0
 
-[node name="stats" type="VBoxContainer" parent="." index="11"]
+[node name="color_scroll" parent="." index="11" instance=ExtResource( 9 )]
+
+editor/display_folded = true
+margin_left = 13.0
+margin_top = 31.0
+margin_right = 141.0
+margin_bottom = 51.0
+
+[node name="selected_sprite" parent="color_scroll/HBoxContainer/colors/color2" index="0"]
+
+material = SubResource( 1 )
+
+[node name="color_scroll2" parent="." index="12" instance=ExtResource( 9 )]
+
+editor/display_folded = true
+margin_left = 13.0
+margin_top = 62.0
+margin_right = 141.0
+margin_bottom = 82.0
+indicator_offset = 0.4
+
+[node name="selected_sprite" parent="color_scroll2/HBoxContainer/colors/color2" index="0"]
+
+material = SubResource( 2 )
+
+[node name="color_scroll3" parent="." index="13" instance=ExtResource( 9 )]
+
+editor/display_folded = true
+margin_left = 13.0
+margin_top = 92.0
+margin_right = 141.0
+margin_bottom = 112.0
+_sections_unfolded = [ "Material" ]
+indicator_offset = 0.8
+
+[node name="selected_sprite" parent="color_scroll3/HBoxContainer/colors/color2" index="0"]
+
+material = SubResource( 3 )
+
+[node name="stats" type="VBoxContainer" parent="." index="14"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -257,7 +320,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="new_button" type="TextureButton" parent="." index="12"]
+[node name="new_button" type="TextureButton" parent="." index="15"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -279,7 +342,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 9 )
+texture_normal = ExtResource( 11 )
 _sections_unfolded = [ "Textures" ]
 
 [node name="Label" type="Label" parent="new_button" index="0"]
@@ -298,7 +361,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="test_button" type="TextureButton" parent="." index="13"]
+[node name="test_button" type="TextureButton" parent="." index="16"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -320,7 +383,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 9 )
+texture_normal = ExtResource( 11 )
 _sections_unfolded = [ "Textures" ]
 
 [node name="Label" type="Label" parent="test_button" index="0"]
@@ -339,7 +402,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="finish_button" type="TextureButton" parent="." index="14"]
+[node name="finish_button" type="TextureButton" parent="." index="17"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -361,7 +424,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 9 )
+texture_normal = ExtResource( 11 )
 _sections_unfolded = [ "Textures" ]
 
 [node name="Label" type="Label" parent="finish_button" index="0"]
@@ -381,3 +444,6 @@ lines_skipped = 0
 max_lines_visible = -1
 
 
+[editable path="color_scroll"]
+[editable path="color_scroll2"]
+[editable path="color_scroll3"]
