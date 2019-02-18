@@ -10,7 +10,7 @@
 [ext_resource path="res://Scenes/UI Nodes/item_scroll.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/menu/bot_construction/button_large.png" type="Texture" id=9]
 
-[node name="Node" type="Node" index="0"]
+[node name="Node" type="Node"]
 
 script = ExtResource( 1 )
 

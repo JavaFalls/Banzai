@@ -39,7 +39,7 @@ func _ready():
 			get_node("go_to_prev").texture_normal = load("res://assets/menu/bot_construction/arrow_grey_left.png")
 			get_node("go_to_next").texture_normal = load("res://assets/menu/bot_construction/arrow_grey_right.png")
 
-# Signals
+# Signal methods
 #---------------
 func _on_go_to_prev_pressed():
 	if not shifting:
