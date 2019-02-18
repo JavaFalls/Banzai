@@ -39,6 +39,10 @@ var stats = [
 func _ready():
 	get_node("item_scroll").set_data_points(10, 16)
 	get_node("item_scroll").set_items(w)
+	get_node("item_scroll2").set_data_points(10, 16)
+	get_node("item_scroll2").set_items(w)
+	get_node("item_scroll3").set_data_points(10, 16)
+	get_node("item_scroll3").set_items(w)
 
 # Loading
 #------------------------------------------------

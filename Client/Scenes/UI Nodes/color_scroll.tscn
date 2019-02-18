@@ -5,7 +5,7 @@
 [ext_resource path="res://assets/menu/bot_construction/arrow_grey_right.png" type="Texture" id=3]
 [ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=4]
 
-[node name="color_scroll" type="MarginContainer" index="0"]
+[node name="color_scroll" type="MarginContainer"]
 
 anchor_left = 0.0
 anchor_top = 0.0
