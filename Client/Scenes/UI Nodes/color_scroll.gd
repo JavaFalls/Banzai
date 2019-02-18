@@ -34,10 +34,15 @@ func _on_double_right_pressed():
 	reset_color_boxes()
 
 func _on_left_pressed():
-	pass
+	shift_color(false)
 
 func _on_right_pressed():
-	pass
+	shift_color(true)
+
+# Get colors by selection
+#------------------------
+func get_selected_color():
+	return color_boxes[2].color
 
 # Get colors by current
 #-----------------------
@@ -63,6 +68,24 @@ func next_color(step=null):
 		while index >= colors.size():
 			index -= colors.size()
 		return colors[index]
+
+# Shifting current color
+#-------------------------
+func shift_color(left):
+	if left:
+		var first_color = color_boxes[0].color
+		color_boxes[0].color = color_boxes[1].color
+		color_boxes[1].color = color_boxes[2].color
+		color_boxes[2].color = color_boxes[3].color
+		color_boxes[3].color = color_boxes[4].color
+		color_boxes[4].color = first_color
+	else:
+		var first_color = color_boxes[4].color
+		color_boxes[4].color = color_boxes[3].color
+		color_boxes[3].color = color_boxes[2].color
+		color_boxes[2].color = color_boxes[1].color
+		color_boxes[1].color = color_boxes[0].color
+		color_boxes[0].color = first_color
 
 # Changing colors
 #----------------
