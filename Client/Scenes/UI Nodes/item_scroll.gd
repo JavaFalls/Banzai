@@ -1,6 +1,9 @@
 extends Node2D
 
+enum COLORS {BLUE, GREEN, ORANGE, GREY}
+
 export(float, 0.0, 5.0) var scroll_time = 0.2 setget set_scroll_time
+export(COLORS) var arrow_color = COLORS.BLUE
 
 # ! Important !
 var data_points = [Vector2(0,0)] # Set these points before anything else
@@ -18,6 +21,23 @@ onready var sprites = [
 	get_node("item3"),
 	get_node("item4")
 ]
+
+func _ready():
+	match arrow_color:
+		COLORS.BLUE:
+			pass
+		COLORS.GREEN:
+			get_node("background").texture = load("res://assets/menu/bot_construction/tile_green.png")
+			get_node("go_to_prev").texture_normal = load("res://assets/menu/bot_construction/arrow_green_left.png")
+			get_node("go_to_next").texture_normal = load("res://assets/menu/bot_construction/arrow_green_right.png")
+		COLORS.ORANGE:
+			get_node("background").texture = load("res://assets/menu/bot_construction/tile_orange.png")
+			get_node("go_to_prev").texture_normal = load("res://assets/menu/bot_construction/arrow_orange_left.png")
+			get_node("go_to_next").texture_normal = load("res://assets/menu/bot_construction/arrow_orange_right.png")
+		COLORS.GREY:
+			get_node("background").texture = load("res://assets/menu/bot_construction/tile_grey.png")
+			get_node("go_to_prev").texture_normal = load("res://assets/menu/bot_construction/arrow_grey_left.png")
+			get_node("go_to_next").texture_normal = load("res://assets/menu/bot_construction/arrow_grey_right.png")
 
 # Signals
 #---------------
@@ -51,8 +71,14 @@ func set_data_points(margin, data_width):
 	for n in range(1, 5, 1):
 		data_points.append(Vector2(n * (data_width + margin),0))
 		sprites[n].position = data_points[n]
+		
+	# Adjust the static positions of out-of-place nodes
 	var rb = get_node("go_to_next")
 	rb.rect_position = data_points.back() - (rb.rect_size/2)
+	
+	var back = get_node("background")
+	back.rect_position = data_points[2] - (back.rect_size/2)
+#	back.rect_size.x = (data_width + margin) * 5
 
 func set_items(new_items):
 	items = new_items
