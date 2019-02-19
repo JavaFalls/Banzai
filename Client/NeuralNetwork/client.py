@@ -85,7 +85,6 @@ def save_game_state(game_state):
 # Send request to server
 # print("sending request")
 request_handle = get_request_handle()
-print(request_string)
 win32file.WriteFile(request_handle, str.encode(f'{request_string}'))
 
 # Saves the game state to the gamestate file
