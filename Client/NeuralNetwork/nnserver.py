@@ -1,7 +1,7 @@
 """ To use the pywin32 headers, run this command in a terminal
         pip install pywin32                                     """
 import win32pipe, win32file, pywintypes
-import sys, math, os
+import sys, math, json
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import load_model
@@ -154,8 +154,9 @@ while True:
         request_completed = False
         while not request_completed:
                 try:
-                        request = get_client_request()
-                        response = react(request, bot)
+                        request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '')
+                        request = json.loads(request)
+                        response = react(request['Message'], bot)
                         #print(f'{request}')
                         request_completed = True
                 except UnboundLocalError as Null_Reference:
