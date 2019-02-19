@@ -96,8 +96,8 @@ func shift_color(left):
 # Changing colors
 #----------------
 func reset_color_boxes():
-	var value = 0.5
+	var value = 0.2
 	for cb in color_boxes:
 		cb.color = current_color()
 		cb.color.v = value
-		value += 0.25
+		value += 0.2

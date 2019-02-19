@@ -9,6 +9,7 @@
 [node name="item_scroll" type="Node2D"]
 
 script = ExtResource( 1 )
+non_selected_alpha = 0.7
 scroll_time = 0.2
 arrow_color = null
 
@@ -32,6 +33,7 @@ stretch_mode = 0
 
 [node name="TextureRect" type="TextureRect" parent="background" index="0"]
 
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -46,7 +48,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 texture = ExtResource( 3 )
 stretch_mode = 0
-_sections_unfolded = [ "Margin", "Rect" ]
+_sections_unfolded = [ "Margin", "Rect", "Visibility" ]
 
 [node name="item0" type="Sprite" parent="." index="1"]
 
@@ -66,6 +68,8 @@ playback/speed = 1.0
 [node name="item1" type="Sprite" parent="." index="2"]
 
 editor/display_folded = true
+modulate = Color( 1, 1, 1, 0.698039 )
+_sections_unfolded = [ "Visibility" ]
 
 [node name="Tween" type="Tween" parent="item1" index="0"]
 
@@ -92,6 +96,8 @@ playback/speed = 1.0
 [node name="item3" type="Sprite" parent="." index="4"]
 
 editor/display_folded = true
+modulate = Color( 1, 1, 1, 0.698039 )
+_sections_unfolded = [ "Visibility" ]
 
 [node name="Tween" type="Tween" parent="item3" index="0"]
 

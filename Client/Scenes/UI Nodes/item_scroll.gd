@@ -2,6 +2,7 @@ extends Node2D
 
 enum COLORS {BLUE, GREEN, ORANGE, GREY}
 
+export(float, 0.0, 1.0) var non_selected_alpha = 0.6
 export(float, 0.0, 5.0) var scroll_time = 0.2 setget set_scroll_time
 export(COLORS) var arrow_color = COLORS.BLUE
 
@@ -129,11 +130,13 @@ func prev_item(step=null):
 #---------------
 func move_left():
 	sprites[0].get_child(0).interpolate_property(sprites[0], ":position", sprites[0].position, data_points[1], scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	sprites[0].get_child(0).interpolate_property(sprites[0], ":modulate", Color(1,1,1,0), Color(1,1,1,1), scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	sprites[0].get_child(0).interpolate_property(sprites[0], ":modulate:a", 0.0, non_selected_alpha, scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	sprites[1].get_child(0).interpolate_property(sprites[1], ":position", sprites[1].position, data_points[2], scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	sprites[1].get_child(0).interpolate_property(sprites[1], ":modulate:a", non_selected_alpha, 1.0, scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	sprites[2].get_child(0).interpolate_property(sprites[2], ":position", sprites[2].position, data_points[3], scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	sprites[2].get_child(0).interpolate_property(sprites[2], ":modulate:a", 1.0, non_selected_alpha, scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	sprites[3].get_child(0).interpolate_property(sprites[3], ":position", sprites[3].position, data_points[4], scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	sprites[3].get_child(0).interpolate_property(sprites[3], ":modulate", Color(1,1,1,1), Color(1,1,1,0), scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	sprites[3].get_child(0).interpolate_property(sprites[3], ":modulate:a", non_selected_alpha, 0.0, scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	sprites[0].get_child(0).start()
 	sprites[1].get_child(0).start()
 	sprites[2].get_child(0).start()
@@ -143,11 +146,13 @@ func move_left():
 
 func move_right():
 	sprites[1].get_child(0).interpolate_property(sprites[1], ":position", sprites[1].position, data_points[0], scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	sprites[1].get_child(0).interpolate_property(sprites[1], ":modulate", Color(1,1,1,1), Color(1,1,1,0), scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	sprites[1].get_child(0).interpolate_property(sprites[1], ":modulate:a", non_selected_alpha, 0.0, scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	sprites[2].get_child(0).interpolate_property(sprites[2], ":position", sprites[2].position, data_points[1], scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	sprites[2].get_child(0).interpolate_property(sprites[2], ":modulate:a", 1.0, non_selected_alpha, scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	sprites[3].get_child(0).interpolate_property(sprites[3], ":position", sprites[3].position, data_points[2], scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	sprites[3].get_child(0).interpolate_property(sprites[3], ":modulate:a", non_selected_alpha, 1.0, scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	sprites[4].get_child(0).interpolate_property(sprites[4], ":position", sprites[4].position, data_points[3], scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	sprites[4].get_child(0).interpolate_property(sprites[4], ":modulate", Color(1,1,1,0), Color(1,1,1,1), scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	sprites[4].get_child(0).interpolate_property(sprites[4], ":modulate:a", 0.0, non_selected_alpha, scroll_time, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	sprites[1].get_child(0).start()
 	sprites[2].get_child(0).start()
 	sprites[3].get_child(0).start()

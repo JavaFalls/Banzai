@@ -171,18 +171,21 @@ _sections_unfolded = [ "Theme" ]
 
 position = Vector2( 163, 34 )
 _sections_unfolded = [ "Transform" ]
+non_selected_alpha = 0.6
 arrow_color = 1
 
 [node name="item_scroll2" parent="." index="9" instance=ExtResource( 8 )]
 
 position = Vector2( 163, 75 )
 _sections_unfolded = [ "Transform" ]
+non_selected_alpha = 0.6
 arrow_color = 2
 
 [node name="item_scroll3" parent="." index="10" instance=ExtResource( 8 )]
 
 position = Vector2( 163, 116 )
 _sections_unfolded = [ "Transform" ]
+non_selected_alpha = 0.6
 arrow_color = 0
 
 [node name="color_scroll" parent="." index="11" instance=ExtResource( 9 )]
