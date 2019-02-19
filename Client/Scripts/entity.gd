@@ -6,7 +6,7 @@ extends KinematicBody2D
 const UP             = Vector2(0,0) # Indicates top-down view
 
 var movement_speed   = 100           # Movement speed of the entity
-var hit_points       = 100            # The hit point counter for the fighter
+var hit_points       = 1000000000            # The hit point counter for the fighter
 var direction        = Vector2()     # Direction the entity is moving
 var primary_weapon   = Vector2()     # Weapon that goes in the first weapon slot
 var secondary_weapon = Vector2()     # Weapon that goes in the second weapon slot

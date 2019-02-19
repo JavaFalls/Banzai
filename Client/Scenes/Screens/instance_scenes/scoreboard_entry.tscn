@@ -1,0 +1,138 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Scripts/scoreboard_scripts/scoreboard_entry.gd" type="Script" id=1]
+[ext_resource path="res://assets/local_scoreboard/tag_large_up.png" type="Texture" id=2]
+[ext_resource path="res://assets/local_scoreboard/tag_large_down.png" type="Texture" id=3]
+[ext_resource path="res://assets/local_scoreboard/tag_large_blue.png" type="Texture" id=4]
+[ext_resource path="res://assets/local_scoreboard/tag_large_orange.png" type="Texture" id=5]
+[ext_resource path="res://assets/local_scoreboard/tag_large_green.png" type="Texture" id=6]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=7]
+
+[node name="scoreboard_entry" type="MarginContainer"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 266.0
+margin_bottom = 17.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+_sections_unfolded = [ "Margin", "Rect" ]
+TAG_TYPE = 0
+TEXTURE_TAG_UP = ExtResource( 2 )
+TEXTURE_TAG_DOWN = ExtResource( 3 )
+TEXTURE_TAG_BLUE = ExtResource( 4 )
+TEXTURE_TAG_RED = ExtResource( 5 )
+TEXTURE_TAG_GREEN = ExtResource( 6 )
+
+[node name="banner_tag" type="Sprite" parent="." index="0"]
+
+texture = ExtResource( 4 )
+centered = false
+
+[node name="text" type="HBoxContainer" parent="." index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 266.0
+margin_bottom = 17.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/separation = 2
+alignment = 0
+_sections_unfolded = [ "Rect", "custom_constants" ]
+
+[node name="position" type="Label" parent="text" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 25.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 25, 17 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme = ExtResource( 7 )
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect", "Size Flags", "Theme", "custom_styles" ]
+
+[node name="name" type="Label" parent="text" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 27.0
+margin_right = 204.0
+margin_bottom = 17.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 3.0
+theme = ExtResource( 7 )
+valign = 1
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Size Flags", "Theme", "custom_fonts" ]
+
+[node name="score" type="Label" parent="text" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 206.0
+margin_right = 266.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 60, 17 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 10
+size_flags_vertical = 1
+theme = ExtResource( 7 )
+text = "-"
+align = 1
+valign = 1
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Grow Direction", "Rect", "Size Flags", "Theme", "custom_fonts" ]
+
+[connection signal="mouse_entered" from="." to="." method="_on_scoreboard_entry_mouse_entered"]
+
+[connection signal="mouse_exited" from="." to="." method="_on_scoreboard_entry_mouse_exited"]
+
+

@@ -1,7 +1,7 @@
 extends Node2D
 
 # The Bot
-var Bot = JSON.parse(head.DB.get_bot(head.bot_ID, true)).result["data"][0]
+var Bot = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
 
 # The variables
 var fighter1                             # Player or his AI bot
@@ -22,12 +22,14 @@ func _ready():
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
 	fighter1.is_player = 1
+	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 
 
 	fighter2 = bot_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
+	fighter2.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 
 #	 Set the opponents for the respective fighters
 	fighter1.set_opponent(fighter2)

@@ -1,1 +1,0 @@
-The current plan for using concave shapes is just to manually insert points over a texture via PolygonShape2D.
