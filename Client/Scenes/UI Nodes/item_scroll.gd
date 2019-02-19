@@ -13,7 +13,10 @@ var items = [] setget set_items # Will be a list dictionaries each with a textur
 var current = 0 setget set_current
 
 var shifting = false
+
 signal shift_completed
+signal info_queried
+signal info_reserved
 
 onready var sprites = [
 	get_node("item0"),
@@ -41,6 +44,8 @@ func _ready():
 			get_node("background").texture = load("res://assets/menu/bot_construction/tile_grey.png")
 			get_node("go_to_prev").texture_normal = load("res://assets/menu/bot_construction/arrow_grey_left.png")
 			get_node("go_to_next").texture_normal = load("res://assets/menu/bot_construction/arrow_grey_right.png")
+	
+	connect("info_reserved", self, "deny_info")
 
 # Signal methods
 #---------------
@@ -68,6 +73,15 @@ func _on_go_to_next_pressed():
 		yield(self, "shift_completed")
 		shifting = false
 
+func _on_info_button_pressed():
+	get_node("background/info_rect").visible = true
+	get_node("info_button").set_block_signals(true)
+	emit_signal("info_queried")
+
+func deny_info():
+	get_node("background/info_rect").visible = false
+	get_node("info_button").set_block_signals(false)
+
 # Setters
 #-------------
 func set_data_points(margin, data_width):
@@ -82,6 +96,10 @@ func set_data_points(margin, data_width):
 	var back = get_node("background")
 	back.rect_position = data_points[2] - (back.rect_size/2)
 #	back.rect_size.x = (data_width + margin) * 5
+	
+	var ib = get_node("info_button")
+	ib.rect_size.x = data_width
+	ib.rect_position = data_points[2] - (ib.rect_size/2)
 
 func set_items(new_items):
 	items = new_items

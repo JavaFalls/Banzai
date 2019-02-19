@@ -36,13 +36,23 @@ var stats = [
 	"Attack: %3d"
 ]
 
+# Godot methods
+#------------------------------------------------
 func _ready():
-	get_node("item_scroll").set_data_points(10, 16)
-	get_node("item_scroll").set_items(w)
-	get_node("item_scroll2").set_data_points(10, 16)
-	get_node("item_scroll2").set_items(w)
-	get_node("item_scroll3").set_data_points(10, 16)
-	get_node("item_scroll3").set_items(w)
+	var is1 = get_node("item_scroll")
+	var is2 = get_node("item_scroll2")
+	var is3 = get_node("item_scroll3")
+	
+	is1.set_data_points(10, 16)
+	is1.set_items(w)
+	is2.set_data_points(10, 16)
+	is2.set_items(w)
+	is3.set_data_points(10, 16)
+	is3.set_items(w)
+	
+	is1.connect("info_queried", self, "grab_info", [head.PRIMARY])
+	is2.connect("info_queried", self, "grab_info", [head.SECONDARY])
+	is3.connect("info_queried", self, "grab_info", [head.ABILITY])
 
 # Loading
 #------------------------------------------------
@@ -53,3 +63,26 @@ func load_bot_data(data):
 	bot.utility = data.utility
 	bot.primary_color = data.primary_color
 	bot.secondary_color = data.secondary_color
+
+# Info retrieval and logic
+#------------------------------------------------
+func grab_info(info_type):
+	match info_type:
+		head.PRIMARY:
+			get_node("item_scroll2").emit_signal("info_reserved")
+			get_node("item_scroll3").emit_signal("info_reserved")
+######## display info
+			get_node("Label4/Animation").play("print")
+#			get_node("Label4").text
+		head.SECONDARY:
+			get_node("item_scroll").emit_signal("info_reserved")
+			get_node("item_scroll3").emit_signal("info_reserved")
+######## display info
+			get_node("Label4/Animation").play("print")
+			pass
+		head.ABILITY:
+			get_node("item_scroll").emit_signal("info_reserved")
+			get_node("item_scroll2").emit_signal("info_reserved")
+######## display info
+			get_node("TEST/Animation").play("print")
+			pass
