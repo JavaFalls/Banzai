@@ -1,10 +1,45 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/UI Nodes/item_scroll.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/bot_construction/tile_blue.png" type="Texture" id=2]
 [ext_resource path="res://assets/menu/bot_construction/tile_highlight.png" type="Texture" id=3]
 [ext_resource path="res://assets/menu/bot_construction/arrow_blue_left.png" type="Texture" id=4]
 [ext_resource path="res://assets/menu/bot_construction/arrow_blue_right.png" type="Texture" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
 
 [node name="item_scroll" type="Node2D"]
 
@@ -186,12 +221,18 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
 flat = true
 align = 1
+_sections_unfolded = [ "custom_styles" ]
 
 [connection signal="pressed" from="go_to_prev" to="." method="_on_go_to_prev_pressed"]
 

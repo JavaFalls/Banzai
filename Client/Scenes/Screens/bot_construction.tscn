@@ -186,67 +186,101 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="item_scroll" parent="." index="8" instance=ExtResource( 8 )]
+[node name="Label4" type="Label" parent="." index="8"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 32.0
+margin_top = 10.0
+margin_right = 124.0
+margin_bottom = 24.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "Colors"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Theme" ]
+
+[node name="item_scroll" parent="." index="9" instance=ExtResource( 8 )]
 
 position = Vector2( 163, 34 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 1
 
-[node name="item_scroll2" parent="." index="9" instance=ExtResource( 8 )]
+[node name="item_scroll2" parent="." index="10" instance=ExtResource( 8 )]
 
 position = Vector2( 163, 75 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 2
 
-[node name="item_scroll3" parent="." index="10" instance=ExtResource( 8 )]
+[node name="item_scroll3" parent="." index="11" instance=ExtResource( 8 )]
 
 position = Vector2( 163, 116 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 0
 
-[node name="color_scroll" parent="." index="11" instance=ExtResource( 9 )]
+[node name="color_scroll" parent="." index="12" instance=ExtResource( 9 )]
 
 editor/display_folded = true
-margin_left = 13.0
-margin_top = 31.0
-margin_right = 141.0
-margin_bottom = 51.0
+margin_left = 14.0
+margin_top = 24.0
+margin_right = 142.0
+margin_bottom = 44.0
 
 [node name="selected_sprite" parent="color_scroll/HBoxContainer/colors/color2" index="0"]
 
 material = SubResource( 1 )
 
-[node name="color_scroll2" parent="." index="12" instance=ExtResource( 9 )]
+[node name="color_scroll2" parent="." index="13" instance=ExtResource( 9 )]
 
 editor/display_folded = true
-margin_left = 13.0
-margin_top = 62.0
-margin_right = 141.0
-margin_bottom = 82.0
-indicator_offset = 0.4
+margin_left = 14.0
+margin_top = 51.0
+margin_right = 142.0
+margin_bottom = 71.0
+indicator_offset = 0.3
 
 [node name="selected_sprite" parent="color_scroll2/HBoxContainer/colors/color2" index="0"]
 
 material = SubResource( 2 )
 
-[node name="color_scroll3" parent="." index="13" instance=ExtResource( 9 )]
+[node name="color_scroll3" parent="." index="14" instance=ExtResource( 9 )]
 
 editor/display_folded = true
-margin_left = 13.0
-margin_top = 92.0
-margin_right = 141.0
-margin_bottom = 112.0
+margin_left = 14.0
+margin_top = 79.0
+margin_right = 142.0
+margin_bottom = 99.0
 _sections_unfolded = [ "Material" ]
-indicator_offset = 0.8
+indicator_offset = 0.6
 
 [node name="selected_sprite" parent="color_scroll3/HBoxContainer/colors/color2" index="0"]
 
 material = SubResource( 3 )
 
-[node name="stats" type="VBoxContainer" parent="." index="14"]
+[node name="color_scroll4" parent="." index="15" instance=ExtResource( 9 )]
+
+editor/display_folded = true
+margin_left = 14.0
+margin_top = 106.0
+margin_right = 142.0
+margin_bottom = 126.0
+indicator_offset = 0.9
+
+[node name="stats" type="VBoxContainer" parent="." index="16"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -342,7 +376,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="new_button" type="TextureButton" parent="." index="15"]
+[node name="new_button" type="TextureButton" parent="." index="17"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -379,11 +413,16 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "New Bot"
+align = 1
+valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+_sections_unfolded = [ "Theme" ]
 
-[node name="test_button" type="TextureButton" parent="." index="16"]
+[node name="test_button" type="TextureButton" parent="." index="18"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -420,11 +459,16 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "Testing"
+align = 1
+valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+_sections_unfolded = [ "Theme" ]
 
-[node name="finish_button" type="TextureButton" parent="." index="17"]
+[node name="finish_button" type="TextureButton" parent="." index="19"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -461,20 +505,26 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "Finish"
+align = 1
+valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+_sections_unfolded = [ "Theme" ]
 
-[node name="TEST" type="Label" parent="." index="18"]
+[node name="TEST" type="Label" parent="." index="20"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 24.0
-margin_top = 165.0
-margin_right = 64.0
-margin_bottom = 179.0
+margin_left = 110.0
+margin_top = 133.0
+margin_right = 150.0
+margin_bottom = 147.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -496,7 +546,57 @@ playback_speed = 1.0
 anims/print = SubResource( 4 )
 blend_times = [  ]
 
+[node name="item_name" type="Label" parent="." index="21"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 11.0
+margin_top = 149.0
+margin_right = 243.0
+margin_bottom = 167.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "Name"
+valign = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Theme" ]
+
+[node name="item_description" type="Label" parent="." index="22"]
+
+modulate = Color( 0, 0, 0, 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 21.0
+margin_top = 170.0
+margin_right = 265.0
+margin_bottom = 249.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+theme = ExtResource( 7 )
+text = "Text for description. Text for description. Text for description. Text for description. Text for description. Text for description. Text for description. "
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = 3
+_sections_unfolded = [ "Visibility" ]
+
 
 [editable path="color_scroll"]
 [editable path="color_scroll2"]
 [editable path="color_scroll3"]
+[editable path="color_scroll4"]

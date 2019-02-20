@@ -17,10 +17,7 @@ onready var selected_sprite = get_node("HBoxContainer/colors/color2/selected_spr
 # Godot functions
 #----------------
 func _ready():
-	if colors.size() == 0:
-		colors.append(Color(0))
 	reset_color_boxes()
-	
 	selected_sprite.get_material().set_shader_param("offset", indicator_offset)
 
 # Signal methods

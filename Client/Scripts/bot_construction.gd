@@ -57,12 +57,7 @@ func _ready():
 # Loading
 #------------------------------------------------
 func load_bot_data(data):
-	bot.name = data.name
-	bot.primary = data.primary
-	bot.secondary = data.secondary
-	bot.utility = data.utility
-	bot.primary_color = data.primary_color
-	bot.secondary_color = data.secondary_color
+	pass
 
 # Info retrieval and logic
 #------------------------------------------------
