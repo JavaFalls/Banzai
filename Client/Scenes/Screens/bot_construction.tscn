@@ -11,6 +11,7 @@
 [ext_resource path="res://Scenes/UI Nodes/color_scroll.tscn" type="PackedScene" id=9]
 [ext_resource path="res://themes/color_scroll.shader" type="Shader" id=10]
 [ext_resource path="res://assets/menu/bot_construction/button_large.png" type="Texture" id=11]
+[ext_resource path="res://Scenes/UI Nodes/text_scroll.gd" type="Script" id=12]
 
 [sub_resource type="ShaderMaterial" id=1]
 
@@ -32,25 +33,6 @@ render_priority = 0
 shader = ExtResource( 10 )
 shader_param/offset = null
 _sections_unfolded = [ "Resource", "shader_param" ]
-
-[sub_resource type="Animation" id=4]
-
-resource_name = "print"
-length = 1.0
-loop = false
-step = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:text")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ "", "f", "fi", "fir", "firs", "first" ]
-}
 
 [node name="Node" type="Node" index="0"]
 
@@ -514,39 +496,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="TEST" type="Label" parent="." index="20"]
-
-editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 110.0
-margin_top = 133.0
-margin_right = 150.0
-margin_bottom = 147.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "first"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Animation" type="AnimationPlayer" parent="TEST" index="0"]
-
-root_node = NodePath("..")
-autoplay = ""
-playback_process_mode = 1
-playback_default_blend_time = 0.0
-playback_speed = 1.0
-anims/print = SubResource( 4 )
-blend_times = [  ]
-
-[node name="item_name" type="Label" parent="." index="21"]
+[node name="item_name" type="Label" parent="." index="20"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -570,7 +520,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="item_description" type="Label" parent="." index="22"]
+[node name="item_description" type="Label" parent="." index="21"]
 
 modulate = Color( 0, 0, 0, 1 )
 anchor_left = 0.0
@@ -580,7 +530,7 @@ anchor_bottom = 0.0
 margin_left = 21.0
 margin_top = 170.0
 margin_right = 265.0
-margin_bottom = 249.0
+margin_bottom = 225.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -588,12 +538,15 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 theme = ExtResource( 7 )
-text = "Text for description. Text for description. Text for description. Text for description. Text for description. Text for description. Text for description. "
 autowrap = true
+clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = 3
+script = ExtResource( 12 )
 _sections_unfolded = [ "Visibility" ]
+delay = 0.07
+step = 1
 
 
 [editable path="color_scroll"]

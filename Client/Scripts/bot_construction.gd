@@ -67,17 +67,12 @@ func grab_info(info_type):
 			get_node("item_scroll2").emit_signal("info_reserved")
 			get_node("item_scroll3").emit_signal("info_reserved")
 ######## display info
-			get_node("TEST/Animation").play("print")
-#			get_node("Label4").text
+			get_node("item_description").scroll("This is the description.")
 		head.SECONDARY:
 			get_node("item_scroll").emit_signal("info_reserved")
 			get_node("item_scroll3").emit_signal("info_reserved")
 ######## display info
-			get_node("TEST/Animation").play("print")
-			pass
 		head.ABILITY:
 			get_node("item_scroll").emit_signal("info_reserved")
 			get_node("item_scroll2").emit_signal("info_reserved")
 ######## display info
-			get_node("TEST/Animation").play("print")
-			pass
