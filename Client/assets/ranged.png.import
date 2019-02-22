@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ranged.png-48cccab3a2e11827029ff3d66100d722.stex"
+path="res://.import/ranged.png-722ad20065a781d81f0f8fc97b89a749.stex"
 
 [deps]
 
-source_file="res://Assets/ranged.png"
-dest_files=[ "res://.import/ranged.png-48cccab3a2e11827029ff3d66100d722.stex" ]
+source_file="res://assets/ranged.png"
+dest_files=[ "res://.import/ranged.png-722ad20065a781d81f0f8fc97b89a749.stex" ]
 
 [params]
 

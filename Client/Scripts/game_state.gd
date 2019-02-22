@@ -20,6 +20,7 @@ onready var bot_psuedo_primary   = 0
 onready var bot_psuedo_secondary = 0
 onready var bot_psuedo_ability   = 0
 onready var bot_in_peril         = 0
+onready var bot_reward           = 0
 
 onready var predicted_player_position = Vector2() # Predicted player location
 onready var predicted_player_mouse    = Vector2() # Predicted player mouse position
@@ -37,6 +38,8 @@ onready var predicted_bot_psuedo_secondary = 0
 onready var predicted_bot_psuedo_ability   = 0
 onready var predicted_bot_in_peril         = 0
 
+onready var predicted_action               = 0
+
 # Sent to the NN to get predictions back
 func get_battle_state():
 	var game_state = []
@@ -48,6 +51,7 @@ func get_battle_state():
 	game_state.append(self.bot_psuedo_ability)
 	game_state.append(self.bot_in_peril)
 
+
 	game_state.append(self.player_position)
 	game_state.append(self.player_mouse)
 	game_state.append(self.player_vector)
@@ -55,6 +59,8 @@ func get_battle_state():
 	game_state.append(self.player_psuedo_secondary)
 	game_state.append(self.player_psuedo_ability)
 	game_state.append(self.player_in_peril)
+	
+	game_state.append(self.bot_reward)
 	return game_state 
 
 	
@@ -131,7 +137,8 @@ func set_player_state(player):
 
 
 func set_predictions(predictions):
-	if predictions:
+	predicted_action = predictions[0]
+#	if predictions:
 #		predicted_bot_position      = Vector2(predictions[0] * screen_x, predictions[1] * screen_y)
 #		predicted_bot_mouse         = Vector2(predictions[2] * screen_x, predictions[3] * screen_y)
 #		predicted_bot_vector        = Vector2((predictions[4]*2)-1, (predictions[5]*2)-1)
@@ -147,23 +154,22 @@ func set_predictions(predictions):
 #		predicted_player_psuedo_secondary = predictions[17]
 #		predicted_player_psuedo_ability   = predictions[18]
 #		predicted_player_in_peril         = predictions[19]
+	if predicted_action  == 0:
+		predicted_bot_vector == Vector2(0,0)
+	elif predicted_action == 1:
+		predicted_bot_vector == Vector2(1,0)
+	elif predicted_action == 2:
+		predicted_bot_vector == Vector2(-1,0)
+	elif predicted_action == 3:
+		predicted_bot_vector == Vector2(0,1)
+	elif predicted_action == 4:
+		predicted_bot_vector == Vector2(0,-1)
+	if predicted_action == 5:
+		predicted_bot_psuedo_primary = 1
+	else:
+		predicted_bot_psuedo_primary = 0
 
-		predicted_bot_position      = Vector2(round(predictions[0] * screen_x), round(predictions[1] * screen_y))
-		predicted_bot_mouse         = Vector2(predictions[2] * screen_x, predictions[3] * screen_y)
-		predicted_bot_vector        = Vector2((round(predictions[4]*2)-1), (round(predictions[5]*2)-1))
-		predicted_bot_psuedo_primary   = (predictions[6])
-		predicted_bot_psuedo_secondary = ((predictions[7]))
-		predicted_bot_psuedo_ability   = predictions[8]
-		predicted_bot_in_peril         = ((predictions[9]))
-		
-		predicted_player_position      = Vector2(predictions[10] * screen_x, predictions[11] * screen_y)
-		predicted_player_mouse         = Vector2(predictions[12] * screen_x, predictions[13] * screen_y)
-		predicted_player_vector        = Vector2((predictions[14]*2)-1, (predictions[15]*2)-1)
-		predicted_player_psuedo_primary   = predictions[16]
-		predicted_player_psuedo_secondary = predictions[17]
-		predicted_player_psuedo_ability   = predictions[18]
-		predicted_player_in_peril         = predictions[19]
-		
+
 		
 		
 		

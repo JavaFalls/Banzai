@@ -5,6 +5,17 @@ import sys, math, json
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import load_model
+from tensorflow.keras.models import save_model
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers import Adam
+import random
+import numpy as np
+from collections import deque
+
+state_size  = 21
+action_size = 6
+batch_size  = 32
 
 # Create pipes
 request_handle = win32pipe.CreateNamedPipe(
@@ -67,53 +78,161 @@ def send_response(response):
                         print("Closed Pipe")
                 input('what do you want me to do?')
 
-def react(game_state, model):
-   input_list = []
-   output_list = []
-   response_list = []
-   for item in game_state:
-      input_list.append(item)
-   str_input_list = str(input_list)
-   input_list = str_input_list.replace(" ","").replace("''","'0'").replace("[]", "0,0").replace("[","").replace("]","").replace("(","")\
-   .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")
-   input_list.pop(0)
-   input_list.pop(0)
-   print("input_;ist=====================")
-   print(input_list)
-   for item in input_list:
+class DQN_agent:
+
+    def __init__(self, state_size, action_size):
+        self.state_size = state_size 
+        self.action_size = action_size
+
+        self.memory = deque(maxlen=2000)
+        self.gamma         = 0.95 # discount future reward
+        self.epsilon       = 1.0 # exploration rate; initial rate; skew 100% towards exploration
+        self.epsilon_decay = 0.995 # rate at which epsilon decays; get multiplied to epsilon
+        self.epsilon_min   = 0.01 # floor that epsilon will rest at after heavy training
+
+        self.learning_rate = 0.10
+
+        self.reward        = 0
+        self.state_counter = 0
+        self.action        = 0
+        self.gamestate     = 0
+
+        self.model = self._build_model()
+    
+    def _build_model(self): # defines the NN
+        model = Sequential() 
+        model.add(Dense(18, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(10, activation='relu'))
+        model.add(Dense(self.action_size, activation='linear'))
+
+        model.compile(loss='binary_crossentropy', optimizer=Adam(lr = self.learning_rate))
+
+        return model
+
+    def remember(self, state, action, reward, next_state):
+        self.memory.append((state, action, reward, next_state))
+
+    def predict(self, state):
+        if np.random.rand() <= self.epsilon: # if we randomly select a number less than our epilson we will choose 1 random action
+            return random.randrange(self.action_size)
+        act_values = self.model.predict(state)
+        print("act_values")
+        print(act_values[0])
+        return np.argmax(act_values[0]) # chooses the best choice
+
+    def replay(self, batch_size):
+        minibatch = random.sample(self.memory, batch_size)
+
+        for state, action, reward, next_state in minibatch:
+            target = (reward + self.gamma * np.amax(self.model.predict(next_state)[0]))
+            target_f = self.model.predict(state)
+            target_f[0] [action] = target
+
+            self.model.fit(state, target_f, epochs=1, verbose=0)
+        
+        if self.epsilon > self.epsilon_min:
+            self.epsilon *= self.epsilon_decay
+
+    def load(self):
+        self.model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
+    def save(self):
+        self.model = save_model(__file__.replace('nnserver.py', 'my_model.h5'))
+
+    def reshape(self, gamestate): # needs some stuff to remove the reward that gets sent with it
+        input_list = []
+        output_list = []
+        for item in gamestate:
+            input_list.append(item)
+        str_input_list = str(input_list)
+        input_list = str_input_list.replace(" ","").replace("''","'0'").replace("[]", "0,0").replace("[","").replace("]","").replace("(","")\
+        .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")
+        for item in input_list:
            output_list.append(float(item))
-   response_list = model.predict(output_list)
+        # self.reward = input_list[20]
+        # output_list = output_list[0:19]
+        output_list = np.reshape(output_list, (1, self.state_size))
+        return output_list
+
+    def train(self, new_gamestate):
+        if self.state_counter >= 1:
+            next_gamestate = new_gamestate # get the gamestate
+            self.remember(self.gamestate,self.action,fighter1.reward,next_gamestate)
+            self.gamestate = next_gamestate   
+        else:
+            self.gamestate = new_gamestate # get the gamestate
+
+        self.state_counter +=1
+        action = self.predict(self.gamestate)
+
+        return action
+
+def identify():
+        packet_type = ''
+        # do some parsing and return T B or L for train battle and load
+        return packet_type
+
+def react(game_state, model):
+   response_list = []
+   response_list = model.predict(game_state)
    output_list = []
    for item in response_list:
            for x in item:
                    output_list.append(x)
    return(output_list)
 
-def load_bot():
-   model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
-   return model
+def battle(new_gamestate, fighter1, fighter2):
+        actions = []
+        gamestate = new_gamestate # get the gamestate
+        fighter1.reshape(gamestate)
+        actions.append(fighter1.predict(gamestate))
+        actions.append(fighter2.predict(gamestate))
+        return actions
 
-bot = load_bot()
+def load():
+        #if we load and don't start fresh
+       fighter1.load()
+       fighter2.load()
+
+fighter1 = DQN_agent(state_size, action_size)
+fighter2 = DQN_agent(state_size, action_size)
+
 response = []
-while True:
+gamestate = []
+next_gamestate = []
+while True: # eventually wont be true because we need to train the model when this loop isnt running
         print("Server Code\n\n")
         print("get request")
 
         request_completed = False
         while not request_completed:
-                try:
+                # try:
                         request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '')
                         request = json.loads(request)
-                        response = react(request['Message'], bot)
+                        # print(request)
+                        # some kind of parsing with request then some if statements
+                        #packet_type = identify(request)
+                        #if packet_type == 'L':
+                                #response = load()
+                        #elif packet_type == 'T':
+                        request = fighter1.reshape(request["Message"])
+                        #print(request)
+                        response = fighter1.train(request)
+                        print(response)
+                        if len(fighter1.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+                                fighter1.replay(batch_size)
+                        # response = request
+                       #elif packet_type == 'B':
+                                #response = battle(request, fighter1, fighter2)
                         #print(f'{request}')
                         request_completed = True
-                except UnboundLocalError as Null_Reference:
-                        print('Client Request failed! Retrying...')
-                        input("Do you want to retry?")
+
+                # except UnboundLocalError as Null_Reference:
+                #         print('Client Request failed! Retrying...')
+                #         input("Do you want to retry?")
 
         ### Process Request ###
         print("sending response")
-        print(response)
-        send_response(response)
+ #       print(response)
+        send_response(response) # send the action or actions or load successful message based on packet type
 
 # Close pipes
