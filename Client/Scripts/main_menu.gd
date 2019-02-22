@@ -35,7 +35,7 @@ func scene_change(button):
 		"leader":
 			get_tree().change_scene("res://Scenes/leaderboard.tscn")
 		"custom":
-			get_tree().change_scene("res://Scenes/build.tscn")
+			get_tree().change_scene("res://Scenes/Screens/bot_construction.tscn")
 		"stats":
 			get_tree().change_scene("res://Scenes/stats.tscn")
 		"train":

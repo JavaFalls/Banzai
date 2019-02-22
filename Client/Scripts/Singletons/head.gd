@@ -109,19 +109,10 @@ onready var abilities = [
 	}
 ]
 
-onready var primary_list = load("res://Scripts/Objects/item_list.gd").new(weapons)
-onready var secondary_list = load("res://Scripts/Objects/item_list.gd").new(weapons)
-onready var ability_list = load("res://Scripts/Objects/item_list.gd").new(abilities)
-
-# Bots
-var bot_builds
-var ai_builds
-
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
 	init_bots()
 	#_test_DB()
-	ai_builds = [bot_builds[BOT]]
 
 #func _input(event):
 #	if Input.is_action_just_pressed("shutdown"):
@@ -135,31 +126,6 @@ func load_scene(path):
 	get_tree().change_scene_to(loader)
 	yield(get_tree(), "node_added")
 	get_node("/root/loading").load_scene(path)
-
-func find_bot(bot):
-	for i in range(ai_builds.size()):
-		if ai_builds[i].compare(bot):
-			return ai_builds[i]
-	return null
-
-func save_bot(new_bot):
-	ai_builds.push_back(new_bot)
-
-func init_bots():
-	bot_builds = {
-		PLAYER: load("res://Scripts/Objects/bot_build.gd").new(
-			weapons[WPN.ROBOT_FACE],
-			weapons[WPN.ROBOT_FACE],
-			abilities[ABL.SWORD1],
-			load("res://assets/bots/front.png")
-		),
-		BOT: load("res://Scripts/Objects/bot_build.gd").new(
-			weapons[WPN.ROBOT_FACE],
-			weapons[WPN.ROBOT_FACE],
-			abilities[ABL.SWORD1],
-			load("res://assets/bots/front.png")
-		)
-	}
 
 func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
 	var hit_points_diff = fighter1_hit_points - fighter2_hit_points

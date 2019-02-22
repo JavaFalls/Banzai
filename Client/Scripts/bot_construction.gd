@@ -21,22 +21,24 @@ var current = 0
 #------------------------------------------------
 func _ready():
 #	--------------------------------------------------------------------------------------------------
-	# FOR TESTING #
-	head.player_ID = 1
-	###############
-#	var player_bots = parse_json(head.DB.get_player_bots(head.player_ID))
-	print(all_bots)
-	# parse all ids if returning string
-	var bot_IDs = []
-	var id = ""
-	for c in player_bots["player_bots"]:
-		if c == ",":
-			bot_IDs.append(to_int(id))
-			id = ""
-		else:
-			id += c
-	for bot_ID in bot_IDs:
-		bots.append(parse_json(head.DB.get_bot(bot_ID)))
+	if 1 == 0:
+		# FOR TESTING #
+		head.player_ID = 1
+		###############
+		var player_bots
+	#	player_bots = parse_json(head.DB.get_player_bots(head.player_ID))
+		print(player_bots)
+		# parse all ids if returning string
+		var bot_IDs = []
+		var id = ""
+		for c in player_bots["player_bots"]:
+			if c == ",":
+				bot_IDs.append(to_int(id))
+				id = ""
+			else:
+				id += c
+		for bot_ID in bot_IDs:
+			bots.append(parse_json(head.DB.get_bot(bot_ID)))
 #	--------------------------------------------------------------------------------------------------
 	
 	var is1 = get_node("item_scroll")
@@ -73,7 +75,7 @@ func _on_test_button_pressed():
 	pass
 
 func _on_finish_button_pressed():
-	pass
+	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 # Display/organize data
 #------------------------------------------------
