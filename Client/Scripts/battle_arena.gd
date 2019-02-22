@@ -13,6 +13,8 @@ var start_pos1 = Vector2(200,48)   # Where the first fighter spawns
 var start_pos2 = Vector2(200,175)  # Where the second fighter spawns
 var health                         # The starting health of a mech for use with HUD
 
+#var pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
+
 onready var player_scene = preload("res://Scenes/player.tscn")
 onready var bot_scene    = preload("res://Scenes/bot.tscn")
 onready var dummy_scene  = preload("res://Scenes/dummy.tscn")
@@ -116,7 +118,9 @@ func send_nn_state():
 	###############################BATTLE####################################################
 	path = PoolStringArray()
 	path.append(ProjectSettings.globalize_path('res://NeuralNetwork/client.py'))
-	path.append(game_state.get_battle_state())
+	var message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_battle_state())
+	message = message.json_escape()
+	path.append(message)
 	OS.execute('python', path, true, output)
 
 #	print("OUT_PUT=================================================")

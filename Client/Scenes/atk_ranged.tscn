@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/atk_ranged.gd" type="Script" id=1]
-[ext_resource path="res://assets/ranged.png" type="Texture" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
 
@@ -15,24 +14,12 @@ length = 0.5
 loop = false
 step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/path = NodePath(".:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = false
+tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
-"update": 0,
-"values": [  ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
@@ -71,15 +58,7 @@ playback_speed = 1.0
 anims/attack = SubResource( 2 )
 blend_times = [  ]
 
-[node name="Sprite" type="Sprite" parent="." index="2"]
-
-position = Vector2( 0.159959, -0.161726 )
-rotation = 1.5708
-scale = Vector2( 0.23092, 0.23092 )
-texture = ExtResource( 2 )
-_sections_unfolded = [ "Animation", "Transform" ]
-
-[node name="projectile_container" type="Node" parent="." index="3"]
+[node name="projectile_container" type="Node" parent="." index="2"]
 
 [connection signal="body_entered" from="." to="." method="_on_atk_ranged_body_entered"]
 
