@@ -568,24 +568,20 @@ String DBConnector::get_scoreboard_range(int min_position, int max_position) {
 }
 
 // Get all the bots that a player has
-int[] DBConnector::get_players_bots(int player_ID) {
+int[] DBConnector::get_player_bots(int player_ID) {
    const int PARAM_PLAYER_ID = 1;
-   const int BOT_LIMIT = 10;
 
-   int[BOT_LIMIT] return_value;
-   std::string sql_query = "SELECT bot.bot_ID_PK"
-            + (std::string)"  FROM javafalls.bot"
-            + (std::string)" WHERE bot.player_ID_FK = ?";
+   String return_value;
+   std::string sql_query = "SELECT (STUFF((SELECT ',' + CONVERT(varchar, bot.bot_ID_PK)"
+            + (std::string)"                 FROM javafalls.bot"
+            + (std::string)"                WHERE bot.player_ID_FK = ?"
+            + (std::string)"                ORDER BY bot.player_ID_FK"
+            + (std::string)"                  FOR XML PATH('')), 1, LEN(','), '')) + ',' AS player_bots";
    SQLHSTMT sql_statment = create_command(sql_query);
    bind_parameter(sql_statment, PARAM_PLAYER_ID, &player_ID);
-   execute(sql_statment);
-
-   // loop and get_int_attribute
-   for (int i=0; i<BOT_LIMIT; i++) {
-      get_row(sql_statment); // This might only get one row and need to be fixed
-      return_value[i] = get_int_attribute(sql_statment, 1);
-   }
-   destroy_command(sql_statement);
+   execute(sql_statement);
+   return_value = get_results(sql_statement);
+   destroy_command(sql_statment);
    return return_value;
 }
 

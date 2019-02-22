@@ -202,7 +202,7 @@ public:
 
    //// Other
    // Get all the bots that a player has
-   int[] get_players_bots(int player_ID);
+   int[] get_player_bots(int player_ID);
    // Get name parts for username login screen
    String get_name_parts(int section);
 

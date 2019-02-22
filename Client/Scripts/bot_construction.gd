@@ -20,15 +20,24 @@ var current = 0
 # Godot methods
 #------------------------------------------------
 func _ready():
+#	--------------------------------------------------------------------------------------------------
 	# FOR TESTING #
 	head.player_ID = 1
 	###############
-#	var all_bots = head.DB.get_players_bots(head.player_ID)
+#	var player_bots = parse_json(head.DB.get_player_bots(head.player_ID))
 	print(all_bots)
-	var bot_data
-	for bot in all_bots:
-		bot_data = parse_json(head.DB.get_bot(bot_num))
-		bots.append(bot_data)
+	# parse all ids if returning string
+	var bot_IDs = []
+	var id = ""
+	for c in player_bots["player_bots"]:
+		if c == ",":
+			bot_IDs.append(to_int(id))
+			id = ""
+		else:
+			id += c
+	for bot_ID in bot_IDs:
+		bots.append(parse_json(head.DB.get_bot(bot_ID)))
+#	--------------------------------------------------------------------------------------------------
 	
 	var is1 = get_node("item_scroll")
 	var is2 = get_node("item_scroll2")
