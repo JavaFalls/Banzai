@@ -201,6 +201,8 @@ public:
    String get_scoreboard_range(int min_position, int max_position);
 
    //// Other
+   // Get all the bots that a player has
+   int[] get_players_bots(int player_ID);
    // Get name parts for username login screen
    String get_name_parts(int section);
 

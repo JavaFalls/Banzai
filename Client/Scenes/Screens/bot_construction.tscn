@@ -526,6 +526,16 @@ _sections_unfolded = [ "Visibility" ]
 delay = 0.07
 step = 1
 
+[connection signal="pressed" from="bot_left" to="." method="_on_bot_left_pressed"]
+
+[connection signal="pressed" from="bot_right" to="." method="_on_bot_right_pressed"]
+
+[connection signal="pressed" from="new_button" to="." method="_on_new_button_pressed"]
+
+[connection signal="pressed" from="test_button" to="." method="_on_test_button_pressed"]
+
+[connection signal="pressed" from="finish_button" to="." method="_on_finish_button_pressed"]
+
 
 [editable path="color_scroll"]
 [editable path="color_scroll2"]

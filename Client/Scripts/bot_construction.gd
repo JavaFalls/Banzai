@@ -13,32 +13,23 @@ var w = [
 	{"texture": preload("res://assets/menu/test_icons/skill_b_07.png")}
 ]
 
-# Bots
-var player = {
-	"name": "",
-	"primary": 0,
-	"secondary": 0,
-	"utility": 0,
-	"primary_color": 0,
-	"secondary_color": 0
-}
-var bot = {
-	"name": "",
-	"primary": 0,
-	"secondary": 0,
-	"utility": 0,
-	"primary_color": 0,
-	"secondary_color": 0
-}
-
-# Stats
-var stats = [
-	"Attack: %3d"
-]
+# Every loaded bot is temporarily stored
+var bots = []
+var current = 0
 
 # Godot methods
 #------------------------------------------------
 func _ready():
+	# FOR TESTING #
+	head.player_ID = 1
+	###############
+#	var all_bots = head.DB.get_players_bots(head.player_ID)
+	print(all_bots)
+	var bot_data
+	for bot in all_bots:
+		bot_data = parse_json(head.DB.get_bot(bot_num))
+		bots.append(bot_data)
+	
 	var is1 = get_node("item_scroll")
 	var is2 = get_node("item_scroll2")
 	var is3 = get_node("item_scroll3")
@@ -54,12 +45,26 @@ func _ready():
 	is2.connect("info_queried", self, "grab_info", [head.SECONDARY])
 	is3.connect("info_queried", self, "grab_info", [head.ABILITY])
 
-# Bot data
+# Signal methods
 #------------------------------------------------
-func load_bot_data(bot_num):
-#### pseudocode
-	var bot_data = parse_json(head.DB.get_bot(bot_num))
-	set_bot_info(bot_data)
+func _on_bot_left_pressed():
+	if current-1 < 0:
+		current = bots.size()-1
+	get_bot_info(bots[current])
+	
+func _on_bot_right_pressed():
+	if current+1 >= bots.size():
+		current = 0
+	get_bot_info(bots[current])
+	
+func _on_new_button_pressed():
+	pass
+	
+func _on_test_button_pressed():
+	pass
+
+func _on_finish_button_pressed():
+	pass
 
 # Display/organize data
 #------------------------------------------------
@@ -84,8 +89,7 @@ func reset_info():
 	$item_name.text = ""
 	$item_description.text = ""
 
-func set_bot_info(bot_data):
-#### pseudocode
+func get_bot_info(bot_data):
 	$bot_name.text = bot_data["name"]
 	$item_scroll.set_current(bot_data["primary_weapon"])
 	$item_scroll2.set_current(bot_data["secondary_weapon"])
