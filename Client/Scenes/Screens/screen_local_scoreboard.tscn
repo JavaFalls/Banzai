@@ -11,7 +11,7 @@
 [ext_resource path="res://assets/local_scoreboard/button_small_hover.png" type="Texture" id=9]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=10]
 
-[node name="screen_local_scoreboard" type="Node"]
+[node name="screen_local_scoreboard" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
@@ -47,7 +47,7 @@ _sections_unfolded = [ "Offset", "Transform" ]
 
 [node name="animation_bot" parent="graphics" index="3" instance=ExtResource( 5 )]
 
-position = Vector2( 340, 145 )
+position = Vector2( 340, 132 )
 _sections_unfolded = [ "Transform", "Visibility", "Z Index" ]
 
 [node name="Light2D" type="Light2D" parent="graphics" index="4"]

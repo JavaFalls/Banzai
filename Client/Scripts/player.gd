@@ -7,7 +7,7 @@ var relative_mouse = Vector2()
 
 func _physics_process(delta):
 	psuedo_mouse     = get_global_mouse_position()
-	relative_mouse   = get_position() - get_viewport().get_mouse_position()
+	relative_mouse   = get_viewport().get_mouse_position() - get_position()
 	direction        = Vector2(0,0)
 	psuedo_ability   = 0
 	psuedo_secondary = 0
@@ -36,16 +36,20 @@ func _physics_process(delta):
 		direction.y = 0
 		
 #rotate sprite towards the mouse curser
-	if (abs(relative_mouse.x) > abs(relative_mouse.y)):
-		if relative_mouse.x > 0:
-			set_rotation_degrees(90)
-		else:
-			set_rotation_degrees(270)
+	if relative_mouse.x > 0:
+		get_node("animation_bot").face_right()
 	else:
-		if relative_mouse.y > 0:
-			set_rotation_degrees(180)
-		else:
-			set_rotation_degrees(0)
+		get_node("animation_bot").face_left()
+	#if (abs(relative_mouse.x) > abs(relative_mouse.y)):
+	#	if relative_mouse.x > 0: # Right
+			#set_rotation_degrees(90)
+	#	else: # Left
+			#set_rotation_degrees(270)
+	#else:
+	#	if relative_mouse.y > 0: # Up
+			#set_rotation_degrees(180)
+	#	else: # Down
+			#set_rotation_degrees(0)
 	#print(self.get_parent().get_children())
 	
 	if is_player:

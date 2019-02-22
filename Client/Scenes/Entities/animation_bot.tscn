@@ -189,6 +189,7 @@ tracks/2/keys = {
 
 [node name="animation_bot" type="Node2D"]
 
+scale = Vector2( 2, 2 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Transform", "Z Index" ]
 
