@@ -3,7 +3,7 @@ extends MarginContainer
 export(PoolColorArray) var colors
 export(float) var indicator_offset = 0.0 # The time offset for flashing
 
-var current = 0
+var current = 0 setget set_current
 
 onready var color_boxes = [
 	get_node("HBoxContainer/colors/color0"),
@@ -41,6 +41,17 @@ func _on_left_pressed():
 
 func _on_right_pressed():
 	shift_color(true)
+
+# Setters
+#--------
+func set_current(index=null, color=null):
+	if typeof(index) == TYPE_INT:
+		current = index
+	elif typeof(color) == TYPE_INT:
+		for i in range(colors.size()):
+			if color == colors[i].to_rgba(): # If this is not save as rbga, change it to something else
+				current = i
+				break
 
 # Get colors by selection
 #------------------------
