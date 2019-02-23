@@ -10,7 +10,6 @@
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=8]
 [ext_resource path="res://Scenes/UI Nodes/slide_button.tscn" type="PackedScene" id=9]
 
-
 [sub_resource type="Animation" id=1]
 
 length = 0.8
@@ -249,7 +248,7 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 285.126, -0.830062, 0, 0, -410, -204 )
 }
 
-[node name="name_choice" type="Node" index="0"]
+[node name="name_choice" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -1150,7 +1149,6 @@ max_lines_visible = -1
 position = Vector2( 2, 227 )
 curve = SubResource( 2 )
 _sections_unfolded = [ "Material" ]
-text = "Longest"
 box_width = 120
 duration = 2.0
 
@@ -1159,7 +1157,6 @@ duration = 2.0
 position = Vector2( -38, 227 )
 curve = SubResource( 3 )
 _sections_unfolded = [ "Material" ]
-text = "Longest"
 max_chars = 9
 box_width = 120
 duration = 2.0
@@ -1169,7 +1166,6 @@ duration = 2.0
 position = Vector2( -78, 227 )
 curve = SubResource( 4 )
 _sections_unfolded = [ "Material" ]
-text = "Longest"
 max_chars = 9
 box_width = 120
 duration = 2.0
@@ -1178,7 +1174,6 @@ duration = 2.0
 
 position = Vector2( -118, 227 )
 curve = SubResource( 5 )
-text = "Longest"
 max_chars = 9
 box_width = 120
 duration = 2.0
@@ -1187,7 +1182,6 @@ duration = 2.0
 
 position = Vector2( -158, 227 )
 curve = SubResource( 6 )
-text = "About 13 chars"
 max_chars = 9
 box_width = 120
 duration = 2.0
@@ -1196,7 +1190,6 @@ duration = 2.0
 
 position = Vector2( -198, 227 )
 curve = SubResource( 7 )
-text = "Longest"
 max_chars = 9
 box_width = 120
 duration = 2.0
@@ -1205,7 +1198,6 @@ duration = 2.0
 
 position = Vector2( -238, 227 )
 curve = SubResource( 8 )
-text = "Longest"
 max_chars = 9
 box_width = 120
 duration = 2.0
@@ -1214,7 +1206,6 @@ duration = 2.0
 
 position = Vector2( -278, 227 )
 curve = SubResource( 9 )
-text = "Longest"
 max_chars = 9
 box_width = 120
 duration = 2.0
@@ -1223,7 +1214,6 @@ duration = 2.0
 
 position = Vector2( -318, 227 )
 curve = SubResource( 10 )
-text = "Longest"
 max_chars = 9
 box_width = 120
 duration = 2.0
@@ -1232,7 +1222,6 @@ duration = 2.0
 
 position = Vector2( -358, 227 )
 curve = SubResource( 11 )
-text = "Longest"
 max_chars = 9
 box_width = 120
 duration = 2.0
@@ -1255,7 +1244,6 @@ duration = 2.0
 
 position = Vector2( 138, 227 )
 curve = SubResource( 13 )
-text = "About 13 chars"
 max_chars = 9
 box_width = 120
 duration = 2.0
@@ -1406,7 +1394,6 @@ duration = 2.0
 
 position = Vector2( 669, 227 )
 curve = SubResource( 31 )
-text = "About 13 chars"
 max_chars = 9
 box_width = 120
 duration = 2.0

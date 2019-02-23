@@ -39,8 +39,10 @@ func _physics_process(delta):
 		t.queue_free()
 
 func _on_projectile_area_entered(area):
-	if not area.get_name() == "proj_path":
-		queue_free()
+#	if not area.get_name() == "proj_path":
+#		queue_free()
+	# Freeing is handled by _on_projectile_body_entered(body)
+	pass
 
 func _on_projectile_body_entered(body):
 	if (body.get_name() != projectile_owner.get_name()):

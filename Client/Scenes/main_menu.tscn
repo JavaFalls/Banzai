@@ -114,7 +114,7 @@ default_font = ExtResource( 11 )
 default_font = ExtResource( 11 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="main_menu" type="Node"]
+[node name="main_menu" type="Node" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
@@ -216,9 +216,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 341.0
-margin_top = 24.0
+margin_top = 12.0
 margin_right = 389.0
-margin_bottom = 50.0
+margin_bottom = 38.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -259,16 +259,65 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme", "Visibility" ]
 
-[node name="custom_button" type="TextureButton" parent="Control" index="2"]
+[node name="ranking_button" type="TextureButton" parent="Control" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 341.0
-margin_top = 66.0
+margin_top = 46.0
 margin_right = 389.0
-margin_bottom = 92.0
+margin_bottom = 72.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 7 )
+stretch_mode = 5
+_sections_unfolded = [ "Rect" ]
+
+[node name="Label" type="Label" parent="Control/ranking_button" index="0"]
+
+modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 48.0
+margin_bottom = 26.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+theme = ExtResource( 8 )
+text = "ranking"
+align = 1
+valign = 1
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="custom_button" type="TextureButton" parent="Control" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 341.0
+margin_top = 80.0
+margin_right = 389.0
+margin_bottom = 106.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -308,16 +357,16 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="fight_button" type="TextureButton" parent="Control" index="3"]
+[node name="fight_button" type="TextureButton" parent="Control" index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 341.0
-margin_top = 106.0
+margin_top = 114.0
 margin_right = 389.0
-margin_bottom = 132.0
+margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -357,7 +406,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="train_button" type="TextureButton" parent="Control" index="4"]
+[node name="train_button" type="TextureButton" parent="Control" index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -381,7 +430,6 @@ group = null
 texture_normal = ExtResource( 9 )
 stretch_mode = 5
 _sections_unfolded = [ "Margin", "Rect", "Size Flags", "Textures" ]
-
 
 [node name="Label" type="Label" parent="Control/train_button" index="0"]
 
@@ -407,7 +455,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="logout_button" type="TextureButton" parent="Control" index="5"]
+[node name="logout_button" type="TextureButton" parent="Control" index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -456,7 +504,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="username" type="Label" parent="Control" index="6"]
+[node name="username" type="Label" parent="Control" index="7"]
 
 anchor_left = 0.31152
 anchor_top = 0.01833
@@ -478,7 +526,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="title" type="Label" parent="Control" index="7"]
+[node name="title" type="Label" parent="Control" index="8"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -717,6 +765,8 @@ playback/repeat = false
 playback/speed = 1.0
 
 [connection signal="pressed" from="Control/stats_button" to="." method="scene_change" binds= [ "stats" ]]
+
+[connection signal="pressed" from="Control/ranking_button" to="." method="scene_change" binds= [ "ranking" ]]
 
 [connection signal="pressed" from="Control/custom_button" to="." method="scene_change" binds= [ "custom" ]]
 

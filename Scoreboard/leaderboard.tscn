@@ -2,9 +2,9 @@
 
 [ext_resource path="res://leaderboard.gd" type="Script" id=1]
 [ext_resource path="res://Graphics/leaderboard/background.png" type="Texture" id=2]
-[ext_resource path="res://Graphics/leaderboard/platform.png" type="Texture" id=3]
-[ext_resource path="res://Graphics/leaderboard/light.png" type="Texture" id=4]
-[ext_resource path="res://Graphics/bots/front.png" type="Texture" id=5]
+[ext_resource path="res://Graphics/leaderboard/light.png" type="Texture" id=3]
+[ext_resource path="res://Graphics/leaderboard/platform.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=5]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=6]
 [ext_resource path="res://Custom Nodes (Scenes)/scoreboard_entry.tscn" type="PackedScene" id=7]
 
@@ -22,36 +22,34 @@ autostart = false
 
 [node name="graphics" type="Node" parent="." index="1"]
 
-editor/display_folded = true
-
 [node name="background" type="Sprite" parent="graphics" index="0"]
 
 texture = ExtResource( 2 )
 centered = false
 
-[node name="platform" type="Sprite" parent="graphics" index="1"]
-
-position = Vector2( 307, 170 )
-texture = ExtResource( 3 )
-centered = false
-_sections_unfolded = [ "Offset", "Transform" ]
-
-[node name="light" type="Sprite" parent="graphics" index="2"]
+[node name="light" type="Sprite" parent="graphics" index="1"]
 
 position = Vector2( 296, 0 )
-texture = ExtResource( 4 )
+texture = ExtResource( 3 )
 centered = false
 _sections_unfolded = [ "Transform" ]
 
-[node name="robot" type="Sprite" parent="graphics" index="3"]
+[node name="platform" type="Sprite" parent="graphics" index="2"]
 
-position = Vector2( 327, 150 )
-texture = ExtResource( 5 )
+position = Vector2( 307, 170 )
+texture = ExtResource( 4 )
 centered = false
-_sections_unfolded = [ "Transform", "Visibility" ]
+_sections_unfolded = [ "Offset", "Transform" ]
+
+[node name="animation_bot" parent="graphics" index="3" instance=ExtResource( 5 )]
+
+visible = false
+position = Vector2( 339, 150 )
+scale = Vector2( 2, 2 )
 
 [node name="screen_layout" type="MarginContainer" parent="." index="2"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -214,22 +212,113 @@ margin_bottom = 161.0
 margin_top = 162.0
 margin_bottom = 179.0
 
-[node name="right_side_of_screen" type="VBoxContainer" parent="screen_layout/HBoxContainer" index="2"]
+[node name="right_side_of_screen" type="VBoxContainer" parent="." index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 269.0
-margin_right = 392.0
+margin_left = 287.0
+margin_right = 400.0
 margin_bottom = 225.0
+rect_min_size = Vector2( 113, 225 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 1
+theme = ExtResource( 6 )
 alignment = 0
-_sections_unfolded = [ "Grow Direction", "Rect", "Size Flags" ]
+_sections_unfolded = [ "Grow Direction", "Rect", "Size Flags", "Theme" ]
+
+[node name="top_margin" type="HSeparator" parent="right_side_of_screen" index="0"]
+
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 113.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 0, 15 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_constants/separation = 0
+_sections_unfolded = [ "Rect", "Size Flags", "Visibility" ]
+
+[node name="honor_title" type="Label" parent="right_side_of_screen" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 21.0
+margin_top = 19.0
+margin_right = 92.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 71, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Honorary Robot:"
+align = 1
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="HSeparator" type="HSeparator" parent="right_side_of_screen" index="2"]
+
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 54.0
+margin_right = 113.0
+margin_bottom = 59.0
+rect_min_size = Vector2( 0, 5 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_constants/separation = 0
+_sections_unfolded = [ "Rect" ]
+
+[node name="robot_name" type="Label" parent="right_side_of_screen" index="3"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 21.0
+margin_top = 63.0
+margin_right = 92.0
+margin_bottom = 111.0
+rect_min_size = Vector2( 71, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Blessed Campanile the Defea"
+align = 1
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 
