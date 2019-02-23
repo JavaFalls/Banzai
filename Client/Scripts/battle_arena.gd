@@ -28,18 +28,20 @@ signal game_end
 func _ready():
 	f.open('res://NeuralNetwork/gamestates', 3)
     # Call get opponent here
-#	print(get_opponent(525)))
+	var opponent_bot_ID = get_opponent(head.bot_ID)
 	fighter1 = player_scene.instance() #player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
 	fighter1.is_player = 1
+	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 
 	fighter2 = bot_scene.instance() # fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	#fighter2.attack_primary = false
 	fighter2.set_name("fighter2")
+	fighter2.get_node("animation_bot").load_colors_from_DB(opponent_bot_ID)
 
 	# tell fighters who theyre opponent is
 	fighter1.set_opponent(fighter2)
@@ -75,12 +77,12 @@ func post_game():
 
 
 # This function is called to choose an opponent
-# It returns the opponent bot's data.
+# It returns the opponent bot's ID.
 # If no opponent is found, null is returned
 func get_opponent(bot_id):
 	var opponent = null
 	var rank_width = 0
-	var bot_data = JSON.parse(head.DB.get_bot(bot_id, false)).result["data"][0] # Get all bot data from Database
+	var bot_data = JSON.parse(head.DB.get_bot(bot_id)).result["data"][0] # Get all bot data from Database
 	var lowest_rank = bot_data["ranking"]
 	var upper_rank  = bot_data["ranking"]
 
@@ -100,7 +102,7 @@ func get_opponent(bot_id):
 
 		if opponent_list.size() > 0:
 			randomize()
-			opponent = opponent_list[randi()%opponent_list.size()+1]
+			opponent = opponent_list[randi()%opponent_list.size()-1]["bot_ID_PK"]
 		else:
 			opponent = null
 	return opponent
