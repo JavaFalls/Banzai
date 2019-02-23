@@ -5,6 +5,13 @@ extends "res://Scripts/entity.gd"
 onready var game_state = self.get_parent().get_child(1) #Currently child 1 is game state apparently. this is temporary code it needs to set gamestate automatically to the right child
 var relative_mouse = Vector2()
 
+func _process(delta):
+	if is_player:
+		game_state.set_player_state(self)
+	else:
+		game_state.set_bot_state(self)
+	print("set_player_state")
+
 func _physics_process(delta):
 	psuedo_mouse     = get_global_mouse_position()
 	relative_mouse   = get_viewport().get_mouse_position() - get_position()
@@ -55,9 +62,6 @@ func _physics_process(delta):
 		else:
 			get_node("animation_bot").reset_animation()
 	
-	if is_player:
-		game_state.set_player_state(self)
-	else:
-		game_state.set_bot_state(self)
+
 	move_and_slide(direction.normalized()*movement_speed, UP)
 	get_node("Label").set_text(str(get_hit_points()))

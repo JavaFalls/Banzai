@@ -15,10 +15,11 @@ func _process(delta):
 		game_state.set_player_state(self)
 	else:
 		game_state.set_bot_state(self)
-	return
+	print("set_bot_state(self)")
 
 func _physics_process(delta):
 	psuedo_mouse     = game_state.predicted_bot_mouse
+	psuedo_mouse     = opponent.get_position()
 	relative_mouse   = self.get_position() - psuedo_mouse
 	direction        = game_state.predicted_bot_vector
 	psuedo_ability       = 0

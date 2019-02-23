@@ -12,6 +12,8 @@ onready var player_psuedo_primary   = 0
 onready var player_psuedo_secondary = 0
 onready var player_psuedo_ability   = 0
 onready var player_in_peril         = 0
+onready var player_hit_points       = 0
+onready var player_reward           = 0
 
 onready var bot_position = [] # Bot location
 onready var bot_mouse    = [] # Bot mouse position
@@ -20,6 +22,7 @@ onready var bot_psuedo_primary   = 0
 onready var bot_psuedo_secondary = 0
 onready var bot_psuedo_ability   = 0
 onready var bot_in_peril         = 0
+onready var bot_hit_points       = 0
 onready var bot_reward           = 0
 
 onready var predicted_player_position = Vector2() # Predicted player location
@@ -97,6 +100,9 @@ func set_bot_state(bot):
 	bot_psuedo_secondary = bot.psuedo_secondary
 	bot_psuedo_ability   = bot.psuedo_ability
 	bot_in_peril         = bot.in_peril
+	bot_reward           = bot.psuedo_primary*200
+	bot_hit_points       = bot.hit_points
+	
 	
 #	self.bot_position = bot.get_position()
 #	bot_position[0]   = randf()
@@ -122,6 +128,8 @@ func set_player_state(player):
 	player_psuedo_secondary = player.psuedo_secondary
 	player_psuedo_ability   = player.psuedo_ability
 	player_in_peril         = player.in_peril
+	player_reward           = player.hit_points - player_hit_points
+	player_hit_points       = player.hit_points
 	
 #	self.player_position = player.get_position()
 #	player_position[0]   = randf()
@@ -155,15 +163,15 @@ func set_predictions(predictions):
 #		predicted_player_psuedo_ability   = predictions[18]
 #		predicted_player_in_peril         = predictions[19]
 	if predicted_action  == 0:
-		predicted_bot_vector == Vector2(0,0)
+		predicted_bot_vector = Vector2(0,0)
 	elif predicted_action == 1:
-		predicted_bot_vector == Vector2(1,0)
+		predicted_bot_vector = Vector2(1,0)
 	elif predicted_action == 2:
-		predicted_bot_vector == Vector2(-1,0)
+		predicted_bot_vector = Vector2(-1,0)
 	elif predicted_action == 3:
-		predicted_bot_vector == Vector2(0,1)
+		predicted_bot_vector = Vector2(0,1)
 	elif predicted_action == 4:
-		predicted_bot_vector == Vector2(0,-1)
+		predicted_bot_vector = Vector2(0,-1)
 	if predicted_action == 5:
 		predicted_bot_psuedo_primary = 1
 	else:
