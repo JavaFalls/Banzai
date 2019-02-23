@@ -12,6 +12,8 @@ from tensorflow.keras.optimizers import Adam
 import random
 import numpy as np
 from collections import deque
+import mss                                    # For taking screen shots
+from PIL import Image                         # For image stuff
 
 state_size  = 21
 action_size = 6
@@ -33,6 +35,30 @@ response_handle = win32pipe.CreateNamedPipe(
         1, 65536, 65536,
         0,
         None)
+
+def  get_screenshot():
+        with mss.mss() as sct:
+                # Get a screenshot of the 1st monitor
+                sct_img = sct.grab(sct.monitors[1])
+
+                # Create an Image
+                img = Image.new("RGB", sct_img.size)
+
+                # Best solution: create a list(tuple(R, G, B), ...) for putdata()
+                pixels = zip(sct_img.raw[2::4], sct_img.raw[1::4], sct_img.raw[0::4])
+                img.putdata(list(pixels))
+
+                # But you can set individual pixels too (slower)
+                """
+                pixels = img.load()
+                for x in range(sct_img.width):
+                for y in range(sct_img.height):
+                pixels[x, y] = sct_img.pixel(x, y)
+                """
+
+                # Show it!
+                img.show()
+        return
 
 def get_client_request():
         # Create a named pipe to receive requests from the client
@@ -192,7 +218,7 @@ def load():
         #if we load and don't start fresh
        fighter1.load()
        fighter2.load()
-
+get_screenshot()
 fighter1 = DQN_agent(state_size, action_size)
 fighter2 = DQN_agent(state_size, action_size)
 
