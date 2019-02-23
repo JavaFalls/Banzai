@@ -35,20 +35,25 @@ func _physics_process(delta):
 		ability.use()
 		psuedo_ability = 1
 	
-	#rotate sprite towards the mouse curser
-	if relative_mouse.x > 0:
+	# Control bot animation
+	if (psuedo_mouse.x > get_position().x):
 		get_node("animation_bot").face_right()
+		if direction.x != 0 || direction.y != 0:
+			if (direction.x > 0):
+				get_node("animation_bot").start_walking_forward()
+			else:
+				get_node("animation_bot").start_walking_backward()
+		else:
+			get_node("animation_bot").reset_animation()
 	else:
 		get_node("animation_bot").face_left()
-	
-	# Control bot animation
-	if direction.x != 0 || direction.y != 0:
-		if (direction.x > 0 && relative_mouse.x > 0) || (direction.x < 0 && relative_mouse.y < 0):
-			get_node("animation_bot").start_walking_forward()
+		if direction.x != 0 || direction.y != 0:
+			if (direction.x > 0):
+				get_node("animation_bot").start_walking_backward()
+			else:
+				get_node("animation_bot").start_walking_forward()
 		else:
-			get_node("animation_bot").start_walking_backward()
-	else:
-		get_node("animation_bot").reset_animation()
+			get_node("animation_bot").reset_animation()
 
 	move_and_slide(direction.normalized()*movement_speed, UP)
 	return	

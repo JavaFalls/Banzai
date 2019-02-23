@@ -10,7 +10,6 @@
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=8]
 [ext_resource path="res://Scenes/UI Nodes/slide_button.tscn" type="PackedScene" id=9]
 
-
 [sub_resource type="Animation" id=1]
 
 length = 0.8

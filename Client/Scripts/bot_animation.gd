@@ -34,6 +34,7 @@ onready var layer_accent_color = get_node(NP_ACCENT_COLOR)
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	bot_type = ANIMATION_SET_B1
+	cur_animation = ANIMATION_NONE
 
 # Other Functions
 #-------------------------------------------------------------------------------
@@ -95,6 +96,7 @@ func stop_animation():
 	animation_player.stop(false)
 	cur_animation = ANIMATION_NONE
 func reset_animation():
-	animation_player.stop(true)
-	animation_player.seek(0, true)
-	cur_animation = ANIMATION_NONE
+	if (cur_animation != ANIMATION_NONE):
+		animation_player.seek(0, true)
+		animation_player.stop(true)
+		cur_animation = ANIMATION_NONE
