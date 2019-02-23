@@ -49,7 +49,7 @@ func set_current(index=null, color=null):
 		current = index
 	elif typeof(color) == TYPE_INT:
 		for i in range(colors.size()):
-			if color == colors[i].to_rgba(): # If this is not save as rbga, change it to something else
+			if color == colors[i].to_rgba32(): # If this is not save as rbga, change it to something else
 				current = i
 				break
 

@@ -638,7 +638,6 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 custom_styles/focus = ExtResource( 15 )
 custom_styles/normal = ExtResource( 15 )
-text = "abcdefghijklmnop"
 max_length = 16
 focus_mode = 1
 context_menu_enabled = true

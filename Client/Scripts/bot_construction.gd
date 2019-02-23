@@ -4,13 +4,13 @@ extends Node
 onready var head = get_tree().get_root().get_node("/root/head")
 
 var w = [
-	{"texture": preload("res://assets/menu/test_icons/skill_b_01.png")},
-	{"texture": preload("res://assets/menu/test_icons/skill_b_02.png")},
-	{"texture": preload("res://assets/menu/test_icons/skill_b_03.png")},
-	{"texture": preload("res://assets/menu/test_icons/skill_b_04.png")},
-	{"texture": preload("res://assets/menu/test_icons/skill_b_05.png")},
-	{"texture": preload("res://assets/menu/test_icons/skill_b_06.png")},
-	{"texture": preload("res://assets/menu/test_icons/skill_b_07.png")}
+	{"id": 0, "texture": preload("res://assets/menu/test_icons/skill_b_01.png")},
+	{"id": 1, "texture": preload("res://assets/menu/test_icons/skill_b_02.png")},
+	{"id": 2, "texture": preload("res://assets/menu/test_icons/skill_b_03.png")},
+	{"id": 3, "texture": preload("res://assets/menu/test_icons/skill_b_04.png")},
+	{"id": 4, "texture": preload("res://assets/menu/test_icons/skill_b_05.png")},
+	{"id": 5, "texture": preload("res://assets/menu/test_icons/skill_b_06.png")},
+	{"id": 6, "texture": preload("res://assets/menu/test_icons/skill_b_07.png")}
 ]
 
 # Every loaded bot is temporarily stored
@@ -73,11 +73,15 @@ func _on_bot_right_pressed():
 
 # Entering a name
 func _on_new_button_pressed():
+	$new_bot/back_panel/name_edit.text = ""
 	$new_bot.visible = true
 	yield(self, "name_entered")
 	$new_bot.visible = false
-#	head.DB.new_bot(head.player_ID, args, name)
-	pass
+	
+### Unsure of the model id ###
+	var model_id = 0
+	var player_id = 1
+	head.DB.new_bot(player_id, [0,0,0,0,0,0], $new_bot/back_panel/name_edit.text)
 
 func _on_enter_name_pressed():
 	if not name_confirmed:
@@ -107,6 +111,14 @@ func _on_test_button_pressed():
 	pass
 
 func _on_finish_button_pressed():
+#	head.DB.update_bot(head.player_ID, [
+#			model_id,
+#			$item_scroll.current_item()["id"],
+#			$item_scroll2.current_item()["id"],
+#			$item_scroll3.current_item()["id"],
+#			$color_scroll.current_color().to_rgba32(),
+#			$color_scroll.current_color().to_rgba32()
+#		])
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 # Display/organize data
