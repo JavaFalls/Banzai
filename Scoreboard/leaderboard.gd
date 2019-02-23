@@ -48,6 +48,7 @@ func request():
 		
 		# Place data on scoreboard
 		var i = 0
+		get_node("graphics/animation_bot").load_colors_from_DB(scoreboard_dictionary[0]["bot_ID_PK"])
 		for scoreboard_entry in _leaders.get_children():
 			scoreboard_entry.set_name(scoreboard_dictionary[i]["name"])
 			scoreboard_entry.set_score(scoreboard_dictionary[i]["ranking"])

@@ -2,19 +2,19 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/back.png-fe5348edd73d362d278e24f268d48ada.stex"
+path="res://.import/5.png-9f2a7117ab5b1e0b3d458012cd02abde.stex"
 
 [deps]
 
-source_file="res://Graphics/bots/back.png"
-dest_files=[ "res://.import/back.png-fe5348edd73d362d278e24f268d48ada.stex" ]
+source_file="res://assets/bots/hover_bot/base/5.png"
+dest_files=[ "res://.import/5.png-9f2a7117ab5b1e0b3d458012cd02abde.stex" ]
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
-compress/normal_map=2
+compress/normal_map=0
 flags/repeat=0
 flags/filter=false
 flags/mipmaps=false

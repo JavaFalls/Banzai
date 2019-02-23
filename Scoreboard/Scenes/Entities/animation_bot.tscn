@@ -1,0 +1,232 @@
+[gd_scene load_steps=39 format=2]
+
+[ext_resource path="res://Scripts/bot_animation.gd" type="Script" id=1]
+[ext_resource path="res://assets/bots/b1/B1-1-R.png" type="Texture" id=2]
+[ext_resource path="res://assets/bots/b1/B1-2-R.png" type="Texture" id=3]
+[ext_resource path="res://assets/bots/b1/B1-3-R.png" type="Texture" id=4]
+[ext_resource path="res://assets/bots/b1/B1-4-R.png" type="Texture" id=5]
+[ext_resource path="res://assets/bots/hover_bot/base/1.png" type="Texture" id=6]
+[ext_resource path="res://assets/bots/hover_bot/base/2.png" type="Texture" id=7]
+[ext_resource path="res://assets/bots/hover_bot/base/3.png" type="Texture" id=8]
+[ext_resource path="res://assets/bots/hover_bot/base/4.png" type="Texture" id=9]
+[ext_resource path="res://assets/bots/hover_bot/base/5.png" type="Texture" id=10]
+[ext_resource path="res://assets/bots/b1/B1-1-P.png" type="Texture" id=11]
+[ext_resource path="res://assets/bots/b1/B1-2-P.png" type="Texture" id=12]
+[ext_resource path="res://assets/bots/b1/B1-3-P.png" type="Texture" id=13]
+[ext_resource path="res://assets/bots/b1/B1-4-P.png" type="Texture" id=14]
+[ext_resource path="res://assets/bots/hover_bot/primary_color/1.png" type="Texture" id=15]
+[ext_resource path="res://assets/bots/hover_bot/primary_color/2.png" type="Texture" id=16]
+[ext_resource path="res://assets/bots/hover_bot/primary_color/3.png" type="Texture" id=17]
+[ext_resource path="res://assets/bots/hover_bot/primary_color/4.png" type="Texture" id=18]
+[ext_resource path="res://assets/bots/hover_bot/primary_color/5.png" type="Texture" id=19]
+[ext_resource path="res://assets/bots/b1/B1-1-B.png" type="Texture" id=20]
+[ext_resource path="res://assets/bots/b1/B1-2-B.png" type="Texture" id=21]
+[ext_resource path="res://assets/bots/b1/B1-3-B.png" type="Texture" id=22]
+[ext_resource path="res://assets/bots/b1/B1-4-B.png" type="Texture" id=23]
+[ext_resource path="res://assets/bots/hover_bot/secondary_color/1.png" type="Texture" id=24]
+[ext_resource path="res://assets/bots/hover_bot/secondary_color/2.png" type="Texture" id=25]
+[ext_resource path="res://assets/bots/hover_bot/secondary_color/3.png" type="Texture" id=26]
+[ext_resource path="res://assets/bots/hover_bot/secondary_color/4.png" type="Texture" id=27]
+[ext_resource path="res://assets/bots/hover_bot/secondary_color/5.png" type="Texture" id=28]
+[ext_resource path="res://assets/bots/b1/B1-1-H.png" type="Texture" id=29]
+[ext_resource path="res://assets/bots/b1/B1-2-H.png" type="Texture" id=30]
+[ext_resource path="res://assets/bots/b1/B1-3-H.png" type="Texture" id=31]
+[ext_resource path="res://assets/bots/b1/B1-4-H.png" type="Texture" id=32]
+
+[sub_resource type="SpriteFrames" id=1]
+
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "B1",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ) ],
+"loop": true,
+"name": "hover_bot",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=2]
+
+animations = [ {
+"frames": [ ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ) ],
+"loop": true,
+"name": "B1",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ) ],
+"loop": true,
+"name": "hover_bot",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=3]
+
+animations = [ {
+"frames": [ ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ) ],
+"loop": true,
+"name": "B1",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ) ],
+"loop": true,
+"name": "hover_bot",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=4]
+
+animations = [ {
+"frames": [ ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 32 ) ],
+"loop": true,
+"name": "B1",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "hover_bot",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=5]
+
+resource_name = "B1"
+length = 0.3
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("base_layer:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("primary_color:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("secondary_color:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("accent_color:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+
+[sub_resource type="Animation" id=6]
+
+resource_name = "hover_bot"
+length = 0.4
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("base_layer:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("primary_color:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("secondary_color:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4 ]
+}
+
+[node name="animation_bot" type="Node2D" index="0"]
+
+script = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "Z Index" ]
+
+[node name="base_layer" type="AnimatedSprite" parent="." index="0"]
+
+frames = SubResource( 1 )
+animation = "B1"
+
+[node name="primary_color" type="AnimatedSprite" parent="." index="1"]
+
+modulate = Color( 0.00672913, 0.574219, 0.161902, 1 )
+frames = SubResource( 2 )
+animation = "B1"
+_sections_unfolded = [ "Visibility" ]
+
+[node name="secondary_color" type="AnimatedSprite" parent="." index="2"]
+
+modulate = Color( 0.902344, 0.102219, 0.102219, 1 )
+frames = SubResource( 3 )
+animation = "B1"
+_sections_unfolded = [ "Visibility" ]
+
+[node name="accent_color" type="AnimatedSprite" parent="." index="3"]
+
+modulate = Color( 1, 0.489502, 0.0390625, 1 )
+frames = SubResource( 4 )
+animation = "B1"
+_sections_unfolded = [ "Visibility" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/B1 = SubResource( 5 )
+anims/hover_bot = SubResource( 6 )
+blend_times = [  ]
+
+

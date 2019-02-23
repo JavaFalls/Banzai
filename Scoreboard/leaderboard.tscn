@@ -2,13 +2,13 @@
 
 [ext_resource path="res://leaderboard.gd" type="Script" id=1]
 [ext_resource path="res://Graphics/leaderboard/background.png" type="Texture" id=2]
-[ext_resource path="res://Graphics/leaderboard/platform.png" type="Texture" id=3]
-[ext_resource path="res://Graphics/leaderboard/light.png" type="Texture" id=4]
-[ext_resource path="res://Graphics/bots/front.png" type="Texture" id=5]
+[ext_resource path="res://Graphics/leaderboard/light.png" type="Texture" id=3]
+[ext_resource path="res://Graphics/leaderboard/platform.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=5]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=6]
 [ext_resource path="res://Custom Nodes (Scenes)/scoreboard_entry.tscn" type="PackedScene" id=7]
 
-[node name="Node" type="Node" index="0"]
+[node name="Node" type="Node"]
 
 script = ExtResource( 1 )
 request_pause = 1
@@ -22,33 +22,29 @@ autostart = false
 
 [node name="graphics" type="Node" parent="." index="1"]
 
-editor/display_folded = true
-
 [node name="background" type="Sprite" parent="graphics" index="0"]
 
 texture = ExtResource( 2 )
 centered = false
 
-[node name="platform" type="Sprite" parent="graphics" index="1"]
-
-position = Vector2( 307, 170 )
-texture = ExtResource( 3 )
-centered = false
-_sections_unfolded = [ "Offset", "Transform" ]
-
-[node name="light" type="Sprite" parent="graphics" index="2"]
+[node name="light" type="Sprite" parent="graphics" index="1"]
 
 position = Vector2( 296, 0 )
-texture = ExtResource( 4 )
+texture = ExtResource( 3 )
 centered = false
 _sections_unfolded = [ "Transform" ]
 
-[node name="robot" type="Sprite" parent="graphics" index="3"]
+[node name="platform" type="Sprite" parent="graphics" index="2"]
 
-position = Vector2( 327, 150 )
-texture = ExtResource( 5 )
+position = Vector2( 307, 170 )
+texture = ExtResource( 4 )
 centered = false
-_sections_unfolded = [ "Transform", "Visibility" ]
+_sections_unfolded = [ "Offset", "Transform" ]
+
+[node name="animation_bot" parent="graphics" index="3" instance=ExtResource( 5 )]
+
+position = Vector2( 339, 150 )
+scale = Vector2( 2, 2 )
 
 [node name="screen_layout" type="MarginContainer" parent="." index="2"]
 
