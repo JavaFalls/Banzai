@@ -69,21 +69,18 @@ enum ABL {SWORD1, SWORD2, SWORD3}
 
 onready var weapons = [
 	{ # Robot face
-		"id": 0,
 		"scene": null,
 		"texture": load("res://assets/icon.png"),
 		"name": "Robot Face",
 		"stats": 0
 	},
 	{ # Sword
-		"id": 1,
 		"scene": null,
 		"texture": load("res://assets/sword.png"),
 		"name": "Sword",
 		"stats": 0
 	},
 	{ # Red block
-		"id": 2,
 		"scene": null,
 		"texture": load("res://assets/wall.png"),
 		"name": "Nothing Particular",
@@ -93,21 +90,18 @@ onready var weapons = [
 
 onready var abilities = [
 	{ # Sword 1
-		"id": 0,
 		"scene": null,
 		"texture": load("res://assets/bots/front.png"),
 		"name": "Sword1",
 		"stats": 0
 	},
 	{ # Sword 2
-		"id": 2,
 		"scene": null,
 		"texture": load("res://assets/sword.png"),
 		"name": "Sword2",
 		"stats": 0
 	},
 	{ # Sword 3
-		"id": 2,
 		"scene": null,
 		"texture": load("res://assets/sword.png"),
 		"name": "Sword3",
