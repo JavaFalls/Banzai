@@ -3,7 +3,7 @@ INSERT INTO SEI_JavaFalls.javafalls.player_name
             (
              -- Section 1 (adjectives)
              SELECT 1, 'Iron' UNION ALL
-             SELECT 1, 'Zer0' UNION ALL
+             SELECT 1, 'Zilch' UNION ALL
              SELECT 1, '' UNION ALL
              SELECT 1, 'Doomsday' UNION ALL
              SELECT 1, 'Wreaker' UNION ALL
@@ -52,7 +52,7 @@ INSERT INTO SEI_JavaFalls.javafalls.player_name
              SELECT 1, 'Stomper' UNION ALL
              SELECT 1, 'while' UNION ALL
              -- Section 2 (names)
-             SELECT 2, 'Zer0' UNION ALL -- Note I don't think we can actually use Zer0.
+             SELECT 2, 'Zilch' UNION ALL
              SELECT 2, 'Accura' UNION ALL
              SELECT 2, 'ez24/7' UNION ALL
              SELECT 2, 'Mr. Invincible' UNION ALL

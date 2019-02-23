@@ -1,6 +1,6 @@
 extends Path2D
 
-export(String) var text = "text"
+var text = "text" setget text_set, text_get
 export(int, -1, 100) var max_chars = -1
 export(int, -1, 1000) var box_width = -1
 export(float, 0.0, 1000.0) var duration = 0.0
@@ -13,12 +13,19 @@ onready var idle_texture = preload("res://assets/menu/name_choice/button_long.pn
 onready var hover_texture = preload("res://assets/menu/name_choice/button_long_selected.png")
 
 func _ready():
+	text_set(text)
+
+func text_set(value):
 	var button = get_node("PathFollow2D/Button")
 	if max_chars != -1:
-		text = text.left(max_chars)
-	button.text = text
+		value = value.left(max_chars)
+	button.text = value
+	text = value
 	if box_width != -1:
 		button.rect_size.x = box_width
+func text_get():
+	var button = get_node("PathFollow2D/Button")
+	return button.text
 
 func slide():
 	var tween = Tween.new()

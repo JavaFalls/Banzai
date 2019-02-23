@@ -17,10 +17,10 @@ const resolutions = [
 const DEFAULT_UTILITY = 0
 const DEFAULT_PRIMARY = 0
 const DEFAULT_SECONDARY = 0
-const DEFAULT_PRIMARY_COLOR = Color(0, 1, 0)
-const DEFAULT_SECONDARY_COLOR = Color(1, 0, 1)
-const DEFAULT_ACCENT_COLOR = Color(1, 0, 0)
-const DEFAULT_LIGHT_COLOR = Color(0, 0, 1)
+const DEFAULT_PRIMARY_COLOR = Color(1, 1, 1)
+const DEFAULT_SECONDARY_COLOR = Color(1, 1, 1)
+const DEFAULT_ACCENT_COLOR = Color(1, 1, 1)
+const DEFAULT_LIGHT_COLOR = Color(1, 1, 1)
 
 # Weapons keys
 enum {PRIMARY, SECONDARY, ABILITY}
