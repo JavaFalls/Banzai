@@ -2,7 +2,7 @@
 # its owner's mouse position
 extends Area2D
 
-export var speed    = 10
+export var speed    = 100
 var        damage   = 2
 var        movement = Vector2()
 var        target   = Vector2()

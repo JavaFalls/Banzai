@@ -13,9 +13,9 @@ import random
 import numpy as np
 from collections import deque
 
-state_size  = 21
+state_size  = 20
 action_size = 6
-batch_size  = 32
+batch_size  = 16
 
 # Create pipes
 request_handle = win32pipe.CreateNamedPipe(
@@ -90,7 +90,7 @@ class DQN_agent:
         self.epsilon_decay = 0.995 # rate at which epsilon decays; get multiplied to epsilon
         self.epsilon_min   = 0.01 # floor that epsilon will rest at after heavy training
 
-        self.learning_rate = 0.10
+        self.learning_rate = 0.001
 
         self.reward        = 0
         self.state_counter = 0
@@ -101,11 +101,11 @@ class DQN_agent:
     
     def _build_model(self): # defines the NN
         model = Sequential() 
-        model.add(Dense(18, input_dim = self.state_size, activation='relu'))
-        model.add(Dense(10, activation='relu'))
+        model.add(Dense(30, input_dim = self.state_size, activation='relu', bias_initializer='zeros'))
+        model.add(Dense(15, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
 
-        model.compile(loss='binary_crossentropy', optimizer=Adam(lr = self.learning_rate))
+        model.compile(loss='mean_squared_error', optimizer=Adam(lr = self.learning_rate))
 
         return model
 
@@ -124,11 +124,15 @@ class DQN_agent:
         minibatch = random.sample(self.memory, batch_size)
 
         for state, action, reward, next_state in minibatch:
+            print(state)
+            print(action)
+            print(reward)
+            print(next_state)
             target = (reward + self.gamma * np.amax(self.model.predict(next_state)[0]))
             target_f = self.model.predict(state)
             target_f[0] [action] = target
 
-            self.model.fit(state, target_f, epochs=1, verbose=0)
+            self.model.fit(state, target_f, epochs=1, verbose=1)
         
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
@@ -148,8 +152,8 @@ class DQN_agent:
         .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")
         for item in input_list:
            output_list.append(float(item))
-        # self.reward = input_list[20]
-        # output_list = output_list[0:19]
+        self.reward = output_list[20]
+        output_list = output_list[0:20]
         output_list = np.reshape(output_list, (1, self.state_size))
         return output_list
 
@@ -162,9 +166,9 @@ class DQN_agent:
             self.gamestate = new_gamestate # get the gamestate
 
         self.state_counter +=1
-        action = self.predict(self.gamestate)
+        self.action = self.predict(self.gamestate)
 
-        return action
+        return self.action
 
 def identify():
         packet_type = ''
@@ -218,7 +222,7 @@ while True: # eventually wont be true because we need to train the model when th
                         #print(request)
                         response = fighter1.train(request)
                         print(response)
-                        if len(fighter1.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+                        if len(fighter1.memory) % batch_size == 0 and len(fighter1.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
                                 fighter1.replay(batch_size)
                         # response = request
                        #elif packet_type == 'B':
