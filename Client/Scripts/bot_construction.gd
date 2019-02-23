@@ -17,6 +17,9 @@ var w = [
 var bots = []
 var current = 0
 
+var name_confirmed = false
+signal name_entered
+
 # Godot methods
 #------------------------------------------------
 func _ready():
@@ -67,10 +70,39 @@ func _on_bot_right_pressed():
 	if current+1 >= bots.size():
 		current = 0
 	get_bot_info(bots[current])
-	
+
+# Entering a name
 func _on_new_button_pressed():
+	$new_bot.visible = true
+	yield(self, "name_entered")
+	$new_bot.visible = false
+#	head.DB.new_bot(head.player_ID, args, name)
 	pass
-	
+
+func _on_enter_name_pressed():
+	if not name_confirmed:
+		var label = $new_bot/back_panel/enter_name/Label
+		label.scroll("Confirm")
+		yield(label, "scroll_finished")
+		name_confirmed = true
+	else:
+		$new_bot/back_panel/enter_name/Label.text = "Enter"
+		$new_bot/back_panel/enter_name/Label.modulate = Color("#ffffff")
+		name_confirmed = false
+		emit_signal("name_entered")
+
+func _on_enter_name_mouse_entered():
+	var tween = $new_bot/back_panel/enter_name/Label/Tween
+	var label = $new_bot/back_panel/enter_name/Label
+	tween.interpolate_property(label, "modulate", label.modulate, Color("#007800"), 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.start()
+
+func _on_enter_name_mouse_exited():
+	var tween = $new_bot/back_panel/enter_name/Label/Tween
+	var label = $new_bot/back_panel/enter_name/Label
+	tween.interpolate_property(label, "modulate", label.modulate, Color("#ffffff"), 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.start()
+
 func _on_test_button_pressed():
 	pass
 

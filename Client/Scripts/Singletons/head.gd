@@ -111,7 +111,6 @@ onready var abilities = [
 
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
-	init_bots()
 	#_test_DB()
 
 #func _input(event):
