@@ -9,18 +9,21 @@ const LOWER_LIMIT = 0
 # The variables
 var fighter1                       # Player's fighter or AI
 var fighter2                       # Opponent
-var start_pos1 = Vector2(200,48)   # Where the first fighter spawns
+var start_pos1 = Vector2(200,73)   # Where the first fighter spawns
 var start_pos2 = Vector2(200,175)  # Where the second fighter spawns
 var health                         # The starting health of a mech for use with HUD
 
+var popup                          # Popup scene used when battle is over
+
 #var pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
 
-onready var player_scene = preload("res://Scenes/player.tscn")
-onready var bot_scene    = preload("res://Scenes/bot.tscn")
-onready var dummy_scene  = preload("res://Scenes/dummy.tscn")
-onready var game_state   = get_node("game_state")
-onready var f            = File.new()
-onready var t = Timer.new()
+onready var player_scene    = preload("res://Scenes/player.tscn")
+onready var bot_scene       = preload("res://Scenes/bot.tscn")
+onready var dummy_scene     = preload("res://Scenes/dummy.tscn")
+onready var arena_end_popup = preload("res://Scenes/popups/arena_end_popup.tscn")
+onready var game_state      = get_node("game_state")
+onready var f               = File.new()
+onready var t               = Timer.new()
 
 # The signal that is emitted when a fighter's hit_points reach zero
 signal game_end
@@ -70,10 +73,17 @@ func _process(delta):
 
 # This function is called when one of the fighters hits zero hit_points
 func post_game():
+	var popup_message
 	head.battle_winner_calc(fighter1.get_hit_points(), fighter2.get_hit_points())
-	fighter1.queue_free()
-	fighter2.queue_free()
-	get_tree().change_scene("res://Scenes/post_battle.tscn")
+	if head.battle_won:
+		fighter2.queue_free()
+		popup_message = "Your robot is victorious"
+	else:
+		fighter1.queue_free()
+		popup_message = "Your robot has been defeated"
+	popup = arena_end_popup.instance()
+	self.add_child(popup)
+	popup.init("Battle Has Ended", "Again?", "Main Menu", self, "fight_again", self, "main_menu", popup_message)
 
 
 # This function is called to choose an opponent
@@ -129,3 +139,11 @@ func send_nn_state():
 #	print(output)
 	output = output[0].split_floats(',', false)
 	return output
+
+# Popup Functions
+func fight_again():
+	get_tree().paused = false
+	head.load_scene("res://Scenes/battle_arena.tscn")
+func main_menu():
+	get_tree().paused = false
+	get_tree().change_scene("res://Scenes/main_menu.tscn")

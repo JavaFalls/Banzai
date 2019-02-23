@@ -12,5 +12,5 @@ func _ready():
 	pass
 
 func _process(delta):
-	self.set_position(self.get_position() + Vector2(-.25,0))
-#	pass
+	#self.set_position(self.get_position() + Vector2(-.25,0))
+	pass
