@@ -53,21 +53,43 @@ func send_nn_state():
 	var output = []
 	var path = PoolStringArray()
 	var predictions = []
-#	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
-	path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
-#	print(game_state.get_training_state())
-	path.append(game_state.get_training_state())
-#	print(path)
+#	###############################TRAIN####################################################
+#   Don't use this. It's too ineficient.
+#	path.append(ProjectSettings.globalize_path('res://NeuralNetwork/client.py'))
+#	path.append(game_state.get_training_state())
+#	f.store_string(str(path) + "\n")
+
+	###############################BATTLE####################################################
+	path = PoolStringArray()
+	path.append(ProjectSettings.globalize_path('res://NeuralNetwork/client.py'))
+	var message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_battle_state())
+	message = message.json_escape()
+	path.append(message)
 	OS.execute('python', path, true, output)
+
 #	print("OUT_PUT=================================================")
 #	print(output)
 	output = output[0].split_floats(',', false)
-	for x in output:
-		x = round(x)
-		x = int(x)
-		predictions.append(x)
-#	print(predictions)
-	return predictions
+	return output
+	
+#	var output = []
+#	var path = PoolStringArray()
+#	var predictions = []
+##	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
+#	path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
+##	print(game_state.get_training_state())
+#	path.append(game_state.get_training_state())
+##	print(path)
+#	OS.execute('python', path, true, output)
+##	print("OUT_PUT=================================================")
+##	print(output)
+#	output = output[0].split_floats(',', false)
+#	for x in output:
+#		x = round(x)
+#		x = int(x)
+#		predictions.append(x)
+##	print(predictions)
+#	return predictions
 
 # Popup Functions
 func keep_data():

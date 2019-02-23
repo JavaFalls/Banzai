@@ -48,9 +48,20 @@ func request():
 		
 		# Place data on scoreboard
 		var i = 0
-		get_node("graphics/animation_bot").load_colors_from_DB(scoreboard_dictionary[0]["bot_ID_PK"])
+		if (i < scoreboard_dictionary.size()):
+			get_node("graphics/animation_bot").load_colors_from_DB(scoreboard_dictionary[0]["bot_ID_PK"])
+			get_node("right_side_of_screen/robot_name").text = scoreboard_dictionary[0]["name"]
+			get_node("graphics/animation_bot").visible = true
+			get_node("right_side_of_screen/robot_name").visible = true
+		else:
+			get_node("graphics/animation_bot").visible = false
+			get_node("right_side_of_screen/robot_name").visible = false
 		for scoreboard_entry in _leaders.get_children():
-			scoreboard_entry.set_name(scoreboard_dictionary[i]["name"])
-			scoreboard_entry.set_score(scoreboard_dictionary[i]["ranking"])
+			if (i < scoreboard_dictionary.size()):
+				scoreboard_entry.set_name(scoreboard_dictionary[i]["name"])
+				scoreboard_entry.set_score(scoreboard_dictionary[i]["ranking"])
+			else: 
+				scoreboard_entry.set_name("")
+				scoreboard_entry.set_score("-")
 			
 			i += 1
