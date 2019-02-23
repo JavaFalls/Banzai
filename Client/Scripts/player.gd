@@ -35,22 +35,20 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_down"):
 		direction.y = 0
 		
-#rotate sprite towards the mouse curser
+	#rotate sprite towards the mouse curser
 	if relative_mouse.x > 0:
 		get_node("animation_bot").face_right()
 	else:
 		get_node("animation_bot").face_left()
-	#if (abs(relative_mouse.x) > abs(relative_mouse.y)):
-	#	if relative_mouse.x > 0: # Right
-			#set_rotation_degrees(90)
-	#	else: # Left
-			#set_rotation_degrees(270)
-	#else:
-	#	if relative_mouse.y > 0: # Up
-			#set_rotation_degrees(180)
-	#	else: # Down
-			#set_rotation_degrees(0)
-	#print(self.get_parent().get_children())
+	
+	# Control bot animation
+	if direction.x != 0 || direction.y != 0:
+		if (direction.x > 0 && relative_mouse.x > 0) || (direction.x < 0 && relative_mouse.y < 0):
+			get_node("animation_bot").start_walking_forward()
+		else:
+			get_node("animation_bot").start_walking_backward()
+	else:
+		get_node("animation_bot").reset_animation()
 	
 	if is_player:
 		game_state.set_player_state(self)

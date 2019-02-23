@@ -48,6 +48,7 @@ _sections_unfolded = [ "Offset", "Transform" ]
 [node name="animation_bot" parent="graphics" index="3" instance=ExtResource( 5 )]
 
 position = Vector2( 340, 132 )
+scale = Vector2( 2, 2 )
 _sections_unfolded = [ "Transform", "Visibility", "Z Index" ]
 
 [node name="Light2D" type="Light2D" parent="graphics" index="4"]

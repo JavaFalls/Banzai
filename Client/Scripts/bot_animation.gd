@@ -13,9 +13,13 @@ const NP_ACCENT_COLOR = "accent_color"
 const ANIMATION_SET_HOVER_BOT = "hover_bot"
 const ANIMATION_SET_B1 = "B1"
 
+const ANIMATION_NONE = 0
+const ANIMATION_WALKING = 1
+const ANIMATION_WALKING_BACKWARD = -1
 # Local variables
 #-------------------------------------------------------------------------------
 var bot_type
+var cur_animation
 
 # Pre initialized variables
 #-------------------------------------------------------------------------------
@@ -78,9 +82,19 @@ func face_right():
 	layer_primary_color.flip_h = true
 	layer_secondary_color.flip_h = true
 	layer_accent_color.flip_h = true
-func start_walking():
-	animation_player.play(bot_type)
+func start_walking_forward():
+	if (cur_animation != ANIMATION_WALKING):
+		animation_player.play(bot_type)
+		animation_player.seek(0.1)
+		cur_animation = ANIMATION_WALKING
+func start_walking_backward():
+	if (cur_animation != ANIMATION_WALKING_BACKWARD):
+		animation_player.play_backwards(bot_type)
+		cur_animation = ANIMATION_WALKING_BACKWARD
 func stop_animation():
 	animation_player.stop(false)
+	cur_animation = ANIMATION_NONE
 func reset_animation():
 	animation_player.stop(true)
+	animation_player.seek(0, true)
+	cur_animation = ANIMATION_NONE
