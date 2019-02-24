@@ -82,6 +82,10 @@ func _on_new_button_pressed():
 	var model_id = 0
 	var player_id = 1
 	head.DB.new_bot(player_id, [0,0,0,0,0,0], $new_bot/back_panel/name_edit.text)
+#### Get the newest bot
+	#bots.append(parse_json(head.DB.get_bot(bot_ID)))
+	current = bots.size()-1
+	get_bot_info(bots[current])
 
 func _on_enter_name_pressed():
 	if not name_confirmed:
