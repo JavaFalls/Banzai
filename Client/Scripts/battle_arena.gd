@@ -57,7 +57,7 @@ func _ready():
 
 	health = fighter1.get_hit_points()
 
-	t.set_wait_time(1)
+	t.set_wait_time(.1)
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.start()
@@ -66,7 +66,7 @@ func _physics_process(delta):
 	self.get_node("healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
 	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
 	if t.is_stopped():
-#		game_state.set_predictions(send_nn_state())
+		game_state.set_predictions(send_nn_state())
 		print(game_state.get_battle_state())
 		t.start()
 		print("===================battle arena send nn response=========================")

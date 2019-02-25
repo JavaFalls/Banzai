@@ -16,7 +16,7 @@ from collections import deque
 #from PIL import Image                         # For image stuff
 
 state_size  = 13
-action_size = 6
+action_size = 108
 batch_size  = 16
 
 # Create pipes
@@ -110,7 +110,7 @@ class DQN_agent:
         self.state_size = state_size 
         self.action_size = action_size
 
-        self.memory = deque(maxlen=2000)
+        self.memory = deque(maxlen=20000)
         self.gamma         = 0.95 # discount future reward
         self.epsilon       = 1.0 # exploration rate; initial rate; skew 100% towards exploration
         self.epsilon_decay = 0.995 # rate at which epsilon decays; get multiplied to epsilon
@@ -127,8 +127,8 @@ class DQN_agent:
     
     def _build_model(self): # defines the NN
         model = Sequential() 
-        model.add(Dense(30, input_dim = self.state_size, activation='relu', bias_initializer='zeros'))
-        model.add(Dense(15, activation='relu'))
+        model.add(Dense(140, input_dim = self.state_size, activation='linear', bias_initializer='zeros'))
+        model.add(Dense(120, activation='sigmoid'))
         model.add(Dense(self.action_size, activation='linear'))
 
         model.compile(loss='mean_squared_error', optimizer=Adam(lr = self.learning_rate))
@@ -142,8 +142,8 @@ class DQN_agent:
         if np.random.rand() <= self.epsilon: # if we randomly select a number less than our epilson we will choose 1 random action
             return random.randrange(self.action_size)
         act_values = self.model.predict(state)
-        print("act_values")
-        print(act_values[0])
+        print("act_value1")
+        print(act_values[0,0:5])
         return np.argmax(act_values[0]) # chooses the best choice
 
     def replay(self, batch_size):
@@ -158,7 +158,7 @@ class DQN_agent:
             target_f = self.model.predict(state)
             target_f[0] [action] = target
 
-            self.model.fit(state, target_f, epochs=1, verbose=1)
+            self.model.fit(state, target_f, epochs=1, verbose=0)
         
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
@@ -186,7 +186,8 @@ class DQN_agent:
     def train(self, new_gamestate):
         if self.state_counter >= 1:
             next_gamestate = new_gamestate # get the gamestate
-            self.remember(self.gamestate,self.action,fighter1.reward,next_gamestate)
+            self.reward = self.get_reward(self.gamestate[0], next_gamestate[0])
+            self.remember(self.gamestate,self.action,self.reward,next_gamestate)
             self.gamestate = next_gamestate   
         else:
             self.gamestate = new_gamestate # get the gamestate
@@ -194,12 +195,33 @@ class DQN_agent:
         self.state_counter +=1
         self.action = self.predict(self.gamestate)
 
+        if len(self.memory) % batch_size == 0 and len(self.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+                self.replay(batch_size)
+
         return self.action
 
-def identify():
-        packet_type = ''
-        # do some parsing and return T B or L for train battle and load
-        return packet_type
+    def get_reward(self, gamestate, next_gamestate):
+        bot_aim_angle_diff      = abs(gamestate[2] - gamestate[5])
+        bot_aim_next_angle_diff = abs(next_gamestate[2] - next_gamestate[5])
+        if bot_aim_angle_diff > .5:
+                bot_aim_angle_diff = 1 - bot_aim_angle_diff
+        if bot_aim_next_angle_diff > .5:
+                bot_aim_next_angle_diff = 1 - bot_aim_next_angle_diff
+        player_aim_angle_diff      = abs(gamestate[2] - gamestate[5])
+        player_aim_next_angle_diff = abs(next_gamestate[2] - next_gamestate[5])
+        if player_aim_angle_diff > .5:
+                player_aim_angle_diff = 1 - player_aim_angle_diff
+        if player_aim_next_angle_diff > .5:
+                player_aim_next_angle_diff = 1 - player_aim_next_angle_diff
+
+        new_reward = 0
+        new_reward += gamestate[9] - next_gamestate[9] * 10                    # reward for dealing damage
+        new_reward += bot_aim_angle_diff - bot_aim_next_angle_diff * 10         # reward for not being targeted
+
+        new_reward -= gamestate[3] - next_gamestate[3] * 10                    # criticism for losing health
+        new_reward -= player_aim_angle_diff - player_aim_next_angle_diff * 10   # criticism for bad aim
+        return new_reward
+
 
 def react(game_state, model):
    response_list = []
@@ -230,8 +252,8 @@ response = []
 gamestate = []
 next_gamestate = []
 while True: # eventually wont be true because we need to train the model when this loop isnt running
-        print("Server Code\n\n")
-        print("get request")
+        # print("Server Code\n\n")
+        # print("get request")
 
         request_completed = False
         while not request_completed:
@@ -248,8 +270,6 @@ while True: # eventually wont be true because we need to train the model when th
                         #print(request)
                         response = fighter1.train(request)
                         print(response)
-                        if len(fighter1.memory) % batch_size == 0 and len(fighter1.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
-                                fighter1.replay(batch_size)
                         # response = request
                        #elif packet_type == 'B':
                                 #response = battle(request, fighter1, fighter2)
@@ -261,7 +281,7 @@ while True: # eventually wont be true because we need to train the model when th
                 #         input("Do you want to retry?")
 
         ### Process Request ###
-        print("sending response")
+        # print("sending response")
  #       print(response)
         send_response(response) # send the action or actions or load successful message based on packet type
 

@@ -59,6 +59,9 @@ onready var predicted_bot_psuedo_secondary = 0
 onready var predicted_bot_psuedo_ability   = 0
 onready var predicted_bot_in_peril         = 0
 
+onready var predicted_bot_aim_left  = 0
+onready var predicted_bot_aim_right = 0
+
 
 
 # Sent to the NN to get predictions back
@@ -177,6 +180,13 @@ func set_player_state(player):
 func set_predictions(predictions):
 	predicted_action = predictions[0]
 
+	predicted_bot_vector = Vector2(0,0)
+	predicted_bot_psuedo_primary   = 0
+	predicted_bot_psuedo_secondary = 0
+	predicted_bot_psuedo_ability   = 0
+	predicted_bot_aim_right        = 0
+	predicted_bot_aim_left         = 0
+
 	if predicted_action  == 0:
 		predicted_bot_vector = Vector2(0,0)
 	elif predicted_action == 1:
@@ -187,10 +197,356 @@ func set_predictions(predictions):
 		predicted_bot_vector = Vector2(0,1)
 	elif predicted_action == 4:
 		predicted_bot_vector = Vector2(0,-1)
-	if predicted_action == 5:
+	elif predicted_action  == 5:
+		predicted_bot_vector = Vector2(1,1)
+	elif predicted_action == 6:
+		predicted_bot_vector = Vector2(1,-1)
+	elif predicted_action == 7:
+		predicted_bot_vector = Vector2(-1,1)
+	elif predicted_action == 8:
+		predicted_bot_vector = Vector2(-1,-1)
+	elif predicted_action == 9:
 		predicted_bot_psuedo_primary = 1
-	else:
-		predicted_bot_psuedo_primary = 0
+	elif predicted_action == 10:
+		predicted_bot_vector = Vector2(1,0)
+		predicted_bot_psuedo_primary = 1
+	elif predicted_action == 11:
+		predicted_bot_vector = Vector2(-1,0)
+		predicted_bot_psuedo_primary = 1
+	elif predicted_action == 12:
+		predicted_bot_vector = Vector2(0,1)
+		predicted_bot_psuedo_primary = 1
+	elif predicted_action == 13:
+		predicted_bot_vector = Vector2(0,-1)
+		predicted_bot_psuedo_primary = 1
+	elif predicted_action  == 14:
+		predicted_bot_vector = Vector2(1,1)
+		predicted_bot_psuedo_primary = 1
+	elif predicted_action == 15:
+		predicted_bot_vector = Vector2(1,-1)
+		predicted_bot_psuedo_primary = 1
+	elif predicted_action == 16:
+		predicted_bot_vector = Vector2(-1,1)
+		predicted_bot_psuedo_primary = 1
+	elif predicted_action == 17:
+		predicted_bot_vector = Vector2(-1,-1)
+		predicted_bot_psuedo_primary = 1
+	elif predicted_action  == 18:
+		predicted_bot_psuedo_secondary = 1
+	elif predicted_action == 19:
+		predicted_bot_vector = Vector2(1,0)
+		predicted_bot_psuedo_secondary = 1
+	elif predicted_action == 20:
+		predicted_bot_vector = Vector2(-1,0)
+		predicted_bot_psuedo_secondary = 1
+	elif predicted_action == 21:
+		predicted_bot_vector = Vector2(0,1)
+		predicted_bot_psuedo_secondary = 1
+	elif predicted_action == 22:
+		predicted_bot_vector = Vector2(0,-1)
+		predicted_bot_psuedo_secondary = 1
+	elif predicted_action  == 23:
+		predicted_bot_vector = Vector2(1,1)
+		predicted_bot_psuedo_secondary = 1
+	elif predicted_action == 24:
+		predicted_bot_vector = Vector2(1,-1)
+		predicted_bot_psuedo_secondary = 1
+	elif predicted_action == 25:
+		predicted_bot_vector = Vector2(-1,1)
+		predicted_bot_psuedo_secondary = 1
+	elif predicted_action == 26:
+		predicted_bot_vector = Vector2(-1,-1)
+		predicted_bot_psuedo_secondary = 1
+	elif predicted_action  == 27:
+		predicted_bot_psuedo_ability = 1
+	elif predicted_action == 28:
+		predicted_bot_vector = Vector2(1,0)
+		predicted_bot_psuedo_ability = 1
+	elif predicted_action == 29:
+		predicted_bot_vector = Vector2(-1,0)
+		predicted_bot_psuedo_ability = 1
+	elif predicted_action == 30:
+		predicted_bot_vector = Vector2(0,1)
+		predicted_bot_psuedo_ability = 1
+	elif predicted_action == 31:
+		predicted_bot_vector = Vector2(0,-1)
+		predicted_bot_psuedo_ability = 1
+	elif predicted_action  == 32:
+		predicted_bot_vector = Vector2(1,1)
+		predicted_bot_psuedo_ability = 1
+	elif predicted_action == 33:
+		predicted_bot_vector = Vector2(1,-1)
+		predicted_bot_psuedo_ability = 1
+	elif predicted_action == 34:
+		predicted_bot_vector = Vector2(-1,1)
+		predicted_bot_psuedo_ability = 1
+	elif predicted_action == 35:
+		predicted_bot_vector = Vector2(-1,-1)
+		predicted_bot_psuedo_ability = 1
+		
+	elif predicted_action  == 36:
+		predicted_bot_aim_right = 1
+	elif predicted_action == 37:
+		predicted_bot_vector = Vector2(1,0)
+		predicted_bot_aim_right = 1
+	elif predicted_action == 38:
+		predicted_bot_vector = Vector2(-1,0)
+		predicted_bot_aim_right = 1
+	elif predicted_action == 39:
+		predicted_bot_vector = Vector2(0,1)
+		predicted_bot_aim_right = 1
+	elif predicted_action == 40:
+		predicted_bot_vector = Vector2(0,-1)
+		predicted_bot_aim_right = 1
+	elif predicted_action  == 41:
+		predicted_bot_vector = Vector2(1,1)
+		predicted_bot_aim_right = 1
+	elif predicted_action == 42:
+		predicted_bot_vector = Vector2(1,-1)
+		predicted_bot_aim_right = 1
+	elif predicted_action == 43:
+		predicted_bot_vector = Vector2(-1,1)
+		predicted_bot_aim_right = 1
+	elif predicted_action == 44:
+		predicted_bot_vector = Vector2(-1,-1)
+		predicted_bot_aim_right = 1
+	elif predicted_action == 45:
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 46:
+		predicted_bot_vector = Vector2(1,0)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 47:
+		predicted_bot_vector = Vector2(-1,0)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 48:
+		predicted_bot_vector = Vector2(0,1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 49:
+		predicted_bot_vector = Vector2(0,-1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action  == 50:
+		predicted_bot_vector = Vector2(1,1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 51:
+		predicted_bot_vector = Vector2(1,-1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 52:
+		predicted_bot_vector = Vector2(-1,1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 53:
+		predicted_bot_vector = Vector2(-1,-1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action  == 54:
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 55:
+		predicted_bot_vector = Vector2(1,0)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 56:
+		predicted_bot_vector = Vector2(-1,0)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 57:
+		predicted_bot_vector = Vector2(0,1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 58:
+		predicted_bot_vector = Vector2(0,-1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action  == 59:
+		predicted_bot_vector = Vector2(1,1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 60:
+		predicted_bot_vector = Vector2(1,-1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 61:
+		predicted_bot_vector = Vector2(-1,1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 62:
+		predicted_bot_vector = Vector2(-1,-1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action  == 63:
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 64:
+		predicted_bot_vector = Vector2(1,0)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 65:
+		predicted_bot_vector = Vector2(-1,0)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 66:
+		predicted_bot_vector = Vector2(0,1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 67:
+		predicted_bot_vector = Vector2(0,-1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action  == 68:
+		predicted_bot_vector = Vector2(1,1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 69:
+		predicted_bot_vector = Vector2(1,-1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 70:
+		predicted_bot_vector = Vector2(-1,1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_right = 1
+	elif predicted_action == 71:
+		predicted_bot_vector = Vector2(-1,-1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_right = 1
+		
+	elif predicted_action  == 72:
+		predicted_bot_aim_left = 1
+	elif predicted_action == 73:
+		predicted_bot_vector = Vector2(1,0)
+		predicted_bot_aim_left = 1
+	elif predicted_action == 74:
+		predicted_bot_vector = Vector2(-1,0)
+		predicted_bot_aim_left = 1
+	elif predicted_action == 75:
+		predicted_bot_vector = Vector2(0,1)
+		predicted_bot_aim_left = 1
+	elif predicted_action == 76:
+		predicted_bot_vector = Vector2(0,-1)
+		predicted_bot_aim_left = 1
+	elif predicted_action  == 77:
+		predicted_bot_vector = Vector2(1,1)
+		predicted_bot_aim_left = 1
+	elif predicted_action ==78:
+		predicted_bot_vector = Vector2(1,-1)
+		predicted_bot_aim_left = 1
+	elif predicted_action == 79:
+		predicted_bot_vector = Vector2(-1,1)
+		predicted_bot_aim_left = 1
+	elif predicted_action == 80:
+		predicted_bot_vector = Vector2(-1,-1)
+		predicted_bot_aim_left = 1
+	elif predicted_action == 81:
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 82:
+		predicted_bot_vector = Vector2(1,0)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 83:
+		predicted_bot_vector = Vector2(-1,0)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 84:
+		predicted_bot_vector = Vector2(0,1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 85:
+		predicted_bot_vector = Vector2(0,-1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action  == 86:
+		predicted_bot_vector = Vector2(1,1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 87:
+		predicted_bot_vector = Vector2(1,-1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 88:
+		predicted_bot_vector = Vector2(-1,1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 89:
+		predicted_bot_vector = Vector2(-1,-1)
+		predicted_bot_psuedo_primary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action  == 90:
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 91:
+		predicted_bot_vector = Vector2(1,0)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 92:
+		predicted_bot_vector = Vector2(-1,0)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 93:
+		predicted_bot_vector = Vector2(0,1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 94:
+		predicted_bot_vector = Vector2(0,-1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action  == 95:
+		predicted_bot_vector = Vector2(1,1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 96:
+		predicted_bot_vector = Vector2(1,-1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 97:
+		predicted_bot_vector = Vector2(-1,1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 98:
+		predicted_bot_vector = Vector2(-1,-1)
+		predicted_bot_psuedo_secondary = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action  == 99:
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 100:
+		predicted_bot_vector = Vector2(1,0)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 101:
+		predicted_bot_vector = Vector2(-1,0)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 102:
+		predicted_bot_vector = Vector2(0,1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 103:
+		predicted_bot_vector = Vector2(0,-1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action  == 104:
+		predicted_bot_vector = Vector2(1,1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 105:
+		predicted_bot_vector = Vector2(1,-1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 106:
+		predicted_bot_vector = Vector2(-1,1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_left = 1
+	elif predicted_action == 107:
+		predicted_bot_vector = Vector2(-1,-1)
+		predicted_bot_psuedo_ability = 1
+		predicted_bot_aim_left = 1
 		
 func get_predictions():
 	var pred = []

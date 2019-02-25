@@ -6,9 +6,7 @@ var relative_mouse = Vector2()
 
 
 func _ready():
-	pass
-	
-
+	aim_angle = 0
 
 func _process(delta):
 	if is_player:
@@ -21,8 +19,9 @@ func _physics_process(delta):
 	psuedo_mouse     = game_state.predicted_bot_mouse
 	psuedo_mouse     = opponent.get_position()
 	relative_mouse   = psuedo_mouse - self.get_position()
-	aim_angle        = atan2(relative_mouse.x, relative_mouse.y) # gives angle in radians
-	direction        = game_state.predicted_bot_vector
+#	aim_angle        = atan2(relative_mouse.x, relative_mouse.y) # gives angle in radians
+#	direction        = game_state.predicted_bot_vector
+	direction        = Vector2(0,0)
 	psuedo_ability       = 0
 	psuedo_secondary     = 0
 	psuedo_primary       = 0
@@ -36,7 +35,16 @@ func _physics_process(delta):
 	if game_state.predicted_bot_psuedo_ability:
 		ability.use()
 		psuedo_ability = 1
-	
+		
+	if game_state.predicted_bot_aim_left == 1:
+		aim_angle -= .1
+		if aim_angle < 0:
+			aim_angle += 1
+	if game_state.predicted_bot_aim_right == 1:
+		aim_angle += .1
+		if aim_angle > 0:
+			aim_angle -= 1
+			
 	# Control bot animation
 	if (psuedo_mouse.x > get_position().x):
 		get_node("animation_bot").face_right()
