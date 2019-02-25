@@ -15,12 +15,13 @@ func _process(delta):
 		game_state.set_player_state(self)
 	else:
 		game_state.set_bot_state(self)
-	print("set_bot_state(self)")
+#	print("set_bot_state(self)")
 
 func _physics_process(delta):
 	psuedo_mouse     = game_state.predicted_bot_mouse
 	psuedo_mouse     = opponent.get_position()
-	relative_mouse   = self.get_position() - psuedo_mouse
+	relative_mouse   = psuedo_mouse - self.get_position()
+	aim_angle        = atan2(relative_mouse.x, relative_mouse.y) # gives angle in radians
 	direction        = game_state.predicted_bot_vector
 	psuedo_ability       = 0
 	psuedo_secondary     = 0

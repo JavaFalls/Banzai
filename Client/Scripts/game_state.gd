@@ -1,27 +1,45 @@
 #400 X 225
 
-
-
 extends Node
+
 onready var screen_x = 400
 onready var screen_y = 225
-onready var player_position = [] # Player location
+
+onready var bot_position      = Vector2()
+onready var bot_aim_angle     = 0
+onready var bot_health        = 0
+onready var bot_in_peril      = 0
+onready var player_angle      = 0
+onready var opponent_distance = 0
+onready var bot_angle         = 0
+onready var player_in_peril   = 0
+onready var player_health     = 0
+onready var player_aim_angle  = 0
+onready var player_position   = Vector2()
+
+onready var relative_vector = Vector2()
+
+onready var predicted_action               = 0
+
+#its position, opponent distance, opponent angle (radians but normalized), aim vector, in peril, b health p health
+
+#onready var player_position = [] # Player location
 onready var player_mouse    = [] # Player mouse position
 onready var player_vector   = [] # Player movement vector
 onready var player_psuedo_primary   = 0
 onready var player_psuedo_secondary = 0
 onready var player_psuedo_ability   = 0
-onready var player_in_peril         = 0
+#onready var player_in_peril         = 0
 onready var player_hit_points       = 0
 onready var player_reward           = 0
 
-onready var bot_position = [] # Bot location
+#onready var bot_position = [] # Bot location
 onready var bot_mouse    = [] # Bot mouse position
 onready var bot_vector   = [] # Bot movement vector 
 onready var bot_psuedo_primary   = 0
 onready var bot_psuedo_secondary = 0
 onready var bot_psuedo_ability   = 0
-onready var bot_in_peril         = 0
+#onready var bot_in_peril         = 0
 onready var bot_hit_points       = 0
 onready var bot_reward           = 0
 
@@ -41,67 +59,73 @@ onready var predicted_bot_psuedo_secondary = 0
 onready var predicted_bot_psuedo_ability   = 0
 onready var predicted_bot_in_peril         = 0
 
-onready var predicted_action               = 0
+
 
 # Sent to the NN to get predictions back
 func get_battle_state():
 	var game_state = []
-	game_state.append(self.bot_position)
-	game_state.append(self.bot_mouse)
-	game_state.append(self.bot_vector)
-	game_state.append(self.bot_psuedo_primary)
-	game_state.append(self.bot_psuedo_secondary)
-	game_state.append(self.bot_psuedo_ability)
-	game_state.append(self.bot_in_peril)
 
-
-	game_state.append(self.player_position)
-	game_state.append(self.player_mouse)
-	game_state.append(self.player_vector)
-	game_state.append(self.player_psuedo_primary)
-	game_state.append(self.player_psuedo_secondary)
-	game_state.append(self.player_psuedo_ability)
-	game_state.append(self.player_in_peril)
+	relative_vector = bot_position - player_position
+	opponent_distance = sqrt(pow(relative_vector.x,2) + pow(relative_vector.y,2))
+	bot_angle = (atan2(relative_vector.x,relative_vector.y)-PI)/(-2*PI)
+	relative_vector *= -1
+	player_angle = (atan2(relative_vector.x, relative_vector.y)-PI)/(-2*PI)
 	
-	game_state.append(self.bot_reward)
+	game_state.append(self.bot_position)
+	game_state.append(self.bot_aim_angle)
+	game_state.append(self.bot_health)
+	game_state.append(self.bot_in_peril)
+	game_state.append(self.player_angle) # calc this
+	game_state.append(self.opponent_distance) # calculate this
+	game_state.append(self.bot_angle) # calc this
+	game_state.append(self.player_in_peril)
+	game_state.append(self.player_health)
+	game_state.append(self.player_aim_angle)
+	game_state.append(self.player_position)
 	return game_state 
 
 	
 # Sent to the NN to teach it
-func get_training_state():
-	var game_state = []
-	game_state.append(self.player_position)
-	game_state.append(self.player_mouse)
-	game_state.append(self.player_vector)
-	game_state.append(self.player_psuedo_primary)
-	game_state.append(self.player_psuedo_secondary)
-	game_state.append(self.player_psuedo_ability)
-	game_state.append(self.player_in_peril)
-
-	game_state.append(self.bot_position)
-	game_state.append(self.bot_mouse)
-	game_state.append(self.bot_vector)
-	game_state.append(self.bot_psuedo_primary)
-	game_state.append(self.bot_psuedo_secondary)
-	game_state.append(self.bot_psuedo_ability)
-	game_state.append(self.bot_in_peril)
-
-	return game_state
+#func get_training_state():
+#	var game_state = []
+#	game_state.append(self.player_position)
+#	game_state.append(self.player_mouse)
+#	game_state.append(self.player_vector)
+#	game_state.append(self.player_psuedo_primary)
+#	game_state.append(self.player_psuedo_secondary)
+#	game_state.append(self.player_psuedo_ability)
+#	game_state.append(self.player_in_peril)
+#
+#	game_state.append(self.bot_position)
+#	game_state.append(self.bot_mouse)
+#	game_state.append(self.bot_vector)
+#	game_state.append(self.bot_psuedo_primary)
+#	game_state.append(self.bot_psuedo_secondary)
+#	game_state.append(self.bot_psuedo_ability)
+#	game_state.append(self.bot_in_peril)
+#
+#	return game_state
 	
 func set_bot_state(bot):
+#	self.bot_position = bot.get_position()
+#	bot_position[0]   = bot_position[0] / 400
+#	bot_position[1]   = bot_position[1] / 225
+#	self.bot_mouse    = bot.get_psuedo_mouse()
+#	bot_mouse[0]      = bot_mouse[0] / 400
+#	bot_mouse[1]      = bot_mouse[1] / 225
+#	self.bot_vector   = (bot.get_trajectory()+Vector2(1,1))/Vector2(2,2)
+#	bot_psuedo_primary   = bot.psuedo_primary
+#	bot_psuedo_secondary = bot.psuedo_secondary
+#	bot_psuedo_ability   = bot.psuedo_ability
+#	bot_in_peril         = bot.in_peril
+#	bot_reward           = bot.psuedo_primary*200
+#	bot_hit_points       = bot.hit_points
 	self.bot_position = bot.get_position()
-	bot_position[0]   = bot_position[0] / 400
-	bot_position[1]   = bot_position[1] / 225
-	self.bot_mouse    = bot.get_psuedo_mouse()
-	bot_mouse[0]      = bot_mouse[0] / 400
-	bot_mouse[1]      = bot_mouse[1] / 225
-	self.bot_vector   = (bot.get_trajectory()+Vector2(1,1))/Vector2(2,2)
-	bot_psuedo_primary   = bot.psuedo_primary
-	bot_psuedo_secondary = bot.psuedo_secondary
-	bot_psuedo_ability   = bot.psuedo_ability
-	bot_in_peril         = bot.in_peril
-	bot_reward           = bot.psuedo_primary*200
-	bot_hit_points       = bot.hit_points
+	self.bot_position[0]   = bot_position[0] / 400
+	self.bot_position[1]   = bot_position[1] / 225
+	self.bot_aim_angle     = (bot.aim_angle-PI)/(-2*PI) #divide in order to normalize
+	self.bot_health        = bot.hit_points
+	self.bot_in_peril      = bot.in_peril 
 	
 	
 #	self.bot_position = bot.get_position()
@@ -117,19 +141,25 @@ func set_bot_state(bot):
 #	bot_in_peril         = randf()
 	
 func set_player_state(player):
+#	self.player_position = player.get_position()
+#	player_position[0]   = player_position[0] / 400
+#	player_position[1]   = player_position[1] / 225
+#	self.player_mouse    = player.get_psuedo_mouse()
+#	player_mouse[0]      = player_mouse[0] / 400
+#	player_mouse[1]      = player_mouse[1] / 225
+#	self.player_vector   = (player.get_trajectory()+Vector2(1,1))/Vector2(2,2)
+#	player_psuedo_primary   = player.psuedo_primary
+#	player_psuedo_secondary = player.psuedo_secondary
+#	player_psuedo_ability   = player.psuedo_ability
+#	player_in_peril         = player.in_peril
+#	player_reward           = player.hit_points - player_hit_points
+#	player_hit_points       = player.hit_points
 	self.player_position = player.get_position()
-	player_position[0]   = player_position[0] / 400
-	player_position[1]   = player_position[1] / 225
-	self.player_mouse    = player.get_psuedo_mouse()
-	player_mouse[0]      = player_mouse[0] / 400
-	player_mouse[1]      = player_mouse[1] / 225
-	self.player_vector   = (player.get_trajectory()+Vector2(1,1))/Vector2(2,2)
-	player_psuedo_primary   = player.psuedo_primary
-	player_psuedo_secondary = player.psuedo_secondary
-	player_psuedo_ability   = player.psuedo_ability
-	player_in_peril         = player.in_peril
-	player_reward           = player.hit_points - player_hit_points
-	player_hit_points       = player.hit_points
+	self.player_position[0]   = player_position[0] / 400
+	self.player_position[1]   = player_position[1] / 225
+	self.player_aim_angle     = (player.aim_angle-PI)/(-2*PI) # divide in order to normalize
+	self.player_health        = player.hit_points
+	self.player_in_peril      = player.in_peril
 	
 #	self.player_position = player.get_position()
 #	player_position[0]   = randf()
@@ -146,22 +176,7 @@ func set_player_state(player):
 
 func set_predictions(predictions):
 	predicted_action = predictions[0]
-#	if predictions:
-#		predicted_bot_position      = Vector2(predictions[0] * screen_x, predictions[1] * screen_y)
-#		predicted_bot_mouse         = Vector2(predictions[2] * screen_x, predictions[3] * screen_y)
-#		predicted_bot_vector        = Vector2((predictions[4]*2)-1, (predictions[5]*2)-1)
-#		predicted_bot_psuedo_primary   = predictions[6]
-#		predicted_bot_psuedo_secondary = predictions[7]
-#		predicted_bot_psuedo_ability   = predictions[8]
-#		predicted_bot_in_peril         = predictions[9]
-#
-#		predicted_player_position      = Vector2(predictions[10] * screen_x, predictions[11] * screen_y)
-#		predicted_player_mouse         = Vector2(predictions[12] * screen_x, predictions[13] * screen_y)
-#		predicted_player_vector        = Vector2((predictions[14]*2)-1, (predictions[15]*2)-1)
-#		predicted_player_psuedo_primary   = predictions[16]
-#		predicted_player_psuedo_secondary = predictions[17]
-#		predicted_player_psuedo_ability   = predictions[18]
-#		predicted_player_in_peril         = predictions[19]
+
 	if predicted_action  == 0:
 		predicted_bot_vector = Vector2(0,0)
 	elif predicted_action == 1:
@@ -176,10 +191,6 @@ func set_predictions(predictions):
 		predicted_bot_psuedo_primary = 1
 	else:
 		predicted_bot_psuedo_primary = 0
-
-
-		
-		
 		
 func get_predictions():
 	var pred = []
@@ -199,14 +210,3 @@ func get_predictions():
 	pred.append((predicted_bot_psuedo_ability))
 	pred.append((predicted_bot_in_peril))
 	return pred
-
-func _ready():
-	# Called when the node is added to the scene for the first time.
-	# Initialization here
-	pass
-
-#func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass
-

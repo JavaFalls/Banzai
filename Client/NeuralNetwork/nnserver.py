@@ -12,10 +12,10 @@ from tensorflow.keras.optimizers import Adam
 import random
 import numpy as np
 from collections import deque
-import mss                                    # For taking screen shots
-from PIL import Image                         # For image stuff
+#import mss                                    # For taking screen shots
+#from PIL import Image                         # For image stuff
 
-state_size  = 20
+state_size  = 13
 action_size = 6
 batch_size  = 16
 
@@ -178,8 +178,8 @@ class DQN_agent:
         .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")
         for item in input_list:
            output_list.append(float(item))
-        self.reward = output_list[20]
-        output_list = output_list[0:20]
+        # self.reward = output_list[20]
+        # output_list = output_list[0:20]
         output_list = np.reshape(output_list, (1, self.state_size))
         return output_list
 
@@ -222,7 +222,7 @@ def load():
         #if we load and don't start fresh
        fighter1.load()
        fighter2.load()
-get_screenshot()
+#get_screenshot()
 fighter1 = DQN_agent(state_size, action_size)
 fighter2 = DQN_agent(state_size, action_size)
 

@@ -10,11 +10,12 @@ func _process(delta):
 		game_state.set_player_state(self)
 	else:
 		game_state.set_bot_state(self)
-	print("set_player_state")
+#	print("set_player_state")
 
 func _physics_process(delta):
 	psuedo_mouse     = get_global_mouse_position()
 	relative_mouse   = get_viewport().get_mouse_position() - get_position()
+	aim_angle        = atan2(relative_mouse.x, relative_mouse.y) # gives angle in radians
 	direction        = Vector2(0,0)
 	psuedo_ability   = 0
 	psuedo_secondary = 0
@@ -62,6 +63,6 @@ func _physics_process(delta):
 		else:
 			get_node("animation_bot").reset_animation()
 	
-
+	
 	move_and_slide(direction.normalized()*movement_speed, UP)
 	get_node("Label").set_text(str(get_hit_points()))
