@@ -128,7 +128,7 @@ class DQN_agent:
     def _build_model(self): # defines the NN
         model = Sequential() 
         model.add(Dense(140, input_dim = self.state_size, activation='linear', bias_initializer='zeros'))
-        model.add(Dense(120, activation='sigmoid'))
+        model.add(Dense(120, activation='linear'))
         model.add(Dense(self.action_size, activation='linear'))
 
         model.compile(loss='mean_squared_error', optimizer=Adam(lr = self.learning_rate))
@@ -154,7 +154,7 @@ class DQN_agent:
             print(action)
             print(reward)
             print(next_state)
-            target = (reward + self.gamma * np.amax(self.model.predict(next_state)[0]))
+            target = (reward) # + self.gamma * np.amax(self.model.predict(next_state)[0]))
             target_f = self.model.predict(state)
             target_f[0] [action] = target
 

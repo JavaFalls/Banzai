@@ -20,8 +20,7 @@ func _physics_process(delta):
 	psuedo_mouse     = opponent.get_position()
 	relative_mouse   = psuedo_mouse - self.get_position()
 #	aim_angle        = atan2(relative_mouse.x, relative_mouse.y) # gives angle in radians
-#	direction        = game_state.predicted_bot_vector
-	direction        = Vector2(0,0)
+	direction        = game_state.predicted_bot_vector
 	psuedo_ability       = 0
 	psuedo_secondary     = 0
 	psuedo_primary       = 0
