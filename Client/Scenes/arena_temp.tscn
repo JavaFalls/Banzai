@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/arena_base.tscn" type="PackedScene" id=1]
+
+[node name="arena_temp" type="Node2D"]
+
+rotation = 0.00251843
+
+[node name="arena" parent="." index="0" instance=ExtResource( 1 )]
+
+
