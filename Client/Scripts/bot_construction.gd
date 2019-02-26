@@ -92,6 +92,7 @@ func _on_new_button_pressed():
 				if not present:
 					bots.append(parse_json(head.DB.get_bot(int_id))["data"][0])
 					bot_ids.append(int_id)
+					break
 				id = ""
 			else:
 				id += c
@@ -127,25 +128,35 @@ func _on_test_button_pressed():
 	pass
 
 func _on_finish_button_pressed():
+### ASK TO CONFRIM SAVE HERE ###
+	
+	update_current_bot()
 #### FOR TESTING #
 	var model_id = 0
 	var ranking = 300
 	var player_id = 1
-	var bot_id = 1
 ##################
-	if not head.DB.update_bot(bot_id, [
-			player_id,
-			model_id,
-			ranking,
-			$item_scroll.current_item()["id"],
-			$item_scroll2.current_item()["id"],
-			$item_scroll3.current_item()["id"],
-			$color_scroll.current_color().to_rgba32(),
-			$color_scroll2.current_color().to_rgba32()
-		], $bot_name.text):
-		print("Update bot failed")
+	for i in range(bot_ids.size()):
+		if not head.DB.update_bot(bot_ids[i], [
+				player_id,
+				model_id,
+				ranking,
+				bots[i]["primary_weapon"],
+				bots[i]["secondary_weapon"],
+				bots[i]["utility"],
+				bots[i]["primary_color"],
+				bots[i]["secondary_color"]
+			], bots[i]["name"]):
+			print("Updating bot_id %d failed with args:" % bot_ids[i])
+			print("  player:           %d" % player_id)
+			print("  model:            %d" % model_id)
+			print("  ranking:          %d" % ranking)
+			print("  primary_weapon:   %d" % bots[i]["primary_weapon"])
+			print("  secondary_weapon: %d" % bots[i]["secondary_weapon"])
+			print("  utility:          %d" % bots[i]["utility"])
+			print("  primary_color:    %d" % bots[i]["primary_color"])
+			print("  secondary_color:  %d" % bots[i]["secondary_color"])
 	
-### ASK TO CONFRIM SAVE ###
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 # Update local bots
