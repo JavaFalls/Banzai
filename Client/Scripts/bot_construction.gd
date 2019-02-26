@@ -4,13 +4,13 @@ extends Node
 onready var head = get_tree().get_root().get_node("/root/head")
 
 var w = [
-	{"model_id": 0, "texture": preload("res://assets/menu/test_icons/skill_b_01.png")},
-	{"model_id": 1, "texture": preload("res://assets/menu/test_icons/skill_b_02.png")},
-	{"model_id": 2, "texture": preload("res://assets/menu/test_icons/skill_b_03.png")},
-	{"model_id": 3, "texture": preload("res://assets/menu/test_icons/skill_b_04.png")},
-	{"model_id": 4, "texture": preload("res://assets/menu/test_icons/skill_b_05.png")},
-	{"model_id": 5, "texture": preload("res://assets/menu/test_icons/skill_b_06.png")},
-	{"model_id": 6, "texture": preload("res://assets/menu/test_icons/skill_b_07.png")}
+	{"id": 0, "texture": preload("res://assets/menu/test_icons/skill_b_01.png")},
+	{"id": 1, "texture": preload("res://assets/menu/test_icons/skill_b_02.png")},
+	{"id": 2, "texture": preload("res://assets/menu/test_icons/skill_b_03.png")},
+	{"id": 3, "texture": preload("res://assets/menu/test_icons/skill_b_04.png")},
+	{"id": 4, "texture": preload("res://assets/menu/test_icons/skill_b_05.png")},
+	{"id": 5, "texture": preload("res://assets/menu/test_icons/skill_b_06.png")},
+	{"id": 6, "texture": preload("res://assets/menu/test_icons/skill_b_07.png")}
 ]
 
 # Every loaded bot is temporarily stored
@@ -124,14 +124,23 @@ func _on_test_button_pressed():
 	pass
 
 func _on_finish_button_pressed():
-#	head.DB.update_bot(head.player_ID, [
-#			model_id,
-#			$item_scroll.current_item()["model_id"],
-#			$item_scroll2.current_item()["model_id"],
-#			$item_scroll3.current_item()["model_id"],
-#			$color_scroll.current_color().to_rgba32(),
-#			$color_scroll.current_color().to_rgba32()
-#		])
+#### FOR TESTING #
+	var model_id = 0
+	var ranking = 300
+	var player_id = 1
+	var bot_id = 1
+##################
+	if not head.DB.update_bot(bot_id, [
+			player_id,
+			model_id,
+			ranking,
+			$item_scroll.current_item()["id"],
+			$item_scroll2.current_item()["id"],
+			$item_scroll3.current_item()["id"],
+			$color_scroll.current_color().to_rgba32(),
+			$color_scroll.current_color().to_rgba32()
+		], $bot_name.text):
+		print("Update bot failed")
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 # Display/organize data
