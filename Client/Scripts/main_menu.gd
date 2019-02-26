@@ -32,8 +32,8 @@ Various nodes' signal methods
 
 func scene_change(button):
 	match (button):
-		"leader":
-			get_tree().change_scene("res://Scenes/leaderboard.tscn")
+		"ranking":
+			get_tree().change_scene("res://Scenes/Screens/screen_local_scoreboard.tscn")
 		"custom":
 			get_tree().change_scene("res://Scenes/Screens/bot_construction.tscn")
 		"stats":

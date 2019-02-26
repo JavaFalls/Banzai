@@ -14,6 +14,8 @@ const NP_PLAYER_HIGHLIGHT_NAME = "player_bot_highlight/player_name"
 const NP_PLAYER_HIGHLIGHT_POSITION = "player_bot_highlight/position"
 const NP_PLAYER_HIGHLIGHT_SCORE = "player_bot_highlight/score"
 
+const NP_PLAYER_BOT_GRAPHICS = "graphics/animation_bot"
+
 const PLAYER_BOT_DEFAULT_DISPLAY_SPOT = 5 # The scoreboard_entry that the player's bot will be displayed on when the screen first loads
 const MIN_DISPLAY_POSITION = 0 # The scoreboard won't scroll past this point
 const DB_GRAB_POSITIONS = 50 # How many positions to load around the current display position
@@ -43,12 +45,13 @@ func _ready():
 	refresh_timer.connect("timeout", self, "request")
 	get_node(NP_SCOREBOARD_UP).connect("on_click", self, "scoreboard_entry_up_on_click")
 	get_node(NP_SCOREBOARD_DOWN).connect("on_click", self, "scoreboard_entry_down_on_click")
-	
+
 	# Initialize scoreboard
 	display_position = head.DB.get_scoreboard_position(head.bot_ID) - PLAYER_BOT_DEFAULT_DISPLAY_SPOT
 	if (display_position < MIN_DISPLAY_POSITION):
 		display_position = MIN_DISPLAY_POSITION
 	get_scoreboard_dictionary()
+	get_node(NP_PLAYER_BOT_GRAPHICS).load_colors_from_DB(head.bot_ID)
 	update_player_bot_highlight()
 	update_scoreboard_ui()
 
@@ -93,7 +96,7 @@ func update_scoreboard_ui():
 	# Check if we need to reload data from the DB
 	if (display_position < scoreboard_dictionary[0]["position"] || display_position + 11 > scoreboard_dictionary[scoreboard_dictionary_size - 1]["position"]):
 		get_scoreboard_dictionary()
-	
+
 	var i = display_position - scoreboard_dictionary_index_offset
 	for scoreboard_entry in scoreboard.get_children():
 		if (i >= 0 && i < scoreboard_dictionary_size):
@@ -106,7 +109,7 @@ func update_scoreboard_ui():
 			scoreboard_entry.set_position(i + scoreboard_dictionary_index_offset)
 			scoreboard_entry.set_name("")
 			scoreboard_entry.set_score("-")
-		
+
 		match scoreboard_entry.get_position() % 3:
 			1:
 				scoreboard_entry.set_tag_color(scoreboard_entry.TAG_BLUE)
@@ -114,14 +117,14 @@ func update_scoreboard_ui():
 				scoreboard_entry.set_tag_color(scoreboard_entry.TAG_RED)
 			0:
 				scoreboard_entry.set_tag_color(scoreboard_entry.TAG_GREEN)
-		
+
 		i += 1
 
 # Updates the player's bot information with the latest data from the database
 func update_player_bot_highlight():
 	get_node(NP_PLAYER_HIGHLIGHT_POSITION).text = "Rank: " + String(head.DB.get_scoreboard_position(head.bot_ID))
-	
-	var score_raw_JSON = head.DB.get_bot(head.bot_ID, false)
+
+	var score_raw_JSON = head.DB.get_bot(head.bot_ID)
 	if (score_raw_JSON != ""):
 		get_node(NP_PLAYER_HIGHLIGHT_SCORE).text = "Score: " + String(JSON.parse(score_raw_JSON).result["data"][0]["ranking"])
 	pass
@@ -129,7 +132,6 @@ func update_player_bot_highlight():
 # Updates the scoreboard display by moving the displayed positions by the specified amount
 func move_scoreboard_display(amount):
 	display_position += amount
-	print(display_position)
 	if (display_position < MIN_DISPLAY_POSITION):
 		display_position = MIN_DISPLAY_POSITION
 	elif(scoreboard_dictionary_size < MAX_SCOREBOARD_DICTIONARY_SIZE && display_position - scoreboard_dictionary_index_offset >= scoreboard_dictionary_size):

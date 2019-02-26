@@ -5,7 +5,8 @@ import sys
 
 
 # Collect command line arguments and place them into an iterable list
-request_string = sys.argv
+sys.argv.pop(0)
+request_string = sys.argv[0]
 def get_request_handle():
     successful = False
     while not successful:
@@ -96,7 +97,7 @@ response = win32file.ReadFile(response_handle, 64*1024)
 response_list = []
 
 x = str(response[1])
-x = x.replace("(","").replace(")","").replace("[","").replace("]","").replace("b","").replace("'","")
+x = x.replace("(","", 1).replace(")","").replace("[","").replace("]","").replace("b","", 1).replace("'","")
 print(x)
 
 

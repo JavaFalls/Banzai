@@ -6,7 +6,7 @@ extends KinematicBody2D
 const UP             = Vector2(0,0) # Indicates top-down view
 
 var movement_speed   = 100           # Movement speed of the entity
-var hit_points       = 100            # The hit point counter for the fighter
+var hit_points       = 1000000000            # The hit point counter for the fighter
 var direction        = Vector2()     # Direction the entity is moving
 var primary_weapon   = Vector2()     # Weapon that goes in the first weapon slot
 var secondary_weapon = Vector2()     # Weapon that goes in the second weapon slot
@@ -18,6 +18,7 @@ var psuedo_primary   = 0             # Is the primary weapon key pressed?
 var psuedo_secondary = 0             # Is the secondary weapon key pressed?
 var psuedo_ability   = 0             # Is the ability weapon key pressed?
 var in_peril         = 0             # Is the mech about to be hit by a projectile?
+var aim_angle        = 0
 
 signal game_end # The signal indicate the the arena match is over
 
