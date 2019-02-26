@@ -14,7 +14,8 @@ var w = [
 ]
 
 # Every loaded bot is temporarily stored
-var bots = []
+var bots = [] # Both the id and its bot will have the same index
+var bot_ids = []
 var current = 0
 
 var name_confirmed = false
@@ -23,21 +24,18 @@ signal name_entered
 # Godot methods
 #------------------------------------------------
 func _ready():
-#	--------------------------------------------------------------------------------------------------
 #### FOR TESTING #
-	head.player_ID = 1
+	var player_id = 1
 ##################
-	var player_bots
-	player_bots = parse_json(head.DB.get_player_bots(head.player_ID))
-	# parse all ids if returning string
+	var player_bots = parse_json(head.DB.get_player_bots(player_id))
 	var id = ""
 	for c in player_bots["data"][0]["player_bots"]:
 		if c == ",":
 			bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
+			bot_ids.append(id.to_int())
 			id = ""
 		else:
 			id += c
-#	--------------------------------------------------------------------------------------------------
 	
 	var is1 = get_node("item_scroll")
 	var is2 = get_node("item_scroll2")
@@ -76,9 +74,27 @@ func _on_new_button_pressed():
 ### Unsure of the model id ###
 	var model_id = 0
 	var player_id = 1
-	head.DB.new_bot(player_id, [0,0,0,0,0,0], $new_bot/back_panel/name_edit.text)
-#### Get the newest bot
-	#bots.append(parse_json(head.DB.get_bot(bot_ID)))
+	if not head.DB.new_bot(player_id, [0,0,0,0,0,0], $new_bot/back_panel/name_edit.text):
+		print("Creating a new bot failed")
+	
+	# Get the newest bot
+	var player_bots = parse_json(head.DB.get_player_bots(player_id))
+	var id = ""
+	for c in player_bots["data"][0]["player_bots"]:
+		if c == ",":
+			var int_id = id.to_int()
+			var present = false
+			for bot_id in bot_ids:
+				if int_id == bot_id:
+					present = true
+					break
+			if not present:
+				bots.append(parse_json(head.DB.get_bot(int_id))["data"][0])
+				bot_ids.append(int_id)
+			id = ""
+		else:
+			id += c
+	
 	current = bots.size()-1
 	get_bot_info(bots[current])
 
