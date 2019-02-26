@@ -55,13 +55,11 @@ func _ready():
 # Signal methods
 #------------------------------------------------
 func _on_bot_left_pressed():
-	if current-1 < 0:
-		current = bots.size()-1
+	current = bots.size()-1 if current-1 < 0 else current-1
 	get_bot_info(bots[current])
 	
 func _on_bot_right_pressed():
-	if current+1 >= bots.size():
-		current = 0
+	current = 0 if current+1 >= bots.size() else current+1
 	get_bot_info(bots[current])
 
 # Entering a name
@@ -71,32 +69,32 @@ func _on_new_button_pressed():
 	yield(self, "name_entered")
 	$new_bot.visible = false
 	
-### Unsure of the model id ###
-	var model_id = 0
+#### FOR TESTING #
 	var player_id = 1
+##################
 	if not head.DB.new_bot(player_id, [0,0,0,0,0,0], $new_bot/back_panel/name_edit.text):
 		print("Creating a new bot failed")
-	
-	# Get the newest bot
-	var player_bots = parse_json(head.DB.get_player_bots(player_id))
-	var id = ""
-	for c in player_bots["data"][0]["player_bots"]:
-		if c == ",":
-			var int_id = id.to_int()
-			var present = false
-			for bot_id in bot_ids:
-				if int_id == bot_id:
-					present = true
-					break
-			if not present:
-				bots.append(parse_json(head.DB.get_bot(int_id))["data"][0])
-				bot_ids.append(int_id)
-			id = ""
-		else:
-			id += c
-	
-	current = bots.size()-1
-	get_bot_info(bots[current])
+	else:
+		# Get the newest bot
+		var player_bots = parse_json(head.DB.get_player_bots(player_id))
+		var id = ""
+		for c in player_bots["data"][0]["player_bots"]:
+			if c == ",":
+				var int_id = id.to_int()
+				var present = false
+				for bot_id in bot_ids:
+					if int_id == bot_id:
+						present = true
+						break
+				if not present:
+					bots.append(parse_json(head.DB.get_bot(int_id))["data"][0])
+					bot_ids.append(int_id)
+				id = ""
+			else:
+				id += c
+		
+		current = bots.size()-1
+		get_bot_info(bots[current])
 
 func _on_enter_name_pressed():
 	if not name_confirmed:
