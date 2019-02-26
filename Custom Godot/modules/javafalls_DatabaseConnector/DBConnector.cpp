@@ -547,7 +547,7 @@ String DBConnector::get_scoreboard_top_ten() {
 // Returns the position on the scoreboard of a specified bot
 int DBConnector::get_scoreboard_position(int bot_id) {
    const int PARAM_BOT_ID = 1;
-   
+
    int return_value;
    std::string sql_query = "SELECT bot_info.position"
             + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
@@ -568,7 +568,7 @@ int DBConnector::get_scoreboard_position(int bot_id) {
 String DBConnector::get_scoreboard_range(int min_position, int max_position) {
    const int PARAM_MIN_POSITION = 1;
    const int PARAM_MAX_POSITION = 2;
-   
+
    String return_value;
    std::string sql_query = "SELECT bot_info.position, player.name, bot_info.ranking, bot_info.bot_ID_PK"
             + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
@@ -586,6 +586,24 @@ String DBConnector::get_scoreboard_range(int min_position, int max_position) {
    execute(sql_statement);
    return_value = get_results(sql_statement);
    destroy_command(sql_statement);
+   return return_value;
+}
+
+// Get all the bots that a player has
+int[] DBConnector::get_player_bots(int player_ID) {
+   const int PARAM_PLAYER_ID = 1;
+
+   String return_value;
+   std::string sql_query = "SELECT (STUFF((SELECT ',' + CONVERT(varchar, bot.bot_ID_PK)"
+            + (std::string)"                 FROM javafalls.bot"
+            + (std::string)"                WHERE bot.player_ID_FK = ?"
+            + (std::string)"                ORDER BY bot.player_ID_FK"
+            + (std::string)"                  FOR XML PATH('')), 1, LEN(','), '')) + ',' AS player_bots";
+   SQLHSTMT sql_statment = create_command(sql_query);
+   bind_parameter(sql_statment, PARAM_PLAYER_ID, &player_ID);
+   execute(sql_statement);
+   return_value = get_results(sql_statement);
+   destroy_command(sql_statment);
    return return_value;
 }
 
@@ -988,6 +1006,7 @@ void DBConnector::_bind_methods() {
    ClassDB::bind_method(D_METHOD("get_scoreboard_position", "bot_id"), &DBConnector::get_scoreboard_position);
    ClassDB::bind_method(D_METHOD("get_scoreboard_range", "min_position", "max_position"), &DBConnector::get_scoreboard_range);
 
+   ClassDB::bind_method(D_METHOD("get_bot_amount", "player_ID"), &DBConnector::get_bot_amount);
    ClassDB::bind_method(D_METHOD("get_name_parts", "section"), &DBConnector::get_name_parts);
 
    ClassDB::bind_method(D_METHOD("open_connection"), &DBConnector::open_connection);
