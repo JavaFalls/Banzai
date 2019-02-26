@@ -103,15 +103,17 @@ func set_data_points(margin, data_width):
 
 func set_items(new_items):
 	items = new_items
-	sprites[0].texture = prev_item(2)["texture"]
-	sprites[1].texture = prev_item()["texture"]
-	sprites[2].texture = current_item()["texture"]
-	sprites[3].texture = next_item()["texture"]
-	sprites[4].texture = next_item(2)["texture"]
+	reset_items_by_current()
 
-func set_current(index):
+func set_current(index=null, id=null):
 	if typeof(index) != TYPE_NIL:
 		current = index
+	if typeof(id) != TYPE_NIL:
+		for index in range(items.size()):
+			if id == items[index]["id"]:
+				current = index
+				reset_items_by_current()
+				break
 
 func set_scroll_time(time):
 	if time <= 0.0:
@@ -192,3 +194,12 @@ func update_items(pop_first):
 	emit_signal("shift_completed")
 	if get_node("info_button").is_blocking_signals():
 		emit_signal("info_queried")
+
+# Reset items by current
+#-----------------------
+func reset_items_by_current():
+	sprites[0].texture = prev_item(2)["texture"]
+	sprites[1].texture = prev_item()["texture"]
+	sprites[2].texture = current_item()["texture"]
+	sprites[3].texture = next_item()["texture"]
+	sprites[4].texture = next_item(2)["texture"]

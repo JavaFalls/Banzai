@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/white block.png-99146134222fbbadd75db359028861a3.stex"
+path="res://.import/white block.png-58e35d03540ab25e3b300559036e3b64.stex"
 
 [deps]
 
-source_file="res://Assets/white block.png"
-dest_files=[ "res://.import/white block.png-99146134222fbbadd75db359028861a3.stex" ]
+source_file="res://assets/white block.png"
+dest_files=[ "res://.import/white block.png-58e35d03540ab25e3b300559036e3b64.stex" ]
 
 [params]
 

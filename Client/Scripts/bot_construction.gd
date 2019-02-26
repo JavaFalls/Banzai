@@ -3,6 +3,7 @@ extends Node
 # Get head singleton
 onready var head = get_tree().get_root().get_node("/root/head")
 
+### TEST ITEMS ###
 var w = [
 	{"id": 0, "texture": preload("res://assets/menu/test_icons/skill_b_01.png")},
 	{"id": 1, "texture": preload("res://assets/menu/test_icons/skill_b_02.png")},
@@ -168,9 +169,9 @@ func reset_info():
 
 func get_bot_info(bot_data):
 	$bot_name.text = bot_data["name"]
-	$item_scroll.set_current(bot_data["primary_weapon"])
-	$item_scroll2.set_current(bot_data["secondary_weapon"])
-	$item_scroll3.set_current(bot_data["utility"])
+	$item_scroll.set_current(null, bot_data["primary_weapon"])
+	$item_scroll2.set_current(null, bot_data["secondary_weapon"])
+	$item_scroll3.set_current(null, bot_data["utility"])
 	$color_scroll.set_current(null, bot_data["primary_color"])
 	$color_scroll2.set_current(null, bot_data["secondary_color"])
 #	$color_scroll3
