@@ -19,7 +19,7 @@ func set_target(new_target):
 
 
 func _ready():
-	set_target(projectile_owner.get_position() + Vector2(cos(projectile_owner.aim_angle), cos(projectile_owner.aim_angle)))
+	set_target(projectile_owner.get_position() + Vector2(sin(projectile_owner.aim_angle), cos(projectile_owner.aim_angle)))
 	print(projectile_owner.get_name())
 	print(projectile_owner.aim_angle)
 	self.global_position = atk_range_node.global_position
