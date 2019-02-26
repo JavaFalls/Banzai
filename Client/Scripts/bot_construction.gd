@@ -5,13 +5,13 @@ onready var head = get_tree().get_root().get_node("/root/head")
 
 ### TEST ITEMS ###
 var w = [
-	{"id": 0, "texture": preload("res://assets/menu/test_icons/skill_b_01.png")},
-	{"id": 1, "texture": preload("res://assets/menu/test_icons/skill_b_02.png")},
-	{"id": 2, "texture": preload("res://assets/menu/test_icons/skill_b_03.png")},
-	{"id": 3, "texture": preload("res://assets/menu/test_icons/skill_b_04.png")},
-	{"id": 4, "texture": preload("res://assets/menu/test_icons/skill_b_05.png")},
-	{"id": 5, "texture": preload("res://assets/menu/test_icons/skill_b_06.png")},
-	{"id": 6, "texture": preload("res://assets/menu/test_icons/skill_b_07.png")}
+	{"id": 0, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_01.png")},
+	{"id": 1, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_02.png")},
+	{"id": 2, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_03.png")},
+	{"id": 3, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_04.png")},
+	{"id": 4, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_05.png")},
+	{"id": 5, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_06.png")},
+	{"id": 6, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_07.png")}
 ]
 
 # Every loaded bot is temporarily stored
@@ -56,10 +56,12 @@ func _ready():
 # Signal methods
 #------------------------------------------------
 func _on_bot_left_pressed():
+	update_current_bot()
 	current = bots.size()-1 if current-1 < 0 else current-1
 	get_bot_info(bots[current])
 	
 func _on_bot_right_pressed():
+	update_current_bot()
 	current = 0 if current+1 >= bots.size() else current+1
 	get_bot_info(bots[current])
 
@@ -139,10 +141,21 @@ func _on_finish_button_pressed():
 			$item_scroll2.current_item()["id"],
 			$item_scroll3.current_item()["id"],
 			$color_scroll.current_color().to_rgba32(),
-			$color_scroll.current_color().to_rgba32()
+			$color_scroll2.current_color().to_rgba32()
 		], $bot_name.text):
 		print("Update bot failed")
+	
+### ASK TO CONFRIM SAVE ###
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
+
+# Update local bots
+#------------------------------------------------
+func update_current_bot():
+	bots[current]["primary_weapon"] = $item_scroll.current_item()["id"]
+	bots[current]["secondary_weapon"] = $item_scroll2.current_item()["id"]
+	bots[current]["utility"] = $item_scroll3.current_item()["id"]
+	bots[current]["primary_color"] = $color_scroll.current_color().to_rgba32()
+	bots[current]["secondary_color"] = $color_scroll2.current_color().to_rgba32()
 
 # Display/organize data
 #------------------------------------------------
@@ -152,8 +165,8 @@ func grab_info(info_type):
 			get_node("item_scroll2").emit_signal("info_reserved")
 			get_node("item_scroll3").emit_signal("info_reserved")
 ######## display info
-			get_node("item_name").text = "Powerful Weapon"
-			get_node("item_description").scroll("This is the description.")
+			get_node("item_name").text = $item_scroll.current_item()["name"]
+			get_node("item_description").scroll($item_scroll.current_item()["description"])
 		head.SECONDARY:
 			get_node("item_scroll").emit_signal("info_reserved")
 			get_node("item_scroll3").emit_signal("info_reserved")
