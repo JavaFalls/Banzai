@@ -35,7 +35,7 @@ func scene_change(button):
 		"ranking":
 			get_tree().change_scene("res://Scenes/Screens/screen_local_scoreboard.tscn")
 		"custom":
-			get_tree().change_scene("res://Scenes/build.tscn")
+			get_tree().change_scene("res://Scenes/Screens/bot_construction.tscn")
 		"stats":
 			get_tree().change_scene("res://Scenes/stats.tscn")
 		"train":
