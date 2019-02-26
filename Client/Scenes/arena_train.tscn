@@ -1,23 +1,176 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/arena_train.gd" type="Script" id=1]
-[ext_resource path="res://assets/ground.png" type="Texture" id=2]
+[ext_resource path="res://assets/arenas/Neural Knights - Arena Design.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/game_state.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 21, 160 )
+_sections_unfolded = [ "Resource" ]
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 17, 160 )
+_sections_unfolded = [ "Resource" ]
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 232, 44 )
+
+[sub_resource type="RectangleShape2D" id=4]
+
+custom_solver_bias = 0.0
+extents = Vector2( 15, 15 )
 
 [node name="world" type="Node2D"]
 
 script = ExtResource( 1 )
+_sections_unfolded = [ "Pause" ]
 
 [node name="background" type="Node2D" parent="." index="0"]
 
 [node name="ground" type="Sprite" parent="background" index="0"]
 
-modulate = Color( 0, 0.49231, 0.851563, 1 )
-position = Vector2( 609.413, 324.274 )
-scale = Vector2( 20.3438, 20.3438 )
 texture = ExtResource( 2 )
+centered = false
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
 [node name="game_state" parent="." index="1" instance=ExtResource( 3 )]
+
+[node name="left wall" type="RigidBody2D" parent="." index="2"]
+
+position = Vector2( 0, 160 )
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+mode = 1
+mass = 1.0
+friction = 1.0
+bounce = 0.0
+gravity_scale = 1.0
+custom_integrator = false
+continuous_cd = 0
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = true
+linear_velocity = Vector2( 0, 0 )
+linear_damp = -1.0
+angular_velocity = 0.0
+angular_damp = -1.0
+_sections_unfolded = [ "Collision" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="left wall" index="0"]
+
+shape = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="right wall" type="RigidBody2D" parent="." index="3"]
+
+position = Vector2( 400, 168 )
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+mode = 1
+mass = 1.0
+friction = 1.0
+bounce = 0.0
+gravity_scale = 1.0
+custom_integrator = false
+continuous_cd = 0
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = true
+linear_velocity = Vector2( 0, 0 )
+linear_damp = -1.0
+angular_velocity = 0.0
+angular_damp = -1.0
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="right wall" index="0"]
+
+position = Vector2( 0, -8 )
+shape = SubResource( 2 )
+
+[node name="bottom wall" type="RigidBody2D" parent="." index="4"]
+
+position = Vector2( 288, 224 )
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+mode = 1
+mass = 1.0
+friction = 1.0
+bounce = 0.0
+gravity_scale = 1.0
+custom_integrator = false
+continuous_cd = 0
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = true
+linear_velocity = Vector2( 0, 0 )
+linear_damp = -1.0
+angular_velocity = 0.0
+angular_damp = -1.0
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bottom wall" index="0"]
+
+position = Vector2( -48, 45 )
+shape = SubResource( 3 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="bottom wall" index="1"]
+
+position = Vector2( -228, -176 )
+shape = SubResource( 4 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="bottom wall" index="2"]
+
+position = Vector2( -86, -176 )
+shape = SubResource( 4 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="bottom wall" index="3"]
+
+position = Vector2( 57, -176 )
+shape = SubResource( 4 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="top wall" type="RigidBody2D" parent="." index="5"]
+
+position = Vector2( 288, 0 )
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+mode = 1
+mass = 1.0
+friction = 1.0
+bounce = 0.0
+gravity_scale = 1.0
+custom_integrator = false
+continuous_cd = 0
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = true
+linear_velocity = Vector2( 0, 0 )
+linear_damp = -1.0
+angular_velocity = 0.0
+angular_damp = -1.0
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="top wall" index="0"]
+
+position = Vector2( -48, 0 )
+shape = SubResource( 3 )
+_sections_unfolded = [ "Transform" ]
 
 

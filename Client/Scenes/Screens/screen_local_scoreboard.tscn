@@ -4,14 +4,14 @@
 [ext_resource path="res://assets/local_scoreboard/background.png" type="Texture" id=2]
 [ext_resource path="res://assets/local_scoreboard/light.png" type="Texture" id=3]
 [ext_resource path="res://assets/local_scoreboard/platform.png" type="Texture" id=4]
-[ext_resource path="res://assets/bots/front.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Screens/instance_scenes/scoreboard_entry.tscn" type="PackedScene" id=6]
 [ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=7]
 [ext_resource path="res://assets/local_scoreboard/button_small.png" type="Texture" id=8]
 [ext_resource path="res://assets/local_scoreboard/button_small_hover.png" type="Texture" id=9]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=10]
 
-[node name="screen_local_scoreboard" type="Node" index="0"]
+[node name="screen_local_scoreboard" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -23,6 +23,8 @@ one_shot = false
 autostart = false
 
 [node name="graphics" type="Node2D" parent="." index="1"]
+
+_sections_unfolded = [ "Visibility" ]
 
 [node name="background" type="Sprite" parent="graphics" index="0"]
 
@@ -43,12 +45,11 @@ texture = ExtResource( 4 )
 centered = false
 _sections_unfolded = [ "Offset", "Transform" ]
 
-[node name="robot" type="Sprite" parent="graphics" index="3"]
+[node name="animation_bot" parent="graphics" index="3" instance=ExtResource( 5 )]
 
-position = Vector2( 327, 131 )
-texture = ExtResource( 5 )
-centered = false
-_sections_unfolded = [ "Transform" ]
+position = Vector2( 340, 132 )
+scale = Vector2( 2, 2 )
+_sections_unfolded = [ "Transform", "Visibility", "Z Index" ]
 
 [node name="Light2D" type="Light2D" parent="graphics" index="4"]
 
@@ -94,7 +95,7 @@ custom_constants/margin_right = 0
 custom_constants/margin_top = 0
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
-_sections_unfolded = [ "Rect", "Size Flags", "Theme" ]
+_sections_unfolded = [ "Rect", "Size Flags", "Theme", "Visibility" ]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ui_layout" index="0"]
 
@@ -253,7 +254,6 @@ TAG_TYPE = 2
 
 [node name="player_bot_highlight" type="VBoxContainer" parent="." index="3"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0

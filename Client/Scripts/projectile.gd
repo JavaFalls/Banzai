@@ -2,7 +2,7 @@
 # its owner's mouse position
 extends Area2D
 
-export var speed    = 10
+export var speed    = 100
 var        damage   = 2
 var        movement = Vector2()
 var        target   = Vector2()
@@ -14,13 +14,14 @@ func set_target(new_target):
 	self.target = new_target
 	pass
 
+#x = r cos(theta)
+#y = r sin(theta)
+
+
 func _ready():
-	set_target(projectile_owner.psuedo_mouse)
-#	set_fixed_process(true)
-	#if projectile_owner.is_player() == true: 
-	#	target = get_global_mouse_position()
-	#else:
-	#	target = projectile_owner.get_opponent().get_position()
+	set_target(projectile_owner.get_position() + Vector2(sin(projectile_owner.aim_angle), cos(projectile_owner.aim_angle)))
+	print(projectile_owner.get_name())
+	print(projectile_owner.aim_angle)
 	self.global_position = atk_range_node.global_position
 	self.look_at(target)
 	movement = (target - atk_range_node.global_position).normalized()
@@ -39,8 +40,10 @@ func _physics_process(delta):
 		t.queue_free()
 
 func _on_projectile_area_entered(area):
-	if not area.get_name() == "proj_path":
-		queue_free()
+#	if not area.get_name() == "proj_path":
+#		queue_free()
+	# Freeing is handled by _on_projectile_body_entered(body)
+	pass
 
 func _on_projectile_body_entered(body):
 	if (body.get_name() != projectile_owner.get_name()):

@@ -63,6 +63,7 @@ _sections_unfolded = [ "Collision" ]
 
 position = Vector2( 0, -8 )
 shape = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="left wall" index="1"]
 
@@ -165,7 +166,7 @@ angular_damp = -1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="top wall" index="0"]
 
-position = Vector2( -48, -8 )
+position = Vector2( -49.434, -15.1697 )
 shape = SubResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
