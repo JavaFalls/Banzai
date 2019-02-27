@@ -1,15 +1,14 @@
 #include "NNClient.h"
 #include <Windows.h>
-#include <stdbool.h>
 #include <iostream>
 
 using namespace std;
 //***********************************************************************************************
 //               Try to connect to the client request pipe. Wait if it is in use                *
 //***********************************************************************************************
-bool NNClient::connect_request() {
+int NNClient::connect_request() {
    DWORD dwMode = PIPE_READMODE_MESSAGE;
-   while (true)
+   while (1)
    {
       // Connect to the pipe
       request_handle = CreateFile(
@@ -24,13 +23,13 @@ bool NNClient::connect_request() {
          if (GetLastError() != ERROR_PIPE_BUSY)
          {
             wprintf((LPCWSTR)"\nConnect_request(): %lu", GetLastError());
-            return false;
+            return 0;
          }
 
          if(!WaitNamedPipe(TEXT("\\\\.\\pipe\\RequestFromClient"), 3000000))
          {
             cout <<"\nCould not open Pipe: 5 Second wait timed out\n";
-            return false;
+            return 0;
          }
          cout << "\nNo pipe created --------- SERIOUSLY";
       }
@@ -44,16 +43,16 @@ bool NNClient::connect_request() {
    {
       cout <<"\nSet Named Pipe Handle State Failed";
    }
-   return true;
+   return 1;
 }
 
 //***********************************************************************************************
 //               Try to connect to the client response pipe. Wait if it is in use               *
 //**********************************************************************************************
-bool NNClient::connect_response()
+int NNClient::connect_response()
 {
    DWORD dwMode = PIPE_READMODE_MESSAGE;
-   while (true)
+   while (1)
    {
       // Connect to the pipe
       response_handle = CreateFile(
@@ -67,13 +66,13 @@ bool NNClient::connect_response()
          if (GetLastError() != ERROR_PIPE_BUSY)
          {
             wprintf((LPCWSTR)"\nConnect_response(): %lu", GetLastError());
-            return false;
+            return 0;
          }
 
          if(!WaitNamedPipe(TEXT("\\\\.\\pipe\\ResponseToClient"), 3000000))
          {
             cout <<"\nCould not open Pipe: 5 Second wait timed out\n";
-            return false;
+            return 0;
          }
       }
       else
@@ -85,13 +84,13 @@ bool NNClient::connect_response()
    {
       cout <<"\nSet Named Pipe Handle State Failed";
    }
-   return true;
+   return 1;
 }
 
 //***********************************************************************************************
 //                                 Send a request to the server                                 *
 //***********************************************************************************************
-bool NNClient::send_request(char* message_request)
+int NNClient::send_request(char* message_request)
 {
    DWORD message_length = (strlen(message_request) + 1) * sizeof(char),
 	      bytes_written;
@@ -116,7 +115,7 @@ char* NNClient::get_response()
 //***********************************************************************************************
 //                                  Close Request pipe handle                                   *
 //***********************************************************************************************
-bool NNClient::close_request_handle()
+int NNClient::close_request_handle()
 {
    return CloseHandle(request_handle);
 }
@@ -124,7 +123,7 @@ bool NNClient::close_request_handle()
 //***********************************************************************************************
 //                                  Close Response pipe handle                                  *
 //***********************************************************************************************
-bool NNClient::close_response_handle()
+int NNClient::close_response_handle()
 {
    return CloseHandle(response_handle);
 }
@@ -161,7 +160,7 @@ NNClient::~NNClient()
 //***********************************************************************************************
 // BIND METHODS & PARAMETERS                                                                    *
 //***********************************************************************************************
-static void NNClient._bind_methods()
+void NNClient::_bind_methods()
 {
    ClassDB::bind_method(D_METHOD("connect_request"), &NNClient.connect_request);
    ClassDB::bind_method(D_METHOD("connect_response"), &NNClient.connect_response);
