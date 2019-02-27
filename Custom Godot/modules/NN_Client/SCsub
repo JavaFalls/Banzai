@@ -1,0 +1,9 @@
+# This is essentially a python file
+# Informs SCONS how to build the DBConnector module into Godot
+Import('env')
+
+# Source Code
+env.add_source_files(env.modules_sources,"*.cpp")
+
+# Linked Libraries
+# env.Append(LINKFLAGS=['odbc32.lib'])
