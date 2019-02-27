@@ -1,0 +1,278 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Scenes/UI Nodes/color_scroll.gd" type="Script" id=1]
+[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_left.png" type="Texture" id=2]
+[ext_resource path="res://assets/menu/bot_construction/arrow_grey_left.png" type="Texture" id=3]
+[ext_resource path="res://themes/color_scroll.shader" type="Shader" id=4]
+[ext_resource path="res://assets/white block.png" type="Texture" id=5]
+[ext_resource path="res://assets/menu/bot_construction/arrow_grey_right.png" type="Texture" id=6]
+[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=7]
+
+[sub_resource type="ShaderMaterial" id=1]
+
+render_priority = 0
+shader = ExtResource( 4 )
+shader_param/offset = null
+_sections_unfolded = [ "Resource", "shader_param" ]
+
+[node name="color_scroll" type="MarginContainer"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 128.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+colors = PoolColorArray( 0, 0, 0, 1 )
+indicator_offset = 0.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 128.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/separation = 2
+alignment = 1
+_sections_unfolded = [ "custom_constants" ]
+
+[node name="double_left" type="TextureButton" parent="HBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 2.0
+margin_right = 12.0
+margin_bottom = 18.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 2 )
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="left" type="TextureButton" parent="HBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 14.0
+margin_top = 2.0
+margin_right = 22.0
+margin_bottom = 18.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 3 )
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="colors" type="HBoxContainer" parent="HBoxContainer" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 24.0
+margin_right = 104.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 0
+alignment = 1
+_sections_unfolded = [ "custom_constants" ]
+
+[node name="color0" type="ColorRect" parent="HBoxContainer/colors" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 16.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0.603922, 1, 1 )
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="color1" type="ColorRect" parent="HBoxContainer/colors" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 16.0
+margin_right = 32.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0.603922, 1, 1 )
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="color2" type="ColorRect" parent="HBoxContainer/colors" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 32.0
+margin_right = 48.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0.603922, 1, 1 )
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="selected_sprite" type="Sprite" parent="HBoxContainer/colors/color2" index="0"]
+
+show_behind_parent = true
+material = SubResource( 1 )
+position = Vector2( 8, 10 )
+scale = Vector2( 1.125, 1.375 )
+texture = ExtResource( 5 )
+_sections_unfolded = [ "Material", "Visibility" ]
+
+[node name="color3" type="ColorRect" parent="HBoxContainer/colors" index="3"]
+
+show_behind_parent = true
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 48.0
+margin_right = 64.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0.603922, 1, 1 )
+_sections_unfolded = [ "Rect", "Size Flags", "Visibility" ]
+
+[node name="color4" type="ColorRect" parent="HBoxContainer/colors" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 64.0
+margin_right = 80.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0.603922, 1, 1 )
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="right" type="TextureButton" parent="HBoxContainer" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 106.0
+margin_top = 2.0
+margin_right = 114.0
+margin_bottom = 18.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 6 )
+
+[node name="double_right" type="TextureButton" parent="HBoxContainer" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 116.0
+margin_top = 2.0
+margin_right = 128.0
+margin_bottom = 18.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 7 )
+_sections_unfolded = [ "Size Flags" ]
+
+[connection signal="pressed" from="HBoxContainer/double_left" to="." method="_on_double_left_pressed"]
+
+[connection signal="pressed" from="HBoxContainer/left" to="." method="_on_left_pressed"]
+
+[connection signal="pressed" from="HBoxContainer/right" to="." method="_on_right_pressed"]
+
+[connection signal="pressed" from="HBoxContainer/double_right" to="." method="_on_double_right_pressed"]
+
+

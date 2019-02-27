@@ -25,7 +25,7 @@ const DEFAULT_LIGHT_COLOR = Color(1, 1, 1)
 # Weapons keys
 enum {PRIMARY, SECONDARY, ABILITY}
 # Bot builds keys
-enum {PLAYER BOT}
+enum {PLAYER, BOT}
 
 # Loading screen
 var loader = preload("res://Scenes/loading.tscn")
@@ -61,85 +61,54 @@ var bot = {
 }
 
 # Weapons/abilities
-onready var weapons = {
-	"robot_face": {
+enum WPN {ROBOT_FACE, SWORD, RED_BLOCK}
+enum ABL {SWORD1, SWORD2, SWORD3}
+
+onready var weapons = [
+	{ # Robot face
 		"scene": null,
 		"texture": load("res://assets/icon.png"),
 		"name": "Robot Face",
-		"attack": 1,
-		"armor": 2,
-		"range": 3,
-		"points": 4,
-		"weight": 5
+		"stats": 0
 	},
-	"sword": {
+	{ # Sword
 		"scene": null,
 		"texture": load("res://assets/sword.png"),
 		"name": "Sword",
-		"attack": 2,
-		"armor": 4,
-		"range": 3,
-		"points": 6,
-		"weight": 15
+		"stats": 0
 	},
-	"red_block": {
+	{ # Red block
 		"scene": null,
 		"texture": load("res://assets/wall.png"),
 		"name": "Nothing Particular",
-		"attack": 0,
-		"armor": 20,
-		"range": 2,
-		"points": 8,
-		"weight": 1
+		"stats": 0
 	}
-}
+]
 
-onready var abilities = {
-	"sword1": {
+onready var abilities = [
+	{ # Sword 1
 		"scene": null,
 		"texture": load("res://assets/bots/front.png"),
 		"name": "Sword1",
-		"attack": 0,
-		"armor": 0,
-		"range": 2,
-		"points": 0,
-		"weight": 1
+		"stats": 0
 	},
-	"sword2": {
+	{ # Sword 2
 		"scene": null,
 		"texture": load("res://assets/sword.png"),
 		"name": "Sword2",
-		"attack": 0,
-		"armor": 0,
-		"range": 0,
-		"points": 0,
-		"weight": 0
+		"stats": 0
 	},
-	"sword3": {
+	{ # Sword 3
 		"scene": null,
 		"texture": load("res://assets/sword.png"),
 		"name": "Sword3",
-		"attack": 0,
-		"armor": 1,
-		"range": 1,
-		"points": 0,
-		"weight": 1
+		"stats": 0
 	}
-}
-
-onready var primary_list = load("res://Scripts/Objects/item_list.gd").new(weapons.values())
-onready var secondary_list = load("res://Scripts/Objects/item_list.gd").new(weapons.values())
-onready var ability_list = load("res://Scripts/Objects/item_list.gd").new(abilities.values())
-
-# Bots
-var bot_builds
-var ai_builds
+]
 
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
-	init_bots()
 	#_test_DB()
-	ai_builds = [bot_builds[BOT]]
 
 func _input(event):
 	if Input.is_action_just_pressed("shutdown"):
@@ -153,31 +122,6 @@ func load_scene(path):
 	get_tree().change_scene_to(loader)
 	yield(get_tree(), "node_added")
 	get_node("/root/loading").load_scene(path)
-
-func find_bot(bot):
-	for i in range(ai_builds.size()):
-		if ai_builds[i].compare(bot):
-			return ai_builds[i]
-	return null
-
-func save_bot(new_bot):
-	ai_builds.push_back(new_bot)
-
-func init_bots():
-	bot_builds = {
-		PLAYER: load("res://Scripts/Objects/bot_build.gd").new(
-			weapons["robot_face"],
-			weapons["robot_face"],
-			abilities["sword1"],
-			load("res://assets/bots/front.png")
-		),
-		BOT: load("res://Scripts/Objects/bot_build.gd").new(
-			weapons["robot_face"],
-			weapons["robot_face"],
-			abilities["sword1"],
-			load("res://assets/bots/front.png")
-		)
-	}
 
 func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
 	var hit_points_diff = fighter1_hit_points - fighter2_hit_points

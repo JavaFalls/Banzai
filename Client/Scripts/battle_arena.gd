@@ -31,20 +31,20 @@ signal game_end
 func _ready():
 	f.open('res://NeuralNetwork/gamestates', 3)
     # Call get opponent here
-	var opponent_bot_ID = get_opponent(head.bot_ID)
+#	var opponent_bot_ID = get_opponent(head.bot_ID)
 	fighter1 = player_scene.instance() #player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
 	fighter1.is_player = 1
-	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
+#	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 
 	fighter2 = bot_scene.instance() # fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	#fighter2.attack_primary = false
 	fighter2.set_name("fighter2")
-	fighter2.get_node("animation_bot").load_colors_from_DB(opponent_bot_ID)
+#	fighter2.get_node("animation_bot").load_colors_from_DB(opponent_bot_ID)
 
 	# tell fighters who theyre opponent is
 	fighter1.set_opponent(fighter2)
@@ -67,6 +67,7 @@ func _physics_process(delta):
 	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
 	if t.is_stopped():
 		game_state.set_predictions(send_nn_state())
+		print(game_state.get_battle_state())
 		t.start()
 		print("===================battle arena send nn response=========================")
 #		print(game_state.get_predictions())
@@ -92,6 +93,7 @@ func post_game():
 func get_opponent(bot_id):
 	var opponent = null
 	var rank_width = 0
+	#var bot_data = JSON.parse(head.DB.get_bot(bot_id)).result["data"][0] # Get all bot data from Database
 	var bot_data = JSON.parse(head.DB.get_bot(bot_id)).result["data"][0] # Get all bot data from Database
 	var lowest_rank = bot_data["ranking"]
 	var upper_rank  = bot_data["ranking"]

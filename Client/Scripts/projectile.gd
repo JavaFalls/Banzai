@@ -14,13 +14,14 @@ func set_target(new_target):
 	self.target = new_target
 	pass
 
+#x = r cos(theta)
+#y = r sin(theta)
+
+
 func _ready():
-	set_target(projectile_owner.psuedo_mouse)
-#	set_fixed_process(true)
-	#if projectile_owner.is_player() == true: 
-	#	target = get_global_mouse_position()
-	#else:
-	#	target = projectile_owner.get_opponent().get_position()
+	set_target(projectile_owner.get_position() + Vector2(sin(projectile_owner.aim_angle), cos(projectile_owner.aim_angle)))
+	print(projectile_owner.get_name())
+	print(projectile_owner.aim_angle)
 	self.global_position = atk_range_node.global_position
 	self.look_at(target)
 	movement = (target - atk_range_node.global_position).normalized()
