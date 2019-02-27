@@ -48,12 +48,35 @@ func set_current(index=null, color=null):
 	if typeof(index) == TYPE_INT:
 		current = index
 	elif typeof(color) == TYPE_INT:
+		var c_color = Color(color) # RGBA integer construction
+		var h = c_color.h
+		var s = c_color.s
 		for i in range(colors.size()):
-			if color == colors[i].to_rgba32(): # If this is not save as rbga, change it to something else
+			if h == colors[i].h and s == colors[i].s:
 				current = i
+				reset_color_boxes()
+#				set_box_color(color)
 				break
 
-# Get colors by selection
+func set_box_color(color):
+	match color.v:
+		0.2:
+			pass
+		0.4:
+			pass
+		0.6:
+			pass
+		0.8:
+			pass
+		1.0:
+			pass
+	color_boxes[0].color = color
+	color_boxes[1].color = color
+	color_boxes[2].color = color
+	color_boxes[3].color = color
+	color_boxes[4].color = color
+
+# Get colors by boxes
 #------------------------
 func get_selected_color():
 	return color_boxes[2].color

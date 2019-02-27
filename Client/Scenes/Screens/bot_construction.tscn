@@ -331,6 +331,7 @@ margin_left = 14.0
 margin_top = 24.0
 margin_right = 142.0
 margin_bottom = 44.0
+colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 
 [node name="selected_sprite" parent="color_scroll/HBoxContainer/colors/color2" index="0"]
 
