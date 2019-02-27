@@ -162,10 +162,10 @@ NNClient::~NNClient()
 //***********************************************************************************************
 void NNClient::_bind_methods()
 {
-   ClassDB::bind_method(D_METHOD("connect_request"), &NNClient.connect_request);
-   ClassDB::bind_method(D_METHOD("connect_response"), &NNClient.connect_response);
-   ClassDB::bind_method(D_METHOD("send_request", "request"), &NNClient.send_request);
-   ClassDB::bind_method(D_METHOD("get_response"), &NNClient.get_response);
-   ClassDB::bind_method(D_METHOD("close_request_handle"), &NNClient.close_request_handle);
-   ClassDB::bind_method(D_METHOD("close_response_handle"), &NNClient.close_response_handle); 
+   ClassDB::bind_method(D_METHOD("connect_request"), &NNClient::connect_request);
+   ClassDB::bind_method(D_METHOD("connect_response"), &NNClient::connect_response);
+   ClassDB::bind_method(D_METHOD("send_request", "message_request"), &NNClient::send_request);
+   ClassDB::bind_method(D_METHOD("get_response"), &NNClient::get_response);
+   ClassDB::bind_method(D_METHOD("close_request_handle"), &NNClient::close_request_handle);
+   ClassDB::bind_method(D_METHOD("close_response_handle"), &NNClient::close_response_handle); 
 }

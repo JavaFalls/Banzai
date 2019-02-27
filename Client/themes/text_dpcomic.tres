@@ -6,4 +6,5 @@
 
 resource_local_to_scene = true
 default_font = ExtResource( 1 )
+_sections_unfolded = [ "Resource" ]
 

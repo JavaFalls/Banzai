@@ -78,7 +78,7 @@ func hover_logout_confirm(mouse_entered):
 
 func _on_logout_warning_confirmed():
 #	head.save_bots(head.bots)
-	head.init_bots()
+#	head.init_bots()
 	get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
 

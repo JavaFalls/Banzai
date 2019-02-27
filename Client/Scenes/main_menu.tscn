@@ -1,13 +1,13 @@
 [gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
-[ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
-[ext_resource path="res://assets/menu/main_menu/panel_left.png" type="Texture" id=3]
-[ext_resource path="res://assets/menu/main_menu/panel_right.png" type="Texture" id=4]
-[ext_resource path="res://assets/menu/main_menu/backlight.png" type="Texture" id=5]
-[ext_resource path="res://assets/menu/main_menu/platform.png" type="Texture" id=6]
-[ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=7]
-[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=8]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=2]
+[ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=3]
+[ext_resource path="res://assets/menu/main_menu/panel_left.png" type="Texture" id=4]
+[ext_resource path="res://assets/menu/main_menu/panel_right.png" type="Texture" id=5]
+[ext_resource path="res://assets/menu/main_menu/backlight.png" type="Texture" id=6]
+[ext_resource path="res://assets/menu/main_menu/platform.png" type="Texture" id=7]
+[ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=8]
 [ext_resource path="res://assets/menu/main_menu/button_large.png" type="Texture" id=9]
 [ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=10]
 [ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=11]
@@ -114,7 +114,7 @@ default_font = ExtResource( 11 )
 default_font = ExtResource( 11 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="main_menu" type="Node" index="0"]
+[node name="main_menu" type="Node"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
@@ -131,7 +131,8 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-_sections_unfolded = [ "Rect", "Visibility" ]
+theme = ExtResource( 2 )
+_sections_unfolded = [ "Rect", "Theme", "Visibility" ]
 
 [node name="MarginContainer" type="MarginContainer" parent="Control" index="0"]
 
@@ -154,37 +155,37 @@ _sections_unfolded = [ "Anchor", "Size Flags" ]
 [node name="background" type="Sprite" parent="Control/MarginContainer" index="0"]
 
 position = Vector2( 877, 489 )
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="panel_left" type="Sprite" parent="Control/MarginContainer" index="1"]
 
 position = Vector2( 715, 575 )
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
 
 [node name="panel_right" type="Sprite" parent="Control/MarginContainer" index="2"]
 
 position = Vector2( 1026, 489 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 
 [node name="backlight" type="Sprite" parent="Control/MarginContainer" index="3"]
 
 modulate = Color( 0, 1, 0.109375, 0.469608 )
 position = Vector2( 877, 470 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
 [node name="platform" type="Sprite" parent="Control/MarginContainer" index="4"]
 
 position = Vector2( 877, 561 )
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 
 [node name="Light2D" type="Light2D" parent="Control/MarginContainer" index="5"]
 
 position = Vector2( 877, 469 )
 enabled = true
 editor_only = false
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 offset = Vector2( 0, 0 )
 texture_scale = 1.0
 color = Color( 1, 1, 1, 1 )
@@ -230,7 +231,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 7 )
+texture_normal = ExtResource( 8 )
 stretch_mode = 5
 _sections_unfolded = [ "Rect", "Textures" ]
 
@@ -249,7 +250,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 8 )
+theme = ExtResource( 2 )
 text = "credits"
 align = 1
 valign = 1
@@ -280,7 +281,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 7 )
+texture_normal = ExtResource( 8 )
 stretch_mode = 5
 _sections_unfolded = [ "Rect" ]
 
@@ -299,7 +300,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 8 )
+theme = ExtResource( 2 )
 text = "ranking"
 align = 1
 valign = 1
@@ -329,7 +330,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 7 )
+texture_normal = ExtResource( 8 )
 stretch_mode = 5
 _sections_unfolded = [ "Rect", "Textures" ]
 
@@ -348,7 +349,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 8 )
+theme = ExtResource( 2 )
 text = "equip"
 align = 1
 valign = 1
@@ -378,7 +379,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 7 )
+texture_normal = ExtResource( 8 )
 stretch_mode = 5
 _sections_unfolded = [ "Rect", "Textures" ]
 
@@ -397,7 +398,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 8 )
+theme = ExtResource( 2 )
 text = "battle"
 align = 1
 valign = 1
@@ -446,7 +447,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 8 )
+theme = ExtResource( 2 )
 text = "train"
 align = 1
 valign = 1
@@ -476,7 +477,7 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 7 )
+texture_normal = ExtResource( 8 )
 stretch_mode = 5
 _sections_unfolded = [ "Textures" ]
 
@@ -495,7 +496,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 8 )
+theme = ExtResource( 2 )
 text = "logout"
 align = 1
 valign = 1
@@ -525,6 +526,7 @@ valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+_sections_unfolded = [ "Theme" ]
 
 [node name="title" type="Label" parent="Control" index="8"]
 
@@ -553,6 +555,7 @@ valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+_sections_unfolded = [ "custom_fonts" ]
 
 [node name="logout_warning" type="Popup" parent="." index="1"]
 

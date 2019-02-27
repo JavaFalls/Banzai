@@ -1,5 +1,5 @@
 #ifndef NNCLIENT_H
-#define CLIENT_H
+#define NNCLIENT_H
 
 #include "reference.h"
 #include <Windows.h>
@@ -12,12 +12,12 @@ class NNClient : public Reference {
    HANDLE response_handle;
 
 protected:
-   void _bind_methods();
+   static void _bind_methods();
 
 public:
    int connect_request();
    int connect_response();
-   int send_request(char* request);
+   int send_request(char* message_request);
    char* get_response();
    int close_request_handle();
    int close_response_handle();
