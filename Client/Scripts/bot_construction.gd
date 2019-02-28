@@ -4,6 +4,7 @@ extends Node
 onready var head = get_tree().get_root().get_node("/root/head")
 
 onready var constructing_player = (head.construction == head.PLAYER)
+onready var name_choice_scene = preload("res://Scenes/name_choice.tscn")
 
 ### TEST ITEMS ###
 var w = [
@@ -21,6 +22,7 @@ var bots = [] # Both the id and its bot will have the same index
 var bot_ids = []
 var current = 0
 
+### unneeded variable and signal soon ###
 var name_confirmed = false
 signal name_entered
 
@@ -88,6 +90,14 @@ func _on_bot_right_pressed():
 
 # Entering a name
 func _on_new_button_pressed():
+### Select from name choice scene ###
+	if false:
+		add_child(name_choice_scene)
+		yield(name_choice_scene, "name_entered")
+		var new_name = name_choice_scene.get_username()
+		name_choice_scene.free()
+#####################################
+	
 	$new_bot/back_panel/name_edit.text = ""
 	$new_bot.visible = true
 	yield(self, "name_entered")
@@ -193,6 +203,8 @@ func update_current_bot():
 	bots[current]["utility"] = $item_scroll3.current_item()["id"]
 	bots[current]["primary_color"] = $color_scroll.get_selected_color().to_rgba32()
 	bots[current]["secondary_color"] = $color_scroll2.get_selected_color().to_rgba32()
+	bots[current]["accent_color"] = $color_scroll3.get_selected_color().to_rgba32()
+	bots[current]["light_color"] = $color_scroll4.get_selected_color().to_rgba32()
 
 # Display/organize data
 #------------------------------------------------
@@ -225,5 +237,5 @@ func get_bot_info(bot_data):
 	$item_scroll3.set_current(null, bot_data["utility"])
 	$color_scroll.set_current(null, bot_data["primary_color"])
 	$color_scroll2.set_current(null, bot_data["secondary_color"])
-#	$color_scroll3
-#	$color_scroll4
+	$color_scroll3.set_current(null, bot_data["accent_color"])
+	$color_scroll4.set_current(null, bot_data["light_color"])
