@@ -90,17 +90,22 @@ int NNClient::connect_response()
 //***********************************************************************************************
 //                                 Send a request to the server                                 *
 //***********************************************************************************************
-int NNClient::send_request(char* message_request)
+int NNClient::send_request(String message_request)
 {
-   DWORD message_length = (strlen(message_request) + 1) * sizeof(char),
-	      bytes_written;
-   return WriteFile(request_handle, message_request, message_length, &bytes_written, NULL);
+   char* message_cstr = new char[message_request.length() + 1];
+   DWORD message_length = (message_request.length() + 1) * sizeof(char);
+   DWORD bytes_written;
+   
+   strcpy(message_cstr, (char*) message_request.c_str());
+   int successful = WriteFile(request_handle, message_cstr, message_length, &bytes_written, NULL);
+   delete [] message_cstr;
+   return successful;
 }
 
 //***********************************************************************************************
 //                                Get a response from the server                                *
 //***********************************************************************************************
-char* NNClient::get_response()
+String NNClient::get_response()
 {
    char chBuf[64*1024];
    bool successful;
@@ -109,7 +114,9 @@ char* NNClient::get_response()
    do {
       successful = ReadFile(response_handle, chBuf, 64*1024, &bytes_read, NULL);
    } while(!successful);
-   return chBuf;
+   String server_response(chBuf);
+
+   return server_response;
 }
 
 //***********************************************************************************************

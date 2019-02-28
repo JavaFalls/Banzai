@@ -3,6 +3,7 @@
 
 #include "reference.h"
 #include <Windows.h>
+#include <ustring.h>
 #include <string>
 
 class NNClient : public Reference {
@@ -17,8 +18,8 @@ protected:
 public:
    int connect_request();
    int connect_response();
-   int send_request(char* message_request);
-   char* get_response();
+   int send_request(String message_request);
+   String get_response();
    int close_request_handle();
    int close_response_handle();
 

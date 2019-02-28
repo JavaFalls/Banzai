@@ -287,6 +287,7 @@ bot = load_bot()
 response = []
 
 # Tell Godot I'm ready to connect
+successful = False
 while not successful:
         try:
                 server_ready = win32file.CreateFile(r'\\.\pipe\ServerReady',
@@ -312,36 +313,36 @@ connect_response()
 while True:
         print("Server Code\n\n")
         print("get request")
-gamestate = []
-next_gamestate = []
+        gamestate = []
+        next_gamestate = []
         # print("Server Code\n\n")
         # print("get request")
 
         request_completed = False
-                try:
-                        request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '').replace('\x00', '')
-                        request = json.loads(request)
-                        # print(request)
-                        # some kind of parsing with request then some if statements
-                        #packet_type = identify(request)
-                        #if packet_type == 'L':
-                                #response = load()
-                        #elif packet_type == 'T':
-                        request = fighter1.reshape(request["Message"])
-                        #print(request)
-                        response = fighter1.train(request)
-                        print(response)
-                        # response = request
-                       #elif packet_type == 'B':
-                                #response = battle(request, fighter1, fighter2)
-                        #print(f'{request}')
-                        request_completed = True
+        try:
+                request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '').replace('\x00', '')
+                request = json.loads(request)
+                # print(request)
+                # some kind of parsing with request then some if statements
+                #packet_type = identify(request)
+                #if packet_type == 'L':
+                        #response = load()
+                #elif packet_type == 'T':
+                request = fighter1.reshape(request["Message"])
+                #print(request)
+                response = fighter1.train(request)
+                print(response)
+                # response = request
+                #elif packet_type == 'B':
+                        #response = battle(request, fighter1, fighter2)
+                #print(f'{request}')
+                request_completed = True
 
-                        # Process a request for the appropriate bot
-                        #response = react(process_message(request), player_bot if request["Requestor"] == "Player" else opponent_bot)
-                except UnboundLocalError as Null_Reference:
-                        print('Client Request failed! Retrying...')
-                        input("Do you want to retry?")
+                # Process a request for the appropriate bot
+                #response = react(process_message(request), player_bot if request["Requestor"] == "Player" else opponent_bot)
+        except UnboundLocalError as Null_Reference:
+                print('Client Request failed! Retrying...')
+                input("Do you want to retry?")
 
         ### Process Request ###
         if process_message(request) == 109:
