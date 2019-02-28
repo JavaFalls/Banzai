@@ -92,13 +92,14 @@ int NNClient::connect_response()
 //***********************************************************************************************
 int NNClient::send_request(String message_request)
 {
-   char* message_cstr = new char[message_request.length() + 1];
-   DWORD message_length = (message_request.length() + 1) * sizeof(char);
+   //char* message_cstr = new char[strlen(message_request.c_str()) + 1];
+   DWORD message_length = (message_request.length() + 1) * sizeof(CharType);
    DWORD bytes_written;
    
-   strcpy(message_cstr, (char*) message_request.c_str());
-   int successful = WriteFile(request_handle, message_cstr, message_length, &bytes_written, NULL);
-   delete [] message_cstr;
+   //strncpy(message_cstr, (char*) message_request.c_str(), message_request.length() + 1);
+   cout << message_request.c_str();
+   int successful = WriteFile(request_handle, message_request.c_str(), message_length, &bytes_written, NULL);
+   //delete [] message_cstr;
    return successful;
 }
 
