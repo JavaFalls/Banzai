@@ -328,10 +328,10 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, Stri
    bind_parameter(sql_statement, PARAM_UPDATE_PRIMARY_WEAPON, &primary_weapon);
    bind_parameter(sql_statement, PARAM_UPDATE_SECONDARY_WEAPON, &secondary_weapon);
    bind_parameter(sql_statement, PARAM_UPDATE_UTILITY, &utility);
-   bind_parameter(sql_statement, PARAM_UPDATE_PRIMARY_COLOR, (unsigned int *)&primary_color); // SQL Server does not support unsigned integers, so trick it into thinking the int is signed
-   bind_parameter(sql_statement, PARAM_UPDATE_SECONDARY_COLOR, (unsigned int *)&secondary_color);
-   bind_parameter(sql_statement, PARAM_UPDATE_ACCENT_COLOR, (unsigned int *)&accent_color);
-   bind_parameter(sql_statement, PARAM_UPDATE_LIGHT_COLOR, (unsigned int *)&light_color);
+   bind_parameter(sql_statement, PARAM_UPDATE_PRIMARY_COLOR, (int *)&primary_color); // SQL Server does not support unsigned integers, so trick it into thinking the int is signed
+   bind_parameter(sql_statement, PARAM_UPDATE_SECONDARY_COLOR, (int *)&secondary_color);
+   bind_parameter(sql_statement, PARAM_UPDATE_ACCENT_COLOR, (int *)&accent_color);
+   bind_parameter(sql_statement, PARAM_UPDATE_LIGHT_COLOR, (int *)&light_color);
    execute(sql_statement);
    if (SQL_SUCCEEDED(last_return)) {
       if (model_file_name.length()) {
@@ -836,24 +836,6 @@ void DBConnector::bind_parameter(SQLHSTMT sql_statement_handle, int param_number
    }
    else {
       print_error_diagnostics("bind_parameter(SQLHSTMT, int, int, int)", SQL_HANDLE_STMT, sql_statement_handle);
-   }
-   return;
-}
-void DBConnector::bind_parameter(SQLHSTMT sql_statement_handle, int param_number, unsigned int *param_value, SQLSMALLINT param_input_output_type) {
-   if (SQL_SUCCEEDED(last_return = SQLBindParameter(sql_statement_handle,                //SQLHSTMT        StatementHandle,
-                                                    (SQLSMALLINT)param_number,           //SQLUSMALLINT    ParameterNumber,
-                                                    param_input_output_type,             //SQLSMALLINT     InputOutputType,
-                                                    SQL_C_ULONG,                         //SQLSMALLINT     ValueType,
-                                                    SQL_NUMERIC,                         //SQLSMALLINT     ParameterType,
-                                                    10,                                  //SQLULEN         ColumnSize,
-                                                    0,                                   //SQLSMALLINT     DecimalDigits,
-                                                    (SQLPOINTER)param_value,             //SQLPOINTER      ParameterValuePtr,
-                                                    0, // Ignored for integer parameters //SQLLEN          BufferLength,
-                                                    &null_terminated_string))) {         //SQLLEN *        StrLen_or_IndPtr)
-      return;
-   }
-   else {
-      print_error_diagnostics("bind_parameter(SQLHSTMT, int, unsigned int, int)", SQL_HANDLE_STMT, sql_statement_handle);
    }
    return;
 }

@@ -1,31 +1,25 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/construction_fork.gd" type="Script" id=1]
-[ext_resource path="res://assets/menu/bot_construction/WhatsApp Image 2019-02-25 at 2.55.19 PM.jpeg" type="Texture" id=2]
-[ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=3]
-[ext_resource path="res://assets/menu/main_menu/platform.png" type="Texture" id=4]
-[ext_resource path="res://assets/menu/main_menu/backlight.png" type="Texture" id=5]
-[ext_resource path="res://assets/menu/main_menu/button_large.png" type="Texture" id=6]
-[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=7]
+[ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
+[ext_resource path="res://assets/menu/main_menu/platform.png" type="Texture" id=3]
+[ext_resource path="res://assets/menu/main_menu/backlight.png" type="Texture" id=4]
+[ext_resource path="res://assets/menu/main_menu/button_large.png" type="Texture" id=5]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=6]
 
 [node name="Node" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
-[node name="WhatsApp Image 2019-02-25 at 2.55.19 PM" type="Sprite" parent="." index="0"]
-
-position = Vector2( 200, -120 )
-texture = ExtResource( 2 )
-
-[node name="background" type="Sprite" parent="." index="1"]
+[node name="background" type="Sprite" parent="." index="0"]
 
 position = Vector2( 200, 113 )
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
 
-[node name="platform" type="Sprite" parent="." index="2"]
+[node name="platform" type="Sprite" parent="." index="1"]
 
 position = Vector2( 83, 170 )
-texture = ExtResource( 4 )
+texture = ExtResource( 3 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="backlight" type="Sprite" parent="platform" index="0"]
@@ -34,16 +28,16 @@ modulate = Color( 0.309804, 0.596078, 0.301961, 0.560784 )
 show_behind_parent = true
 position = Vector2( -0.870966, -85.9465 )
 scale = Vector2( 0.741935, 0.893048 )
-texture = ExtResource( 5 )
+texture = ExtResource( 4 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="Light2D" type="Light2D" parent="platform" index="1"]
 
-position = Vector2( -0.870995, -85.4492 )
-scale = Vector2( 0.741935, 0.898395 )
+position = Vector2( -0.870995, -86.4546 )
+scale = Vector2( 0.741935, 0.909091 )
 enabled = true
 editor_only = false
-texture = ExtResource( 5 )
+texture = ExtResource( 4 )
 offset = Vector2( 0, 0 )
 texture_scale = 1.0
 color = Color( 1, 1, 1, 1 )
@@ -63,10 +57,10 @@ shadow_filter = 0
 shadow_filter_smooth = 0.0
 shadow_item_cull_mask = 1
 
-[node name="platform2" type="Sprite" parent="." index="3"]
+[node name="platform2" type="Sprite" parent="." index="2"]
 
 position = Vector2( 326, 170 )
-texture = ExtResource( 4 )
+texture = ExtResource( 3 )
 
 [node name="backlight2" type="Sprite" parent="platform2" index="0"]
 
@@ -74,16 +68,16 @@ modulate = Color( 0.309804, 0.596078, 0.301961, 0.560784 )
 show_behind_parent = true
 position = Vector2( -1, -86 )
 scale = Vector2( 0.741935, 0.893048 )
-texture = ExtResource( 5 )
+texture = ExtResource( 4 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="Light2D2" type="Light2D" parent="platform2" index="1"]
 
-position = Vector2( -1, -85.2341 )
-scale = Vector2( 0.741935, 0.906746 )
+position = Vector2( -1, -85.9572 )
+scale = Vector2( 0.741935, 0.914439 )
 enabled = true
 editor_only = false
-texture = ExtResource( 5 )
+texture = ExtResource( 4 )
 offset = Vector2( 0, 0 )
 texture_scale = 1.0
 color = Color( 1, 1, 1, 1 )
@@ -103,7 +97,7 @@ shadow_filter = 0
 shadow_filter_smooth = 0.0
 shadow_item_cull_mask = 1
 
-[node name="buttons" type="VBoxContainer" parent="." index="4"]
+[node name="buttons" type="VBoxContainer" parent="." index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -160,7 +154,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 patch_margin_left = 12
 patch_margin_top = 12
 patch_margin_right = 12
@@ -182,7 +176,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+theme = ExtResource( 6 )
 text = "Customize
 Player"
 align = 1
@@ -230,7 +224,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 patch_margin_left = 12
 patch_margin_top = 12
 patch_margin_right = 12
@@ -252,7 +246,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+theme = ExtResource( 6 )
 text = "Customize
 Bot"
 align = 1
@@ -299,7 +293,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 patch_margin_left = 12
 patch_margin_top = 12
 patch_margin_right = 12
@@ -321,7 +315,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+theme = ExtResource( 6 )
 text = "Back"
 align = 1
 valign = 1

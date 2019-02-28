@@ -344,6 +344,7 @@ margin_left = 14.0
 margin_top = 51.0
 margin_right = 142.0
 margin_bottom = 71.0
+colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 indicator_offset = 0.3
 
 [node name="selected_sprite" parent="color_scroll2/HBoxContainer/colors/color2" index="0"]
@@ -358,6 +359,7 @@ margin_top = 79.0
 margin_right = 142.0
 margin_bottom = 99.0
 _sections_unfolded = [ "Material" ]
+colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 indicator_offset = 0.6
 
 [node name="selected_sprite" parent="color_scroll3/HBoxContainer/colors/color2" index="0"]
@@ -371,6 +373,7 @@ margin_left = 14.0
 margin_top = 106.0
 margin_right = 142.0
 margin_bottom = 126.0
+colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 indicator_offset = 0.9
 
 [node name="new_button" type="TextureButton" parent="." index="19"]
