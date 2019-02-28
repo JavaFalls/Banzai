@@ -28,13 +28,15 @@ func _ready():
 #### FOR TESTING #
 	var player_id = 1
 ##################
+	print(parse_json(head.DB.get_bot(4176)))
 	var player_bots = parse_json(head.DB.get_player_bots(player_id))
 	var id = ""
 	for c in player_bots["data"][0]["player_bots"]:
 		if c == ",":
-			bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
-			bot_ids.append(id.to_int())
-			id = ""
+			if id != "":
+				bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
+				bot_ids.append(id.to_int())
+				id = ""
 		else:
 			id += c
 	
@@ -52,6 +54,8 @@ func _ready():
 	is1.connect("info_queried", self, "grab_info", [head.PRIMARY])
 	is2.connect("info_queried", self, "grab_info", [head.SECONDARY])
 	is3.connect("info_queried", self, "grab_info", [head.ABILITY])
+	
+	get_bot_info(bots[0])
 
 # Signal methods
 #------------------------------------------------
@@ -99,6 +103,7 @@ func _on_new_button_pressed():
 		
 		current = bots.size()-1
 		get_bot_info(bots[current])
+		reset_info()
 
 func _on_enter_name_pressed():
 	if not name_confirmed:
@@ -131,26 +136,26 @@ func _on_finish_button_pressed():
 ### ASK TO CONFRIM SAVE HERE ###
 	
 	update_current_bot()
-#### FOR TESTING #
-	var model_id = 0
-	var ranking = 300
-	var player_id = 1
-##################
 	for i in range(bot_ids.size()):
-		if not head.DB.update_bot(bot_ids[i], [
-				player_id,
-				model_id,
-				ranking,
-				bots[i]["primary_weapon"],
-				bots[i]["secondary_weapon"],
-				bots[i]["utility"],
-				bots[i]["primary_color"],
-				bots[i]["secondary_color"]
-			], bots[i]["name"]):
+		if not head.DB.update_bot(
+				bot_ids[i],
+				[
+					bots[i]["player_ID_FK"],
+					bots[i]["model_ID_FK"],
+					bots[i]["ranking"],
+					bots[i]["primary_weapon"],
+					bots[i]["secondary_weapon"],
+					bots[i]["utility"],
+					bots[i]["primary_color"],
+					bots[i]["secondary_color"]
+					# accent color
+					# light color
+				],
+				bots[i]["name"]):
 			print("Updating bot_id %d failed with args:" % bot_ids[i])
-			print("  player:           %d" % player_id)
-			print("  model:            %d" % model_id)
-			print("  ranking:          %d" % ranking)
+			print("  player:           %d" % bots[i]["player_ID_FK"])
+			print("  model:            %d" % bots[i]["model_ID_FK"])
+			print("  ranking:          %d" % bots[i]["ranking"])
 			print("  primary_weapon:   %d" % bots[i]["primary_weapon"])
 			print("  secondary_weapon: %d" % bots[i]["secondary_weapon"])
 			print("  utility:          %d" % bots[i]["utility"])
@@ -165,8 +170,8 @@ func update_current_bot():
 	bots[current]["primary_weapon"] = $item_scroll.current_item()["id"]
 	bots[current]["secondary_weapon"] = $item_scroll2.current_item()["id"]
 	bots[current]["utility"] = $item_scroll3.current_item()["id"]
-	bots[current]["primary_color"] = $color_scroll.current_color().to_rgba32()
-	bots[current]["secondary_color"] = $color_scroll2.current_color().to_rgba32()
+	bots[current]["primary_color"] = $color_scroll.get_selected_color().to_rgba32()
+	bots[current]["secondary_color"] = $color_scroll2.get_selected_color().to_rgba32()
 
 # Display/organize data
 #------------------------------------------------
@@ -175,23 +180,26 @@ func grab_info(info_type):
 		head.PRIMARY:
 			get_node("item_scroll2").emit_signal("info_reserved")
 			get_node("item_scroll3").emit_signal("info_reserved")
-######## display info
 			get_node("item_name").text = $item_scroll.current_item()["name"]
 			get_node("item_description").scroll($item_scroll.current_item()["description"])
 		head.SECONDARY:
 			get_node("item_scroll").emit_signal("info_reserved")
 			get_node("item_scroll3").emit_signal("info_reserved")
-######## display info
+			get_node("item_name").text = $item_scroll2.current_item()["name"]
+			get_node("item_description").scroll($item_scroll2.current_item()["description"])
 		head.ABILITY:
 			get_node("item_scroll").emit_signal("info_reserved")
 			get_node("item_scroll2").emit_signal("info_reserved")
-######## display info
+			get_node("item_name").text = $item_scroll3.current_item()["name"]
+			get_node("item_description").scroll($item_scroll3.current_item()["description"])
 
 func reset_info():
 	$item_name.text = ""
 	$item_description.text = ""
 
 func get_bot_info(bot_data):
+	if bot_data["primary_color"] < 0:
+		print(bot_data["primary_color"])
 	$bot_name.text = bot_data["name"]
 	$item_scroll.set_current(null, bot_data["primary_weapon"])
 	$item_scroll2.set_current(null, bot_data["secondary_weapon"])

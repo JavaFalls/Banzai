@@ -109,9 +109,9 @@ func set_current(index=null, id=null):
 	if typeof(index) != TYPE_NIL:
 		current = index
 	if typeof(id) != TYPE_NIL:
-		for index in range(items.size()):
-			if id == items[index]["id"]:
-				current = index
+		for i in range(items.size()):
+			if id == items[i]["id"]:
+				current = i
 				reset_items_by_current()
 				break
 
