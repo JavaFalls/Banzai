@@ -15,8 +15,6 @@ var health                         # The starting health of a mech for use with 
 
 var popup                          # Popup scene used when battle is over
 
-#var pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
-
 onready var player_scene    = preload("res://Scenes/player.tscn")
 onready var bot_scene       = preload("res://Scenes/bot.tscn")
 onready var dummy_scene     = preload("res://Scenes/dummy.tscn")

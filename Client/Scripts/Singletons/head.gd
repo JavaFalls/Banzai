@@ -33,6 +33,7 @@ var loader = preload("res://Scenes/loading.tscn")
 # Screen Position and Size
 var screen_size = OS.get_screen_size()
 var window_size = OS.get_window_size()
+var pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
 
 # Username
 var username = ""
@@ -48,6 +49,7 @@ var player_ID = null;
 var model_ID = null;
 var bot_ID = null;
 onready var DB = DBConnector.new()
+onready var Client = NNClient.new()
 
 # Bot Info
 var bot = {
