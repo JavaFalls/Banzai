@@ -193,6 +193,8 @@ func update_current_bot():
 	bots[current]["utility"] = $item_scroll3.current_item()["id"]
 	bots[current]["primary_color"] = $color_scroll.get_selected_color().to_rgba32()
 	bots[current]["secondary_color"] = $color_scroll2.get_selected_color().to_rgba32()
+	bots[current]["accent_color"] = $color_scroll3.get_selected_color().to_rgba32()
+	bots[current]["light_color"] = $color_scroll4.get_selected_color().to_rgba32()
 
 # Display/organize data
 #------------------------------------------------
@@ -225,5 +227,5 @@ func get_bot_info(bot_data):
 	$item_scroll3.set_current(null, bot_data["utility"])
 	$color_scroll.set_current(null, bot_data["primary_color"])
 	$color_scroll2.set_current(null, bot_data["secondary_color"])
-#	$color_scroll3
-#	$color_scroll4
+	$color_scroll3.set_current(null, bot_data["accent_color"])
+	$color_scroll4.set_current(null, bot_data["light_color"])
