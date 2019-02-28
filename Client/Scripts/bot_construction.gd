@@ -3,6 +3,8 @@ extends Node
 # Get head singleton
 onready var head = get_tree().get_root().get_node("/root/head")
 
+onready var constructing_player = (head.construction == head.PLAYER)
+
 ### TEST ITEMS ###
 var w = [
 	{"id": 0, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_01.png")},
@@ -25,17 +27,31 @@ signal name_entered
 # Godot methods
 #------------------------------------------------
 func _ready():
+#	if head.construction == head.PLAYER:
+#		head.load_new_script(self, "res://Scripts/player_construction.gd")
+	
+	if constructing_player:
+		$bot_left.visible = false
+		$bot_right.visible = false
+		$new_button.visible = false
+	
 #### FOR TESTING #
 	var player_id = 1
-##################
-	print(parse_json(head.DB.get_bot(4176)))
+	var bot_id = 1
+##################	
 	var player_bots = parse_json(head.DB.get_player_bots(player_id))
 	var id = ""
 	for c in player_bots["data"][0]["player_bots"]:
 		if c == ",":
 			if id != "":
-				bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
-				bot_ids.append(id.to_int())
+				# Get player bot or all other bots
+				if not constructing_player:
+					bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
+					bot_ids.append(id.to_int())
+				elif constructing_player and id.to_int() == bot_id:
+					bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
+					bot_ids.append(id.to_int())
+					break
 				id = ""
 		else:
 			id += c
@@ -55,7 +71,8 @@ func _ready():
 	is2.connect("info_queried", self, "grab_info", [head.SECONDARY])
 	is3.connect("info_queried", self, "grab_info", [head.ABILITY])
 	
-	get_bot_info(bots[0])
+	if not bots.empty():
+		get_bot_info(bots[0])
 
 # Signal methods
 #------------------------------------------------
@@ -136,6 +153,7 @@ func _on_finish_button_pressed():
 ### ASK TO CONFRIM SAVE HERE ###
 	
 	update_current_bot()
+	print(bots[current]["primary_weapon"])
 	for i in range(bot_ids.size()):
 		if not head.DB.update_bot(
 				bot_ids[i],
@@ -147,9 +165,9 @@ func _on_finish_button_pressed():
 					bots[i]["secondary_weapon"],
 					bots[i]["utility"],
 					bots[i]["primary_color"],
-					bots[i]["secondary_color"]
-					# accent color
-					# light color
+					bots[i]["secondary_color"],
+					bots[i]["accent_color"],
+					bots[i]["light_color"]
 				],
 				bots[i]["name"]):
 			print("Updating bot_id %d failed with args:" % bot_ids[i])
@@ -161,6 +179,9 @@ func _on_finish_button_pressed():
 			print("  utility:          %d" % bots[i]["utility"])
 			print("  primary_color:    %d" % bots[i]["primary_color"])
 			print("  secondary_color:  %d" % bots[i]["secondary_color"])
+			print("  accent_color:     %d" % bots[i]["accent_color"])
+			print("  light_color:      %d" % bots[i]["light_color"])
+			print("  name:             %d" % bots[i]["name"])
 	
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
@@ -198,8 +219,6 @@ func reset_info():
 	$item_description.text = ""
 
 func get_bot_info(bot_data):
-	if bot_data["primary_color"] < 0:
-		print(bot_data["primary_color"])
 	$bot_name.text = bot_data["name"]
 	$item_scroll.set_current(null, bot_data["primary_weapon"])
 	$item_scroll2.set_current(null, bot_data["secondary_weapon"])

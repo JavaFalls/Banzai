@@ -26,6 +26,7 @@ const DEFAULT_LIGHT_COLOR = Color(1, 1, 1)
 enum {PRIMARY, SECONDARY, ABILITY}
 # Bot builds keys
 enum {PLAYER, BOT}
+var construction = BOT
 
 # Loading screen
 var loader = preload("res://Scenes/loading.tscn")
@@ -44,9 +45,9 @@ var score_change = 0
 var battle_won = false
 
 # Database
-var player_ID = null;
-var model_ID = null;
-var bot_ID = null;
+var player_ID = -1;
+var model_ID = -1;
+var bot_ID = -1;
 onready var DB = DBConnector.new()
 
 # Bot Info
@@ -139,6 +140,14 @@ func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
 		score_change = -3
 	else:
 		score_change = -5
+
+#########################################
+# This may be useless
+#func load_new_script(object, script_path):
+#	if typeof(object) == TYPE_OBJECT and typeof(script_path) == TYPE_STRING:
+#		var script = load(script_path)
+#		object.set_script(script)
+#		script.reload()
 
 #--------------------------------------------
 # DB Functions

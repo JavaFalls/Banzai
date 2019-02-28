@@ -228,8 +228,7 @@ public:
 
    void bind_parameter(SQLHSTMT sql_statement_handle, int param_number, std::string *param_value, SQLSMALLINT param_input_output_type = SQL_PARAM_INPUT);
    void bind_parameter(SQLHSTMT sql_statement_handle, int param_number, int *param_value, SQLSMALLINT param_input_output_type = SQL_PARAM_INPUT);
-   void bind_parameter(SQLHSTMT sql_statement_handle, int param_number, unsigned int *param_value, SQLSMALLINT param_input_output_type = SQL_PARAM_INPUT);
-
+   
    // Execute a statement on the database (don't forget to set up the statement handle first through create_command())
    void execute(SQLHSTMT sql_statement_handle);
 
