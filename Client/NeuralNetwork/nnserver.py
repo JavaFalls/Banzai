@@ -303,7 +303,7 @@ while not successful:
         except pywintypes.error as e:
                 if e.args[0] == 2:
                         print("Pipe not created.")
-                        input('Execution paused in send_request()')
+                        input('Press enter to reconnect to client process')
                 elif e.args[0] == 109:
                         print("Closed Pipe")
                         successful = True
@@ -322,20 +322,13 @@ while True:
         try:
                 request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '').replace('\x00', '')
                 request = json.loads(request)
+                print(request)
                 # print(request)
                 # some kind of parsing with request then some if statements
                 #packet_type = identify(request)
                 #if packet_type == 'L':
                         #response = load()
                 #elif packet_type == 'T':
-                request = fighter1.reshape(request["Message"])
-                #print(request)
-                response = fighter1.train(request)
-                print(response)
-                # response = request
-                #elif packet_type == 'B':
-                        #response = battle(request, fighter1, fighter2)
-                #print(f'{request}')
                 request_completed = True
 
                 # Process a request for the appropriate bot
@@ -347,6 +340,15 @@ while True:
         ### Process Request ###
         if process_message(request) == 109:
                 break
+        request = fighter1.reshape(request["Message"])
+        #print(request)
+        response = fighter1.train(request)
+        print(response)
+        # response = request
+        #elif packet_type == 'B':
+                #response = battle(request, fighter1, fighter2)
+        #print(f'{request}')
+
         print("sending response")
         # print("sending response")
  #       print(response)

@@ -55,7 +55,7 @@ func _ready():
 
 	health = fighter1.get_hit_points()
 
-	t.set_wait_time(.1)
+	t.set_wait_time(.01)
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.start()
@@ -128,15 +128,16 @@ func send_nn_state():
 #	f.store_string(str(path) + "\n")
 
 	###############################BATTLE####################################################
-	path = PoolStringArray()
-	path.append(ProjectSettings.globalize_path('res://NeuralNetwork/client.py'))
+	#path = PoolStringArray()
+	#path.append(ProjectSettings.globalize_path('res://NeuralNetwork/client.py'))
 	var message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_battle_state())
-	message = message.json_escape()
-	path.append(message)
-	OS.execute('python', path, true, output)
+	#message = message.json_escape()
+	#path.append(message)
+	head.Client.send_request(message)
 
 #	print("OUT_PUT=================================================")
 #	print(output)
+	output = head.Client.get_response()
 	output = output[0].split_floats(',', false)
 	return output
 
