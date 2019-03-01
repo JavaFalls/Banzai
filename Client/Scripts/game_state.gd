@@ -179,6 +179,10 @@ func set_player_state(player):
 
 func set_predictions(predictions):
 	predicted_action = predictions[0]
+#	print("set predictions")
+#	print(predicted_action)
+#	print(predictions[0])
+#	print("end set Predictions print")
 
 	predicted_bot_vector = Vector2(0,0)
 	predicted_bot_psuedo_primary   = 0
@@ -550,19 +554,11 @@ func set_predictions(predictions):
 		
 func get_predictions():
 	var pred = []
-	pred.append((predicted_player_position))
-	pred.append((predicted_player_mouse))
-	pred.append((predicted_player_vector))
-	pred.append((predicted_player_psuedo_primary))
-	pred.append((predicted_player_psuedo_secondary))
-	pred.append((predicted_player_psuedo_ability))
-	pred.append((predicted_player_in_peril))
-
-	pred.append((predicted_bot_position))
-	pred.append((predicted_bot_mouse))
+	pred.append((predicted_action))
 	pred.append((predicted_bot_vector))
 	pred.append((predicted_bot_psuedo_primary))
 	pred.append((predicted_bot_psuedo_secondary))
 	pred.append((predicted_bot_psuedo_ability))
-	pred.append((predicted_bot_in_peril))
+	pred.append((predicted_bot_aim_right))
+	pred.append((predicted_bot_aim_left))
 	return pred
