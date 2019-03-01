@@ -38,7 +38,9 @@ func _ready():
 		$new_button.visible = false
 	
 #### FOR TESTING #
-	var player_id = 1
+	var player_id = head.player_ID
+	if player_id == -1:
+		player_id = 1
 	var bot_id = 1
 ##################	
 	var player_bots = parse_json(head.DB.get_player_bots(player_id))
@@ -104,7 +106,9 @@ func _on_new_button_pressed():
 	$new_bot.visible = false
 	
 #### FOR TESTING #
-	var player_id = 1
+	var player_id = head.player_ID
+	if player_id == -1:
+		player_id = 1
 ##################
 	if not head.DB.new_bot(player_id, [0,0,0,0,0,0], $new_bot/back_panel/name_edit.text):
 		print("Creating a new bot failed")
