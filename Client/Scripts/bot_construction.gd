@@ -164,7 +164,8 @@ func _on_test_button_pressed():
 	pass
 
 func _on_finish_button_pressed():
-### ASK TO CONFRIM SAVE HERE ###
+	$confirm_finish.visible = true
+	yield($confirm_finish/confirm, "pressed")
 	
 	update_current_bot()
 	for i in range(bot_ids.size()):
@@ -197,6 +198,9 @@ func _on_finish_button_pressed():
 			print("  name:             %d" % bots[i]["name"])
 	
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
+
+func _on_not_confirm_pressed():
+	$confirm_finish.visible = false
 
 # Update local bots
 #------------------------------------------------
