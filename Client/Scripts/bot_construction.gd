@@ -167,7 +167,6 @@ func _on_finish_button_pressed():
 ### ASK TO CONFRIM SAVE HERE ###
 	
 	update_current_bot()
-	print(bots[current]["primary_weapon"])
 	for i in range(bot_ids.size()):
 		if not head.DB.update_bot(
 				bot_ids[i],
