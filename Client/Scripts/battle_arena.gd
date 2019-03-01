@@ -30,7 +30,7 @@ func _ready():
 	f.open('res://NeuralNetwork/gamestates', 3)
     # Call get opponent here
 #	var opponent_bot_ID = get_opponent(head.bot_ID)
-	fighter1 = player_scene.instance() #player_scene.instance()
+	fighter1 = bot_scene.instance() #player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
@@ -55,7 +55,7 @@ func _ready():
 
 	health = fighter1.get_hit_points()
 
-	t.set_wait_time(.01)
+	t.set_wait_time(.3)
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.start()
@@ -64,8 +64,7 @@ func _physics_process(delta):
 	self.get_node("healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
 	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
 	if t.is_stopped():
-		game_state.set_predictions(send_nn_state())
-		print(game_state.get_battle_state())
+		send_nn_state(1) # pass number of bots. 
 		t.start()
 		print("===================battle arena send nn response=========================")
 #		print(game_state.get_predictions())
@@ -117,28 +116,20 @@ func get_opponent(bot_id):
 			opponent = null
 	return opponent
 
-func send_nn_state():
+func send_nn_state(number_of_bots):
 	var output = []
-	var path = PoolStringArray()
-	var predictions = []
-#	###############################TRAIN####################################################
-#   Don't use this. It's too ineficient.
-#	path.append(ProjectSettings.globalize_path('res://NeuralNetwork/client.py'))
-#	path.append(game_state.get_training_state())
-#	f.store_string(str(path) + "\n")
-
-	###############################BATTLE####################################################
-	#path = PoolStringArray()
-	#path.append(ProjectSettings.globalize_path('res://NeuralNetwork/client.py'))
 	var message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_battle_state())
-	#message = message.json_escape()
-	#path.append(message)
 	head.Client.send_request(message)
-
 #	print("OUT_PUT=================================================")
 #	print(output)
 	output = head.Client.get_response()
 	output = output[0].split_floats(',', false)
+	game_state.set_predictions(output)
+	if number_of_bots > 1:
+		message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_training_state())
+		output = head.Client.get_response()
+		output = output[0].split_floats(',', false)
+		game_state.set_opponent_predictions(output)
 	return output
 
 # Popup Functions
