@@ -7,6 +7,8 @@ var sub_names = ["", "", ""]
 
 onready var names = get_node("names").get_children()
 
+signal name_entered
+
 func _ready():
 	var delay = 1.0
 	var name_pos = 0 # for sub_names
@@ -47,6 +49,7 @@ func select_name(text, position):
 		one_pass = true
 
 func start():
+	emit_signal("name_entered")
 	head.username = get_username()
 	head.create_user() # create_user() must be run after head.username is set
 	get_tree().change_scene("res://Scenes/main_menu.tscn")

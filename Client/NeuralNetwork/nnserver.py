@@ -15,6 +15,10 @@ from collections import deque
 #import mss                                    # For taking screen shots
 #from PIL import Image                         # For image stuff
 
+# Just disables the warning, doesn't enable AVX/FMA
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 state_size  = 13
 action_size = 108
 batch_size  = 16
