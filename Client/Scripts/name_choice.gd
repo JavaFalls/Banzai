@@ -1,7 +1,7 @@
 extends Node
 
 # Get head singleton
-#onready var head = get_tree().get_root().get_node("/root/head")
+onready var head = get_tree().get_root().get_node("/root/head")
 
 var sub_names = ["", "", ""]
 
@@ -50,6 +50,3 @@ func select_name(text, position):
 
 func start():
 	emit_signal("name_entered")
-	head.username = get_username()
-	head.create_user() # create_user() must be run after head.username is set
-	get_tree().change_scene("res://Scenes/main_menu.tscn")

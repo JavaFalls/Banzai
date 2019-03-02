@@ -7,7 +7,7 @@ var relative_mouse = Vector2()
 
 func _process(delta):
 	if is_player:
-		game_state.set_player_state(self)
+		game_state.set_opponent_state(self)
 	else:
 		game_state.set_bot_state(self)
 #	print("set_player_state")
