@@ -178,7 +178,7 @@ func set_player_state(player):
 
 
 func set_predictions(predictions):
-	predicted_action = predictions[0]
+	predicted_action = predictions
 #	print("set predictions")
 #	print(predicted_action)
 #	print(predictions[0])

@@ -10,7 +10,9 @@ var damage = 2                                 # Amount of damage this sword doe
 
 # Called by the bots to activate the ability
 func use():
-	self.rotate(self.get_parent().aim_angle)
+#	self.look_at(self.get_parent().get_position() + Vector2(sin(get_parent().aim_angle), cos(get_parent().aim_angle)))
+#	self.rotate(get_parent().aim_angle)
+	self.look_at(Vector2(0,0))
 	if !animation.is_playing():
 		animation.play("swing_quick",-1, 1.0, false )
 

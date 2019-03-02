@@ -125,7 +125,7 @@ tracks/3/keys = {
 "values": [ true, false ]
 }
 
-[node name="atk_quick" type="Area2D" index="0"]
+[node name="atk_quick" type="Area2D"]
 
 visible = false
 rotation = 3.14159

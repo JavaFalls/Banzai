@@ -65,9 +65,9 @@ func _physics_process(delta):
 	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
 	if t.is_stopped():
 		print("===================battle arena send nn response=========================")
-#		print(game_state.get_predictions())
+		print(game_state.get_predictions())
 		game_state.set_predictions(send_nn_state())
-		print(game_state.get_battle_state())
+#		print(game_state.get_battle_state())
 #		print(send_nn_state())
 		t.start()
 
@@ -140,7 +140,8 @@ func send_nn_state():
 #	print("OUT_PUT=================================================")
 #	print(output)
 	output = head.Client.get_response()
-	output = output[0].split_floats(',', false)
+	#output = output[0].split_floats(',', false)
+	output = int(output)
 	return output
 
 # Popup Functions
