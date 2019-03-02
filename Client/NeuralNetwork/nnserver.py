@@ -21,7 +21,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 state_size  = 13
 action_size = 108
-batch_size  = 16
+batch_size  = 1
 
 # Create pipes
 request_handle = win32pipe.CreateNamedPipe(
@@ -115,7 +115,7 @@ class DQN_agent:
         self.epsilon_decay = 0.995 # rate at which epsilon decays; get multiplied to epsilon
         self.epsilon_min   = 0.01 # floor that epsilon will rest at after heavy training
 
-        self.learning_rate = 0.001
+        self.learning_rate = 0.005
 
         self.reward        = 0
         self.state_counter = 0
@@ -126,11 +126,10 @@ class DQN_agent:
     
     def _build_model(self): # defines the NN
         model = Sequential() 
-        model.add(Dense(140, input_dim = self.state_size, activation='linear', bias_initializer='zeros'))
-        model.add(Dense(120, activation='linear'))
+        model.add(Dense(108, input_dim = self.state_size, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
 
-        model.compile(loss='mean_squared_error', optimizer=Adam(lr = self.learning_rate))
+        model.compile(loss='mean_absolute_error', optimizer=Adam(lr = self.learning_rate))
 
         return model
 
@@ -143,16 +142,17 @@ class DQN_agent:
         act_values = self.model.predict(state)
         print("act_value1")
         print(act_values[0,0:5])
+        print("                                                " ,np.amax(act_values[0]))
         return np.argmax(act_values[0]) # chooses the best choice
 
     def replay(self, batch_size):
         minibatch = random.sample(self.memory, batch_size)
 
         for state, action, reward, next_state in minibatch:
-            print(state)
-            print(action)
-            print(reward)
-            print(next_state)
+        #     print(state)
+        #     print(action)
+        #     print(reward)
+        #     print(next_state)
             target = (reward) # + self.gamma * np.amax(self.model.predict(next_state)[0]))
             target_f = self.model.predict(state)
             target_f[0] [action] = target
@@ -206,19 +206,28 @@ class DQN_agent:
                 bot_aim_angle_diff = 1 - bot_aim_angle_diff
         if bot_aim_next_angle_diff > .5:
                 bot_aim_next_angle_diff = 1 - bot_aim_next_angle_diff
-        player_aim_angle_diff      = abs(gamestate[2] - gamestate[5])
-        player_aim_next_angle_diff = abs(next_gamestate[2] - next_gamestate[5])
+        player_aim_angle_diff      = abs(gamestate[10] - gamestate[7])
+        player_aim_next_angle_diff = abs(next_gamestate[10] - next_gamestate[7])
         if player_aim_angle_diff > .5:
                 player_aim_angle_diff = 1 - player_aim_angle_diff
         if player_aim_next_angle_diff > .5:
                 player_aim_next_angle_diff = 1 - player_aim_next_angle_diff
 
         new_reward = 0
-        new_reward += gamestate[9] - next_gamestate[9] * 10                    # reward for dealing damage
-        new_reward += bot_aim_angle_diff - bot_aim_next_angle_diff * 10         # reward for not being targeted
+        # new_reward += (gamestate[9] - next_gamestate[9]) * 20                    # reward for dealing damage
+        new_reward += (bot_aim_angle_diff - bot_aim_next_angle_diff) * -5000      # reward for good aim  
+        # new_reward += 1/(bot_aim_next_angle_diff + 0.0001)                        # reward for pointing at player
+        new_reward += (gamestate[8]+next_gamestate[8]) * 10000                    # reward for putting the player in peril
+        # new_reward += ((1/next_gamestate[6]+.000001)*10000)-30                     # test. reward for being close to opponent
 
-        new_reward -= gamestate[3] - next_gamestate[3] * 10                    # criticism for losing health
-        new_reward -= player_aim_angle_diff - player_aim_next_angle_diff * 10   # criticism for bad aim
+        new_reward -= (gamestate[3] - next_gamestate[3]) * 20                    # criticism for losing health
+        
+        new_reward -= (player_aim_angle_diff - player_aim_next_angle_diff) * 5   # criticism for being targeted # dont use
+        # new_reward -= (gamestate[4]+next_gamestate[4]) * 10                    # criticism for the bot being in peril # dont use
+
+        if (((gamestate[3] - next_gamestate[3]) == 0) and ((gamestate[4] - next_gamestate[4]) == 1)): # reward for dodging
+               new_reward += 100
+        print("                                                                               reward     ",new_reward)
         return new_reward
 
 
@@ -316,7 +325,7 @@ connect_request()
 connect_response()
 while True:
         print("Server Code\n\n")
-        print("get request")
+        #print("get request")
         gamestate = []
         next_gamestate = []
         # print("Server Code\n\n")
@@ -326,7 +335,7 @@ while True:
         try:
                 request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '').replace('\x00', '')
                 request = json.loads(request)
-                print(request)
+                #print(request)
                 # print(request)
                 # some kind of parsing with request then some if statements
                 #packet_type = identify(request)
@@ -347,16 +356,17 @@ while True:
         request = fighter1.reshape(request["Message"])
         #print(request)
         response = fighter1.train(request)
-        print(response)
+        
         # response = request
         #elif packet_type == 'B':
                 #response = battle(request, fighter1, fighter2)
         #print(f'{request}')
 
-        print("sending response")
+        #print("sending response")
         # print("sending response")
  #       print(response)
         send_response(response) # send the action or actions or load successful message based on packet type
+        print(response)
 
 # Close pipes
 print("Shutting Down...")

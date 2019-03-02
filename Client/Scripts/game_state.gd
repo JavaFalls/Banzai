@@ -35,7 +35,7 @@ onready var opponent_reward           = 0
 
 #onready var bot_position = [] # Bot location
 onready var bot_mouse    = [] # Bot mouse position
-onready var bot_vector   = [] # Bot movement vector 
+onready var bot_vector   = [] # Bot movement vector
 onready var bot_psuedo_primary   = 0
 onready var bot_psuedo_secondary = 0
 onready var bot_psuedo_ability   = 0
@@ -53,7 +53,7 @@ onready var predicted_opponent_in_peril         = 0
 
 onready var predicted_bot_position = Vector2() # Predicted bot location
 onready var predicted_bot_mouse    = Vector2() # Predicted bot mouse position
-onready var predicted_bot_vector   = Vector2() # Predicted bot movement vector 
+onready var predicted_bot_vector   = Vector2() # Predicted bot movement vector
 onready var predicted_bot_psuedo_primary   = 0
 onready var predicted_bot_psuedo_secondary = 0
 onready var predicted_bot_psuedo_ability   = 0
@@ -73,7 +73,7 @@ func get_battle_state():
 	bot_angle = (atan2(relative_vector.x,relative_vector.y)-PI)/(-2*PI)
 	relative_vector *= -1
 	opponent_angle = (atan2(relative_vector.x, relative_vector.y)-PI)/(-2*PI)
-	
+
 	game_state.append(self.bot_position)
 	game_state.append(self.bot_aim_angle)
 	game_state.append(self.bot_health)
@@ -85,15 +85,15 @@ func get_battle_state():
 	game_state.append(self.opponent_health)
 	game_state.append(self.opponent_aim_angle)
 	game_state.append(self.opponent_position)
-	return game_state 
+	return game_state
 
-	
+
 func get_training_state():
 	var game_state = []
 	for x in self.get_battle_state():
 		game_state.push_front(x)
-	return game_state 
-	
+	return game_state
+
 func set_bot_state(bot):
 #	self.bot_position = bot.get_position()
 #	bot_position[0]   = bot_position[0] / 400
@@ -113,9 +113,9 @@ func set_bot_state(bot):
 	self.bot_position[1]   = bot_position[1] / 225
 	self.bot_aim_angle     = (bot.aim_angle-PI)/(-2*PI) #divide in order to normalize
 	self.bot_health        = bot.hit_points
-	self.bot_in_peril      = bot.in_peril 
-	
-	
+	self.bot_in_peril      = bot.in_peril
+
+
 #	self.bot_position = bot.get_position()
 #	bot_position[0]   = randf()
 #	bot_position[1]   = randf()
@@ -127,7 +127,7 @@ func set_bot_state(bot):
 #	bot_psuedo_secondary = randf()
 #	bot_psuedo_ability   = randf()
 #	bot_in_peril         = randf()
-	
+
 func set_opponent_state(opponent):
 #	self.player_position = player.get_position()
 #	player_position[0]   = player_position[0] / 400
@@ -148,7 +148,7 @@ func set_opponent_state(opponent):
 	self.opponent_aim_angle     = (opponent.aim_angle-PI)/(-2*PI) # divide in order to normalize # this probably doesnt work ?
 	self.opponent_health        = opponent.hit_points
 	self.opponent_in_peril      = opponent.in_peril
-	
+
 #	self.player_position = player.get_position()
 #	player_position[0]   = randf()
 #	player_position[1]   = randf()
@@ -164,6 +164,10 @@ func set_opponent_state(opponent):
 
 func set_predictions(predictions):
 	predicted_action = predictions[0]
+#	print("set predictions")
+#	print(predicted_action)
+#	print(predictions[0])
+#	print("end set Predictions print")
 
 	predicted_bot_vector = Vector2(0,0)
 	predicted_bot_psuedo_primary   = 0
@@ -268,7 +272,7 @@ func set_predictions(predictions):
 	elif predicted_action == 35:
 		predicted_bot_vector = Vector2(-1,-1)
 		predicted_bot_psuedo_ability = 1
-		
+
 	elif predicted_action  == 36:
 		predicted_bot_aim_right = 1
 	elif predicted_action == 37:
@@ -400,7 +404,7 @@ func set_predictions(predictions):
 		predicted_bot_vector = Vector2(-1,-1)
 		predicted_bot_psuedo_ability = 1
 		predicted_bot_aim_right = 1
-		
+
 	elif predicted_action  == 72:
 		predicted_bot_aim_left = 1
 	elif predicted_action == 73:
@@ -532,7 +536,7 @@ func set_predictions(predictions):
 		predicted_bot_vector = Vector2(-1,-1)
 		predicted_bot_psuedo_ability = 1
 		predicted_bot_aim_left = 1
-		
+
 func set_opponent_predictions(predictions):
 	var predicted_action = predictions[0]
 
@@ -639,7 +643,7 @@ func set_opponent_predictions(predictions):
 	elif predicted_action == 35:
 		predicted_opponent_vector = Vector2(-1,-1)
 		predicted_opponent_psuedo_ability = 1
-		
+
 	elif predicted_action  == 36:
 		predicted_opponent_aim_right = 1
 	elif predicted_action == 37:
@@ -771,7 +775,7 @@ func set_opponent_predictions(predictions):
 		predicted_opponent_vector = Vector2(-1,-1)
 		predicted_opponent_psuedo_ability = 1
 		predicted_opponent_aim_right = 1
-		
+
 	elif predicted_action  == 72:
 		predicted_opponent_aim_left = 1
 	elif predicted_action == 73:
@@ -903,7 +907,7 @@ func set_opponent_predictions(predictions):
 		predicted_opponent_vector = Vector2(-1,-1)
 		predicted_opponent_psuedo_ability = 1
 		predicted_opponent_aim_left = 1
-		
+
 func get_predictions():
 	var pred = []
 	pred.append((predicted_opponent_position))
@@ -920,5 +924,6 @@ func get_predictions():
 	pred.append((predicted_bot_psuedo_primary))
 	pred.append((predicted_bot_psuedo_secondary))
 	pred.append((predicted_bot_psuedo_ability))
-	pred.append((predicted_bot_in_peril))
+	pred.append((predicted_bot_aim_right))
+	pred.append((predicted_bot_aim_left))
 	return pred

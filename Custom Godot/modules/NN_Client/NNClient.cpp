@@ -97,7 +97,6 @@ int NNClient::send_request(String message_request)
    DWORD bytes_written;
    
    //strncpy(message_cstr, (char*) message_request.c_str(), message_request.length() + 1);
-   cout << message_request.c_str();
    int successful = WriteFile(request_handle, message_request.c_str(), message_length, &bytes_written, NULL);
    //delete [] message_cstr;
    return successful;
@@ -115,7 +114,7 @@ String NNClient::get_response()
    do {
       successful = ReadFile(response_handle, chBuf, 64*1024, &bytes_read, NULL);
    } while(!successful);
-   String server_response(chBuf);
+   String server_response = chBuf;
 
    return server_response;
 }

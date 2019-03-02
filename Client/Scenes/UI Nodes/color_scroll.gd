@@ -47,34 +47,47 @@ func _on_right_pressed():
 func set_current(index=null, color=null):
 	if typeof(index) == TYPE_INT:
 		current = index
-	elif typeof(color) == TYPE_INT:
-		var c_color = Color(color) # RGBA integer construction
+	elif typeof(color) == TYPE_INT or typeof(color) == TYPE_REAL:
+		var c_color = Color(int(color)) if typeof(color) == TYPE_REAL else Color(color) # RGBA integer construction
 		var h = c_color.h
 		var s = c_color.s
 		for i in range(colors.size()):
 			if h == colors[i].h and s == colors[i].s:
 				current = i
 				reset_color_boxes()
-#				set_box_color(color)
+				set_box_color(c_color.v)
 				break
 
-func set_box_color(color):
-	match color.v:
-		0.2:
-			pass
-		0.4:
-			pass
-		0.6:
-			pass
-		0.8:
-			pass
-		1.0:
-			pass
-	color_boxes[0].color = color
-	color_boxes[1].color = color
-	color_boxes[2].color = color
-	color_boxes[3].color = color
-	color_boxes[4].color = color
+func set_box_color(value):
+	if value < 0.9:
+		if value < 0.7:
+			if value < 0.5:
+				if value < 0.3:
+					color_boxes[0].color.v = 0.8
+					color_boxes[1].color.v = 1.0
+					color_boxes[3].color.v = 0.4
+					color_boxes[4].color.v = 0.6
+				else:
+					color_boxes[0].color.v = 1.0
+					color_boxes[1].color.v = 0.2
+					color_boxes[3].color.v = 0.6
+					color_boxes[4].color.v = 0.8
+			else:
+				color_boxes[0].color.v = 0.2
+				color_boxes[1].color.v = 0.4
+				color_boxes[3].color.v = 0.8
+				color_boxes[4].color.v = 1.0
+		else:
+			color_boxes[0].color.v = 0.4
+			color_boxes[1].color.v = 0.6
+			color_boxes[3].color.v = 1.0
+			color_boxes[4].color.v = 0.2
+	else:
+		color_boxes[0].color.v = 0.6
+		color_boxes[1].color.v = 0.8
+		color_boxes[3].color.v = 0.2
+		color_boxes[4].color.v = 0.4
+	color_boxes[2].color.v = value
 
 # Get colors by boxes
 #------------------------
