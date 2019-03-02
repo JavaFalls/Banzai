@@ -92,25 +92,22 @@ func _on_bot_right_pressed():
 
 # Entering a name
 func _on_new_button_pressed():
-### Select from name choice scene ###
-	if false:
-		add_child(name_choice_scene)
-		yield(name_choice_scene, "name_entered")
-		var new_name = name_choice_scene.get_username()
-		name_choice_scene.free()
-#####################################
-	
-	$new_bot/back_panel/name_edit.text = ""
-	$new_bot.visible = true
-	yield(self, "name_entered")
-	$new_bot.visible = false
+	var new_name = ""
+	if name_choice_scene.can_instance():
+		$backlight/Light2D.enabled = false
+		var name_choice_node = name_choice_scene.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
+		add_child(name_choice_node)
+		yield(name_choice_node, "name_entered")
+		new_name = name_choice_node.get_username()
+		name_choice_node.queue_free()
+		$backlight/Light2D.enabled = true
 	
 #### FOR TESTING #
 	var player_id = head.player_ID
 	if player_id == -1:
 		player_id = 1
 ##################
-	if not head.DB.new_bot(player_id, [0,0,0,0,0,0], $new_bot/back_panel/name_edit.text):
+	if not head.DB.new_bot(player_id, [0,0,0,0,0,0,0,0], new_name):
 		print("Creating a new bot failed")
 	else:
 		# Get the newest bot
