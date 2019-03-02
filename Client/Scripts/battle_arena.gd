@@ -65,7 +65,7 @@ func _physics_process(delta):
 	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
 	if t.is_stopped():
 
-		send_nn_state(1) # pass number of bots.
+		send_nn_state(2) # pass number of bots.
 
 		t.start()
 
@@ -117,21 +117,24 @@ func get_opponent(bot_id):
 			opponent = null
 	return opponent
 
-func send_nn_state(number_of_bots):
+func send_nn_state(bot_number):
 	var output = []
-	var message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_battle_state())
+	var message
+	if bot_number == 1: 
+		message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_battle_state())
+	else:
+		message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_training_state())
 	head.Client.send_request(message)
 #	print("OUT_PUT=================================================")
 #	print(output)
 	output = head.Client.get_response()
-	output = output[0].split_floats(',', false)
-	game_state.set_predictions(output)
-	if number_of_bots > 1:
-		message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_training_state())
-		output = head.Client.get_response()
-		output = output[0].split_floats(',', false)
+	output = int(output)
+	if bot_number == 1: 
+		game_state.set_predictions(output)
+	else: 
 		game_state.set_opponent_predictions(output)
-	return output
+	
+	return
 
 # Popup Functions
 func fight_again():

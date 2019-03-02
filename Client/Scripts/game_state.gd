@@ -62,6 +62,9 @@ onready var predicted_bot_in_peril         = 0
 onready var predicted_bot_aim_left  = 0
 onready var predicted_bot_aim_right = 0
 
+onready var predicted_opponent_aim_left  = 0
+onready var predicted_opponent_aim_right = 0
+
 
 
 # Sent to the NN to get predictions back
@@ -163,7 +166,7 @@ func set_opponent_state(opponent):
 
 
 func set_predictions(predictions):
-	predicted_action = predictions[0]
+	predicted_action = predictions
 #	print("set predictions")
 #	print(predicted_action)
 #	print(predictions[0])
@@ -538,7 +541,7 @@ func set_predictions(predictions):
 		predicted_bot_aim_left = 1
 
 func set_opponent_predictions(predictions):
-	var predicted_action = predictions[0]
+	var predicted_action = predictions
 
 	var predicted_opponent_vector = Vector2(0,0)
 	var predicted_opponent_psuedo_primary   = 0

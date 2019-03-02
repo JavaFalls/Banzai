@@ -11,18 +11,26 @@ func _ready():
 func _process(delta):
 	if is_player:
 		game_state.set_opponent_state(self)
+		print("opponent")
+		if game_state.predicted_bot_aim_left == 1:
+			aim_angle -= .1*PI
+			if aim_angle < -1*PI:
+				aim_angle += 2*PI
+		if game_state.predicted_bot_aim_right == 1:
+			aim_angle += .1*PI
+			if aim_angle > PI:
+				aim_angle -= 2*PI
 	else:
 		game_state.set_bot_state(self)
-#	print("set_bot_state(self)")
-	
-	if game_state.predicted_bot_aim_left == 1:
-		aim_angle -= .1*PI
-		if aim_angle < -1*PI:
-			aim_angle += 2*PI
-	if game_state.predicted_bot_aim_right == 1:
-		aim_angle += .1*PI
-		if aim_angle > PI:
-			aim_angle -= 2*PI
+		print("set_bot_state(self)")
+		if game_state.predicted_opponent_aim_left == 1:
+			aim_angle -= .1*PI
+			if aim_angle < -1*PI:
+				aim_angle += 2*PI
+		if game_state.predicted_opponent_aim_right == 1:
+			aim_angle += .1*PI
+			if aim_angle > PI:
+				aim_angle -= 2*PI
 
 func _physics_process(delta):
 	psuedo_mouse     = game_state.predicted_bot_mouse
