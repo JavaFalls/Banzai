@@ -45,8 +45,10 @@ func _ready():
 	var player_id = head.player_ID
 	if player_id == -1:
 		player_id = 1
-	var bot_id = 1
-##################	
+	var bot_id = head.bot_ID
+	if bot_id == -1:
+		bot_id = 1
+##################
 	var player_bots = parse_json(head.DB.get_player_bots(player_id))
 	var id = ""
 	for c in player_bots["data"][0]["player_bots"]:
