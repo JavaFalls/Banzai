@@ -112,10 +112,10 @@ class DQN_agent:
         self.memory = deque(maxlen=20000)
         self.gamma         = 0.95 # discount future reward
         self.epsilon       = 1.0 # exploration rate; initial rate; skew 100% towards exploration
-        self.epsilon_decay = 0.995 # rate at which epsilon decays; get multiplied to epsilon
+        self.epsilon_decay = 0.9999 # rate at which epsilon decays; get multiplied to epsilon
         self.epsilon_min   = 0.01 # floor that epsilon will rest at after heavy training
 
-        self.learning_rate = 0.005
+        self.learning_rate = 5
 
         self.reward        = 0
         self.state_counter = 0
@@ -213,45 +213,22 @@ class DQN_agent:
         if player_aim_next_angle_diff > .5:
                 player_aim_next_angle_diff = 1 - player_aim_next_angle_diff
 
-        new_reward = 0
+        new_reward = 50
         # new_reward += (gamestate[9] - next_gamestate[9]) * 20                    # reward for dealing damage
-        new_reward += (bot_aim_angle_diff - bot_aim_next_angle_diff) * -5000      # reward for good aim  
+        # new_reward += (bot_aim_angle_diff - bot_aim_next_angle_diff) * -5000      # reward for good aim  
         # new_reward += 1/(bot_aim_next_angle_diff + 0.0001)                        # reward for pointing at player
-        new_reward += (gamestate[8]+next_gamestate[8]) * 10000                    # reward for putting the player in peril
-        # new_reward += ((1/next_gamestate[6]+.000001)*10000)-30                     # test. reward for being close to opponent
+        # new_reward += (gamestate[8]+next_gamestate[8]) * 10000                    # reward for putting the player in peril
+        #new_reward += ((1/next_gamestate[6]+.000001)*10000)-30                     # test. reward for being close to opponent
 
-        new_reward -= (gamestate[3] - next_gamestate[3]) * 20                    # criticism for losing health
+        # new_reward -= (gamestate[3] - next_gamestate[3]) * 20                    # criticism for losing health
         
-        new_reward -= (player_aim_angle_diff - player_aim_next_angle_diff) * 5   # criticism for being targeted # dont use
+        #new_reward -= (player_aim_angle_diff - player_aim_next_angle_diff) * 5   # criticism for being targeted # dont use
         # new_reward -= (gamestate[4]+next_gamestate[4]) * 10                    # criticism for the bot being in peril # dont use
 
-        if (((gamestate[3] - next_gamestate[3]) == 0) and ((gamestate[4] - next_gamestate[4]) == 1)): # reward for dodging
-               new_reward += 100
+        #if (((gamestate[3] - next_gamestate[3]) == 0) and ((gamestate[4] - next_gamestate[4]) == 1)): # reward for dodging
+        #       new_reward += 100
         print("                                                                               reward     ",new_reward)
         return new_reward
-
-
-def react(game_state, model):
-   input_list = []
-   output_list = []
-   response_list = []
-   for item in game_state:
-      input_list.append(item)
-   str_input_list = str(input_list)
-   input_list = str_input_list.replace(" ","").replace("''","'0'").replace("[]", "0,0").replace("[","").replace("]","").replace("(","")\
-   .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")
-   input_list.pop(0)
-   input_list.pop(0)
-   print("input_;ist=====================")
-   print(input_list)
-   for item in input_list:
-           output_list.append(float(item))
-   response_list = model.predict(output_list)
-   output_list = []
-   for item in response_list:
-           for x in item:
-                   output_list.append(x)
-   return(output_list)
 
 def load_bot(file_name = 'my_model.h5'):
    model = load_model(__file__.replace('nnserver.py', file_name))
@@ -344,8 +321,6 @@ while True:
                 #elif packet_type == 'T':
                 request_completed = True
 
-                # Process a request for the appropriate bot
-                #response = react(process_message(request), player_bot if request["Requestor"] == "Player" else opponent_bot)
         except UnboundLocalError as Null_Reference:
                 print('Client Request failed! Retrying...')
                 input("Do you want to retry?")
