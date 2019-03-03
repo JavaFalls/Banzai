@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=2]
@@ -13,6 +13,9 @@
 [ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=11]
 [ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=12]
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=13]
+[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=14]
+[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=15]
+[ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=16]
 
 [sub_resource type="Environment" id=1]
 
@@ -115,6 +118,40 @@ default_font = ExtResource( 11 )
 default_font = ExtResource( 11 )
 _sections_unfolded = [ "Resource" ]
 
+[sub_resource type="StyleBoxEmpty" id=7]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="Theme" id=6]
+
+resource_local_to_scene = true
+default_font = ExtResource( 14 )
+_sections_unfolded = [ "Resource" ]
+
 [node name="main_menu" type="Node" index="0"]
 
 script = ExtResource( 1 )
@@ -122,6 +159,7 @@ _sections_unfolded = [ "Margin" ]
 
 [node name="Control" type="Control" parent="." index="0"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -137,6 +175,7 @@ _sections_unfolded = [ "Rect", "Theme", "Visibility" ]
 
 [node name="MarginContainer" type="MarginContainer" parent="Control" index="0"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -215,6 +254,7 @@ environment = SubResource( 1 )
 
 [node name="stats_button" type="TextureButton" parent="Control" index="1"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -265,6 +305,7 @@ _sections_unfolded = [ "Theme", "Visibility" ]
 
 [node name="ranking_button" type="TextureButton" parent="Control" index="2"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -314,6 +355,7 @@ max_lines_visible = -1
 
 [node name="custom_button" type="TextureButton" parent="Control" index="3"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -363,6 +405,7 @@ max_lines_visible = -1
 
 [node name="fight_button" type="TextureButton" parent="Control" index="4"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -412,6 +455,7 @@ max_lines_visible = -1
 
 [node name="train_button" type="TextureButton" parent="Control" index="5"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -461,6 +505,7 @@ max_lines_visible = -1
 
 [node name="logout_button" type="TextureButton" parent="Control" index="6"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -774,6 +819,43 @@ playback/speed = 1.0
 
 position = Vector2( 198, 152 )
 
+[node name="go_to_instructions" type="Button" parent="." index="6"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 9.0
+margin_right = 93.0
+margin_bottom = 31.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/hover = SubResource( 7 )
+custom_styles/pressed = SubResource( 8 )
+custom_styles/focus = SubResource( 9 )
+custom_styles/disabled = SubResource( 10 )
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Instructions"
+icon = ExtResource( 15 )
+flat = true
+align = 1
+_sections_unfolded = [ "custom_colors", "custom_fonts", "custom_styles" ]
+
+[node name="instructions" parent="." index="7" instance=ExtResource( 16 )]
+
+visible = false
+theme = SubResource( 6 )
+
 [connection signal="pressed" from="Control/stats_button" to="." method="scene_change" binds= [ "stats" ]]
 
 [connection signal="pressed" from="Control/ranking_button" to="." method="scene_change" binds= [ "ranking" ]]
@@ -791,5 +873,7 @@ position = Vector2( 198, 152 )
 [connection signal="popup_hide" from="timeout_warning" to="." method="restart_timer"]
 
 [connection signal="timeout" from="timeout" to="." method="screen_idle_timeout"]
+
+[connection signal="pressed" from="go_to_instructions" to="." method="_on_go_to_instructions_pressed"]
 
 
