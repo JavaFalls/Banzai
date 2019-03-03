@@ -14,6 +14,8 @@ onready var color_boxes = [
 ]
 onready var selected_sprite = get_node("HBoxContainer/colors/color2/selected_sprite")
 
+signal color_changed
+
 # Godot functions
 #----------------
 func _ready():
@@ -28,6 +30,7 @@ func _on_double_left_pressed():
 	else:
 		current -= 1
 	reset_color_boxes()
+	emit_signal("color_changed")
 
 func _on_double_right_pressed():
 	if current+1 >= colors.size():
@@ -35,12 +38,15 @@ func _on_double_right_pressed():
 	else:
 		current += 1
 	reset_color_boxes()
+	emit_signal("color_changed")
 
 func _on_left_pressed():
 	shift_color(false)
+	emit_signal("color_changed")
 
 func _on_right_pressed():
 	shift_color(true)
+	emit_signal("color_changed")
 
 # Setters
 #--------
@@ -56,6 +62,7 @@ func set_current(index=null, color=null):
 				current = i
 				reset_color_boxes()
 				set_box_color(c_color.v)
+				emit_signal("color_changed")
 				break
 
 func set_box_color(value):

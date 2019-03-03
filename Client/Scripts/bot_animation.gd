@@ -42,9 +42,35 @@ func load_colors_from_DB(bot_ID):
 	var raw_JSON = head.DB.get_bot(bot_ID)
 	if (raw_JSON != ""):
 		var bot_dictionary = JSON.parse(raw_JSON).result["data"][0]
-		set_primary_color(Color(int(bot_dictionary["primary_color"])))
-		set_secondary_color(Color(int(bot_dictionary["secondary_color"])))
-		set_accent_color(Color(int(bot_dictionary["accent_color"])))
+		
+		var primary_color
+		var secondary_color
+		var accent_color
+		if typeof(bot_dictionary["primary_color"]) != TYPE_INT:
+			if typeof(bot_dictionary["primary_color"]) == TYPE_NIL:
+				primary_color = 0
+			else:
+				primary_color = int(bot_dictionary["primary_color"])
+		else:
+			primary_color = bot_dictionary["primary_color"]
+		if typeof(bot_dictionary["secondary_color"]) != TYPE_INT:
+			if typeof(bot_dictionary["secondary_color"]) == TYPE_NIL:
+				secondary_color = 0
+			else:
+				secondary_color = int(bot_dictionary["secondary_color"])
+		else:
+			primary_color = bot_dictionary["secondary_color"]
+		if typeof(bot_dictionary["accent_color"]) != TYPE_INT:
+			if typeof(bot_dictionary["accent_color"]) == TYPE_NIL:
+				accent_color = 0
+			else:
+				accent_color = int(bot_dictionary["accent_color"])
+		else:
+			accent_color = bot_dictionary["accent_color"]
+		
+		set_primary_color(Color(primary_color))
+		set_secondary_color(Color(secondary_color))
+		set_accent_color(Color(accent_color))
 
 # Getters and setters
 #-------------------------------------------------------------------------------

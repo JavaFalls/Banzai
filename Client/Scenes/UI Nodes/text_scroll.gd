@@ -20,6 +20,12 @@ func _process(delta):
 	if text_position < text_length:
 		tick += delta
 		if tick - tick_start >= delay:
+			
+			# Skip spaces
+			while scroll_text.substr(text_position, 1) == " ":
+				text += scroll_text.substr(text_position, 1)
+				text_position += step
+			
 			text += scroll_text.substr(text_position, step)
 			text_position += step
 			tick = 0.0

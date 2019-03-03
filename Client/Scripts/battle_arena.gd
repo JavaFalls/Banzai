@@ -120,7 +120,7 @@ func get_opponent(bot_id):
 func send_nn_state(bot_number):
 	var output = []
 	var message
-	if bot_number == 1: 
+	if bot_number == 1:
 		message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_battle_state())
 	else:
 		message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_training_state())
@@ -128,13 +128,13 @@ func send_nn_state(bot_number):
 	output = head.Client.get_response()
 	output = int(output)
 	print(output)
-	if bot_number == 1: 
+	if bot_number == 1:
 		if(output):
 			game_state.set_predictions(output)
-	else: 
+	else:
 		if(output):
 			game_state.set_opponent_predictions(output)
-	
+
 	return
 
 # Popup Functions
