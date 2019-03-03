@@ -14,11 +14,11 @@ func _ready():
 # Signal methods
 #------------------------------------------------
 func _on_customize_player_pressed():
-	head.construction = head.BOT
+	head.construction = head.PLAYER
 	get_tree().change_scene(CUSTOMIZE_BOT_PATH)
 
 func _on_customize_bot_pressed():
-	head.construction = head.PLAYER
+	head.construction = head.BOT
 	get_tree().change_scene(CUSTOMIZE_BOT_PATH)
 
 func _on_back_pressed():
