@@ -95,6 +95,9 @@ func get_training_state():
 	var game_state = []
 	for x in self.get_battle_state():
 		game_state.push_front(x)
+	print("=================gmae_state==========================")
+	print(game_state)
+	print(self.get_battle_state())		
 	return game_state
 
 func set_bot_state(bot):
@@ -166,6 +169,8 @@ func set_opponent_state(opponent):
 
 
 func set_predictions(predictions):
+	print("predictions===============================")
+	print(predictions)
 	predicted_action = predictions
 #	print("set predictions")
 #	print(predicted_action)
@@ -541,6 +546,8 @@ func set_predictions(predictions):
 		predicted_bot_aim_left = 1
 
 func set_opponent_predictions(predictions):
+	print("opponent_predictions===============================")
+	print(predictions)
 	var predicted_action = predictions
 
 	var predicted_opponent_vector = Vector2(0,0)
