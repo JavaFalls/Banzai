@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=10]
 [ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=11]
 [ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=12]
+[ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=13]
 
 [sub_resource type="Environment" id=1]
 
@@ -114,7 +115,7 @@ default_font = ExtResource( 11 )
 default_font = ExtResource( 11 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="main_menu" type="Node"]
+[node name="main_menu" type="Node" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
@@ -171,7 +172,8 @@ texture = ExtResource( 5 )
 [node name="backlight" type="Sprite" parent="Control/MarginContainer" index="3"]
 
 modulate = Color( 0, 1, 0.109375, 0.469608 )
-position = Vector2( 877, 470 )
+position = Vector2( 876.14, 470 )
+scale = Vector2( 0.72043, 1 )
 texture = ExtResource( 6 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
@@ -182,7 +184,8 @@ texture = ExtResource( 7 )
 
 [node name="Light2D" type="Light2D" parent="Control/MarginContainer" index="5"]
 
-position = Vector2( 877, 469 )
+position = Vector2( 876.14, 469 )
+scale = Vector2( 0.72043, 1 )
 enabled = true
 editor_only = false
 texture = ExtResource( 6 )
@@ -766,6 +769,10 @@ playback_speed = 1.0
 playback/active = false
 playback/repeat = false
 playback/speed = 1.0
+
+[node name="animation_bot" parent="." index="5" instance=ExtResource( 13 )]
+
+position = Vector2( 198, 152 )
 
 [connection signal="pressed" from="Control/stats_button" to="." method="scene_change" binds= [ "stats" ]]
 

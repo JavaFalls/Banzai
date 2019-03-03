@@ -6,6 +6,9 @@ onready var head = get_tree().get_root().get_node("/root/head")
 onready var _background = get_node("Control/MarginContainer/background")
 onready var _timer = get_node("timeout")
 onready var _tween = get_node("Tween")
+onready var _bot = $animation_bot
+
+var ty34918jj = false
 
 func _ready():
 	get_node("logout_warning/Label").text = (
@@ -16,15 +19,37 @@ func _ready():
 	get_node("logout_warning/button_face/Button").connect("mouse_exited", self, "hover_logout_confirm", [false])
 	
 	get_node("Control/username").text = head.username
-	pass
-
-func _process(delta):
-	pass
+	
+### TEST ###
+	var player_id = head.player_ID
+	if player_id == -1:
+		player_id = 1
+	var bot_id = head.bot_ID
+	if bot_id == -1:
+		bot_id = 1
+############
+	_bot.load_colors_from_DB(bot_id)
 
 func _input(event):
 	if event is InputEventMouse:
 		_timer.start()
-	pass
+		if event is InputEventMouseMotion:
+			var look_at = get_tree().get_root().get_mouse_position() - _bot.position
+			if look_at.x > 0:
+				_bot.face_right()
+			else:
+				_bot.face_left()
+			if look_at.y > 0:
+				_bot.start_walking_forward()
+			else:
+				_bot.start_walking_backward()
+
+func _process(delta):
+	if Input.is_key_pressed(KEY_G) and Input.is_key_pressed(KEY_E) and Input.is_key_pressed(KEY_A) and Input.is_key_pressed(KEY_R) and Input.is_key_pressed(KEY_Y):
+		ty34918jj = true
+	if ty34918jj:
+		var look_at = get_tree().get_root().get_mouse_position() - _bot.position
+		_bot.translate(look_at.normalized() * 3)
 
 """
 Various nodes' signal methods

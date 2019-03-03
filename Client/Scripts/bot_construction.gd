@@ -45,8 +45,10 @@ func _ready():
 	var player_id = head.player_ID
 	if player_id == -1:
 		player_id = 1
-	var bot_id = 1
-##################	
+	var bot_id = head.bot_ID
+	if bot_id == -1:
+		bot_id = 1
+##################
 	var player_bots = parse_json(head.DB.get_player_bots(player_id))
 	var id = ""
 	for c in player_bots["data"][0]["player_bots"]:
@@ -79,8 +81,14 @@ func _ready():
 	is2.connect("info_queried", self, "grab_info", [head.SECONDARY])
 	is3.connect("info_queried", self, "grab_info", [head.ABILITY])
 	
+	$color_scroll.connect("color_changed", self, "set_display_bot_colors")
+	$color_scroll2.connect("color_changed", self, "set_display_bot_colors")
+	$color_scroll3.connect("color_changed", self, "set_display_bot_colors")
+	
 	if not bots.empty():
 		get_bot_info(bots[0])
+	
+	$animation_bot.face_left()
 
 # Signal methods
 #------------------------------------------------
@@ -270,3 +278,8 @@ func get_bot_info(bot_data):
 	$color_scroll2.set_current(null, bot_data["secondary_color"])
 	$color_scroll3.set_current(null, bot_data["accent_color"])
 	$color_scroll4.set_current(null, bot_data["light_color"])
+
+func set_display_bot_colors():
+	$animation_bot.set_primary_color($color_scroll.get_selected_color())
+	$animation_bot.set_secondary_color($color_scroll2.get_selected_color())
+	$animation_bot.set_accent_color($color_scroll3.get_selected_color())
