@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tag_green.png-c3220b0708ed406f80a51efbcebcb8ee.stex"
+path="res://.import/tag_green.png-09d32b7f33f4a52e849740b068c2bc42.stex"
 
 [deps]
 
-source_file="res://assets/local_scoreboard/tag_green.png"
-dest_files=[ "res://.import/tag_green.png-c3220b0708ed406f80a51efbcebcb8ee.stex" ]
+source_file="res://Assets/local_scoreboard/tag_green.png"
+dest_files=[ "res://.import/tag_green.png-09d32b7f33f4a52e849740b068c2bc42.stex" ]
 
 [params]
 

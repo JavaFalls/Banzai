@@ -1,18 +1,20 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
-[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=2]
-[ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=3]
-[ext_resource path="res://assets/menu/main_menu/panel_left.png" type="Texture" id=4]
-[ext_resource path="res://assets/menu/main_menu/panel_right.png" type="Texture" id=5]
-[ext_resource path="res://assets/menu/main_menu/backlight.png" type="Texture" id=6]
-[ext_resource path="res://assets/menu/main_menu/platform.png" type="Texture" id=7]
+[ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
+[ext_resource path="res://assets/menu/main_menu/panel_left.png" type="Texture" id=3]
+[ext_resource path="res://assets/menu/main_menu/panel_right.png" type="Texture" id=4]
+[ext_resource path="res://assets/menu/main_menu/backlight.png" type="Texture" id=5]
+[ext_resource path="res://assets/menu/main_menu/platform.png" type="Texture" id=6]
+[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=7]
 [ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=8]
 [ext_resource path="res://assets/menu/main_menu/button_large.png" type="Texture" id=9]
 [ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=10]
 [ext_resource path="res://themes/fonts/ROBOVOX_.tres" type="DynamicFont" id=11]
 [ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=12]
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=13]
+[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=14]
+[ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=15]
 
 [sub_resource type="Environment" id=1]
 
@@ -115,6 +117,40 @@ default_font = ExtResource( 11 )
 default_font = ExtResource( 11 )
 _sections_unfolded = [ "Resource" ]
 
+[sub_resource type="StyleBoxEmpty" id=6]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="Theme" id=10]
+
+resource_local_to_scene = true
+default_font = ExtResource( 7 )
+_sections_unfolded = [ "Resource" ]
+
 [node name="main_menu" type="Node" index="0"]
 
 script = ExtResource( 1 )
@@ -132,11 +168,11 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 2 )
-_sections_unfolded = [ "Rect", "Theme", "Visibility" ]
+_sections_unfolded = [ "Rect" ]
 
 [node name="MarginContainer" type="MarginContainer" parent="Control" index="0"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -156,31 +192,31 @@ _sections_unfolded = [ "Anchor", "Size Flags" ]
 [node name="background" type="Sprite" parent="Control/MarginContainer" index="0"]
 
 position = Vector2( 877, 489 )
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="panel_left" type="Sprite" parent="Control/MarginContainer" index="1"]
 
 position = Vector2( 715, 575 )
-texture = ExtResource( 4 )
+texture = ExtResource( 3 )
 
 [node name="panel_right" type="Sprite" parent="Control/MarginContainer" index="2"]
 
 position = Vector2( 1026, 489 )
-texture = ExtResource( 5 )
+texture = ExtResource( 4 )
 
 [node name="backlight" type="Sprite" parent="Control/MarginContainer" index="3"]
 
 modulate = Color( 0, 1, 0.109375, 0.469608 )
 position = Vector2( 876.14, 470 )
 scale = Vector2( 0.72043, 1 )
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
 [node name="platform" type="Sprite" parent="Control/MarginContainer" index="4"]
 
 position = Vector2( 877, 561 )
-texture = ExtResource( 7 )
+texture = ExtResource( 6 )
 
 [node name="Light2D" type="Light2D" parent="Control/MarginContainer" index="5"]
 
@@ -188,7 +224,7 @@ position = Vector2( 876.14, 469 )
 scale = Vector2( 0.72043, 1 )
 enabled = true
 editor_only = false
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 offset = Vector2( 0, 0 )
 texture_scale = 1.0
 color = Color( 1, 1, 1, 1 )
@@ -213,106 +249,103 @@ _sections_unfolded = [ "Material", "Transform" ]
 
 environment = SubResource( 1 )
 
-[node name="stats_button" type="TextureButton" parent="Control" index="1"]
+[node name="credits_button" type="Button" parent="Control" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 341.0
+margin_left = 340.0
 margin_top = 12.0
-margin_right = 389.0
+margin_right = 391.0
 margin_bottom = 38.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
+custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
-enabled_focus_mode = 2
+enabled_focus_mode = 0
 shortcut = null
 group = null
-texture_normal = ExtResource( 8 )
-stretch_mode = 5
-_sections_unfolded = [ "Rect", "Textures" ]
+text = "credits"
+flat = true
+clip_text = true
+align = 1
+_sections_unfolded = [ "Textures", "custom_colors" ]
 
-[node name="Label" type="Label" parent="Control/stats_button" index="0"]
+[node name="NinePatchRect" type="NinePatchRect" parent="Control/credits_button" index="0"]
 
-modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+show_behind_parent = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 48.0
+margin_left = 1.0
+margin_right = 49.0
 margin_bottom = 26.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
-theme = ExtResource( 2 )
-text = "credits"
-align = 1
-valign = 1
-clip_text = true
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Theme", "Visibility" ]
+size_flags_vertical = 1
+texture = ExtResource( 8 )
+_sections_unfolded = [ "Visibility" ]
 
-[node name="ranking_button" type="TextureButton" parent="Control" index="2"]
+[node name="ranking_button" type="Button" parent="Control" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 341.0
+margin_left = 337.0
 margin_top = 46.0
-margin_right = 389.0
+margin_right = 393.0
 margin_bottom = 72.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
+custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
-enabled_focus_mode = 2
+enabled_focus_mode = 0
 shortcut = null
 group = null
-texture_normal = ExtResource( 8 )
-stretch_mode = 5
-_sections_unfolded = [ "Rect" ]
+text = "ranking"
+flat = true
+clip_text = true
+align = 1
+_sections_unfolded = [ "custom_colors" ]
 
-[node name="Label" type="Label" parent="Control/ranking_button" index="0"]
+[node name="NinePatchRect" type="NinePatchRect" parent="Control/ranking_button" index="0"]
 
-modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+show_behind_parent = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 48.0
+margin_left = 4.0
+margin_right = 52.0
 margin_bottom = 26.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
-theme = ExtResource( 2 )
-text = "ranking"
-align = 1
-valign = 1
-clip_text = true
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+size_flags_vertical = 1
+texture = ExtResource( 8 )
+_sections_unfolded = [ "Visibility" ]
 
-[node name="custom_button" type="TextureButton" parent="Control" index="3"]
+[node name="custom_button" type="Button" parent="Control" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -324,22 +357,26 @@ margin_right = 389.0
 margin_bottom = 106.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
+custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
-enabled_focus_mode = 2
+enabled_focus_mode = 0
 shortcut = null
 group = null
-texture_normal = ExtResource( 8 )
-stretch_mode = 5
-_sections_unfolded = [ "Rect", "Textures" ]
+text = "equip"
+flat = true
+clip_text = true
+align = 1
+_sections_unfolded = [ "Textures" ]
 
-[node name="Label" type="Label" parent="Control/custom_button" index="0"]
+[node name="NinePatchRect" type="NinePatchRect" parent="Control/custom_button" index="0"]
 
-modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+show_behind_parent = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -351,17 +388,10 @@ rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
-theme = ExtResource( 2 )
-text = "equip"
-align = 1
-valign = 1
-clip_text = true
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+size_flags_vertical = 1
+texture = ExtResource( 8 )
 
-[node name="fight_button" type="TextureButton" parent="Control" index="4"]
+[node name="fight_button" type="Button" parent="Control" index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -373,22 +403,26 @@ margin_right = 389.0
 margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
+custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
-enabled_focus_mode = 2
+enabled_focus_mode = 0
 shortcut = null
 group = null
-texture_normal = ExtResource( 8 )
-stretch_mode = 5
-_sections_unfolded = [ "Rect", "Textures" ]
+text = "battle"
+flat = true
+clip_text = true
+align = 1
+_sections_unfolded = [ "Textures", "custom_colors" ]
 
-[node name="Label" type="Label" parent="Control/fight_button" index="0"]
+[node name="NinePatchRect" type="NinePatchRect" parent="Control/fight_button" index="0"]
 
-modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+show_behind_parent = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -400,17 +434,11 @@ rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
-theme = ExtResource( 2 )
-text = "battle"
-align = 1
-valign = 1
-clip_text = true
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+size_flags_vertical = 1
+texture = ExtResource( 8 )
+_sections_unfolded = [ "Visibility" ]
 
-[node name="train_button" type="TextureButton" parent="Control" index="5"]
+[node name="train_button" type="Button" parent="Control" index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -422,22 +450,26 @@ margin_right = 389.0
 margin_bottom = 210.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
+custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
-enabled_focus_mode = 2
+enabled_focus_mode = 0
 shortcut = null
 group = null
-texture_normal = ExtResource( 9 )
-stretch_mode = 5
-_sections_unfolded = [ "Margin", "Rect", "Size Flags", "Textures" ]
+text = "train"
+flat = true
+clip_text = true
+align = 1
+_sections_unfolded = [ "Textures" ]
 
-[node name="Label" type="Label" parent="Control/train_button" index="0"]
+[node name="NinePatchRect" type="NinePatchRect" parent="Control/train_button" index="0"]
 
-modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+show_behind_parent = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -449,17 +481,11 @@ rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
-theme = ExtResource( 2 )
-text = "train"
-align = 1
-valign = 1
-clip_text = true
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+size_flags_vertical = 1
+texture = ExtResource( 9 )
+_sections_unfolded = [ "Visibility" ]
 
-[node name="logout_button" type="TextureButton" parent="Control" index="6"]
+[node name="logout_button" type="Button" parent="Control" index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -471,22 +497,26 @@ margin_right = 62.0
 margin_bottom = 212.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
+custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
-enabled_focus_mode = 2
+enabled_focus_mode = 0
 shortcut = null
 group = null
-texture_normal = ExtResource( 8 )
-stretch_mode = 5
-_sections_unfolded = [ "Textures" ]
+text = "logout"
+flat = true
+clip_text = true
+align = 1
+_sections_unfolded = [ "Textures", "custom_colors" ]
 
-[node name="Label" type="Label" parent="Control/logout_button" index="0"]
+[node name="NinePatchRect" type="NinePatchRect" parent="Control/logout_button" index="0"]
 
-modulate = Color( 0.171204, 0.172955, 0.199219, 1 )
+show_behind_parent = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -498,15 +528,9 @@ rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
-theme = ExtResource( 2 )
-text = "logout"
-align = 1
-valign = 1
-clip_text = true
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+size_flags_vertical = 1
+texture = ExtResource( 8 )
+_sections_unfolded = [ "Visibility" ]
 
 [node name="username" type="Label" parent="Control" index="7"]
 
@@ -774,7 +798,44 @@ playback/speed = 1.0
 
 position = Vector2( 198, 152 )
 
-[connection signal="pressed" from="Control/stats_button" to="." method="scene_change" binds= [ "stats" ]]
+[node name="go_to_instructions" type="Button" parent="." index="6"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 9.0
+margin_right = 93.0
+margin_bottom = 31.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/focus = SubResource( 8 )
+custom_styles/disabled = SubResource( 9 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Instructions"
+icon = ExtResource( 14 )
+flat = true
+align = 1
+_sections_unfolded = [ "custom_colors", "custom_fonts", "custom_styles" ]
+
+[node name="instructions" parent="." index="7" instance=ExtResource( 15 )]
+
+visible = false
+theme = SubResource( 10 )
+
+[connection signal="pressed" from="Control/credits_button" to="." method="scene_change" binds= [ "credits" ]]
 
 [connection signal="pressed" from="Control/ranking_button" to="." method="scene_change" binds= [ "ranking" ]]
 
@@ -791,5 +852,7 @@ position = Vector2( 198, 152 )
 [connection signal="popup_hide" from="timeout_warning" to="." method="restart_timer"]
 
 [connection signal="timeout" from="timeout" to="." method="screen_idle_timeout"]
+
+[connection signal="pressed" from="go_to_instructions" to="." method="_on_go_to_instructions_pressed"]
 
 

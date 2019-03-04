@@ -20,6 +20,8 @@ func _ready():
 	
 	get_node("Control/username").text = head.username
 	
+	$instructions/exit_instructions.connect("pressed", self, "exit_instructions")
+	
 ### TEST ###
 	var player_id = head.player_ID
 	if player_id == -1:
@@ -61,8 +63,10 @@ func scene_change(button):
 			get_tree().change_scene("res://Scenes/Screens/screen_local_scoreboard.tscn")
 		"custom":
 			get_tree().change_scene("res://Scenes/Screens/bot_construction.tscn")
-		"stats":
-			get_tree().change_scene("res://Scenes/stats.tscn")
+		"credits":
+############ I don't think this scene exists yet
+			get_tree().change_scene("res://Scenes/credits.tscn")
+################
 		"train":
 			get_tree().change_scene("res://Scenes/Load_training.tscn")
 		"fight":
@@ -107,6 +111,10 @@ func _on_logout_warning_confirmed():
 	get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
 
+func _on_go_to_instructions_pressed():
+	$instructions.visible = true
+	$Control/title.modulate = Color("#aaaaaa")
+
 """
 Node methods
 """
@@ -124,3 +132,7 @@ func unfade():
 		get_node("Control").modulate, Color("#ffffff"), 1.0, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 	)
 	_tween.start()
+
+func exit_instructions():
+	$instructions.visible = false
+	$Control/title.modulate = Color("#ffffff")
