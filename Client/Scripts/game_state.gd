@@ -94,10 +94,7 @@ func get_battle_state():
 func get_training_state():
 	var game_state = []
 	for x in self.get_battle_state():
-		game_state.push_front(x)
-	print("=================gmae_state==========================")
-	print(game_state)
-	print(self.get_battle_state())		
+		game_state.push_front(x)		
 	return game_state
 
 func set_bot_state(bot):
