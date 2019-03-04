@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/reference_customize_screen_player.png-e7a2d7b807408a74c16def89d77faa4c.stex"
+path="res://.import/reference_customize_screen_player.png-741bff8b023451d472535a73bdc728cc.stex"
 
 [deps]
 
-source_file="res://Assets/menu/bot_construction/reference_customize_screen_player.png"
-dest_files=[ "res://.import/reference_customize_screen_player.png-e7a2d7b807408a74c16def89d77faa4c.stex" ]
+source_file="res://assets/menu/bot_construction/reference_customize_screen_player.png"
+dest_files=[ "res://.import/reference_customize_screen_player.png-741bff8b023451d472535a73bdc728cc.stex" ]
 
 [params]
 

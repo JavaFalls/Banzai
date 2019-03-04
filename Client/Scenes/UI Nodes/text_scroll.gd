@@ -41,7 +41,7 @@ func scroll(p_text):
 		text_position = 0
 		text_length = p_text.length()
 		scroll_text = p_text
-		text = " "
+		text = ""
 		tick = 0.0
 		tick_start = 0.0
 		set_process(true)

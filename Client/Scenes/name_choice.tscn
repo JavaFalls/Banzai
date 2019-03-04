@@ -7,36 +7,9 @@
 [ext_resource path="res://assets/menu/name_choice/button_panel_ready.png" type="Texture" id=5]
 [ext_resource path="res://assets/menu/name_choice/button_panel_ready_focus.png" type="Texture" id=6]
 [ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=7]
-[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=8]
-[ext_resource path="res://Scenes/UI Nodes/slide_button.tscn" type="PackedScene" id=9]
-
-[sub_resource type="Animation" id=1]
-
-length = 0.8
-loop = false
-step = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:text")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ "R", "R
-E", "R
-E
-A", "R
-E
-A
-D", "R
-E
-A
-D
-Y" ]
-}
+[ext_resource path="res://Scenes/UI Nodes/text_scroll.gd" type="Script" id=8]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=9]
+[ext_resource path="res://Scenes/UI Nodes/slide_button.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Curve2D" id=2]
 
@@ -310,23 +283,20 @@ size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "p
+l
+a
+y
+e
+r"
 align = 1
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "custom_colors" ]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="confirm_button/Label" index="0"]
-
-root_node = NodePath("..")
-autoplay = ""
-playback_process_mode = 1
-playback_default_blend_time = 0.0
-playback_speed = 1.0
-anims/ready = SubResource( 1 )
-blend_times = [  ]
-_sections_unfolded = [ "Playback Options" ]
+script = ExtResource( 8 )
+delay = 0.1
+step = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." index="4"]
 
@@ -1074,7 +1044,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 8 )
+theme = ExtResource( 9 )
 alignment = 1
 _sections_unfolded = [ "Theme", "Visibility" ]
 
@@ -1144,7 +1114,7 @@ max_lines_visible = -1
 "buttons",
 ]]
 
-[node name="slide_button10" parent="buttons1" index="0" instance=ExtResource( 9 )]
+[node name="slide_button10" parent="buttons1" index="0" instance=ExtResource( 10 )]
 
 position = Vector2( 2, 227 )
 curve = SubResource( 2 )
@@ -1152,7 +1122,7 @@ _sections_unfolded = [ "Material" ]
 box_width = 120
 duration = 2.0
 
-[node name="slide_button9" parent="buttons1" index="1" instance=ExtResource( 9 )]
+[node name="slide_button9" parent="buttons1" index="1" instance=ExtResource( 10 )]
 
 position = Vector2( -38, 227 )
 curve = SubResource( 3 )
@@ -1161,7 +1131,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button8" parent="buttons1" index="2" instance=ExtResource( 9 )]
+[node name="slide_button8" parent="buttons1" index="2" instance=ExtResource( 10 )]
 
 position = Vector2( -78, 227 )
 curve = SubResource( 4 )
@@ -1170,7 +1140,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button7" parent="buttons1" index="3" instance=ExtResource( 9 )]
+[node name="slide_button7" parent="buttons1" index="3" instance=ExtResource( 10 )]
 
 position = Vector2( -118, 227 )
 curve = SubResource( 5 )
@@ -1178,7 +1148,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button6" parent="buttons1" index="4" instance=ExtResource( 9 )]
+[node name="slide_button6" parent="buttons1" index="4" instance=ExtResource( 10 )]
 
 position = Vector2( -158, 227 )
 curve = SubResource( 6 )
@@ -1186,7 +1156,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button5" parent="buttons1" index="5" instance=ExtResource( 9 )]
+[node name="slide_button5" parent="buttons1" index="5" instance=ExtResource( 10 )]
 
 position = Vector2( -198, 227 )
 curve = SubResource( 7 )
@@ -1194,7 +1164,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button4" parent="buttons1" index="6" instance=ExtResource( 9 )]
+[node name="slide_button4" parent="buttons1" index="6" instance=ExtResource( 10 )]
 
 position = Vector2( -238, 227 )
 curve = SubResource( 8 )
@@ -1202,7 +1172,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button3" parent="buttons1" index="7" instance=ExtResource( 9 )]
+[node name="slide_button3" parent="buttons1" index="7" instance=ExtResource( 10 )]
 
 position = Vector2( -278, 227 )
 curve = SubResource( 9 )
@@ -1210,7 +1180,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button2" parent="buttons1" index="8" instance=ExtResource( 9 )]
+[node name="slide_button2" parent="buttons1" index="8" instance=ExtResource( 10 )]
 
 position = Vector2( -318, 227 )
 curve = SubResource( 10 )
@@ -1218,7 +1188,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button" parent="buttons1" index="9" instance=ExtResource( 9 )]
+[node name="slide_button" parent="buttons1" index="9" instance=ExtResource( 10 )]
 
 position = Vector2( -358, 227 )
 curve = SubResource( 11 )
@@ -1232,7 +1202,7 @@ duration = 2.0
 
 editor/display_folded = true
 
-[node name="slide_button" parent="buttons2" index="0" instance=ExtResource( 9 )]
+[node name="slide_button" parent="buttons2" index="0" instance=ExtResource( 10 )]
 
 position = Vector2( 138, 227 )
 curve = SubResource( 12 )
@@ -1240,7 +1210,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button2" parent="buttons2" index="1" instance=ExtResource( 9 )]
+[node name="slide_button2" parent="buttons2" index="1" instance=ExtResource( 10 )]
 
 position = Vector2( 138, 227 )
 curve = SubResource( 13 )
@@ -1248,7 +1218,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button3" parent="buttons2" index="2" instance=ExtResource( 9 )]
+[node name="slide_button3" parent="buttons2" index="2" instance=ExtResource( 10 )]
 
 position = Vector2( 138, 227 )
 curve = SubResource( 14 )
@@ -1256,7 +1226,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button4" parent="buttons2" index="3" instance=ExtResource( 9 )]
+[node name="slide_button4" parent="buttons2" index="3" instance=ExtResource( 10 )]
 
 position = Vector2( 138, 227 )
 curve = SubResource( 15 )
@@ -1264,7 +1234,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button5" parent="buttons2" index="4" instance=ExtResource( 9 )]
+[node name="slide_button5" parent="buttons2" index="4" instance=ExtResource( 10 )]
 
 position = Vector2( 138, 227 )
 curve = SubResource( 16 )
@@ -1272,7 +1242,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button6" parent="buttons2" index="5" instance=ExtResource( 9 )]
+[node name="slide_button6" parent="buttons2" index="5" instance=ExtResource( 10 )]
 
 position = Vector2( 138, 227 )
 curve = SubResource( 17 )
@@ -1280,7 +1250,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button7" parent="buttons2" index="6" instance=ExtResource( 9 )]
+[node name="slide_button7" parent="buttons2" index="6" instance=ExtResource( 10 )]
 
 position = Vector2( 138, 227 )
 curve = SubResource( 18 )
@@ -1288,7 +1258,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button8" parent="buttons2" index="7" instance=ExtResource( 9 )]
+[node name="slide_button8" parent="buttons2" index="7" instance=ExtResource( 10 )]
 
 position = Vector2( 138, 227 )
 curve = SubResource( 19 )
@@ -1296,7 +1266,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button9" parent="buttons2" index="8" instance=ExtResource( 9 )]
+[node name="slide_button9" parent="buttons2" index="8" instance=ExtResource( 10 )]
 
 position = Vector2( 138, 227 )
 curve = SubResource( 20 )
@@ -1304,7 +1274,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button10" parent="buttons2" index="9" instance=ExtResource( 9 )]
+[node name="slide_button10" parent="buttons2" index="9" instance=ExtResource( 10 )]
 
 position = Vector2( 138, 227 )
 curve = SubResource( 21 )
@@ -1318,7 +1288,7 @@ duration = 2.0
 
 editor/display_folded = true
 
-[node name="slide_button" parent="buttons3" index="0" instance=ExtResource( 9 )]
+[node name="slide_button" parent="buttons3" index="0" instance=ExtResource( 10 )]
 
 position = Vector2( 309, 227 )
 curve = SubResource( 22 )
@@ -1326,7 +1296,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button2" parent="buttons3" index="1" instance=ExtResource( 9 )]
+[node name="slide_button2" parent="buttons3" index="1" instance=ExtResource( 10 )]
 
 position = Vector2( 349, 227 )
 curve = SubResource( 23 )
@@ -1334,7 +1304,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button3" parent="buttons3" index="2" instance=ExtResource( 9 )]
+[node name="slide_button3" parent="buttons3" index="2" instance=ExtResource( 10 )]
 
 position = Vector2( 389, 227 )
 curve = SubResource( 24 )
@@ -1342,7 +1312,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button4" parent="buttons3" index="3" instance=ExtResource( 9 )]
+[node name="slide_button4" parent="buttons3" index="3" instance=ExtResource( 10 )]
 
 position = Vector2( 429, 227 )
 curve = SubResource( 25 )
@@ -1350,7 +1320,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button5" parent="buttons3" index="4" instance=ExtResource( 9 )]
+[node name="slide_button5" parent="buttons3" index="4" instance=ExtResource( 10 )]
 
 position = Vector2( 469, 227 )
 curve = SubResource( 26 )
@@ -1358,7 +1328,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button6" parent="buttons3" index="5" instance=ExtResource( 9 )]
+[node name="slide_button6" parent="buttons3" index="5" instance=ExtResource( 10 )]
 
 position = Vector2( 509, 227 )
 curve = SubResource( 27 )
@@ -1366,7 +1336,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button7" parent="buttons3" index="6" instance=ExtResource( 9 )]
+[node name="slide_button7" parent="buttons3" index="6" instance=ExtResource( 10 )]
 
 position = Vector2( 549, 227 )
 curve = SubResource( 28 )
@@ -1374,7 +1344,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button8" parent="buttons3" index="7" instance=ExtResource( 9 )]
+[node name="slide_button8" parent="buttons3" index="7" instance=ExtResource( 10 )]
 
 position = Vector2( 589, 227 )
 curve = SubResource( 29 )
@@ -1382,7 +1352,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button9" parent="buttons3" index="8" instance=ExtResource( 9 )]
+[node name="slide_button9" parent="buttons3" index="8" instance=ExtResource( 10 )]
 
 position = Vector2( 629, 227 )
 curve = SubResource( 30 )
@@ -1390,7 +1360,7 @@ max_chars = 9
 box_width = 120
 duration = 2.0
 
-[node name="slide_button10" parent="buttons3" index="9" instance=ExtResource( 9 )]
+[node name="slide_button10" parent="buttons3" index="9" instance=ExtResource( 10 )]
 
 position = Vector2( 669, 227 )
 curve = SubResource( 31 )

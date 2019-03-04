@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Scripts/bot_construction.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -7,34 +7,36 @@
 [ext_resource path="res://assets/menu/bot_construction/platform.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=6]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=7]
-[ext_resource path="res://assets/menu/bot_construction/arrow_blue_left.png" type="Texture" id=8]
-[ext_resource path="res://assets/menu/bot_construction/arrow_blue_right.png" type="Texture" id=9]
-[ext_resource path="res://Scenes/UI Nodes/item_scroll.tscn" type="PackedScene" id=10]
-[ext_resource path="res://Scenes/UI Nodes/color_scroll.tscn" type="PackedScene" id=11]
-[ext_resource path="res://themes/color_scroll.shader" type="Shader" id=12]
-[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=13]
-[ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=14]
-[ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=15]
-[ext_resource path="res://Scenes/UI Nodes/text_scroll.gd" type="Script" id=16]
+[ext_resource path="res://themes/left_arrow_hover.stylebox" type="StyleBox" id=8]
+[ext_resource path="res://themes/left_arrow_normal.stylebox" type="StyleBox" id=9]
+[ext_resource path="res://assets/menu/bot_construction/arrow_blue_left.png" type="Texture" id=10]
+[ext_resource path="res://assets/menu/bot_construction/arrow_blue_right.png" type="Texture" id=11]
+[ext_resource path="res://Scenes/UI Nodes/item_scroll.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/UI Nodes/color_scroll.tscn" type="PackedScene" id=13]
+[ext_resource path="res://themes/color_scroll.shader" type="Shader" id=14]
+[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=15]
+[ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=16]
+[ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=17]
+[ext_resource path="res://Scenes/UI Nodes/text_scroll.gd" type="Script" id=18]
 
 [sub_resource type="ShaderMaterial" id=1]
 
 render_priority = 0
-shader = ExtResource( 12 )
+shader = ExtResource( 14 )
 shader_param/offset = null
 _sections_unfolded = [ "Resource", "shader_param" ]
 
 [sub_resource type="ShaderMaterial" id=2]
 
 render_priority = 0
-shader = ExtResource( 12 )
+shader = ExtResource( 14 )
 shader_param/offset = null
 _sections_unfolded = [ "Resource", "shader_param" ]
 
 [sub_resource type="ShaderMaterial" id=3]
 
 render_priority = 0
-shader = ExtResource( 12 )
+shader = ExtResource( 14 )
 shader_param/offset = null
 _sections_unfolded = [ "Resource", "shader_param" ]
 
@@ -44,7 +46,7 @@ size = 15
 use_mipmaps = false
 use_filter = false
 extra_spacing_bottom = -3
-font_data = ExtResource( 15 )
+font_data = ExtResource( 17 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
 [sub_resource type="DynamicFont" id=5]
@@ -53,8 +55,36 @@ size = 15
 use_mipmaps = false
 use_filter = false
 extra_spacing_bottom = -3
-font_data = ExtResource( 15 )
+font_data = ExtResource( 17 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
 
 [sub_resource type="StyleBoxEmpty" id=10]
 
@@ -92,34 +122,6 @@ content_margin_top = -1.0
 content_margin_bottom = -1.0
 
 [sub_resource type="StyleBoxEmpty" id=15]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-
-[sub_resource type="StyleBoxEmpty" id=16]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-
-[sub_resource type="StyleBoxEmpty" id=17]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-
-[sub_resource type="StyleBoxEmpty" id=18]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-
-[sub_resource type="StyleBoxEmpty" id=19]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
@@ -208,13 +210,13 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="bot_left" type="TextureButton" parent="." index="6"]
+[node name="bot_left" type="Button" parent="." index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 287.0
+margin_left = 283.0
 margin_top = 26.0
 margin_right = 295.0
 margin_bottom = 42.0
@@ -225,14 +227,20 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_styles/hover = ExtResource( 8 )
+custom_styles/pressed = ExtResource( 8 )
+custom_styles/focus = ExtResource( 8 )
+custom_styles/normal = ExtResource( 9 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 8 )
-_sections_unfolded = [ "Textures" ]
+icon = ExtResource( 10 )
+flat = true
+align = 1
+_sections_unfolded = [ "Textures", "custom_styles" ]
 
-[node name="bot_right" type="TextureButton" parent="." index="7"]
+[node name="bot_right" type="Button" parent="." index="7"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -240,7 +248,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 378.0
 margin_top = 26.0
-margin_right = 386.0
+margin_right = 390.0
 margin_bottom = 42.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -249,12 +257,18 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_styles/hover = ExtResource( 9 )
+custom_styles/pressed = ExtResource( 9 )
+custom_styles/focus = ExtResource( 9 )
+custom_styles/normal = ExtResource( 8 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 9 )
-_sections_unfolded = [ "Textures" ]
+icon = ExtResource( 11 )
+flat = true
+align = 1
+_sections_unfolded = [ "Textures", "custom_styles" ]
 
 [node name="Label" type="Label" parent="." index="8"]
 
@@ -378,28 +392,28 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="item_scroll" parent="." index="13" instance=ExtResource( 10 )]
+[node name="item_scroll" parent="." index="13" instance=ExtResource( 12 )]
 
 position = Vector2( 163, 34 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 1
 
-[node name="item_scroll2" parent="." index="14" instance=ExtResource( 10 )]
+[node name="item_scroll2" parent="." index="14" instance=ExtResource( 12 )]
 
 position = Vector2( 163, 75 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 2
 
-[node name="item_scroll3" parent="." index="15" instance=ExtResource( 10 )]
+[node name="item_scroll3" parent="." index="15" instance=ExtResource( 12 )]
 
 position = Vector2( 163, 116 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 0
 
-[node name="color_scroll" parent="." index="16" instance=ExtResource( 11 )]
+[node name="color_scroll" parent="." index="16" instance=ExtResource( 13 )]
 
 editor/display_folded = true
 margin_left = 14.0
@@ -412,7 +426,7 @@ colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 
 material = SubResource( 1 )
 
-[node name="color_scroll2" parent="." index="17" instance=ExtResource( 11 )]
+[node name="color_scroll2" parent="." index="17" instance=ExtResource( 13 )]
 
 editor/display_folded = true
 margin_left = 14.0
@@ -426,7 +440,7 @@ indicator_offset = 0.3
 
 material = SubResource( 2 )
 
-[node name="color_scroll3" parent="." index="18" instance=ExtResource( 11 )]
+[node name="color_scroll3" parent="." index="18" instance=ExtResource( 13 )]
 
 editor/display_folded = true
 margin_left = 14.0
@@ -441,7 +455,7 @@ indicator_offset = 0.6
 
 material = SubResource( 3 )
 
-[node name="color_scroll4" parent="." index="19" instance=ExtResource( 11 )]
+[node name="color_scroll4" parent="." index="19" instance=ExtResource( 13 )]
 
 editor/display_folded = true
 margin_left = 14.0
@@ -469,7 +483,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 13 )
+custom_fonts/font = ExtResource( 15 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 toggle_mode = false
@@ -494,7 +508,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 14 )
+texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="test_button" type="Button" parent="." index="21"]
@@ -515,7 +529,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 13 )
+custom_fonts/font = ExtResource( 15 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 toggle_mode = false
@@ -540,7 +554,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 14 )
+texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="finish_button" type="Button" parent="." index="22"]
@@ -561,7 +575,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 13 )
+custom_fonts/font = ExtResource( 15 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 toggle_mode = false
@@ -586,7 +600,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 14 )
+texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="item_name" type="Label" parent="." index="23"]
@@ -636,7 +650,7 @@ clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = 4
-script = ExtResource( 16 )
+script = ExtResource( 18 )
 _sections_unfolded = [ "custom_fonts" ]
 delay = 0.07
 step = 1
@@ -705,7 +719,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 13 )
+custom_fonts/font = ExtResource( 15 )
 toggle_mode = true
 pressed = true
 enabled_focus_mode = 0
@@ -793,12 +807,12 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/hover = SubResource( 10 )
-custom_styles/pressed = SubResource( 11 )
-custom_styles/focus = SubResource( 12 )
-custom_styles/disabled = SubResource( 13 )
-custom_styles/normal = SubResource( 14 )
-custom_fonts/font = ExtResource( 13 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/focus = SubResource( 8 )
+custom_styles/disabled = SubResource( 9 )
+custom_styles/normal = SubResource( 10 )
+custom_fonts/font = ExtResource( 15 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.345098, 0.886275, 0.380392, 1 )
 toggle_mode = false
@@ -827,12 +841,12 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/hover = SubResource( 15 )
-custom_styles/pressed = SubResource( 16 )
-custom_styles/focus = SubResource( 17 )
-custom_styles/disabled = SubResource( 18 )
-custom_styles/normal = SubResource( 19 )
-custom_fonts/font = ExtResource( 13 )
+custom_styles/hover = SubResource( 11 )
+custom_styles/pressed = SubResource( 12 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/disabled = SubResource( 14 )
+custom_styles/normal = SubResource( 15 )
+custom_fonts/font = ExtResource( 15 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.345098, 0.886275, 0.380392, 1 )
 toggle_mode = false

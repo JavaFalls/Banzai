@@ -6,7 +6,7 @@ onready var head = get_tree().get_root().get_node("/root/head")
 onready var constructing_player = (head.construction == head.PLAYER)
 onready var name_choice_scene = preload("res://Scenes/name_choice.tscn")
 
-const STATS_SPACE = "          "
+const STATS_SPACE = "           "
 
 ### TEST ITEMS ###
 var w = [
@@ -108,6 +108,7 @@ func _on_new_button_pressed():
 	if name_choice_scene.can_instance():
 		$backlight/Light2D.enabled = false
 		var name_choice_node = name_choice_scene.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
+		name_choice_node.get_node("confirm_button/Label").text = "n\ne\nw\n\nb\no\nt"
 		add_child(name_choice_node)
 		yield(name_choice_node, "name_entered")
 		new_name = name_choice_node.get_username()
@@ -219,11 +220,10 @@ func update_current_bot():
 func format_info(speed, attack, type, info):
 	if typeof(speed) == TYPE_INT and typeof(attack) == TYPE_INT:
 		return (
-			# Somehow, the first line has an extra space.
 			STATS_SPACE + "%d" % speed + "\n" +
-			STATS_SPACE + " " + "%d" % attack + "\n" +
-			STATS_SPACE + " " + "%s" % type + "\n" +
-			STATS_SPACE + " " + "%s" % info
+			STATS_SPACE + "%d" % attack + "\n" +
+			STATS_SPACE + "%s" % type + "\n" +
+			STATS_SPACE + "%s" % info
 		)
 	else:
 		return ""
