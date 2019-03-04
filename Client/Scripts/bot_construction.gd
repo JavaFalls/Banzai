@@ -197,6 +197,12 @@ func _on_switch_description_pressed():
 func _on_not_confirm_pressed():
 	$confirm_finish.visible = false
 
+func _on_switch_description_mouse_entered():
+	$switch_description.modulate = Color("#ffffff")
+
+func _on_switch_description_mouse_exited():
+	$switch_description.modulate = Color("#aaaaaa")
+
 # Update local bots
 #------------------------------------------------
 func update_current_bot():

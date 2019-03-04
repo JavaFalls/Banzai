@@ -4,7 +4,7 @@
 [ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=2]
 [ext_resource path="res://assets/menu/name_choice/button_long.png" type="Texture" id=3]
 
-[node name="slide_button" type="Path2D" index="0"]
+[node name="slide_button" type="Path2D"]
 
 self_modulate = Color( 0.5, 0.6, 1, 0.7 )
 curve = null

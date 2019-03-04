@@ -8,7 +8,7 @@
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=6]
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=7]
 
-[node name="Node" type="Node"]
+[node name="Node" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
@@ -211,7 +211,6 @@ shortcut = null
 group = null
 flat = true
 align = 1
-_sections_unfolded = [ "Size Flags" ]
 
 [node name="NinePatchRect" type="NinePatchRect" parent="buttons/customize_bot" index="0"]
 
@@ -257,7 +256,7 @@ valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Theme" ]
+_sections_unfolded = [ "Theme", "Visibility" ]
 
 [node name="back" type="Button" parent="buttons" index="2"]
 
@@ -346,6 +345,10 @@ position = Vector2( 326, 139 )
 [connection signal="mouse_exited" from="buttons/customize_bot" to="." method="_on_customize_bot_mouse_exited"]
 
 [connection signal="pressed" from="buttons/customize_bot" to="." method="_on_customize_bot_pressed"]
+
+[connection signal="mouse_entered" from="buttons/back" to="." method="_on_back_mouse_entered"]
+
+[connection signal="mouse_exited" from="buttons/back" to="." method="_on_back_mouse_exited"]
 
 [connection signal="pressed" from="buttons/back" to="." method="_on_back_pressed"]
 

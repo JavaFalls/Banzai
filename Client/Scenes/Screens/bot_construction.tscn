@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://Scripts/bot_construction.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -12,10 +12,10 @@
 [ext_resource path="res://Scenes/UI Nodes/item_scroll.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Scenes/UI Nodes/color_scroll.tscn" type="PackedScene" id=11]
 [ext_resource path="res://themes/color_scroll.shader" type="Shader" id=12]
-[ext_resource path="res://assets/menu/bot_construction/button_large.png" type="Texture" id=13]
-[ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=14]
-[ext_resource path="res://Scenes/UI Nodes/text_scroll.gd" type="Script" id=15]
-[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=16]
+[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=13]
+[ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=14]
+[ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=15]
+[ext_resource path="res://Scenes/UI Nodes/text_scroll.gd" type="Script" id=16]
 
 [sub_resource type="ShaderMaterial" id=1]
 
@@ -44,7 +44,7 @@ size = 15
 use_mipmaps = false
 use_filter = false
 extra_spacing_bottom = -3
-font_data = ExtResource( 14 )
+font_data = ExtResource( 15 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
 [sub_resource type="DynamicFont" id=5]
@@ -53,122 +53,8 @@ size = 15
 use_mipmaps = false
 use_filter = false
 extra_spacing_bottom = -3
-font_data = ExtResource( 14 )
+font_data = ExtResource( 15 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
-
-[sub_resource type="StyleBoxFlat" id=6]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-bg_color = Color( 0.54902, 0.54902, 0.54902, 0.588235 )
-draw_center = true
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color( 0.8, 0.8, 0.8, 1 )
-border_blend = false
-corner_radius_top_left = 0
-corner_radius_top_right = 0
-corner_radius_bottom_right = 0
-corner_radius_bottom_left = 0
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0, 0, 0, 0.6 )
-shadow_size = 0
-anti_aliasing = true
-anti_aliasing_size = 1
-_sections_unfolded = [ "Shadow" ]
-
-[sub_resource type="StyleBoxFlat" id=7]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-bg_color = Color( 0.6, 0.6, 0.6, 0.588235 )
-draw_center = true
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color( 0.8, 0.8, 0.8, 1 )
-border_blend = false
-corner_radius_top_left = 0
-corner_radius_top_right = 0
-corner_radius_bottom_right = 0
-corner_radius_bottom_left = 0
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0, 0, 0, 0.6 )
-shadow_size = 0
-anti_aliasing = true
-anti_aliasing_size = 1
-
-[sub_resource type="StyleBoxFlat" id=8]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-bg_color = Color( 0.6, 0.6, 0.6, 0.588235 )
-draw_center = true
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color( 0.8, 0.8, 0.8, 1 )
-border_blend = false
-corner_radius_top_left = 0
-corner_radius_top_right = 0
-corner_radius_bottom_right = 0
-corner_radius_bottom_left = 0
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0, 0, 0, 0.6 )
-shadow_size = 0
-anti_aliasing = true
-anti_aliasing_size = 1
-
-[sub_resource type="StyleBoxFlat" id=9]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-bg_color = Color( 0.6, 0.6, 0.6, 0.588235 )
-draw_center = true
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 0
-border_color = Color( 0.8, 0.8, 0.8, 1 )
-border_blend = false
-corner_radius_top_left = 0
-corner_radius_top_right = 0
-corner_radius_bottom_right = 0
-corner_radius_bottom_left = 0
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0, 0, 0, 0.6 )
-shadow_size = 0
-anti_aliasing = true
-anti_aliasing_size = 1
-_sections_unfolded = [ "Border Width", "Shadow" ]
 
 [sub_resource type="StyleBoxEmpty" id=10]
 
@@ -565,7 +451,7 @@ margin_bottom = 126.0
 colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 indicator_offset = 0.9
 
-[node name="new_button" type="TextureButton" parent="." index="20"]
+[node name="new_button" type="Button" parent="." index="20"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -583,15 +469,21 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_fonts/font = ExtResource( 13 )
+custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 13 )
-_sections_unfolded = [ "Textures" ]
+text = "New Bot"
+flat = true
+align = 1
+_sections_unfolded = [ "Textures", "custom_colors" ]
 
-[node name="Label" type="Label" parent="new_button" index="0"]
+[node name="NinePatchRect" type="NinePatchRect" parent="new_button" index="0"]
 
+show_behind_parent = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -601,17 +493,11 @@ rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
-theme = ExtResource( 7 )
-text = "New Bot"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Theme" ]
+size_flags_vertical = 1
+texture = ExtResource( 14 )
+_sections_unfolded = [ "Visibility" ]
 
-[node name="test_button" type="TextureButton" parent="." index="21"]
+[node name="test_button" type="Button" parent="." index="21"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -629,15 +515,21 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_fonts/font = ExtResource( 13 )
+custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 13 )
-_sections_unfolded = [ "Textures" ]
+text = "Testing"
+flat = true
+align = 1
+_sections_unfolded = [ "Textures", "custom_colors" ]
 
-[node name="Label" type="Label" parent="test_button" index="0"]
+[node name="NinePatchRect" type="NinePatchRect" parent="test_button" index="0"]
 
+show_behind_parent = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -647,17 +539,11 @@ rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
-theme = ExtResource( 7 )
-text = "Testing"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Theme" ]
+size_flags_vertical = 1
+texture = ExtResource( 14 )
+_sections_unfolded = [ "Visibility" ]
 
-[node name="finish_button" type="TextureButton" parent="." index="22"]
+[node name="finish_button" type="Button" parent="." index="22"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -675,15 +561,21 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+custom_fonts/font = ExtResource( 13 )
+custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 13 )
+text = "Finish"
+flat = true
+align = 1
 _sections_unfolded = [ "Textures" ]
 
-[node name="Label" type="Label" parent="finish_button" index="0"]
+[node name="NinePatchRect" type="NinePatchRect" parent="finish_button" index="0"]
 
+show_behind_parent = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -693,15 +585,9 @@ rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
-theme = ExtResource( 7 )
-text = "Finish"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Theme" ]
+size_flags_vertical = 1
+texture = ExtResource( 14 )
+_sections_unfolded = [ "Visibility" ]
 
 [node name="item_name" type="Label" parent="." index="23"]
 
@@ -750,7 +636,7 @@ clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = 4
-script = ExtResource( 15 )
+script = ExtResource( 16 )
 _sections_unfolded = [ "custom_fonts" ]
 delay = 0.07
 step = 1
@@ -783,38 +669,53 @@ lines_skipped = 0
 max_lines_visible = 4
 _sections_unfolded = [ "custom_fonts" ]
 
-[node name="switch_description" type="Button" parent="." index="25"]
+[node name="ColorRect" type="ColorRect" parent="." index="25"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 211.0
+margin_left = 207.0
 margin_top = 149.0
 margin_right = 244.0
-margin_bottom = 165.0
+margin_bottom = 169.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/hover = SubResource( 6 )
-custom_styles/pressed = SubResource( 7 )
-custom_styles/focus = SubResource( 8 )
-custom_styles/normal = SubResource( 9 )
-custom_fonts/font = ExtResource( 16 )
+color = Color( 0.4, 0.4, 0.4, 1 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="switch_description" type="Button" parent="." index="26"]
+
+modulate = Color( 0.666667, 0.666667, 0.666667, 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 207.0
+margin_top = 149.0
+margin_right = 244.0
+margin_bottom = 169.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 13 )
 toggle_mode = true
 pressed = true
 enabled_focus_mode = 0
 shortcut = null
 group = null
 text = "desc"
-flat = false
+flat = true
 align = 1
-_sections_unfolded = [ "custom_fonts", "custom_styles" ]
 
-[node name="confirm_finish" type="ColorRect" parent="." index="26"]
+[node name="confirm_finish" type="ColorRect" parent="." index="27"]
 
 editor/display_folded = true
 visible = false
@@ -897,7 +798,7 @@ custom_styles/pressed = SubResource( 11 )
 custom_styles/focus = SubResource( 12 )
 custom_styles/disabled = SubResource( 13 )
 custom_styles/normal = SubResource( 14 )
-custom_fonts/font = ExtResource( 16 )
+custom_fonts/font = ExtResource( 13 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.345098, 0.886275, 0.380392, 1 )
 toggle_mode = false
@@ -931,7 +832,7 @@ custom_styles/pressed = SubResource( 16 )
 custom_styles/focus = SubResource( 17 )
 custom_styles/disabled = SubResource( 18 )
 custom_styles/normal = SubResource( 19 )
-custom_fonts/font = ExtResource( 16 )
+custom_fonts/font = ExtResource( 13 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.345098, 0.886275, 0.380392, 1 )
 toggle_mode = false
@@ -951,6 +852,10 @@ align = 1
 [connection signal="pressed" from="test_button" to="." method="_on_test_button_pressed"]
 
 [connection signal="pressed" from="finish_button" to="." method="_on_finish_button_pressed"]
+
+[connection signal="mouse_entered" from="switch_description" to="." method="_on_switch_description_mouse_entered"]
+
+[connection signal="mouse_exited" from="switch_description" to="." method="_on_switch_description_mouse_exited"]
 
 [connection signal="pressed" from="switch_description" to="." method="_on_switch_description_pressed"]
 

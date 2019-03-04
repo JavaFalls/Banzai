@@ -63,8 +63,10 @@ func scene_change(button):
 			get_tree().change_scene("res://Scenes/Screens/screen_local_scoreboard.tscn")
 		"custom":
 			get_tree().change_scene("res://Scenes/Screens/bot_construction.tscn")
-		"stats":
-			get_tree().change_scene("res://Scenes/stats.tscn")
+		"credits":
+############ I don't think this scene exists yet
+			get_tree().change_scene("res://Scenes/credits.tscn")
+################
 		"train":
 			get_tree().change_scene("res://Scenes/Load_training.tscn")
 		"fight":
