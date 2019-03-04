@@ -705,6 +705,7 @@ playback/speed = 1.0
 
 [node name="timeout_warning" type="Popup" parent="." index="2"]
 
+editor/display_folded = true
 visible = false
 anchor_left = 0.3
 anchor_top = 0.36444
