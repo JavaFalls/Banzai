@@ -7,9 +7,7 @@ onready var label = get_node("Label")
 onready var timer = get_node("Timer")
 
 var format_text = (
-	"The user has been inactive\n" +
-	"for too long.\n" +
-	"Exiting in %02d seconds."
+	"The user has been inactive for too long. Exiting in %02d seconds."
 )
 var time_before
 
@@ -33,6 +31,6 @@ func timeout(is_first):
 		time_before = int(timer.wait_time)
 	else:
 #		head.save_bots(head.bots)
-		head.init_bots()
+#		head.init_bots()
 		get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass

@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon.png-2e04d6d4929cd9145c6cacfe2787ac76.stex"
+path="res://.import/energyV004effect004.png-a1c975c8cffabf5542f4fc6acb38e3e8.stex"
 
 [deps]
 
-source_file="res://addons/custom_node/icon.png"
-dest_files=[ "res://.import/icon.png-2e04d6d4929cd9145c6cacfe2787ac76.stex" ]
+source_file="res://assets/weapons/shield_animation/energyV004effect004.png"
+dest_files=[ "res://.import/energyV004effect004.png-a1c975c8cffabf5542f4fc6acb38e3e8.stex" ]
 
 [params]
 
@@ -16,7 +16,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
@@ -25,5 +25,5 @@ process/premult_alpha=false
 process/HDR_as_SRGB=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

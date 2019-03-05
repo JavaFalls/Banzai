@@ -6,21 +6,25 @@ onready var head = get_tree().get_root().get_node("/root/head")
 onready var constructing_player = (head.construction == head.PLAYER)
 onready var name_choice_scene = preload("res://Scenes/name_choice.tscn")
 
+const STATS_SPACE = "           "
+
 ### TEST ITEMS ###
 var w = [
-	{"id": 0, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_01.png")},
-	{"id": 1, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_02.png")},
-	{"id": 2, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_03.png")},
-	{"id": 3, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_04.png")},
-	{"id": 4, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_05.png")},
-	{"id": 5, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_06.png")},
-	{"id": 6, "name": "Powerful Weapon", "description": "This is the description", "texture": preload("res://assets/menu/test_icons/skill_b_07.png")}
+	{"id": 0, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_01.png")},
+	{"id": 1, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_02.png")},
+	{"id": 2, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_03.png")},
+	{"id": 3, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_04.png")},
+	{"id": 4, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_05.png")},
+	{"id": 5, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_06.png")},
+	{"id": 6, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_07.png")}
 ]
 
 # Every loaded bot is temporarily stored
 var bots = [] # Both the id and its bot will have the same index
 var bot_ids = []
 var current = 0
+
+var current_info_type = 0
 
 ### unneeded variable and signal soon ###
 var name_confirmed = false
@@ -41,8 +45,10 @@ func _ready():
 	var player_id = head.player_ID
 	if player_id == -1:
 		player_id = 1
-	var bot_id = 1
-##################	
+	var bot_id = head.bot_ID
+	if bot_id == -1:
+		bot_id = 1
+##################
 	var player_bots = parse_json(head.DB.get_player_bots(player_id))
 	var id = ""
 	for c in player_bots["data"][0]["player_bots"]:
@@ -75,8 +81,14 @@ func _ready():
 	is2.connect("info_queried", self, "grab_info", [head.SECONDARY])
 	is3.connect("info_queried", self, "grab_info", [head.ABILITY])
 	
+	$color_scroll.connect("color_changed", self, "set_display_bot_colors")
+	$color_scroll2.connect("color_changed", self, "set_display_bot_colors")
+	$color_scroll3.connect("color_changed", self, "set_display_bot_colors")
+	
 	if not bots.empty():
 		get_bot_info(bots[0])
+	
+	$animation_bot.face_left()
 
 # Signal methods
 #------------------------------------------------
@@ -96,6 +108,7 @@ func _on_new_button_pressed():
 	if name_choice_scene.can_instance():
 		$backlight/Light2D.enabled = false
 		var name_choice_node = name_choice_scene.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
+		name_choice_node.get_node("confirm_button/Label").text = "n\ne\nw\n\nb\no\nt"
 		add_child(name_choice_node)
 		yield(name_choice_node, "name_entered")
 		new_name = name_choice_node.get_username()
@@ -132,30 +145,6 @@ func _on_new_button_pressed():
 		current = bots.size()-1
 		get_bot_info(bots[current])
 		reset_info()
-
-func _on_enter_name_pressed():
-	if not name_confirmed:
-		var label = $new_bot/back_panel/enter_name/Label
-		label.scroll("Confirm")
-		yield(label, "scroll_finished")
-		name_confirmed = true
-	else:
-		$new_bot/back_panel/enter_name/Label.text = "Enter"
-		$new_bot/back_panel/enter_name/Label.modulate = Color("#ffffff")
-		name_confirmed = false
-		emit_signal("name_entered")
-
-func _on_enter_name_mouse_entered():
-	var tween = $new_bot/back_panel/enter_name/Label/Tween
-	var label = $new_bot/back_panel/enter_name/Label
-	tween.interpolate_property(label, "modulate", label.modulate, Color("#007800"), 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	tween.start()
-
-func _on_enter_name_mouse_exited():
-	var tween = $new_bot/back_panel/enter_name/Label/Tween
-	var label = $new_bot/back_panel/enter_name/Label
-	tween.interpolate_property(label, "modulate", label.modulate, Color("#ffffff"), 0.5, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	tween.start()
 
 func _on_test_button_pressed():
 	pass
@@ -196,8 +185,24 @@ func _on_finish_button_pressed():
 	
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
+func _on_switch_description_pressed():
+	var button = $switch_description
+	if button.pressed:
+		button.text = "desc"
+		$item_description/stats.visible = false
+	else:
+		button.text = "stats"
+		$item_description/stats.visible = true
+	grab_info(current_info_type)
+
 func _on_not_confirm_pressed():
 	$confirm_finish.visible = false
+
+func _on_switch_description_mouse_entered():
+	$switch_description.modulate = Color("#ffffff")
+
+func _on_switch_description_mouse_exited():
+	$switch_description.modulate = Color("#aaaaaa")
 
 # Update local bots
 #------------------------------------------------
@@ -212,23 +217,59 @@ func update_current_bot():
 
 # Display/organize data
 #------------------------------------------------
+func format_info(speed, attack, type, info):
+	if typeof(speed) == TYPE_INT and typeof(attack) == TYPE_INT:
+		return (
+			STATS_SPACE + "%d" % speed + "\n" +
+			STATS_SPACE + "%d" % attack + "\n" +
+			STATS_SPACE + "%s" % type + "\n" +
+			STATS_SPACE + "%s" % info
+		)
+	else:
+		return ""
+
 func grab_info(info_type):
 	match info_type:
 		head.PRIMARY:
 			get_node("item_scroll2").emit_signal("info_reserved")
 			get_node("item_scroll3").emit_signal("info_reserved")
 			get_node("item_name").text = $item_scroll.current_item()["name"]
-			get_node("item_description").scroll($item_scroll.current_item()["description"])
+			if $switch_description.pressed:
+				get_node("item_description").scroll($item_scroll.current_item()["description"])
+			else:
+				$item_description.scroll(format_info(
+					$item_scroll.current_item()["speed"],
+					$item_scroll.current_item()["attack"],
+					$item_scroll.current_item()["type"],
+					$item_scroll.current_item()["info"]
+				))
 		head.SECONDARY:
 			get_node("item_scroll").emit_signal("info_reserved")
 			get_node("item_scroll3").emit_signal("info_reserved")
 			get_node("item_name").text = $item_scroll2.current_item()["name"]
-			get_node("item_description").scroll($item_scroll2.current_item()["description"])
+			if $switch_description.pressed:
+				get_node("item_description").scroll($item_scroll2.current_item()["description"])
+			else:
+				$item_description.scroll(format_info(
+					$item_scroll2.current_item()["speed"],
+					$item_scroll2.current_item()["attack"],
+					$item_scroll2.current_item()["type"],
+					$item_scroll2.current_item()["info"]
+				))
 		head.ABILITY:
 			get_node("item_scroll").emit_signal("info_reserved")
 			get_node("item_scroll2").emit_signal("info_reserved")
 			get_node("item_name").text = $item_scroll3.current_item()["name"]
-			get_node("item_description").scroll($item_scroll3.current_item()["description"])
+			if $switch_description.pressed:
+				get_node("item_description").scroll($item_scroll3.current_item()["description"])
+			else:
+				$item_description.scroll(format_info(
+					$item_scroll3.current_item()["speed"],
+					$item_scroll3.current_item()["attack"],
+					$item_scroll3.current_item()["type"],
+					$item_scroll3.current_item()["info"]
+				))
+	current_info_type = info_type
 
 func reset_info():
 	$item_name.text = ""
@@ -243,3 +284,8 @@ func get_bot_info(bot_data):
 	$color_scroll2.set_current(null, bot_data["secondary_color"])
 	$color_scroll3.set_current(null, bot_data["accent_color"])
 	$color_scroll4.set_current(null, bot_data["light_color"])
+
+func set_display_bot_colors():
+	$animation_bot.set_primary_color($color_scroll.get_selected_color())
+	$animation_bot.set_secondary_color($color_scroll2.get_selected_color())
+	$animation_bot.set_accent_color($color_scroll3.get_selected_color())
