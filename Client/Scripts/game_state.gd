@@ -95,8 +95,25 @@ func get_battle_state():  # get the battle state for the player/player_bot
 
 func get_training_state():  # get the battle state for the opponent bot
 	var game_state = []
-	for x in self.get_battle_state():
-		game_state.push_front(x)		
+
+	self.relative_vector = self.bot_position - self.opponent_position
+	self.opponent_distance = sqrt(pow(self.relative_vector.x,2) + pow(self.relative_vector.y,2))
+	self.bot_angle = (atan2(self.relative_vector.x,self.relative_vector.y)-PI)/(-2*PI)
+	self.relative_vector *= -1
+	self.opponent_angle = (atan2(self.relative_vector.x, self.relative_vector.y)-PI)/(-2*PI)
+
+#	game_state.append(self.player_action)
+	game_state.append(self.bot_position)
+	game_state.append(self.bot_aim_angle)
+	game_state.append(self.bot_health)
+	game_state.append(self.bot_in_peril)
+	game_state.append(self.opponent_angle) # calc this
+	game_state.append(self.opponent_distance) # calculate this
+	game_state.append(self.bot_angle) # calc this
+	game_state.append(self.opponent_in_peril)
+	game_state.append(self.opponent_health)
+	game_state.append(self.opponent_aim_angle)
+	game_state.append(self.opponent_position)
 	return game_state
 
 func set_bot_state(bot):
@@ -168,8 +185,8 @@ func set_opponent_state(opponent):
 
 
 func set_predictions(predictions):
-	print("predictions===============================")
-	print(predictions)
+#	print("predictions===============================")
+#	print(predictions)
 	predicted_action = predictions
 #	print(predictions)
 #	print("set predictions")

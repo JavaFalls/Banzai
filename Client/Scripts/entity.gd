@@ -13,6 +13,7 @@ var secondary_weapon = Vector2()     # Weapon that goes in the second weapon slo
 var ability          = Vector2()     # Weapon that goes in the third weapon slot
 var opponent         = KinematicBody # The bots' opponent
 var is_player        = 0        # Is the mech controlled by a player
+var relative_mouse   = Vector2()
 var psuedo_mouse     = Vector2(0,0)  # This is the players curser position/bot's predicted curser position
 var psuedo_primary   = 0             # Is the primary weapon key pressed?
 var psuedo_secondary = 0             # Is the secondary weapon key pressed?

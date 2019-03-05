@@ -2,8 +2,6 @@ extends "res://Scripts/entity.gd"
 
 onready var game_state = self.get_parent().get_child(1)
 
-var relative_mouse = Vector2()
-
 
 func _ready():
 	aim_angle = 0
@@ -11,36 +9,26 @@ func _ready():
 func _process(delta):
 	if is_player:
 		game_state.set_opponent_state(self)
-		if game_state.predicted_opponent_aim_left == 1:
-			aim_angle -= .1*PI
-			if aim_angle < -1*PI:
-				aim_angle += 2*PI
-		if game_state.predicted_opponent_aim_right == 1:
-			aim_angle += .1*PI
-			if aim_angle > PI:
-				aim_angle -= 2*PI
+		set_opponent_info()
+
 	else:
 		game_state.set_bot_state(self)
-		if game_state.predicted_bot_aim_left == 1:
-			aim_angle -= .1*PI
-			if aim_angle < -1*PI:
-				aim_angle += 2*PI
-		if game_state.predicted_bot_aim_right == 1:
-			aim_angle += .1*PI
-			if aim_angle > PI:
-				aim_angle -= 2*PI
+		set_bot_info()
+
 
 func _physics_process(delta):
-	if self.is_player:
-		set_opponent_info()
-	else:
-		set_bot_info()
-		
 	move_and_slide(direction.normalized()*movement_speed, UP)
-	return	
 	
 func set_bot_info():
-	psuedo_mouse     = game_state.predicted_bot_mouse
+	if game_state.predicted_bot_aim_left == 1:
+		aim_angle -= .1*PI
+		if aim_angle < -1*PI:
+			aim_angle += 2*PI
+	if game_state.predicted_bot_aim_right == 1:
+		aim_angle += .1*PI
+		if aim_angle > PI:
+			aim_angle -= 2*PI
+#	psuedo_mouse     = game_state.predicted_bot_mouse
 	psuedo_mouse     = opponent.get_position()
 	relative_mouse   = psuedo_mouse - self.get_position()
 #	aim_angle        = atan2(relative_mouse.x, relative_mouse.y) # gives angle in radians
@@ -83,9 +71,17 @@ func set_bot_info():
 			get_node("animation_bot").reset_animation()
 			
 func set_opponent_info():
+	if game_state.predicted_opponent_aim_left == 1:
+		aim_angle -= .1*PI
+		if aim_angle < -1*PI:
+			aim_angle += 2*PI
+	if game_state.predicted_opponent_aim_right == 1:
+		aim_angle += .1*PI
+		if aim_angle > PI:
+			aim_angle -= 2*PI
 	#print("From opponent")
 	#print(game_state.get_)
-	psuedo_mouse     = game_state.predicted_opponent_mouse
+#	psuedo_mouse     = game_state.predicted_opponent_mouse
 	psuedo_mouse     = opponent.get_position()
 	relative_mouse   = psuedo_mouse - self.get_position()
 #	aim_angle        = atan2(relative_mouse.x, relative_mouse.y) # gives angle in radians

@@ -112,10 +112,10 @@ class DQN_agent:
         self.memory = deque(maxlen=20000)
         self.gamma         = 0.95 # discount future reward
         self.epsilon       = 1.0 # exploration rate; initial rate; skew 100% towards exploration
-        self.epsilon_decay = 0.9999 # rate at which epsilon decays; get multiplied to epsilon
+        self.epsilon_decay = 0.995 # rate at which epsilon decays; get multiplied to epsilon
         self.epsilon_min   = 0.01 # floor that epsilon will rest at after heavy training
 
-        self.learning_rate = 5
+        self.learning_rate = 2
 
         self.reward        = 0
         self.state_counter = 0
@@ -166,7 +166,7 @@ class DQN_agent:
     def load(self):
         self.model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
     def save(self):
-        self.model = save_model(__file__.replace('nnserver.py', 'my_model.h5'))
+        self.model = save_model(self.model, __file__.replace('nnserver.py', 'my_model.h5'))
 
     def reshape(self, gamestate):
         input_list = []
@@ -215,12 +215,12 @@ class DQN_agent:
         if player_aim_next_angle_diff > .5:
                 player_aim_next_angle_diff = 1 - player_aim_next_angle_diff
 
-        new_reward = 50
+        new_reward = 0
         #new_reward += (gamestate[9] - next_gamestate[9]) * 20                    # reward for dealing damage
         #new_reward += (bot_aim_angle_diff - bot_aim_next_angle_diff) * -5000      # reward for good aim  
         #new_reward += 1/(bot_aim_next_angle_diff + 0.0001)                        # reward for pointing at player
         #new_reward += (gamestate[8]+next_gamestate[8]) * 10000                    # reward for putting the player in peril
-        new_reward += ((1/next_gamestate[6]+.000001)*100)-30                     # test. reward for being close to opponent
+        new_reward += ((1/next_gamestate[6]+.000001)*10)-20                     # test. reward for being close to opponent
 
         #new_reward -= (gamestate[3] - next_gamestate[3]) * 20                    # criticism for losing health
         
