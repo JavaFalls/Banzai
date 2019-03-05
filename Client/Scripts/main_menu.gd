@@ -11,9 +11,6 @@ onready var _bot = $animation_bot
 var ty34918jj = false
 
 func _ready():
-	get_node("logout_warning/Label").text = (
-		"Are you sure you want to logout?  Your profile will be unusable, " +
-		"and you have to start from scratch to play again.")
 	get_node("logout_warning").connect("popup_hide", self, "unfade")
 	get_node("logout_warning/button_face/Button").connect("mouse_entered", self, "hover_logout_confirm", [true])
 	get_node("logout_warning/button_face/Button").connect("mouse_exited", self, "hover_logout_confirm", [false])
@@ -51,7 +48,8 @@ func _process(delta):
 		ty34918jj = true
 	if ty34918jj:
 		var look_at = get_tree().get_root().get_mouse_position() - _bot.position
-		_bot.translate(look_at.normalized() * 3)
+		if look_at.x != 0 and look_at.y != 0:
+			_bot.translate(look_at.normalized() * 3)
 
 """
 Various nodes' signal methods

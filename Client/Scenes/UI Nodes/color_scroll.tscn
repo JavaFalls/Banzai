@@ -1,17 +1,19 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/UI Nodes/color_scroll.gd" type="Script" id=1]
-[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_left.png" type="Texture" id=2]
-[ext_resource path="res://assets/menu/bot_construction/arrow_grey_left.png" type="Texture" id=3]
-[ext_resource path="res://themes/color_scroll.shader" type="Shader" id=4]
-[ext_resource path="res://assets/white block.png" type="Texture" id=5]
-[ext_resource path="res://assets/menu/bot_construction/arrow_grey_right.png" type="Texture" id=6]
-[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=7]
+[ext_resource path="res://themes/left_arrow_hover.stylebox" type="StyleBox" id=2]
+[ext_resource path="res://themes/left_arrow_normal.stylebox" type="StyleBox" id=3]
+[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_left.png" type="Texture" id=4]
+[ext_resource path="res://assets/menu/bot_construction/arrow_grey_left.png" type="Texture" id=5]
+[ext_resource path="res://themes/color_scroll.shader" type="Shader" id=6]
+[ext_resource path="res://assets/white block.png" type="Texture" id=7]
+[ext_resource path="res://assets/menu/bot_construction/arrow_grey_right.png" type="Texture" id=8]
+[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=9]
 
 [sub_resource type="ShaderMaterial" id=1]
 
 render_priority = 0
-shader = ExtResource( 4 )
+shader = ExtResource( 6 )
 shader_param/offset = null
 _sections_unfolded = [ "Resource", "shader_param" ]
 
@@ -55,14 +57,43 @@ custom_constants/separation = 2
 alignment = 1
 _sections_unfolded = [ "custom_constants" ]
 
-[node name="double_left" type="TextureButton" parent="HBoxContainer" index="0"]
+[node name="double_left" type="Button" parent="HBoxContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 2.0
-margin_right = 12.0
+margin_right = 16.0
+margin_bottom = 18.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_styles/hover = ExtResource( 2 )
+custom_styles/pressed = ExtResource( 2 )
+custom_styles/focus = ExtResource( 2 )
+custom_styles/normal = ExtResource( 3 )
+toggle_mode = false
+enabled_focus_mode = 0
+shortcut = null
+group = null
+icon = ExtResource( 4 )
+flat = true
+align = 1
+_sections_unfolded = [ "custom_styles" ]
+
+[node name="left" type="Button" parent="HBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 18.0
+margin_top = 2.0
+margin_right = 30.0
 margin_bottom = 18.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -71,36 +102,18 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
+custom_styles/hover = ExtResource( 2 )
+custom_styles/pressed = ExtResource( 2 )
+custom_styles/focus = ExtResource( 2 )
+custom_styles/normal = ExtResource( 3 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 2 )
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="left" type="TextureButton" parent="HBoxContainer" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 14.0
-margin_top = 2.0
-margin_right = 22.0
-margin_bottom = 18.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-texture_normal = ExtResource( 3 )
-_sections_unfolded = [ "Size Flags" ]
+icon = ExtResource( 5 )
+flat = true
+align = 1
+_sections_unfolded = [ "custom_styles" ]
 
 [node name="colors" type="HBoxContainer" parent="HBoxContainer" index="2"]
 
@@ -108,8 +121,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 24.0
-margin_right = 104.0
+margin_left = 32.0
+margin_right = 96.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -127,7 +140,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 16.0
+margin_right = 12.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -144,8 +157,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 16.0
-margin_right = 32.0
+margin_left = 12.0
+margin_right = 24.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -162,8 +175,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 32.0
-margin_right = 48.0
+margin_left = 24.0
+margin_right = 36.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -178,9 +191,9 @@ _sections_unfolded = [ "Rect", "Size Flags" ]
 
 show_behind_parent = true
 material = SubResource( 1 )
-position = Vector2( 8, 10 )
-scale = Vector2( 1.125, 1.375 )
-texture = ExtResource( 5 )
+position = Vector2( 6, 10 )
+scale = Vector2( 0.875, 1.375 )
+texture = ExtResource( 7 )
 _sections_unfolded = [ "Material", "Visibility" ]
 
 [node name="color3" type="ColorRect" parent="HBoxContainer/colors" index="3"]
@@ -190,8 +203,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 48.0
-margin_right = 64.0
+margin_left = 36.0
+margin_right = 48.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -208,8 +221,8 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 64.0
-margin_right = 80.0
+margin_left = 48.0
+margin_right = 64.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -220,15 +233,15 @@ size_flags_vertical = 3
 color = Color( 0, 0.603922, 1, 1 )
 _sections_unfolded = [ "Rect", "Size Flags" ]
 
-[node name="right" type="TextureButton" parent="HBoxContainer" index="3"]
+[node name="right" type="Button" parent="HBoxContainer" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 106.0
+margin_left = 98.0
 margin_top = 2.0
-margin_right = 114.0
+margin_right = 110.0
 margin_bottom = 18.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -237,19 +250,26 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/normal = ExtResource( 2 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 6 )
+icon = ExtResource( 8 )
+flat = true
+align = 1
+_sections_unfolded = [ "custom_styles" ]
 
-[node name="double_right" type="TextureButton" parent="HBoxContainer" index="4"]
+[node name="double_right" type="Button" parent="HBoxContainer" index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 116.0
+margin_left = 112.0
 margin_top = 2.0
 margin_right = 128.0
 margin_bottom = 18.0
@@ -260,12 +280,18 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/normal = ExtResource( 2 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 7 )
-_sections_unfolded = [ "Size Flags" ]
+icon = ExtResource( 9 )
+flat = true
+align = 1
+_sections_unfolded = [ "custom_styles" ]
 
 [connection signal="pressed" from="HBoxContainer/double_left" to="." method="_on_double_left_pressed"]
 

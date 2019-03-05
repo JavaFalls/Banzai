@@ -34,16 +34,16 @@ func _ready():
 			pass
 		COLORS.GREEN:
 			get_node("background").texture = load("res://assets/menu/bot_construction/tile_green.png")
-			get_node("go_to_prev").texture_normal = load("res://assets/menu/bot_construction/arrow_green_left.png")
-			get_node("go_to_next").texture_normal = load("res://assets/menu/bot_construction/arrow_green_right.png")
+			get_node("go_to_prev").icon = load("res://assets/menu/bot_construction/arrow_green_left.png")
+			get_node("go_to_next").icon = load("res://assets/menu/bot_construction/arrow_green_right.png")
 		COLORS.ORANGE:
 			get_node("background").texture = load("res://assets/menu/bot_construction/tile_orange.png")
-			get_node("go_to_prev").texture_normal = load("res://assets/menu/bot_construction/arrow_orange_left.png")
-			get_node("go_to_next").texture_normal = load("res://assets/menu/bot_construction/arrow_orange_right.png")
+			get_node("go_to_prev").icon = load("res://assets/menu/bot_construction/arrow_orange_left.png")
+			get_node("go_to_next").icon = load("res://assets/menu/bot_construction/arrow_orange_right.png")
 		COLORS.GREY:
 			get_node("background").texture = load("res://assets/menu/bot_construction/tile_grey.png")
-			get_node("go_to_prev").texture_normal = load("res://assets/menu/bot_construction/arrow_grey_left.png")
-			get_node("go_to_next").texture_normal = load("res://assets/menu/bot_construction/arrow_grey_right.png")
+			get_node("go_to_prev").icon = load("res://assets/menu/bot_construction/arrow_grey_left.png")
+			get_node("go_to_next").icon = load("res://assets/menu/bot_construction/arrow_grey_right.png")
 	
 	connect("info_reserved", self, "deny_info")
 
@@ -91,11 +91,10 @@ func set_data_points(margin, data_width):
 		
 	# Adjust the static positions of out-of-place nodes
 	var rb = get_node("go_to_next")
-	rb.rect_position = data_points.back() - (rb.rect_size/2)
+	rb.rect_position = data_points.back() - Vector2(rb.rect_size.x/4, rb.rect_size.y/2)
 	
 	var back = get_node("background")
 	back.rect_position = data_points[2] - (back.rect_size/2)
-#	back.rect_size.x = (data_width + margin) * 5
 	
 	var ib = get_node("info_button")
 	ib.rect_size.x = data_width
