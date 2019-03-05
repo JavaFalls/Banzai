@@ -35,10 +35,10 @@ func _physics_process(delta):
 		set_opponent_info()
 	else:
 		set_bot_info()
-		
+	
 	move_and_slide(direction.normalized()*movement_speed, UP)
 	return	
-	
+
 func set_bot_info():
 	psuedo_mouse     = game_state.predicted_bot_mouse
 	psuedo_mouse     = opponent.get_position()
