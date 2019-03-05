@@ -30,7 +30,7 @@ func _ready():
 	#f.open('res://NeuralNetwork/gamestates', 3)
     # Call get opponent here
 #	var opponent_bot_ID = get_opponent(head.bot_ID)
-	fighter1 = bot_scene.instance() #player_scene.instance()
+	fighter1 = dummy_scene.instance() #player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
@@ -60,7 +60,7 @@ func _ready():
 	self.add_child(t)
 	t.start()
 
-func _physics_process(delta):
+func _process(delta):
 	self.get_node("healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
 	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
 	if t.is_stopped():
@@ -127,9 +127,7 @@ func send_nn_state(bot_number):
 		message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_training_state())
 	head.Client.send_request(message)
 	output = head.Client.get_response()
-	print("unalteredd output=============" , output)
 	output = int(output)
-	print(output)
 	if bot_number == 1:
 		if(output):
 			game_state.set_predictions(output)
