@@ -370,50 +370,28 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="Label5" type="Label" parent="." index="12"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 61.0
-margin_top = 127.0
-margin_right = 96.0
-margin_bottom = 141.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-theme = ExtResource( 7 )
-text = "(laser)"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="item_scroll" parent="." index="13" instance=ExtResource( 12 )]
+[node name="item_scroll" parent="." index="12" instance=ExtResource( 12 )]
 
 position = Vector2( 163, 34 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 1
 
-[node name="item_scroll2" parent="." index="14" instance=ExtResource( 12 )]
+[node name="item_scroll2" parent="." index="13" instance=ExtResource( 12 )]
 
 position = Vector2( 163, 75 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 2
 
-[node name="item_scroll3" parent="." index="15" instance=ExtResource( 12 )]
+[node name="item_scroll3" parent="." index="14" instance=ExtResource( 12 )]
 
 position = Vector2( 163, 116 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 0
 
-[node name="color_scroll" parent="." index="16" instance=ExtResource( 13 )]
+[node name="color_scroll" parent="." index="15" instance=ExtResource( 13 )]
 
 editor/display_folded = true
 margin_left = 14.0
@@ -426,13 +404,13 @@ colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 
 material = SubResource( 1 )
 
-[node name="color_scroll2" parent="." index="17" instance=ExtResource( 13 )]
+[node name="color_scroll2" parent="." index="16" instance=ExtResource( 13 )]
 
 editor/display_folded = true
 margin_left = 14.0
-margin_top = 51.0
+margin_top = 65.0
 margin_right = 142.0
-margin_bottom = 71.0
+margin_bottom = 85.0
 colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 indicator_offset = 0.3
 
@@ -440,13 +418,13 @@ indicator_offset = 0.3
 
 material = SubResource( 2 )
 
-[node name="color_scroll3" parent="." index="18" instance=ExtResource( 13 )]
+[node name="color_scroll3" parent="." index="17" instance=ExtResource( 13 )]
 
 editor/display_folded = true
 margin_left = 14.0
-margin_top = 79.0
+margin_top = 106.0
 margin_right = 142.0
-margin_bottom = 99.0
+margin_bottom = 126.0
 _sections_unfolded = [ "Material" ]
 colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 indicator_offset = 0.6
@@ -455,17 +433,7 @@ indicator_offset = 0.6
 
 material = SubResource( 3 )
 
-[node name="color_scroll4" parent="." index="19" instance=ExtResource( 13 )]
-
-editor/display_folded = true
-margin_left = 14.0
-margin_top = 106.0
-margin_right = 142.0
-margin_bottom = 126.0
-colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
-indicator_offset = 0.9
-
-[node name="new_button" type="Button" parent="." index="20"]
+[node name="new_button" type="Button" parent="." index="18"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -511,7 +479,7 @@ size_flags_vertical = 1
 texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="test_button" type="Button" parent="." index="21"]
+[node name="test_button" type="Button" parent="." index="19"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -557,7 +525,7 @@ size_flags_vertical = 1
 texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="finish_button" type="Button" parent="." index="22"]
+[node name="finish_button" type="Button" parent="." index="20"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -603,7 +571,7 @@ size_flags_vertical = 1
 texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="item_name" type="Label" parent="." index="23"]
+[node name="item_name" type="Label" parent="." index="21"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -626,7 +594,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="item_description" type="Label" parent="." index="24"]
+[node name="item_description" type="Label" parent="." index="22"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -683,7 +651,7 @@ lines_skipped = 0
 max_lines_visible = 4
 _sections_unfolded = [ "custom_fonts" ]
 
-[node name="ColorRect" type="ColorRect" parent="." index="25"]
+[node name="ColorRect" type="ColorRect" parent="." index="23"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -702,7 +670,7 @@ size_flags_vertical = 1
 color = Color( 0.4, 0.4, 0.4, 1 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="switch_description" type="Button" parent="." index="26"]
+[node name="switch_description" type="Button" parent="." index="24"]
 
 modulate = Color( 0.666667, 0.666667, 0.666667, 1 )
 anchor_left = 0.0
@@ -729,7 +697,7 @@ text = "desc"
 flat = true
 align = 1
 
-[node name="confirm_finish" type="ColorRect" parent="." index="27"]
+[node name="confirm_finish" type="ColorRect" parent="." index="25"]
 
 editor/display_folded = true
 visible = false
@@ -879,4 +847,3 @@ align = 1
 [editable path="color_scroll"]
 [editable path="color_scroll2"]
 [editable path="color_scroll3"]
-[editable path="color_scroll4"]

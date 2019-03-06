@@ -114,10 +114,6 @@ func _ready():
 	#_test_DB()
 
 func _input(event):
-	if Input.is_action_just_pressed("shutdown"):
-		if (DB.is_connection_open()):
-			DB.close_connection()
-		get_tree().quit()
 	if Input.is_action_just_pressed("toggle_fullscreen"):
 		OS.window_fullscreen = !OS.window_fullscreen
 

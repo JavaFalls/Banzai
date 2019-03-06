@@ -147,7 +147,7 @@ func _on_new_button_pressed():
 		reset_info()
 
 func _on_test_button_pressed():
-	pass
+	get_tree().change_scene("res://Scenes/arena_test.tscn")
 
 func _on_finish_button_pressed():
 	$confirm_finish.visible = true
@@ -213,7 +213,7 @@ func update_current_bot():
 	bots[current]["primary_color"] = $color_scroll.get_selected_color().to_rgba32()
 	bots[current]["secondary_color"] = $color_scroll2.get_selected_color().to_rgba32()
 	bots[current]["accent_color"] = $color_scroll3.get_selected_color().to_rgba32()
-	bots[current]["light_color"] = $color_scroll4.get_selected_color().to_rgba32()
+#	bots[current]["light_color"] = $color_scroll4.get_selected_color().to_rgba32()
 
 # Display/organize data
 #------------------------------------------------
@@ -283,7 +283,7 @@ func get_bot_info(bot_data):
 	$color_scroll.set_current(null, bot_data["primary_color"])
 	$color_scroll2.set_current(null, bot_data["secondary_color"])
 	$color_scroll3.set_current(null, bot_data["accent_color"])
-	$color_scroll4.set_current(null, bot_data["light_color"])
+#	$color_scroll4.set_current(null, bot_data["light_color"])
 
 func set_display_bot_colors():
 	$animation_bot.set_primary_color($color_scroll.get_selected_color())

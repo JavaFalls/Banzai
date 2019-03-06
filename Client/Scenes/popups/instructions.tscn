@@ -114,9 +114,16 @@ size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 1 )
 text = "Controls:
-- Move with WASD keys
+- Move with WASD keys or the
+arrow keys
 - Aim with the mouse
-- Shoot with right-click"
+- Use weapon with left-click
+- Use second weapon with
+right-click
+
+- Press ESC to exit the testing or
+training areas (exiting a battle is
+disallowed)"
 autowrap = true
 percent_visible = 1.0
 lines_skipped = 0

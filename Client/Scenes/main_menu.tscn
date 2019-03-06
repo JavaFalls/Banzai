@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -14,7 +14,6 @@
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=12]
 [ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=13]
 [ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=14]
-[ext_resource path="res://sounds/ui/button_accept.wav" type="AudioStream" id=15]
 
 [sub_resource type="Environment" id=1]
 
@@ -131,7 +130,7 @@ resource_local_to_scene = true
 default_font = ExtResource( 7 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="main_menu" type="Node" index="0"]
+[node name="main_menu" type="Node"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
@@ -570,7 +569,6 @@ _sections_unfolded = [ "custom_fonts" ]
 
 [node name="logout_warning" type="Popup" parent="." index="1"]
 
-editor/display_folded = true
 visible = false
 anchor_left = 0.3
 anchor_top = 0.3
@@ -825,15 +823,6 @@ align = 1
 
 visible = false
 theme = SubResource( 6 )
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="8"]
-
-stream = ExtResource( 15 )
-volume_db = 0.0
-pitch_scale = 1.0
-autoplay = false
-mix_target = 0
-bus = "UI"
 
 [connection signal="pressed" from="Control/credits_button" to="." method="scene_change" binds= [ "credits" ]]
 
