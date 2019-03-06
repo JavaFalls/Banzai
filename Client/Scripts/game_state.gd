@@ -9,9 +9,9 @@ onready var bot_position      = Vector2()
 onready var bot_aim_angle     = 0
 onready var bot_health        = 0
 onready var bot_in_peril      = 0
-onready var opponent_angle      = 0
+onready var opponent_angle      = 0    # angle between the opponent and the bot from the bot's perspective
 onready var opponent_distance = 0
-onready var bot_angle         = 0
+onready var bot_angle         = 0      # angle between the bot and its opponent from the opponent's perspective
 onready var opponent_in_peril   = 0
 onready var opponent_health     = 0
 onready var opponent_aim_angle  = 0
@@ -102,7 +102,7 @@ func get_training_state():  # get the battle state for the opponent bot
 	self.relative_vector *= -1
 	self.opponent_angle = (atan2(self.relative_vector.x, self.relative_vector.y)-PI)/(-2*PI)
 
-#	game_state.append(self.player_action)
+#	game_state.append(self.player_action)  # for traiing on player actions
 	game_state.append(self.bot_position)
 	game_state.append(self.bot_aim_angle)
 	game_state.append(self.bot_health)
