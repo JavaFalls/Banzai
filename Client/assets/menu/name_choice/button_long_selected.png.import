@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/button_long_selected.png-908e0ebd94f902433cf3572923d695c2.stex"
+path="res://.import/button_long_selected.png-0e31782d2e9730096128abec22a82a9d.stex"
 
 [deps]
 
-source_file="res://Assets/menu/name_choice/button_long_selected.png"
-dest_files=[ "res://.import/button_long_selected.png-908e0ebd94f902433cf3572923d695c2.stex" ]
+source_file="res://assets/menu/name_choice/button_long_selected.png"
+dest_files=[ "res://.import/button_long_selected.png-0e31782d2e9730096128abec22a82a9d.stex" ]
 
 [params]
 

@@ -17,7 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 head="*res://Scripts/Singletons/head.gd"
-weapon_creator="*res://Scripts/weapons/weapon_creator.gd"
+audio_stream="*res://Scripts/Singletons/audio_stream.gd"
 
 [display]
 

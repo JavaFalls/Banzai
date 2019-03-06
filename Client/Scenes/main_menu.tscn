@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=12]
 [ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=13]
 [ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=14]
+[ext_resource path="res://sounds/ui/button_accept.wav" type="AudioStream" id=15]
 
 [sub_resource type="Environment" id=1]
 
@@ -103,34 +104,34 @@ extra_spacing_char = 1
 font_data = ExtResource( 10 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
-[sub_resource type="StyleBoxEmpty" id=6]
+[sub_resource type="StyleBoxEmpty" id=3]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[sub_resource type="StyleBoxEmpty" id=7]
+[sub_resource type="StyleBoxEmpty" id=4]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[sub_resource type="StyleBoxEmpty" id=8]
+[sub_resource type="StyleBoxEmpty" id=5]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[sub_resource type="Theme" id=10]
+[sub_resource type="Theme" id=6]
 
 resource_local_to_scene = true
 default_font = ExtResource( 7 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="main_menu" type="Node"]
+[node name="main_menu" type="Node" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
@@ -151,7 +152,6 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="MarginContainer" type="MarginContainer" parent="Control" index="0"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -256,7 +256,7 @@ text = "credits"
 flat = true
 clip_text = true
 align = 1
-_sections_unfolded = [ "Textures", "custom_colors" ]
+_sections_unfolded = [ "Textures" ]
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Control/credits_button" index="0"]
 
@@ -807,9 +807,9 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/hover = SubResource( 6 )
-custom_styles/pressed = SubResource( 7 )
-custom_styles/focus = SubResource( 8 )
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/focus = SubResource( 5 )
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 toggle_mode = false
@@ -824,9 +824,20 @@ align = 1
 [node name="instructions" parent="." index="7" instance=ExtResource( 14 )]
 
 visible = false
-theme = SubResource( 10 )
+theme = SubResource( 6 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="8"]
+
+stream = ExtResource( 15 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "UI"
 
 [connection signal="pressed" from="Control/credits_button" to="." method="scene_change" binds= [ "credits" ]]
+
+[connection signal="mouse_entered" from="Control/ranking_button" to="." method="button_hover_enter"]
 
 [connection signal="pressed" from="Control/ranking_button" to="." method="scene_change" binds= [ "ranking" ]]
 
