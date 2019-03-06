@@ -109,7 +109,7 @@ class DQN_agent:
         self.state_size = state_size 
         self.action_size = action_size
 
-        self.memory = deque(maxlen=20000)
+        self.memory = deque(maxlen=2)
         self.gamma         = 0.95 # discount future reward
         self.epsilon       = 1.0 # exploration rate; initial rate; skew 100% towards exploration
         self.epsilon_decay = 0.995 # rate at which epsilon decays; get multiplied to epsilon
@@ -186,9 +186,10 @@ class DQN_agent:
     def train(self, new_gamestate):
         if self.state_counter >= 1:
             next_gamestate = new_gamestate # get the gamestate
+            #self.reward = self.get_reward(np.flip(self.gamestate,1)[0], np.flip(next_gamestate,1)[0]) # for train on player
             self.reward = self.get_reward(self.gamestate[0], next_gamestate[0])
-            self.remember(self.gamestate,self.action,self.reward,next_gamestate)
-            #self.remember(self.gamestate,self.player_action,self.reward,next_gamestate)
+            #self.remember(np.flip(self.gamestate,1),self.action,self.reward,np.flip(next_gamestate,1))# for train on player
+            self.remember(self.gamestate,self.player_action,self.reward,next_gamestate)
             self.gamestate = next_gamestate   
         else:
             self.gamestate = new_gamestate # get the gamestate
@@ -202,6 +203,8 @@ class DQN_agent:
         return self.action
 
     def get_reward(self, gamestate, next_gamestate):
+        gamestate = gamestate
+        next_gamestate = next_gamestate # select the actual array instead of [[]]
         bot_aim_angle_diff      = abs(gamestate[2] - gamestate[5])
         bot_aim_next_angle_diff = abs(next_gamestate[2] - next_gamestate[5])
         if bot_aim_angle_diff > .5:
@@ -216,11 +219,11 @@ class DQN_agent:
                 player_aim_next_angle_diff = 1 - player_aim_next_angle_diff
 
         new_reward = 0
-        #new_reward += (gamestate[9] - next_gamestate[9]) * 20                    # reward for dealing damage
+        new_reward += (gamestate[9] - next_gamestate[9]) * 20                    # reward for dealing damage
         #new_reward += (bot_aim_angle_diff - bot_aim_next_angle_diff) * -5000      # reward for good aim  
         #new_reward += 1/(bot_aim_next_angle_diff + 0.0001)                        # reward for pointing at player
         #new_reward += (gamestate[8]+next_gamestate[8]) * 10000                    # reward for putting the player in peril
-        new_reward += ((1/next_gamestate[6]+.000001)*10)-20                     # test. reward for being close to opponent
+        #new_reward += ((1/next_gamestate[6]+.001)*10)-20                     # test. reward for being close to opponent
 
         #new_reward -= (gamestate[3] - next_gamestate[3]) * 20                    # criticism for losing health
         
@@ -232,9 +235,10 @@ class DQN_agent:
         print("                                                                               reward     ",new_reward)
         return new_reward
 
+
 def load_bot(file_name = 'my_model.h5'):
-   model = load_model(__file__.replace('nnserver.py', file_name))
-   return model
+        model = load_model(__file__.replace('nnserver.py', file_name))
+        return model
 
 
 # Godot Message Processor. See JSON Documentation to find out how we use this module

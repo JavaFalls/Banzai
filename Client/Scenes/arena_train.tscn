@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/arena_base.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/game_state.tscn" type="PackedScene" id=3]
 
-[node name="world" type="Node2D" index="0"]
+[node name="world" type="Node2D"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
