@@ -178,8 +178,8 @@ class DQN_agent:
         .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")
         for item in input_list:
            output_list.append(float(item))
-        self.player_action = int(output_list[0])
-        output_list = output_list[1:self.state_size+1]
+        # self.player_action = int(output_list[0])
+        # output_list = output_list[1:self.state_size+1]
         output_list = np.reshape(output_list, (1, self.state_size))
         return output_list
 
