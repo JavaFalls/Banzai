@@ -20,6 +20,7 @@ onready var opponent_position   = Vector2()
 onready var relative_vector = Vector2()
 
 onready var predicted_action               = 0
+onready var player_action                  = 0   # the action the human is doing
 
 #its position, opponent distance, opponent angle (radians but normalized), aim vector, in peril, b health p health
 
@@ -68,7 +69,7 @@ onready var predicted_opponent_aim_right = 0
 
 
 # Sent to the NN to get predictions back
-func get_battle_state():
+func get_battle_state():  # get the battle state for the player/player_bot
 	var game_state = []
 
 	relative_vector = bot_position - opponent_position
@@ -77,6 +78,7 @@ func get_battle_state():
 	relative_vector *= -1
 	opponent_angle = (atan2(relative_vector.x, relative_vector.y)-PI)/(-2*PI)
 
+#	game_state.append(self.player_action)
 	game_state.append(self.bot_position)
 	game_state.append(self.bot_aim_angle)
 	game_state.append(self.bot_health)
@@ -91,10 +93,27 @@ func get_battle_state():
 	return game_state
 
 
-func get_training_state():
+func get_training_state():  # get the battle state for the opponent bot
 	var game_state = []
-	for x in self.get_battle_state():
-		game_state.push_front(x)		
+
+	self.relative_vector = self.bot_position - self.opponent_position
+	self.opponent_distance = sqrt(pow(self.relative_vector.x,2) + pow(self.relative_vector.y,2))
+	self.bot_angle = (atan2(self.relative_vector.x,self.relative_vector.y)-PI)/(-2*PI)
+	self.relative_vector *= -1
+	self.opponent_angle = (atan2(self.relative_vector.x, self.relative_vector.y)-PI)/(-2*PI)
+
+#	game_state.append(self.player_action)
+	game_state.append(self.bot_position)
+	game_state.append(self.bot_aim_angle)
+	game_state.append(self.bot_health)
+	game_state.append(self.bot_in_peril)
+	game_state.append(self.opponent_angle) # calc this
+	game_state.append(self.opponent_distance) # calculate this
+	game_state.append(self.bot_angle) # calc this
+	game_state.append(self.opponent_in_peril)
+	game_state.append(self.opponent_health)
+	game_state.append(self.opponent_aim_angle)
+	game_state.append(self.opponent_position)
 	return game_state
 
 func set_bot_state(bot):
@@ -166,9 +185,10 @@ func set_opponent_state(opponent):
 
 
 func set_predictions(predictions):
-	print("predictions===============================")
-	print(predictions)
+#	print("predictions===============================")
+#	print(predictions)
 	predicted_action = predictions
+#	print(predictions)
 #	print("set predictions")
 #	print(predicted_action)
 #	print(predictions[0])
@@ -914,6 +934,224 @@ func set_opponent_predictions(predictions):
 		predicted_opponent_vector = Vector2(-1,-1)
 		predicted_opponent_psuedo_ability = 1
 		predicted_opponent_aim_left = 1
+
+func set_player_action(player):
+	if player.get_trajectory() == Vector2(0,0):
+		player_action = 0
+		if player.psuedo_primary == 1:
+			player_action = 9
+			if player.psuedo_aim_right == 1:
+				player_action = 45
+			elif player.psuedo_aim_left == 1:
+				player_action = 81
+		elif player.psuedo_secondary == 1:
+			player_action = 18
+			if player.psuedo_aim_right == 1:
+				player_action = 54
+			elif player.psuedo_aim_left == 1:
+				player_action = 90
+		elif player.psuedo_ability == 1:
+			player_action = 27
+			if player.psuedo_aim_right == 1:
+				player_action = 63
+			elif player.psuedo_aim_left == 1:
+				player_action = 99
+		elif player.psuedo_aim_right == 1:
+			player_action = 36
+		elif player.psuedo_aim_left == 1:
+			player_action = 72
+	elif player.get_trajectory() == Vector2(1,0):
+		player_action = 1
+		if player.psuedo_primary == 1:
+			player_action = 10
+			if player.psuedo_aim_right == 1:
+				player_action = 46
+			elif player.psuedo_aim_left == 1:
+				player_action = 82
+		elif player.psuedo_secondary == 1:
+			player_action = 19
+			if player.psuedo_aim_right == 1:
+				player_action = 55
+			elif player.psuedo_aim_left == 1:
+				player_action = 91
+		elif player.psuedo_ability == 1:
+			player_action = 28
+			if player.psuedo_aim_right == 1:
+				player_action = 64
+			elif player.psuedo_aim_left == 1:
+				player_action = 99
+		elif player.psuedo_aim_right == 1:
+			player_action = 37
+		elif player.psuedo_aim_left == 1:
+			player_action = 73
+	elif player.get_trajectory() == Vector2(-1,0):
+		player_action = 2
+		if player.psuedo_primary == 1:
+			player_action = 11
+			if player.psuedo_aim_right == 1:
+				player_action = 47
+			elif player.psuedo_aim_left == 1:
+				player_action = 83
+		elif player.psuedo_secondary == 1:
+			player_action = 20
+			if player.psuedo_aim_right == 1:
+				player_action = 56
+			elif player.psuedo_aim_left == 1:
+				player_action = 92
+		elif player.psuedo_ability == 1:
+			player_action = 29
+			if player.psuedo_aim_right == 1:
+				player_action = 65
+			elif player.psuedo_aim_left == 1:
+				player_action = 100
+		elif player.psuedo_aim_right == 1:
+			player_action = 38
+		elif player.psuedo_aim_left == 1:
+			player_action = 74
+	elif player.get_trajectory() == Vector2(0,1):
+		player_action = 3
+		if player.psuedo_primary == 1:
+			player_action = 12
+			if player.psuedo_aim_right == 1:
+				player_action = 48
+			elif player.psuedo_aim_left == 1:
+				player_action = 84
+		elif player.psuedo_secondary == 1:
+			player_action = 21
+			if player.psuedo_aim_right == 1:
+				player_action = 57
+			elif player.psuedo_aim_left == 1:
+				player_action = 93
+		elif player.psuedo_ability == 1:
+			player_action = 30
+			if player.psuedo_aim_right == 1:
+				player_action = 66
+			elif player.psuedo_aim_left == 1:
+				player_action = 101
+		elif player.psuedo_aim_right == 1:
+			player_action = 39
+		elif player.psuedo_aim_left == 1:
+			player_action = 75
+	elif player.get_trajectory() == Vector2(0,-1):
+		player_action = 4
+		if player.psuedo_primary == 1:
+			player_action = 13
+			if player.psuedo_aim_right == 1:
+				player_action = 49
+			elif player.psuedo_aim_left == 1:
+				player_action = 85
+		elif player.psuedo_secondary == 1:
+			player_action = 22
+			if player.psuedo_aim_right == 1:
+				player_action = 58
+			elif player.psuedo_aim_left == 1:
+				player_action = 94
+		elif player.psuedo_ability == 1:
+			player_action = 31
+			if player.psuedo_aim_right == 1:
+				player_action = 67
+			elif player.psuedo_aim_left == 1:
+				player_action = 102
+		elif player.psuedo_aim_right == 1:
+			player_action = 40
+		elif player.psuedo_aim_left == 1:
+			player_action = 76
+	elif player.get_trajectory() == Vector2(1,1):
+		player_action = 5
+		if player.psuedo_primary == 1:
+			player_action = 14
+			if player.psuedo_aim_right == 1:
+				player_action = 50
+			elif player.psuedo_aim_left == 1:
+				player_action = 86
+		elif player.psuedo_secondary == 1:
+			player_action = 23
+			if player.psuedo_aim_right == 1:
+				player_action = 59
+			elif player.psuedo_aim_left == 1:
+				player_action = 95
+		elif player.psuedo_ability == 1:
+			player_action = 32
+			if player.psuedo_aim_right == 1:
+				player_action = 68
+			elif player.psuedo_aim_left == 1:
+				player_action = 103
+		elif player.psuedo_aim_right == 1:
+			player_action = 41
+		elif player.psuedo_aim_left == 1:
+			player_action = 77
+	elif player.get_trajectory() == Vector2(1,-1):
+		player_action = 6
+		if player.psuedo_primary == 1:
+			player_action = 15
+			if player.psuedo_aim_right == 1:
+				player_action = 51
+			elif player.psuedo_aim_left == 1:
+				player_action = 87
+		elif player.psuedo_secondary == 1:
+			player_action = 24
+			if player.psuedo_aim_right == 1:
+				player_action = 60
+			elif player.psuedo_aim_left == 1:
+				player_action = 96
+		elif player.psuedo_ability == 1:
+			player_action = 33
+			if player.psuedo_aim_right == 1:
+				player_action = 69
+			elif player.psuedo_aim_left == 1:
+				player_action = 105
+		elif player.psuedo_aim_right == 1:
+			player_action = 42
+		elif player.psuedo_aim_left == 1:
+			player_action = 78
+	elif player.get_trajectory() == Vector2(-1,1):
+		player_action = 7
+		if player.psuedo_primary == 1:
+			player_action = 16
+			if player.psuedo_aim_right == 1:
+				player_action = 52
+			elif player.psuedo_aim_left == 1:
+				player_action = 88
+		elif player.psuedo_secondary == 1:
+			player_action = 25
+			if player.psuedo_aim_right == 1:
+				player_action = 61
+			elif player.psuedo_aim_left == 1:
+				player_action = 97
+		elif player.psuedo_ability == 1:
+			player_action = 34
+			if player.psuedo_aim_right == 1:
+				player_action = 70
+			elif player.psuedo_aim_left == 1:
+				player_action = 106
+		elif player.psuedo_aim_right == 1:
+			player_action = 43
+		elif player.psuedo_aim_left == 1:
+			player_action = 79
+	elif player.get_trajectory() == Vector2(-1,-1):
+		player_action = 8
+		if player.psuedo_primary == 1:
+			player_action = 17
+			if player.psuedo_aim_right == 1:
+				player_action = 53
+			elif player.psuedo_aim_left == 1:
+				player_action = 89
+		elif player.psuedo_secondary == 1:
+			player_action = 26
+			if player.psuedo_aim_right == 1:
+				player_action = 62
+			elif player.psuedo_aim_left == 1:
+				player_action = 98
+		elif player.psuedo_ability == 1:
+			player_action = 35
+			if player.psuedo_aim_right == 1:
+				player_action = 71
+			elif player.psuedo_aim_left == 1:
+				player_action = 107
+		elif player.psuedo_aim_right == 1:
+			player_action = 44
+		elif player.psuedo_aim_left == 1:
+			player_action = 80
 
 func get_predictions():
 	var pred = []

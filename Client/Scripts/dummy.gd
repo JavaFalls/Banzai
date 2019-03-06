@@ -4,11 +4,11 @@
 extends "res://Scripts/entity.gd"
 
 var relative_direction = Vector2()
-var move_random        = false               # Move randomly
+var move_random        = true               # Move randomly
 var move_aggressive    = false              # Move toward opponent's locatoin
 var move_defensive     = false              # Move away from the opponent's location
-var move_square        = true
-var attack_primary     = false               # Use the primary attack as often as possible
+var move_square        = false
+var attack_primary     = true               # Use the primary attack as often as possible
 var attack_secondary   = false              # Use the secondary attack as often as possible
 var use_ability        = false               # Use the ability as often as possible
 var opponent_position  = Vector2()          # The position of the opponent
@@ -32,7 +32,7 @@ func _process(delta):
 			else:
 				direction *= -1
 		if is_player:
-			game_state.set_player_state(self)
+			game_state.set_opponent_state(self)
 		else:
 			game_state.set_bot_state(self)
 		t.start()
@@ -45,6 +45,8 @@ func _physics_process(delta):
 	randomize()
 	opponent_position = get_opponent().get_position()
 	psuedo_mouse = opponent_position + Vector2((randi() % inaccuracy) - (inaccuracy/2), (randi() % inaccuracy) - (inaccuracy/2))
+	relative_mouse   = psuedo_mouse - self.get_position()
+	aim_angle = atan2(relative_mouse.x, relative_mouse.y)
 	relative_direction = get_position() - opponent_position
 	#direction = Vector2(0,0)
 	
@@ -68,7 +70,7 @@ func _physics_process(delta):
 		direction = (self.get_position() - opponent_position)
 	
 	# Control bot animation
-	if (psuedo_mouse.x > get_position().x):
+	if (relative_direction.x > get_position().x):
 		get_node("animation_bot").face_right()
 		if direction.x != 0 || direction.y != 0:
 			if (direction.x > 0):

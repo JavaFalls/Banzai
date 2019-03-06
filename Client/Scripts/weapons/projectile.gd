@@ -29,7 +29,7 @@ func _ready():
 #	self.look_at(target)
 #	movement = (target - atk_range_node.global_position).normalized()
 	# Setup the timer
-	t.set_wait_time(1)
+	t.set_wait_time(10)
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.start()

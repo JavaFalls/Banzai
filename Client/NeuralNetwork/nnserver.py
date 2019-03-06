@@ -112,14 +112,15 @@ class DQN_agent:
         self.memory = deque(maxlen=20000)
         self.gamma         = 0.95 # discount future reward
         self.epsilon       = 1.0 # exploration rate; initial rate; skew 100% towards exploration
-        self.epsilon_decay = 0.9999 # rate at which epsilon decays; get multiplied to epsilon
+        self.epsilon_decay = 0.995 # rate at which epsilon decays; get multiplied to epsilon
         self.epsilon_min   = 0.01 # floor that epsilon will rest at after heavy training
 
-        self.learning_rate = 5
+        self.learning_rate = 2
 
         self.reward        = 0
         self.state_counter = 0
         self.action        = 0
+        self.player_action = 0      # the action performed by the human and not the neural netork
         self.gamestate     = 0
 
         self.model = self._build_model()
@@ -165,9 +166,9 @@ class DQN_agent:
     def load(self):
         self.model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
     def save(self):
-        self.model = save_model(__file__.replace('nnserver.py', 'my_model.h5'))
+        self.model = save_model(self.model, __file__.replace('nnserver.py', 'my_model.h5'))
 
-    def reshape(self, gamestate): # needs some stuff to remove the reward that gets sent with it
+    def reshape(self, gamestate):
         input_list = []
         output_list = []
         for item in gamestate:
@@ -177,8 +178,8 @@ class DQN_agent:
         .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")
         for item in input_list:
            output_list.append(float(item))
-        # self.reward = output_list[20]
-        # output_list = output_list[0:20]
+        # self.player_action = int(output_list[0])
+        # output_list = output_list[1:self.state_size+1]
         output_list = np.reshape(output_list, (1, self.state_size))
         return output_list
 
@@ -187,6 +188,7 @@ class DQN_agent:
             next_gamestate = new_gamestate # get the gamestate
             self.reward = self.get_reward(self.gamestate[0], next_gamestate[0])
             self.remember(self.gamestate,self.action,self.reward,next_gamestate)
+            #self.remember(self.gamestate,self.player_action,self.reward,next_gamestate)
             self.gamestate = next_gamestate   
         else:
             self.gamestate = new_gamestate # get the gamestate
@@ -213,14 +215,14 @@ class DQN_agent:
         if player_aim_next_angle_diff > .5:
                 player_aim_next_angle_diff = 1 - player_aim_next_angle_diff
 
-        new_reward = 50
-        # new_reward += (gamestate[9] - next_gamestate[9]) * 20                    # reward for dealing damage
-        # new_reward += (bot_aim_angle_diff - bot_aim_next_angle_diff) * -5000      # reward for good aim  
-        # new_reward += 1/(bot_aim_next_angle_diff + 0.0001)                        # reward for pointing at player
-        # new_reward += (gamestate[8]+next_gamestate[8]) * 10000                    # reward for putting the player in peril
-        #new_reward += ((1/next_gamestate[6]+.000001)*10000)-30                     # test. reward for being close to opponent
+        new_reward = 0
+        #new_reward += (gamestate[9] - next_gamestate[9]) * 20                    # reward for dealing damage
+        #new_reward += (bot_aim_angle_diff - bot_aim_next_angle_diff) * -5000      # reward for good aim  
+        #new_reward += 1/(bot_aim_next_angle_diff + 0.0001)                        # reward for pointing at player
+        #new_reward += (gamestate[8]+next_gamestate[8]) * 10000                    # reward for putting the player in peril
+        new_reward += ((1/next_gamestate[6]+.000001)*10)-20                     # test. reward for being close to opponent
 
-        # new_reward -= (gamestate[3] - next_gamestate[3]) * 20                    # criticism for losing health
+        #new_reward -= (gamestate[3] - next_gamestate[3]) * 20                    # criticism for losing health
         
         #new_reward -= (player_aim_angle_diff - player_aim_next_angle_diff) * 5   # criticism for being targeted # dont use
         # new_reward -= (gamestate[4]+next_gamestate[4]) * 10                    # criticism for the bot being in peril # dont use
