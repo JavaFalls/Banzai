@@ -20,7 +20,7 @@ func _input(event):
 		create_user()
 
 func create_user():
-	name_choice_screen.get_node("confirm_button/Label").text = "p\nl\na\ny\ne\nr"
+	name_choice_screen.get_node("confirm_button/Label").text = "n\ne\nw\n\np\nl\na\ny\ne\nr"
 	add_child(name_choice_screen)
 	yield(name_choice_screen, "name_entered")
 	head.username = name_choice_screen.get_username()

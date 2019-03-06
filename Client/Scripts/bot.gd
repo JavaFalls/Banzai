@@ -18,7 +18,7 @@ func _process(delta):
 
 func _physics_process(delta):
 	move_and_slide(direction.normalized()*movement_speed, UP)
-	
+
 func set_bot_info():
 	if game_state.predicted_bot_aim_left == 1:
 		aim_angle -= .1*PI
@@ -38,9 +38,9 @@ func set_bot_info():
 	psuedo_secondary     = 0
 	psuedo_primary       = 0
 
-	
+
 	if game_state.predicted_bot_psuedo_primary:
-		primary_weapon.use() 
+		primary_weapon.use()
 		psuedo_primary = 1
 	if game_state.predicted_bot_psuedo_secondary:
 		secondary_weapon.use()
@@ -48,8 +48,8 @@ func set_bot_info():
 	if game_state.predicted_bot_psuedo_ability:
 		ability.use()
 		psuedo_ability = 1
-		
-			
+
+
 	# Control bot animation
 	if (psuedo_mouse.x > get_position().x):
 		get_node("animation_bot").face_right()
@@ -69,7 +69,7 @@ func set_bot_info():
 				get_node("animation_bot").start_walking_forward()
 		else:
 			get_node("animation_bot").reset_animation()
-			
+
 func set_opponent_info():
 	if game_state.predicted_opponent_aim_left == 1:
 		aim_angle -= .1*PI
@@ -91,9 +91,9 @@ func set_opponent_info():
 	psuedo_secondary     = 0
 	psuedo_primary       = 0
 
-	
+
 	if game_state.predicted_opponent_psuedo_primary:
-		primary_weapon.use() 
+		primary_weapon.use()
 		psuedo_primary = 1
 	if game_state.predicted_opponent_psuedo_secondary:
 		secondary_weapon.use()
@@ -101,8 +101,8 @@ func set_opponent_info():
 	if game_state.predicted_opponent_psuedo_ability:
 		ability.use()
 		psuedo_ability = 1
-		
-			
+
+
 	# Control bot animation
 	if (psuedo_mouse.x > get_position().x):
 		get_node("animation_bot").face_right()
@@ -122,4 +122,3 @@ func set_opponent_info():
 				get_node("animation_bot").start_walking_forward()
 		else:
 			get_node("animation_bot").reset_animation()
-			

@@ -4,11 +4,11 @@
 #  instance many projectiles.
 ## This attack fires a projectile at a target
 
-extends Area2D
+extends Node2D
 
 # Contants
 #------------------------------------------------------------------------
-const weapon_creator = preload("res://Scripts/weapons/weapon_creator.gd")
+#const weapon_creator = preload("res://Scripts/weapons/weapon_creator.gd")
 
 # The variables
 #------------------------------------------------------------------------
@@ -29,10 +29,13 @@ onready var bot = get_parent() # The bot that is holding the projectile_launcher
 #------------------------------------------------------------------------
 func _ready():
 	cooldown_timer.set_wait_time(cooldown)
-	print ("projectile launcher cooldown (in seconds): |" + cooldown + "|")
+	print ("projectile launcher cooldown (in seconds): |" + String(cooldown) + "|")
 	cooldown_timer.set_one_shot(true)
 	projectile_container.add_child(cooldown_timer)
 	cooldown_timer.stop()
+
+func _process(delta):
+	get_node("sprite_container").rotation = (bot.psuedo_mouse - bot.global_position).normalized().angle()
 
 # Function that is called when the sword hits a body
 func use():
@@ -43,16 +46,24 @@ func use():
 			weapon_creator.W_PRI_EXPLODING_SHURIKEN:
 				pass
 			weapon_creator.W_PRI_SCATTER_BOW:
-				pass
+				for i in range(3):
+					var angle = rand_range((bot.psuedo_mouse - bot.global_position).angle() - (PI*0.25), (bot.psuedo_mouse - bot.global_position).angle() + (PI*0.25))
+					print("angle:|" + String(angle) + "|")
+					spawn_projectile(Vector2(cos(angle),sin(angle)))
 			weapon_creator.W_PRI_RUBBER_BOW:
 				pass
 			weapon_creator.W_PRI_ZORROS_GLARE:
 				pass
 			_: # Default case (W_PRI_ACID_BOW, W_PRI_PRECISION_BOW)
-				bullet = projectile_scene.instance()
-				bullet.speed = projectile_speed
-				bullet.damage = damage
-				bullet.set_sprite(sprite)
-				bullet.movement = (bot.psuedo_mouse - bot.global_position).normalized()
-				projectile_container.add_child(bullet)
+				spawn_projectile((bot.psuedo_mouse - bot.global_position).normalized())
 		cooldown_timer.start()
+
+func spawn_projectile(direction_vector):
+	var bullet = projectile_scene.instance()
+	bullet.speed = projectile_speed
+	bullet.damage = damage
+	bullet.set_sprite(sprite)
+	bullet.movement = direction_vector
+	bullet.rotate(bullet.movement.angle())
+	bullet.position = get_node("sprite_container/Sprite").global_position
+	projectile_container.add_child(bullet)

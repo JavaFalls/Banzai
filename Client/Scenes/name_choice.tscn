@@ -221,7 +221,7 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 285.126, -0.830062, 0, 0, -410, -204 )
 }
 
-[node name="name_choice" type="Node"]
+[node name="name_choice" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
@@ -283,7 +283,11 @@ size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "p
+text = "n
+e
+w
+
+p
 l
 a
 y
@@ -295,7 +299,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 script = ExtResource( 8 )
-delay = 0.1
+delay = 0.2
 step = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." index="4"]
