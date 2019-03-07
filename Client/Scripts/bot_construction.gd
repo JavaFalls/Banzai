@@ -2,22 +2,16 @@ extends Node
 
 # Get head singleton
 onready var head = get_tree().get_root().get_node("/root/head")
+onready var weapon_creator = get_tree().get_root().get_node("/root/weapon_creator")
 
 onready var constructing_player = (head.construction == head.PLAYER)
 onready var name_choice_scene = preload("res://Scenes/name_choice.tscn")
 
 const STATS_SPACE = "           "
 
-### TEST ITEMS ###
-var w = [
-	{"id": 0, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_01.png")},
-	{"id": 1, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_02.png")},
-	{"id": 2, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_03.png")},
-	{"id": 3, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_04.png")},
-	{"id": 4, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_05.png")},
-	{"id": 5, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_06.png")},
-	{"id": 6, "name": "Powerful Weapon", "description": "This is the description", "speed": 4, "attack": 5, "type": "melee", "info": "heavy_damage" , "texture": preload("res://assets/menu/test_icons/skill_b_07.png")}
-]
+onready var w_pri = weapon_creator.W_PRI_STATS
+onready var w_sec = weapon_creator.W_SEC_STATS
+onready var w_abi = weapon_creator.W_ABI_STATS
 
 # Every loaded bot is temporarily stored
 var bots = [] # Both the id and its bot will have the same index
@@ -25,10 +19,6 @@ var bot_ids = []
 var current = 0
 
 var current_info_type = 0
-
-### unneeded variable and signal soon ###
-var name_confirmed = false
-signal name_entered
 
 # Godot methods
 #------------------------------------------------
@@ -68,11 +58,11 @@ func _ready():
 	var is3 = get_node("item_scroll3")
 	
 	is1.set_data_points(10, 16)
-	is1.set_items(w)
+	is1.set_items(w_pri)
 	is2.set_data_points(10, 16)
-	is2.set_items(w)
+	is2.set_items(w_sec)
 	is3.set_data_points(10, 16)
-	is3.set_items(w)
+	is3.set_items(w_abi)
 	
 	is1.connect("info_queried", self, "grab_info", [head.PRIMARY])
 	is2.connect("info_queried", self, "grab_info", [head.SECONDARY])
@@ -93,11 +83,13 @@ func _on_bot_left_pressed():
 	update_current_bot()
 	current = bots.size()-1 if current-1 < 0 else current-1
 	get_bot_info(bots[current])
+	grab_info(current_info_type)
 	
 func _on_bot_right_pressed():
 	update_current_bot()
 	current = 0 if current+1 >= bots.size() else current+1
 	get_bot_info(bots[current])
+	grab_info(current_info_type)
 
 # Entering a name
 func _on_new_button_pressed():

@@ -2,6 +2,8 @@ extends Node2D
 
 enum COLORS {BLUE, GREEN, ORANGE, GREY}
 
+const TEXTURE_KEY = "icon"
+
 export(float, 0.0, 1.0) var non_selected_alpha = 0.6
 export(float, 0.0, 5.0) var scroll_time = 0.2 setget set_scroll_time
 export(COLORS) var arrow_color = COLORS.BLUE
@@ -183,11 +185,11 @@ func update_items(pop_first):
 	if pop_first:
 		sprites.push_back(sprites.pop_front())
 		sprites.back().position = data_points.back()
-		sprites.back().texture = next_item(2)["texture"]
+		sprites.back().texture = next_item(2)[TEXTURE_KEY]
 	else:
 		sprites.push_front(sprites.pop_back())
 		sprites.front().position = data_points.front()
-		sprites.front().texture = prev_item(2)["texture"]
+		sprites.front().texture = prev_item(2)[TEXTURE_KEY]
 	sprites.front().modulate.a = 0.0
 	sprites.back().modulate.a = 0.0
 	emit_signal("shift_completed")
@@ -197,8 +199,8 @@ func update_items(pop_first):
 # Reset items by current
 #-----------------------
 func reset_items_by_current():
-	sprites[0].texture = prev_item(2)["texture"]
-	sprites[1].texture = prev_item()["texture"]
-	sprites[2].texture = current_item()["texture"]
-	sprites[3].texture = next_item()["texture"]
-	sprites[4].texture = next_item(2)["texture"]
+	sprites[0].texture = prev_item(2)[TEXTURE_KEY]
+	sprites[1].texture = prev_item()[TEXTURE_KEY]
+	sprites[2].texture = current_item()[TEXTURE_KEY]
+	sprites[3].texture = next_item()[TEXTURE_KEY]
+	sprites[4].texture = next_item(2)[TEXTURE_KEY]
