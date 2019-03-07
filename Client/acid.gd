@@ -21,7 +21,7 @@ var time_to_next_damage # How much longer, in seconds until the victim is next d
 func _ready():
 	victim = get_parent()
 	time_to_next_damage = frequency
-	pass
+	get_node("AnimationPlayer").play("acid")
 
 func _process(delta):
 	# Damage victim?

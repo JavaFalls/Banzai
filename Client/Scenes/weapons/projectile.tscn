@@ -28,7 +28,6 @@ _sections_unfolded = [ "Collision", "Pickable", "Transform", "Visibility" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
-modulate = Color( 0.773438, 0.380204, 0.0332336, 1 )
 rotation = 2.35619
 texture = ExtResource( 2 )
 _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
