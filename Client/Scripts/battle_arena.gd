@@ -121,22 +121,21 @@ func get_opponent(bot_id):
 func send_nn_state(bot_number):
 	var output = []
 	var message
-	if bot_number == 1:
-		message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_battle_state())
-	else:
-		message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_training_state())
+	message = '{ "Message Type": "Battle", "Message": %s }' % str(game_state.get_battle_state())
 	head.Client.send_request(message)
 	output = head.Client.get_response()
-	print("unalteredd output=============" , output)
-	output = int(output)
+	
+	output = output.replacen("(", ",")
+	output = output.split_floats(",", 0)
+	# this does not work for two bots right now
+	print("''''''''''''''''output';;;;;;;;;;;;;;;;;;;;;;;")
 	print(output)
-	if bot_number == 1:
-		if(output):
-			game_state.set_predictions(output)
-	else:
-		if(output):
-			game_state.set_opponent_predictions(output)
-
+	for x in output:
+		x = int(x)
+	
+	game_state.set_predictions(output[0])
+	game_state.set_opponent_predictions(output[1])
+	#game_state.set_opponent_predictions(output)
 	return
 
 # Popup Functions

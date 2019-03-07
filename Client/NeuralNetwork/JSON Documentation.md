@@ -22,9 +22,18 @@ The Messages from Godot will be as follows:
 
    "{ "Message Type": "save", .}"
 
-### 3. Request
+### 3. Battle
+
+   "{ "Message Type": "Train", "Message": "Game_state[]"}"
+
+### 4. Train
+
+   "{ "Message Type": "Train", "Message": "Game_state[]"}"
+
+
+### 5. Kill 
 
    Requests will have the following format:
 
-   "{ "Message Type": "Request", "Message": [gamestate], "Arena": "Battle" | "Train" }"
+   "{ "Message Type": "Kill", "Message": [gamestate], "Arena": "Battle" | "Train" }"
 

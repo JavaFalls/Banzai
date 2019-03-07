@@ -182,7 +182,8 @@ class DQN_agent:
         # output_list = output_list[1:self.state_size+1]
         output_list = np.reshape(output_list, (1, self.state_size))
         return output_list
-
+    def get_state_size(self):
+        return self.state_size
     def train(self, new_gamestate):
         if self.state_counter >= 1:
             next_gamestate = new_gamestate # get the gamestate
@@ -235,34 +236,34 @@ class DQN_agent:
 def load_bot(file_name = 'my_model.h5'):
    model = load_model(__file__.replace('nnserver.py', file_name))
    return model
-
+def reshape(gamestate, state_size):
+        input_list = []
+        output_list = []
+        for item in gamestate:
+            input_list.append(item)
+        str_input_list = str(input_list)
+        input_list = str_input_list.replace(" ","").replace("''","'0'").replace("[]", "0,0").replace("[","").replace("]","").replace("(","")\
+        .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")
+        for item in input_list:
+           output_list.append(float(item))
+        # self.player_action = int(output_list[0])
+        # output_list = output_list[1:self.state_size+1]
+        output_list = np.reshape(output_list, (1, state_size))
+        return output_list
 
 # Godot Message Processor. See JSON Documentation to find out how we use this module
 def process_message(message):
-        if   message["Message Type"] == "Battle" :
-                pass
-        elif message["Message Type"] == "Train"  :
-                pass
-        elif message["Message Type"] == "Load"   :
-                if   message["Game Mode"] == "Train":
-                        player_bot = load_bot(message["File Name"])
-                        return
-                elif message["Game Mode"] == "Battle":
-                        if   message["Opponent?"] == "Yes":
-                                opponent_bot = load_bot(message["File Name"])
-                        elif message["Opponent?"] == "No":
-                                player_bot = load_bot(message["File Name"])
-                        else:
-                                return print("Invalid Opponent")
-                else:
-                        return print("Invalid Game Mode")
-                pass
-        elif message["Message Type"] == "Request":
-                return message["Message"]
-        elif message["Message Type"] == "Exit":
-                return 109
+        output = []
+
+
+        if message["Message Type"] == "Train"  :
+                output = fighter1.train(   reshape(message["Message"] , fighter1.get_state_size()) )
+        elif message["Message Type"] == "Battle"  :
+                output = fighter1.predict(   reshape(message["Message"] , fighter1.get_state_size()) ),  fighter2.predict(   reshape(message["Message"] , fighter1.get_state_size()) )
         else:
-                return print("Message not recognized")
+                print("Message not recognized")
+        return output
+
 
 # Loaded Bot files
 player_bot = None
@@ -271,7 +272,7 @@ def load():
         #if we load and don't start fresh
        fighter1.load()
        fighter2.load()
-#get_screenshot()
+
 fighter1 = DQN_agent(state_size, action_size)
 fighter2 = DQN_agent(state_size, action_size)
 
@@ -313,14 +314,8 @@ while True:
         request_completed = False
         try:
                 request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '').replace('\x00', '')
+                print(request)
                 request = json.loads(request)
-                #print(request)
-                # print(request)
-                # some kind of parsing with request then some if statements
-                #packet_type = identify(request)
-                #if packet_type == 'L':
-                        #response = load()
-                #elif packet_type == 'T':
                 request_completed = True
 
         except UnboundLocalError as Null_Reference:
@@ -330,18 +325,9 @@ while True:
         ### Process Request ###
         if process_message(request) == 109:
                 break
-        request = fighter1.reshape(request["Message"])
+        response = process_message(request)
         #print(request)
-        response = fighter1.train(request)
-        
-        # response = request
-        #elif packet_type == 'B':
-                #response = battle(request, fighter1, fighter2)
-        #print(f'{request}')
-
-        #print("sending response")
-        # print("sending response")
- #       print(response)
+        #response = fighter1.train(request)
         send_response(response) # send the action or actions or load successful message based on packet type
         print(response)
 
