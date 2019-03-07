@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tile_highlight.png-b55d349750126f2f87156ba45079fd2f.stex"
+path="res://.import/tile_highlight.png-203eb27def7e8944a819230556fa6756.stex"
 
 [deps]
 
-source_file="res://assets/menu/bot_construction/tile_highlight.png"
-dest_files=[ "res://.import/tile_highlight.png-b55d349750126f2f87156ba45079fd2f.stex" ]
+source_file="res://Assets/menu/bot_construction/tile_highlight.png"
+dest_files=[ "res://.import/tile_highlight.png-203eb27def7e8944a819230556fa6756.stex" ]
 
 [params]
 

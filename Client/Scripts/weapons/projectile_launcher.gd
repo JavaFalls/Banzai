@@ -46,11 +46,9 @@ func use():
 				for i in range(3):
 					var angle = rand_range((bot.psuedo_mouse - get_node("sprite_container/Sprite").global_position).angle() - (PI*0.25), (bot.psuedo_mouse - bot.global_position).angle() + (PI*0.25))
 					spawn_projectile(Vector2(cos(angle),sin(angle)))
-			weapon_creator.W_PRI_RUBBER_BOW:
-				pass
 			weapon_creator.W_PRI_ZORROS_GLARE:
 				pass
-			_: # Default case (W_PRI_ACID_BOW, W_PRI_EXPLODING_SHURIKEN, W_PRI_PRECISION_BOW)
+			_: # Default case (W_PRI_ACID_BOW, W_PRI_EXPLODING_SHURIKEN, W_PRI_RUBBER_BOW, W_PRI_PRECISION_BOW)
 				spawn_projectile((bot.psuedo_mouse - get_node("sprite_container/Sprite").global_position).normalized())
 		cooldown_timer.start()
 

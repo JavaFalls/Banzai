@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/button_small.png-b4d7644d968e8bd7ff3b42bfd1f8d0ae.stex"
+path="res://.import/button_small.png-118cd569934f302a41da1a48781ea7c1.stex"
 
 [deps]
 
-source_file="res://assets/local_scoreboard/button_small.png"
-dest_files=[ "res://.import/button_small.png-b4d7644d968e8bd7ff3b42bfd1f8d0ae.stex" ]
+source_file="res://Assets/local_scoreboard/button_small.png"
+dest_files=[ "res://.import/button_small.png-118cd569934f302a41da1a48781ea7c1.stex" ]
 
 [params]
 

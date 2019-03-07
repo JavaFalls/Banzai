@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/train_button.png-aa60fbfbffcc90fd92d0ae1d4dce36fb.stex"
+path="res://.import/train_button.png-a96e04c43803725f9e59ac26b4df2139.stex"
 
 [deps]
 
-source_file="res://assets/menu/main_menu/test/train_button.png"
-dest_files=[ "res://.import/train_button.png-aa60fbfbffcc90fd92d0ae1d4dce36fb.stex" ]
+source_file="res://Assets/menu/main_menu/test/train_button.png"
+dest_files=[ "res://.import/train_button.png-a96e04c43803725f9e59ac26b4df2139.stex" ]
 
 [params]
 
