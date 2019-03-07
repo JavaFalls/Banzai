@@ -1,7 +1,7 @@
 extends Node2D
 
 # The Bot
-onready var Bot = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
+#onready var Bot = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
 
 # The variables
 var fighter1                             # Player or his AI bot
@@ -17,11 +17,13 @@ onready var bot_scene       = preload("res://Scenes/bot.tscn")
 onready var dummy_scene     = preload("res://Scenes/dummy.tscn")
 onready var arena_end_popup = preload("res://Scenes/popups/arena_end_popup.tscn")
 onready var game_state      = get_node("game_state")
+onready var t               = Timer.new()
 
 func _ready():
 #	 The player's bot or AI
 	fighter1 = player_scene.instance()
 	self.add_child(fighter1)
+	fighter1.set_pause_mode(Node.PAUSE_MODE_STOP)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
 	fighter1.is_player = 1
@@ -30,6 +32,7 @@ func _ready():
 
 	fighter2 = bot_scene.instance()
 	self.add_child(fighter2)
+	fighter2.set_pause_mode(Node.PAUSE_MODE_STOP)
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
 	fighter2.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
@@ -37,6 +40,12 @@ func _ready():
 #	 Set the opponents for the respective fighters
 	fighter1.set_opponent(fighter2)
 	fighter2.set_opponent(fighter1)
+	
+	t.set_wait_time(.3)
+	t.set_one_shot(true)
+	self.add_child(t)
+	t.set_pause_mode(Node.PAUSE_MODE_STOP)
+	t.start()
 
 # Called after game ends
 func game_end():
@@ -46,50 +55,25 @@ func game_end():
 
 
 func _process(delta):
-#	send_nn_state()
-	game_state.set_predictions(send_nn_state())
+	if t.is_stopped():
+		send_nn_state()
+		t.start()
+
+func _input(event):
+	if Input.is_action_just_pressed("exit_arena"):
+		if not get_tree().is_paused():
+			get_tree().set_pause(true)
+			$exit.visible = true
 
 func send_nn_state():
 	var output = []
-	var path = PoolStringArray()
-	var predictions = []
-#	###############################TRAIN####################################################
-#   Don't use this. It's too ineficient.
-#	path.append(ProjectSettings.globalize_path('res://NeuralNetwork/client.py'))
-#	path.append(game_state.get_training_state())
-#	f.store_string(str(path) + "\n")
-
-	###############################BATTLE####################################################
-	path = PoolStringArray()
-	path.append(ProjectSettings.globalize_path('res://NeuralNetwork/client.py'))
-	var message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_battle_state())
-	message = message.json_escape()
-	path.append(message)
-	OS.execute('python', path, true, output)
-
-#	print("OUT_PUT=================================================")
-#	print(output)
-	output = output[0].split_floats(',', false)
-	return output
-	
-#	var output = []
-#	var path = PoolStringArray()
-#	var predictions = []
-##	path.append('C:/Users/vaugh/Desktop/wonderwoman/Banzai/Client/NeuralNetwork/client.py')
-#	path.append('D:/Program Files/GitHub/Banzai/Client/NeuralNetwork/client.py')
-##	print(game_state.get_training_state())
-#	path.append(game_state.get_training_state())
-##	print(path)
-#	OS.execute('python', path, true, output)
-##	print("OUT_PUT=================================================")
-##	print(output)
-#	output = output[0].split_floats(',', false)
-#	for x in output:
-#		x = round(x)
-#		x = int(x)
-#		predictions.append(x)
-##	print(predictions)
-#	return predictions
+	var message
+	message = '{ "Message Type": "Request", "Message": %s }' % str(game_state.get_training_state())
+	head.Client.send_request(message)
+	output = head.Client.get_response()
+	output = int(output)
+	if(output):
+		game_state.set_predictions(output)
 
 # Popup Functions
 func keep_data():
@@ -111,3 +95,11 @@ func contiune_training():
 func main_menu():
 	get_tree().paused = false
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
+
+func _on_confirm_pressed():
+	get_tree().set_pause(false)
+	get_tree().change_scene("res://Scenes/main_menu.tscn")
+
+func _on_back_pressed():
+	get_tree().set_pause(false)
+	$exit.visible = false

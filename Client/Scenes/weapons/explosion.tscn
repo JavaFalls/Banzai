@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Scripts/projectile.gd" type="Script" id=1]
-[ext_resource path="res://assets/icon.png" type="Texture" id=2]
-[ext_resource path="res://Scripts/proj_path.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/weapons/explosion.gd" type="Script" id=1]
+[ext_resource path="res://Assets/weapons/exploding_shuriken.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/weapons/proj_path.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -12,9 +12,9 @@ extents = Vector2( 8, 8 )
 [sub_resource type="RectangleShape2D" id=2]
 
 custom_solver_bias = 0.0
-extents = Vector2( 82.9427, 3.84116 )
+extents = Vector2( 8, 8 )
 
-[node name="projectile" type="Area2D" index="0"]
+[node name="explosion" type="Area2D" index="0"]
 
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -24,25 +24,22 @@ angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
 script = ExtResource( 1 )
-_sections_unfolded = [ "Collision", "Pickable", "Visibility" ]
-speed = 10
+_sections_unfolded = [ "Collision", "Pickable", "Transform", "Visibility" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
-modulate = Color( 0.101563, 0, 1, 1 )
-scale = Vector2( 0.125, 0.0625 )
+rotation = 2.35619
 texture = ExtResource( 2 )
-_sections_unfolded = [ "Material", "Visibility" ]
+_sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
-scale = Vector2( 1, 0.5 )
+scale = Vector2( 0.5, 0.5 )
 shape = SubResource( 1 )
 _sections_unfolded = [ "Material", "Transform" ]
 
 [node name="proj_path" type="Area2D" parent="." index="2"]
 
-position = Vector2( 19.5082, 0.711975 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -51,13 +48,13 @@ angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
 script = ExtResource( 3 )
-_sections_unfolded = [ "Collision" ]
+_sections_unfolded = [ "Collision", "Pickable" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="proj_path" index="0"]
 
-position = Vector2( 47.5387, -0.427189 )
-scale = Vector2( 0.708046, 1 )
+scale = Vector2( 1.25, 1.25 )
 shape = SubResource( 2 )
+_sections_unfolded = [ "Transform" ]
 
 [connection signal="area_entered" from="." to="." method="_on_projectile_area_entered"]
 

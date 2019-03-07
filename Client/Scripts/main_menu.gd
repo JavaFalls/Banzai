@@ -2,6 +2,9 @@ extends Node
 
 # Get head singleton
 onready var head = get_tree().get_root().get_node("/root/head")
+### TEST ###
+onready var head_audio = get_tree().get_root().get_node("/root/audio_stream")
+############
 
 onready var _background = get_node("Control/MarginContainer/background")
 onready var _timer = get_node("timeout")
@@ -56,20 +59,27 @@ Various nodes' signal methods
 """
 
 func scene_change(button):
+### TEST AUDIO
+	head_audio.play_stream(head_audio.ui1, head_audio.BUTTON_ACCEPT)
+###
+	
 	match (button):
 		"ranking":
 			get_tree().change_scene("res://Scenes/Screens/screen_local_scoreboard.tscn")
 		"custom":
-			get_tree().change_scene("res://Scenes/Screens/bot_construction.tscn")
+			get_tree().change_scene("res://Scenes/Screens/construction_fork.tscn")
 		"credits":
-############ I don't think this scene exists yet
-			get_tree().change_scene("res://Scenes/credits.tscn")
-################
+			get_tree().change_scene("res://Scenes/Screens/credits.tscn")
 		"train":
 			get_tree().change_scene("res://Scenes/Load_training.tscn")
 		"fight":
 			head.load_scene("res://Scenes/battle_arena.tscn")
 	pass
+
+### TEST AUDIO
+func button_hover_enter():
+	head_audio.play_stream(head_audio.ui1, head_audio.BUTTON_HOVER)
+###
 
 func screen_idle_timeout():
 	fade()

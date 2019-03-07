@@ -39,6 +39,10 @@ func _ready():
 # Other Functions
 #-------------------------------------------------------------------------------
 func load_colors_from_DB(bot_ID):
+### TEST
+	if bot_ID == -1:
+		bot_ID = 1
+###
 	var raw_JSON = head.DB.get_bot(bot_ID)
 	if (raw_JSON != ""):
 		var bot_dictionary = JSON.parse(raw_JSON).result["data"][0]

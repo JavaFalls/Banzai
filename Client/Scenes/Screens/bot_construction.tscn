@@ -6,15 +6,15 @@
 [ext_resource path="res://assets/menu/bot_construction/backlight.png" type="Texture" id=4]
 [ext_resource path="res://assets/menu/bot_construction/platform.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=6]
-[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=7]
+[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=7]
 [ext_resource path="res://themes/left_arrow_hover.stylebox" type="StyleBox" id=8]
 [ext_resource path="res://themes/left_arrow_normal.stylebox" type="StyleBox" id=9]
 [ext_resource path="res://assets/menu/bot_construction/arrow_blue_left.png" type="Texture" id=10]
 [ext_resource path="res://assets/menu/bot_construction/arrow_blue_right.png" type="Texture" id=11]
-[ext_resource path="res://Scenes/UI Nodes/item_scroll.tscn" type="PackedScene" id=12]
-[ext_resource path="res://Scenes/UI Nodes/color_scroll.tscn" type="PackedScene" id=13]
-[ext_resource path="res://themes/color_scroll.shader" type="Shader" id=14]
-[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=15]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=12]
+[ext_resource path="res://Scenes/UI Nodes/item_scroll.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Scenes/UI Nodes/color_scroll.tscn" type="PackedScene" id=14]
+[ext_resource path="res://themes/color_scroll.shader" type="Shader" id=15]
 [ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=16]
 [ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=17]
 [ext_resource path="res://Scenes/UI Nodes/text_scroll.gd" type="Script" id=18]
@@ -22,21 +22,21 @@
 [sub_resource type="ShaderMaterial" id=1]
 
 render_priority = 0
-shader = ExtResource( 14 )
+shader = ExtResource( 15 )
 shader_param/offset = null
 _sections_unfolded = [ "Resource", "shader_param" ]
 
 [sub_resource type="ShaderMaterial" id=2]
 
 render_priority = 0
-shader = ExtResource( 14 )
+shader = ExtResource( 15 )
 shader_param/offset = null
 _sections_unfolded = [ "Resource", "shader_param" ]
 
 [sub_resource type="ShaderMaterial" id=3]
 
 render_priority = 0
-shader = ExtResource( 14 )
+shader = ExtResource( 15 )
 shader_param/offset = null
 _sections_unfolded = [ "Resource", "shader_param" ]
 
@@ -128,7 +128,7 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[node name="Node" type="Node"]
+[node name="Node" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
@@ -201,14 +201,17 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
 text = "Name"
 align = 1
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Theme" ]
+_sections_unfolded = [ "custom_constants" ]
 
 [node name="bot_left" type="Button" parent="." index="6"]
 
@@ -286,7 +289,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+theme = ExtResource( 12 )
 text = "Primary"
 align = 1
 valign = 1
@@ -311,7 +314,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+theme = ExtResource( 12 )
 text = "Secondary"
 align = 1
 valign = 1
@@ -336,7 +339,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+theme = ExtResource( 12 )
 text = "Utilities"
 align = 1
 valign = 1
@@ -361,7 +364,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+theme = ExtResource( 12 )
 text = "Colors"
 align = 1
 valign = 1
@@ -370,50 +373,28 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="Label5" type="Label" parent="." index="12"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 61.0
-margin_top = 127.0
-margin_right = 96.0
-margin_bottom = 141.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-theme = ExtResource( 7 )
-text = "(laser)"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="item_scroll" parent="." index="13" instance=ExtResource( 12 )]
+[node name="item_scroll" parent="." index="12" instance=ExtResource( 13 )]
 
 position = Vector2( 163, 34 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 1
 
-[node name="item_scroll2" parent="." index="14" instance=ExtResource( 12 )]
+[node name="item_scroll2" parent="." index="13" instance=ExtResource( 13 )]
 
 position = Vector2( 163, 75 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 2
 
-[node name="item_scroll3" parent="." index="15" instance=ExtResource( 12 )]
+[node name="item_scroll3" parent="." index="14" instance=ExtResource( 13 )]
 
 position = Vector2( 163, 116 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 0
 
-[node name="color_scroll" parent="." index="16" instance=ExtResource( 13 )]
+[node name="color_scroll" parent="." index="15" instance=ExtResource( 14 )]
 
 editor/display_folded = true
 margin_left = 14.0
@@ -426,13 +407,13 @@ colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 
 material = SubResource( 1 )
 
-[node name="color_scroll2" parent="." index="17" instance=ExtResource( 13 )]
+[node name="color_scroll2" parent="." index="16" instance=ExtResource( 14 )]
 
 editor/display_folded = true
 margin_left = 14.0
-margin_top = 51.0
+margin_top = 65.0
 margin_right = 142.0
-margin_bottom = 71.0
+margin_bottom = 85.0
 colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 indicator_offset = 0.3
 
@@ -440,13 +421,13 @@ indicator_offset = 0.3
 
 material = SubResource( 2 )
 
-[node name="color_scroll3" parent="." index="18" instance=ExtResource( 13 )]
+[node name="color_scroll3" parent="." index="17" instance=ExtResource( 14 )]
 
 editor/display_folded = true
 margin_left = 14.0
-margin_top = 79.0
+margin_top = 106.0
 margin_right = 142.0
-margin_bottom = 99.0
+margin_bottom = 126.0
 _sections_unfolded = [ "Material" ]
 colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
 indicator_offset = 0.6
@@ -455,17 +436,7 @@ indicator_offset = 0.6
 
 material = SubResource( 3 )
 
-[node name="color_scroll4" parent="." index="19" instance=ExtResource( 13 )]
-
-editor/display_folded = true
-margin_left = 14.0
-margin_top = 106.0
-margin_right = 142.0
-margin_bottom = 126.0
-colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
-indicator_offset = 0.9
-
-[node name="new_button" type="Button" parent="." index="20"]
+[node name="new_button" type="Button" parent="." index="18"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -483,7 +454,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 15 )
+custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 toggle_mode = false
@@ -511,7 +482,7 @@ size_flags_vertical = 1
 texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="test_button" type="Button" parent="." index="21"]
+[node name="test_button" type="Button" parent="." index="19"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -529,7 +500,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 15 )
+custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 toggle_mode = false
@@ -557,7 +528,7 @@ size_flags_vertical = 1
 texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="finish_button" type="Button" parent="." index="22"]
+[node name="finish_button" type="Button" parent="." index="20"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -575,7 +546,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 15 )
+custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 toggle_mode = false
@@ -603,7 +574,7 @@ size_flags_vertical = 1
 texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="item_name" type="Label" parent="." index="23"]
+[node name="item_name" type="Label" parent="." index="21"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -619,14 +590,14 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+theme = ExtResource( 12 )
 valign = 2
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="item_description" type="Label" parent="." index="24"]
+[node name="item_description" type="Label" parent="." index="22"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -683,7 +654,7 @@ lines_skipped = 0
 max_lines_visible = 4
 _sections_unfolded = [ "custom_fonts" ]
 
-[node name="ColorRect" type="ColorRect" parent="." index="25"]
+[node name="ColorRect" type="ColorRect" parent="." index="23"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -692,7 +663,7 @@ anchor_bottom = 0.0
 margin_left = 207.0
 margin_top = 149.0
 margin_right = 244.0
-margin_bottom = 169.0
+margin_bottom = 166.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -702,7 +673,7 @@ size_flags_vertical = 1
 color = Color( 0.4, 0.4, 0.4, 1 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="switch_description" type="Button" parent="." index="26"]
+[node name="switch_description" type="Button" parent="." index="24"]
 
 modulate = Color( 0.666667, 0.666667, 0.666667, 1 )
 anchor_left = 0.0
@@ -710,16 +681,16 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 207.0
-margin_top = 149.0
+margin_top = 148.0
 margin_right = 244.0
-margin_bottom = 169.0
+margin_bottom = 168.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 15 )
+custom_fonts/font = ExtResource( 7 )
 toggle_mode = true
 pressed = true
 enabled_focus_mode = 0
@@ -729,7 +700,7 @@ text = "desc"
 flat = true
 align = 1
 
-[node name="confirm_finish" type="ColorRect" parent="." index="27"]
+[node name="confirm_finish" type="ColorRect" parent="." index="25"]
 
 editor/display_folded = true
 visible = false
@@ -781,7 +752,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-theme = ExtResource( 7 )
+theme = ExtResource( 12 )
 text = "Confirm Changes?"
 align = 1
 valign = 1
@@ -812,7 +783,7 @@ custom_styles/pressed = SubResource( 7 )
 custom_styles/focus = SubResource( 8 )
 custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 10 )
-custom_fonts/font = ExtResource( 15 )
+custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.345098, 0.886275, 0.380392, 1 )
 toggle_mode = false
@@ -846,7 +817,7 @@ custom_styles/pressed = SubResource( 12 )
 custom_styles/focus = SubResource( 13 )
 custom_styles/disabled = SubResource( 14 )
 custom_styles/normal = SubResource( 15 )
-custom_fonts/font = ExtResource( 15 )
+custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.345098, 0.886275, 0.380392, 1 )
 toggle_mode = false
@@ -879,4 +850,3 @@ align = 1
 [editable path="color_scroll"]
 [editable path="color_scroll2"]
 [editable path="color_scroll3"]
-[editable path="color_scroll4"]

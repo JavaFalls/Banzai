@@ -52,13 +52,13 @@ enum weapon_types {
 #  projectile_speed - given in pixels per second
 #  projectile_scene - The preloaded scene that controls how a projectile behaves, this is the scene that is the projectile
 const W_PRI_STATS = [
-	{"id": W_PRI_ACID_BOW          , "implemented": false, "name": "Acid Bow"          , "description": "Leaves a residue on contact, which causes latent damage for 2.5 seconds"                                , "info": "Deals an extra 5 damage over 2.5 seconds"          , "attack":   1, "speed":  0.1, "type": "Ranged", "icon": preload("res://assets/weapons/bow_regular.png"), "sprite": preload("res://assets/weapons/arrow_regular.png"), "scene": preload("res://scenes/weapons/primary/acid_bow.tscn")          , "projectile_speed": 5, "projectile_scene": preload("res://Scenes/projectile.tscn")},
-	{"id": W_PRI_EXPLODING_SHURIKEN, "implemented": false, "name": "Exploding Shuriken", "description": "Thrown projectile which detonates on contact with opponent or barrier"                                  , "info": "Explosion radius is roughly 2 times bot size"      , "attack":   5, "speed":  0.2, "type": "Ranged", "icon": preload("res://assets/weapons/bow_regular.png"), "sprite": preload("res://assets/weapons/arrow_regular.png"), "scene": preload("res://scenes/weapons/primary/exploding_shuriken.tscn"), "projectile_speed": 5, "projectile_scene": preload("res://Scenes/projectile.tscn")},
-	{"id": W_PRI_PRECISION_BOW     , "implemented": false, "name": "Precision Bow"     , "description": "Launches a single projectile which causes severe damage on contact"                                     , "info": "Very accurate"                                     , "attack":  15, "speed":  0.5, "type": "Ranged", "icon": preload("res://assets/weapons/bow_regular.png"), "sprite": preload("res://assets/weapons/arrow_regular.png"), "scene": preload("res://scenes/weapons/primary/precision_bow.tscn")     , "projectile_speed": 5, "projectile_scene": preload("res://Scenes/projectile.tscn")},
-	{"id": W_PRI_SCATTER_BOW       , "implemented": false, "name": "Scatter Bow"       , "description": "Launches 3 projectiles which cause damage if contact is made with an opponent"                          , "info": "Projectile direction is random in a 90 degree cone", "attack":   2, "speed":  0.1, "type": "Ranged", "icon": preload("res://assets/weapons/bow_regular.png"), "sprite": preload("res://assets/weapons/arrow_regular.png"), "scene": preload("res://scenes/weapons/primary/scatter_bow.tscn")       , "projectile_speed": 5, "projectile_scene": preload("res://Scenes/projectile.tscn")},
-	{"id": W_PRI_SWORD             , "implemented": false, "name": "Sword"             , "description": "The hack-n-slash of the ages. Get personal with this blade"                                             , "info": "Stab, stab, stab"                                  , "attack":  20, "speed":  0.1, "type": "Melee" , "icon": preload("res://assets/weapons/sword.png")      , "sprite": preload("res://assets/weapons/sword.png")        , "scene": preload("res://scenes/weapons/primary/sword.tscn")},
-	{"id": W_PRI_RUBBER_BOW        , "implemented": false, "name": "Rubber Bow"        , "description": "Launches projectiles which bounce off walls for a 2.5 seconds, or until contact is made with a bot"     , "info": "Projectiles bounce off walls for 2.5 seconds"      , "attack":   2, "speed":  0.1, "type": "Ranged", "icon": preload("res://assets/weapons/bow_regular.png"), "sprite": preload("res://assets/weapons/arrow_regular.png"), "scene": preload("res://scenes/weapons/primary/rubber_bow.tscn")        , "projectile_speed": 5, "projectile_scene": preload("res://Scenes/projectile.tscn")},
-	{"id": W_PRI_ZORROS_GLARE      , "implemented": false, "name": "Zorro's Glare"     , "description": "If looks could kill, this would kill you. Oh wait, it can kill you."                                    , "info": "Death Laser"                                       , "attack":  50, "speed":  0.0, "type": "Ranged", "icon": preload("res://assets/weapons/bow_regular.png"), "sprite": preload("res://assets/weapons/arrow_regular.png"), "scene": preload("res://scenes/weapons/primary/zorros_glare.tscn")      , "projectile_speed": 5, "projectile_scene": preload("res://Scenes/projectile.tscn")}
+	{"id": W_PRI_ACID_BOW          , "implemented": true , "name": "Acid Bow"          , "description": "Leaves a residue on contact, which causes latent damage for 2.5 seconds"                                , "info": "Deals an extra 5 damage over 2.5 seconds"          , "attack":   1, "speed":  0.25, "type": "Ranged", "icon": preload("res://assets/weapons/acid_bow.png")          , "sprite": preload("res://assets/weapons/acid_arrow.png")        , "scene": preload("res://scenes/weapons/projectile_launcher.tscn") , "projectile_speed": 400, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")},
+	{"id": W_PRI_EXPLODING_SHURIKEN, "implemented": true , "name": "Exploding Shuriken", "description": "Thrown projectile which detonates on contact with opponent or barrier"                                  , "info": "Explosion radius is roughly 2 times bot size"      , "attack":   5, "speed":  0.2 , "type": "Ranged", "icon": preload("res://assets/weapons/exploding_shuriken.png"), "sprite": preload("res://assets/weapons/exploding_shuriken.png"), "scene": preload("res://scenes/weapons/projectile_launcher.tscn") , "projectile_speed": 250, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")},
+	{"id": W_PRI_PRECISION_BOW     , "implemented": true , "name": "Precision Bow"     , "description": "Launches a single projectile which causes severe damage on contact"                                     , "info": "Very accurate"                                     , "attack":  15, "speed":  0.5 , "type": "Ranged", "icon": preload("res://assets/weapons/precision_bow.png")     , "sprite": preload("res://assets/weapons/precision_arrow.png")   , "scene": preload("res://scenes/weapons/projectile_launcher.tscn") , "projectile_speed": 700, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")},
+	{"id": W_PRI_SCATTER_BOW       , "implemented": true , "name": "Scatter Bow"       , "description": "Launches 3 projectiles which cause damage if contact is made with an opponent"                          , "info": "Projectile direction is random in a 90 degree cone", "attack":   2, "speed":  0.2 , "type": "Ranged", "icon": preload("res://assets/weapons/scatter_bow.png")       , "sprite": preload("res://assets/weapons/scatter_arrow.png")     , "scene": preload("res://scenes/weapons/projectile_launcher.tscn") , "projectile_speed": 250, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")},
+	{"id": W_PRI_SWORD             , "implemented": false, "name": "Sword"             , "description": "The hack-n-slash of the ages. Get personal with this blade"                                             , "info": "Stab, stab, stab"                                  , "attack":  20, "speed":  0.1 , "type": "Melee" , "icon": preload("res://assets/weapons/sword.png")             , "sprite": preload("res://assets/weapons/sword.png")             , "scene": preload("res://scenes/weapons/primary/sword.tscn")},
+	{"id": W_PRI_RUBBER_BOW        , "implemented": false, "name": "Rubber Bow"        , "description": "Launches projectiles which bounce off walls for a 2.5 seconds, or until contact is made with a bot"     , "info": "Projectiles bounce off walls for 2.5 seconds"      , "attack":   2, "speed":  0.1 , "type": "Ranged", "icon": preload("res://assets/weapons/bow_regular.png")       , "sprite": preload("res://assets/weapons/rubber_arrow.png")      , "scene": preload("res://scenes/weapons/projectile_launcher.tscn") , "projectile_speed": 250, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")},
+	{"id": W_PRI_ZORROS_GLARE      , "implemented": false, "name": "Zorro's Glare"     , "description": "If looks could kill, this would kill you. Oh wait, it can kill you."                                    , "info": "Death Laser"                                       , "attack":  50, "speed":  0.0 , "type": "Ranged", "icon": preload("res://assets/weapons/bow_regular.png")       , "sprite": preload("res://assets/weapons/arrow_regular.png")     , "scene": preload("res://scenes/weapons/primary/zorros_glare.tscn"), "projectile_speed": 250, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")}
 ]
 const W_SEC_STATS = [
 	{"id": W_SEC_MINE              , "implemented": false, "name": "Mine"              , "description": "A trap set on the ground, explodes when triggered"                                                      , "info": "Explosion radius is roughly 2 times bot size"      , "attack":  10, "speed":  1.0, "type": "Trap"  , "icon": preload("res://assets/weapons/bow_regular.png"), "sprite": preload("res://assets/weapons/arrow_regular.png"), "scene": preload("res://scenes/weapons/secondary/mine.tscn")},
@@ -101,7 +101,7 @@ func get_w_abi_stats():
 	return get_w_stats_implemented_only(W_ABI_STATS)
 
 func get_w_stats_implemented_only(weapon_array):
-	w_stats_array = Array()
+	var w_stats_array = Array()
 	for w_stats in weapon_array:
 		if w_stats["implemented"]:
 			w_stats_array.append(w_stats)
@@ -109,15 +109,16 @@ func get_w_stats_implemented_only(weapon_array):
 
 # Functions to create weapon objects for use by bots:
 #-----------------------------------------------------------------------
-func create_weapon(w_ID, parent_node):
-	w_stats = get_weapon_stats(w_ID)
-	weapon = w_stats["scene"].instance()
+func create_weapon(w_ID):
+	var w_stats = get_weapon_stats(w_ID)
+	var weapon = w_stats["scene"].instance()
 	match(w_stats["type"]):
 		"Ranged":
 			weapon.id = w_stats["id"]
 			weapon.damage = w_stats["attack"]
 			weapon.cooldown = w_stats["speed"]
-			weapon.sprite = w_stats["sprite"]
+			weapon.set_sprite(w_stats["icon"])
+			weapon.projectile_sprite = w_stats["sprite"]
 			weapon.projectile_speed = w_stats["projectile_speed"]
 			weapon.projectile_scene = w_stats["projectile_scene"]
 		"Melee":
@@ -128,4 +129,4 @@ func create_weapon(w_ID, parent_node):
 			weapon.cooldown = w_stats["speed"]
 		"Tech":
 			weapon.cooldown = w_stats["speed"]
-	parent_node.add_child(weapon)
+	return weapon

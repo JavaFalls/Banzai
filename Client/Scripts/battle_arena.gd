@@ -30,7 +30,7 @@ func _ready():
 	#f.open('res://NeuralNetwork/gamestates', 3)
     # Call get opponent here
 #	var opponent_bot_ID = get_opponent(head.bot_ID)
-	fighter1 = bot_scene.instance() #player_scene.instance()
+	fighter1 = dummy_scene.instance() #player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
@@ -60,7 +60,7 @@ func _ready():
 	self.add_child(t)
 	t.start()
 
-func _physics_process(delta):
+func _process(delta):
 	self.get_node("healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
 	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
 	if t.is_stopped():
@@ -77,9 +77,11 @@ func post_game():
 	head.battle_winner_calc(fighter1.get_hit_points(), fighter2.get_hit_points())
 	if head.battle_won:
 		fighter2.queue_free()
+		fighter1.set_physics_process(false)
 		popup_message = "Your robot is victorious, ranking + " + String(head.score_change)
 	else:
 		fighter1.queue_free()
+		fighter2.set_physics_process(false)
 		popup_message = "Your robot has been defeated, ranking - " + String(head.score_change)
 	popup = arena_end_popup.instance()
 	self.add_child(popup)
@@ -124,7 +126,7 @@ func send_nn_state(bot_number):
 	message = '{ "Message Type": "Battle", "Message": %s }' % str(game_state.get_battle_state())
 	head.Client.send_request(message)
 	output = head.Client.get_response()
-	
+
 	output = output.replacen("(", ",")
 	output = output.split_floats(",", 0)
 	# this does not work for two bots right now
@@ -132,7 +134,7 @@ func send_nn_state(bot_number):
 	print(output)
 	for x in output:
 		x = int(x)
-	
+
 	game_state.set_predictions(output[0])
 	game_state.set_opponent_predictions(output[1])
 	#game_state.set_opponent_predictions(output)

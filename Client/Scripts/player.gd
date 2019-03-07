@@ -3,7 +3,6 @@
 
 extends "res://Scripts/entity.gd"
 onready var game_state = self.get_parent().get_child(1) #Currently child 1 is game state apparently. this is temporary code it needs to set gamestate automatically to the right child
-var relative_mouse = Vector2()
 
 func _process(delta):
 	game_state.set_player_action(self)

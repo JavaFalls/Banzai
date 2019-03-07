@@ -1,16 +1,210 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/arena_train.gd" type="Script" id=1]
-[ext_resource path="res://Scenes/game_state.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/arena_base.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/arena_base.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/game_state.tscn" type="PackedScene" id=3]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=4]
 
-[node name="world" type="Node2D"]
+[sub_resource type="StyleBoxEmpty" id=1]
 
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[node name="world" type="Node2D" index="0"]
+
+pause_mode = 2
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
 
-[node name="game_state" parent="." index="0" instance=ExtResource( 2 )]
+[node name="arena" parent="." index="0" instance=ExtResource( 2 )]
 
-[node name="arena" parent="." index="1" instance=ExtResource( 3 )]
+pause_mode = 1
+editor/display_folded = false
+
+[node name="game_state" parent="." index="1" instance=ExtResource( 3 )]
+
+pause_mode = 1
+_sections_unfolded = [ "Pause" ]
+
+[node name="exit" type="Node2D" parent="." index="2"]
+
+pause_mode = 2
+editor/display_folded = true
+visible = false
+z_index = 1
+_sections_unfolded = [ "Pause", "Z Index" ]
+
+[node name="exit" type="ColorRect" parent="exit" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 143.0
+margin_top = 13.0
+margin_right = 257.0
+margin_bottom = 72.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme = ExtResource( 4 )
+color = Color( 0.184314, 0.192157, 0.87451, 0.858824 )
+
+[node name="Label" type="Label" parent="exit/exit" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 114.0
+margin_bottom = 33.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Exit the arena?"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="confirm" type="Button" parent="exit/exit" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 3.0
+margin_top = 34.0
+margin_right = 54.0
+margin_bottom = 56.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Yes"
+flat = true
+align = 1
+
+[node name="back" type="Button" parent="exit/exit" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 60.0
+margin_top = 34.0
+margin_right = 111.0
+margin_bottom = 56.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/focus = SubResource( 8 )
+custom_styles/disabled = SubResource( 9 )
+custom_styles/normal = SubResource( 10 )
+custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "No"
+flat = true
+align = 1
+
+[connection signal="pressed" from="exit/exit/confirm" to="." method="_on_confirm_pressed"]
+
+[connection signal="pressed" from="exit/exit/back" to="." method="_on_back_pressed"]
 
 
