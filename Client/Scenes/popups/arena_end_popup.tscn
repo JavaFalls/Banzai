@@ -4,11 +4,12 @@
 [ext_resource path="res://assets/button_blue.png" type="Texture" id=2]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=3]
 
-[node name="arena_end_popup" type="Node2D"]
+[node name="arena_end_popup" type="Node2D" index="0"]
 
 pause_mode = 2
+z_index = 10
 script = ExtResource( 1 )
-_sections_unfolded = [ "Pause" ]
+_sections_unfolded = [ "Pause", "Z Index" ]
 
 [node name="shade" type="ColorRect" parent="." index="0"]
 
