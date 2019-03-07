@@ -18,6 +18,7 @@ config/icon="res://icon.png"
 
 head="*res://Scripts/Singletons/head.gd"
 audio_stream="*res://Scripts/Singletons/audio_stream.gd"
+weapon_creator="*res://Scripts/Singletons/weapon_creator.gd"
 
 [display]
 

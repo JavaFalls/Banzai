@@ -29,7 +29,6 @@ onready var bot = get_parent() # The bot that is holding the projectile_launcher
 #------------------------------------------------------------------------
 func _ready():
 	cooldown_timer.set_wait_time(cooldown)
-	print ("projectile launcher cooldown (in seconds): |" + String(cooldown) + "|")
 	cooldown_timer.set_one_shot(true)
 	projectile_container.add_child(cooldown_timer)
 	cooldown_timer.stop()
@@ -48,7 +47,6 @@ func use():
 			weapon_creator.W_PRI_SCATTER_BOW:
 				for i in range(3):
 					var angle = rand_range((bot.psuedo_mouse - bot.global_position).angle() - (PI*0.25), (bot.psuedo_mouse - bot.global_position).angle() + (PI*0.25))
-					print("angle:|" + String(angle) + "|")
 					spawn_projectile(Vector2(cos(angle),sin(angle)))
 			weapon_creator.W_PRI_RUBBER_BOW:
 				pass

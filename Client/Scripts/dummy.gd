@@ -18,7 +18,7 @@ onready var t = Timer.new()
 onready var game_state = self.get_parent().get_child(1)
 
 func _ready():
-	set_weapons(ranged_attack, heavy_attack, aby_evade)
+	#set_weapons(ranged_attack, heavy_attack, aby_evade)
 	t.set_wait_time(1)
 	t.set_one_shot(true)
 	self.add_child(t)

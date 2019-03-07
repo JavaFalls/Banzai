@@ -77,9 +77,11 @@ func post_game():
 	head.battle_winner_calc(fighter1.get_hit_points(), fighter2.get_hit_points())
 	if head.battle_won:
 		fighter2.queue_free()
+		fighter1.set_physics_process(false)
 		popup_message = "Your robot is victorious, ranking + " + String(head.score_change)
 	else:
 		fighter1.queue_free()
+		fighter2.set_physics_process(false)
 		popup_message = "Your robot has been defeated, ranking - " + String(head.score_change)
 	popup = arena_end_popup.instance()
 	self.add_child(popup)

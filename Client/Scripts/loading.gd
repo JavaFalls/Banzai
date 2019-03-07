@@ -14,6 +14,8 @@ func load_scene(path):
 	set_process(true)
 
 func _process(delta):
+	$spinner.rotate(2*PI*delta)
+	
 	if loader == null:
 		set_process(false)
 		return
@@ -21,7 +23,7 @@ func _process(delta):
 	var t = OS.get_ticks_msec()
 	while OS.get_ticks_msec() < t + max_load_time:
 		var err = loader.poll()
-		
+
 		if err == ERR_FILE_EOF: # load finished
 			var resource = loader.get_resource()
 			loader = null
