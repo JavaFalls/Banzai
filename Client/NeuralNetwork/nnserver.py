@@ -53,7 +53,8 @@ def connect_request():
                         print("Pipe not created.")
                 elif e.args[0] == 109:
                         print("Closed Pipe")
-                input('what do you want me to do?')
+                print("=== Exiting...===")
+                exit()
 
 def connect_response():
         try:
@@ -68,7 +69,8 @@ def connect_response():
 
                 elif e.args[0] == 109:
                         print("Closed Pipe")
-                input('what do you want me to do?')
+                print("=== Exiting...===")
+                exit()
 
 def get_client_request():
         # Create a named pipe to receive requests from the client
@@ -84,7 +86,8 @@ def get_client_request():
                         print("Pipe not created.")
                 elif e.args[0] == 109:
                         print("Closed Pipe")
-                input('what do you want me to do?')
+                print("=== Exiting...===")
+                exit()
         return request
 
 def send_response(response):
@@ -101,8 +104,8 @@ def send_response(response):
 
                 elif e.args[0] == 109:
                         print("Closed Pipe")
-                input('what do you want me to do?')
-
+                print("=== Exiting...===")
+                exit()
 class DQN_agent:
 
     def __init__(self, state_size, action_size):
