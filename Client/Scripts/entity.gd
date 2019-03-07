@@ -35,15 +35,15 @@ onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged
 onready var aby_evade     = preload("res://Scenes/aby_evade.tscn")  # The evade scene to be instanced
 
 func _ready():
-	set_weapons(ranged_attack, quick_attack, aby_evade)
+	set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_SCATTER_BOW), quick_attack, aby_evade)
 
 # Function to change weapons; is sent weapon scene as a parameter
 func set_weapons(new_primary, new_secondary, new_ability):
 	if self.get_child_count() > 4:   # Don't remove children if there aren't any 
 		self.remove_child(primary_weapon)  #queue_free()?
 		self.remove_child(secondary_weapon)
-		self.remove_child(ability)	
-	primary_weapon   = new_primary.instance()
+		self.remove_child(ability)
+	primary_weapon   = new_primary
 	self.add_child(primary_weapon)
 	secondary_weapon = new_secondary.instance()
 	self.add_child(secondary_weapon)
