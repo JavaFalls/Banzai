@@ -15,7 +15,6 @@ onready var wavs = [
 ]
 
 var ui1
-var ui2
 
 func _ready():
 	add_child(AudioStreamPlayer.new())
@@ -24,11 +23,6 @@ func _ready():
 	ui1 = get_child(0)
 	ui1.set_stream(wavs[BUTTON_ACCEPT])
 	ui1.set_bus("UI")
-	ui1.set_volume_db(3)
-	
-	ui2 = get_child(1)
-	ui2.set_stream(wavs[BUTTON_HOVER])
-	ui2.set_bus("UI")
 
 func play_stream(player, audio_index, wait=false):
 	if not player is AudioStreamPlayer:

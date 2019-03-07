@@ -33,9 +33,6 @@ signal name_entered
 # Godot methods
 #------------------------------------------------
 func _ready():
-#	if head.construction == head.PLAYER:
-#		head.load_new_script(self, "res://Scripts/player_construction.gd")
-	
 	if constructing_player:
 		$bot_left.visible = false
 		$bot_right.visible = false
