@@ -267,6 +267,26 @@ def process_message(message):
                 output = fighter1.train(   reshape(message["Message"] , fighter1.get_state_size()) )
         elif message["Message Type"] == "Battle"  :
                 output = fighter1.predict(   reshape(message["Message"] , fighter1.get_state_size()) ),  fighter2.predict(   reshape(message["Message"] , fighter1.get_state_size()) )
+        elif message["Message Type"] == "Battle"  :
+                output = fighter1.predict(   reshape(message["Message"] , fighter1.get_state_size()) ),  fighter2.predict(   reshape(message["Message"] , fighter1.get_state_size()) )
+        elif message["Message Type"] == "Load"   :
+                if   message["Game Mode"] == "Train":
+                        player_bot = load_bot(message["File Name"])
+                        return
+                elif message["Game Mode"] == "Battle":
+                        if   message["Opponent?"] == "Yes":
+                                opponent_bot = load_bot(message["File Name"])
+                        elif message["Opponent?"] == "No":
+                                player_bot = load_bot(message["File Name"])
+                        else:
+                                return print("Invalid Opponent")
+                else:
+                        return print("Invalid Game Mode")
+                pass
+        elif message["Message Type"] == "save"   :
+                player_bot = save_bot(message["File Name"])
+        elif message["Message Type"] == "Kill"   :
+                output = 109
         else:
                 print("Message not recognized")
         return output
