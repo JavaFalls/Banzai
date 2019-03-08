@@ -46,7 +46,7 @@ func _physics_process(delta):
 	opponent_position = get_opponent().get_position()
 	psuedo_mouse = opponent_position + Vector2((randi() % inaccuracy) - (inaccuracy/2), (randi() % inaccuracy) - (inaccuracy/2))
 	relative_mouse   = psuedo_mouse - self.get_position()
-	aim_angle = atan2(relative_mouse.x, relative_mouse.y)
+	aim_angle = (psuedo_mouse - global_position).angle()
 	relative_direction = get_position() - opponent_position
 	#direction = Vector2(0,0)
 	

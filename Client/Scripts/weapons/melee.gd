@@ -1,0 +1,53 @@
+#  This scene is instanced by a "subclass" (i.e. "player" or "bot") of the entity scene 
+#  using entity's set_weapons() function.  Everything in this scene exists for the purpose
+#  of the use() function, which is how this attack is used by the mechs.  
+## This attack quickly swings a weak sword.
+
+extends Node2D
+
+# Stat variables
+var damage
+var cooldown
+var swing_scene
+
+# Variables
+var sword_swing
+var cooldown_time = 0.0
+var sheathed = true
+
+# Godot hooks:
+func _process(delta):
+	if not sheathed:
+		if not sword_swing.get_node("AnimationPlayer").is_playing():
+			sword_swing.queue_free()
+			sheathed = true
+			get_node("sheathed_sword").visible = true
+	elif cooldown_time > 0.0:
+		cooldown_time -= delta
+
+# Called by the bots to activate the ability
+func use():
+#	self.look_at(self.get_parent().get_position() + Vector2(sin(get_parent().aim_angle), cos(get_parent().aim_angle)))
+#	self.rotate(get_parent().aim_angle)
+	if sheathed and cooldown_time <= 0.0:
+		sheathed = false
+		cooldown_time = cooldown
+		get_node("sheathed_sword").visible = false
+		sword_swing = swing_scene.instance()
+		#sword_swing.position = get_parent().global_position
+		#sword_swing.rotation = get_parent().aim_angle
+		#sword_swing.look_at(get_parent().psuedo_mouse - get_parent().global_position)
+		sword_swing.get_node("AnimationPlayer").play("attack")
+		sword_swing.connect("body_entered", self, "_on_sword_swing_body_entered")
+		get_node("sword_swing_holder").add_child(sword_swing)
+		get_node("sword_swing_holder").rotation = get_parent().aim_angle
+
+# Function that is called when the sword hits a body
+func _on_sword_swing_body_entered(body):
+	if (body.get_name() != get_parent().get_name()):
+		if body.get_name() == "fighter1" or body.get_name() == "fighter2":
+			body.increment_hitpoints(damage)
+
+# Function used to set the sheathed graphic
+func set_sheathed_sprite(value):
+	get_node("sheathed_sword").texture = value

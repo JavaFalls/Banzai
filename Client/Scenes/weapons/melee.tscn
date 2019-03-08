@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/weapons/melee.gd" type="Script" id=1]
+[ext_resource path="res://Assets/weapons/sword.png" type="Texture" id=2]
+
+[node name="melee" type="Node2D"]
+
+script = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="sheathed_sword" type="Sprite" parent="." index="0"]
+
+rotation = 3.49066
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 2 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="sword_swing_holder" type="Node2D" parent="." index="1"]
+
+

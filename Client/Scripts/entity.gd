@@ -30,12 +30,12 @@ signal game_end # The signal indicate the the arena match is over
 
 onready var aby_shield    = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
 onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn")  # The heavy scene to be instanced
-onready var quick_attack  = preload("res://Scenes/atk_quick.tscn")  # The quick scene to be instanced
+#onready var quick_attack  = preload("res://Scenes/atk_quick.tscn")  # The quick scene to be instanced
 #onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged scene to be instanced
 onready var aby_evade     = preload("res://Scenes/aby_evade.tscn")  # The evade scene to be instanced
 
 func _ready():
-	set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_EXPLODING_SHURIKEN), quick_attack, aby_evade)
+	set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_EXPLODING_SHURIKEN), weapon_creator.create_weapon(weapon_creator.W_SEC_SCYTHE), aby_evade)
 
 # Function to change weapons; is sent weapon scene as a parameter
 func set_weapons(new_primary, new_secondary, new_ability):
@@ -45,7 +45,7 @@ func set_weapons(new_primary, new_secondary, new_ability):
 		self.remove_child(ability)
 	primary_weapon   = new_primary
 	self.add_child(primary_weapon)
-	secondary_weapon = new_secondary.instance()
+	secondary_weapon = new_secondary
 	self.add_child(secondary_weapon)
 	ability          = new_ability.instance()
 	self.add_child(ability)

@@ -34,7 +34,7 @@ func _ready():
 	cooldown_timer.stop()
 
 func _process(delta):
-	get_node("sprite_container").rotation = (bot.psuedo_mouse - bot.global_position).normalized().angle()
+	get_node("sprite_container").rotation = bot.aim_angle
 
 # Function that is called when the sword hits a body
 func use():
@@ -44,12 +44,13 @@ func use():
 		match(id):
 			weapon_creator.W_PRI_SCATTER_BOW:
 				for i in range(3):
-					var angle = rand_range((bot.psuedo_mouse - get_node("sprite_container/Sprite").global_position).angle() - (PI*0.25), (bot.psuedo_mouse - bot.global_position).angle() + (PI*0.25))
+					var angle = rand_range(bot.aim_angle - (PI*0.25), bot.aim_angle + (PI*0.25))
 					spawn_projectile(Vector2(cos(angle),sin(angle)))
 			weapon_creator.W_PRI_ZORROS_GLARE:
 				pass
 			_: # Default case (W_PRI_ACID_BOW, W_PRI_EXPLODING_SHURIKEN, W_PRI_RUBBER_BOW, W_PRI_PRECISION_BOW)
-				spawn_projectile((bot.psuedo_mouse - get_node("sprite_container/Sprite").global_position).normalized())
+				#spawn_projectile((bot.psuedo_mouse - get_node("sprite_container/Sprite").global_position).normalized())
+				spawn_projectile(Vector2(cos(bot.aim_angle),sin(bot.aim_angle)))
 		cooldown_timer.start()
 
 func spawn_projectile(direction_vector):

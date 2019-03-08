@@ -43,7 +43,7 @@ func _physics_process(delta):
 		
 		
 	aim_angle_old    = aim_angle
-	aim_angle        = atan2(relative_mouse.x, relative_mouse.y) # gives angle in radians
+	aim_angle        = (psuedo_mouse - global_position).angle() # gives angle in radians
 	aim_angle_diff = aim_angle - aim_angle_old
 	if abs(aim_angle_diff) > .5:
 		aim_angle_diff *= -1
