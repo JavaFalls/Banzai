@@ -22,11 +22,10 @@ extents = Vector2( 232, 44 )
 [sub_resource type="RectangleShape2D" id=4]
 
 custom_solver_bias = 0.0
-extents = Vector2( 15, 15 )
+extents = Vector2( 15, 10 )
 
-[node name="arena" type="Node2D" index="0"]
+[node name="arena" type="Node2D"]
 
-editor/display_folded = true
 _sections_unfolded = [ "Pause" ]
 
 [node name="background" type="Node2D" parent="." index="0"]
@@ -124,19 +123,19 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="bottom wall" index="1"]
 
-position = Vector2( -228, -176 )
+position = Vector2( -228, -171 )
 shape = SubResource( 4 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="bottom wall" index="2"]
 
-position = Vector2( -86, -176 )
+position = Vector2( -86, -171 )
 shape = SubResource( 4 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="bottom wall" index="3"]
 
-position = Vector2( 57, -176 )
+position = Vector2( 57, -171 )
 shape = SubResource( 4 )
 _sections_unfolded = [ "Transform" ]
 
