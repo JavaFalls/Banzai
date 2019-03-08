@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/3.png-43e3168adf882feb56d09e97a542334b.stex"
+path="res://.import/3.png-5406a1359d91884c5eccd74ceab8b51d.stex"
 
 [deps]
 
-source_file="res://Assets/bots/hover_bot/secondary_color/3.png"
-dest_files=[ "res://.import/3.png-43e3168adf882feb56d09e97a542334b.stex" ]
+source_file="res://assets/bots/hover_bot/secondary_color/3.png"
+dest_files=[ "res://.import/3.png-5406a1359d91884c5eccd74ceab8b51d.stex" ]
 
 [params]
 

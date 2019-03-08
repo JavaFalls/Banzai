@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tag_down.png-1908e7bce3286bc1e7af7f9f9245b1e4.stex"
+path="res://.import/tag_down.png-201e379baeaebce65ccd0e9d380256e8.stex"
 
 [deps]
 
-source_file="res://Assets/local_scoreboard/tag_down.png"
-dest_files=[ "res://.import/tag_down.png-1908e7bce3286bc1e7af7f9f9245b1e4.stex" ]
+source_file="res://assets/local_scoreboard/tag_down.png"
+dest_files=[ "res://.import/tag_down.png-201e379baeaebce65ccd0e9d380256e8.stex" ]
 
 [params]
 

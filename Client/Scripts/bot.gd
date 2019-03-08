@@ -10,7 +10,6 @@ func _process(delta):
 	if is_player:
 		game_state.set_opponent_state(self)
 		set_opponent_info()
-
 	else:
 		game_state.set_bot_state(self)
 		set_bot_info()
@@ -80,8 +79,7 @@ func set_opponent_info():
 		aim_angle += .1*PI
 		if aim_angle > PI:
 			aim_angle -= 2*PI
-	#print("From opponent")
-	#print(game_state.get_)
+
 #	psuedo_mouse     = game_state.predicted_opponent_mouse
 	psuedo_mouse     = opponent.get_position()
 	relative_mouse   = psuedo_mouse - self.get_position()
@@ -91,7 +89,6 @@ func set_opponent_info():
 	psuedo_ability       = 0
 	psuedo_secondary     = 0
 	psuedo_primary       = 0
-
 
 	if game_state.predicted_opponent_psuedo_primary:
 		primary_weapon.use()
