@@ -30,7 +30,7 @@ func _ready():
 	#f.open('res://NeuralNetwork/gamestates', 3)
     # Call get opponent here
 #	var opponent_bot_ID = get_opponent(head.bot_ID)
-	fighter1 = dummy_scene.instance() #player_scene.instance()
+	fighter1 = bot_scene.instance() #player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
@@ -129,9 +129,6 @@ func send_nn_state(bot_number):
 
 	output = output.replacen("(", ",")
 	output = output.split_floats(",", 0)
-	# this does not work for two bots right now
-	print("''''''''''''''''output';;;;;;;;;;;;;;;;;;;;;;;")
-	print(output)
 	for x in output:
 		x = int(x)
 
