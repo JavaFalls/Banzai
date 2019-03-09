@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/acid_effect_2.png-51b223363c4d7f99c6dcd14100179503.stex"
+path="res://.import/acid_effect_2.png-87bfbd6b6dd3c84fadcc6f48a4955c62.stex"
 
 [deps]
 
-source_file="res://assets/weapons/acid_effects/acid_effect_2.png"
-dest_files=[ "res://.import/acid_effect_2.png-51b223363c4d7f99c6dcd14100179503.stex" ]
+source_file="res://Assets/weapons/acid_effects/acid_effect_2.png"
+dest_files=[ "res://.import/acid_effect_2.png-87bfbd6b6dd3c84fadcc6f48a4955c62.stex" ]
 
 [params]
 

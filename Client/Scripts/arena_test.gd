@@ -13,6 +13,9 @@ func _ready():
 	player.set_position(spawn)
 	player.set_name("player")
 	player.set_pause_mode(Node.PAUSE_MODE_STOP)
+	player.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SCYTHE), weapon_creator.create_weapon(weapon_creator.W_ABI_SHIELD))
+	get_node("cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, player.primary_weapon, weapon_creator.W_SEC_SCYTHE, player.secondary_weapon, weapon_creator.W_ABI_SHIELD, player.ability)
+	player.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 	player.is_player = 1
 	
 	# Set popup as the bottom node

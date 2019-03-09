@@ -8,9 +8,9 @@ const UP             = Vector2(0,0) # Indicates top-down view
 var movement_speed   = 100           # Movement speed of the entity
 var hit_points       = 1000000000            # The hit point counter for the fighter
 var direction        = Vector2()     # Direction the entity is moving
-var primary_weapon   = Vector2()     # Weapon that goes in the first weapon slot
-var secondary_weapon = Vector2()     # Weapon that goes in the second weapon slot
-var ability          = Vector2()     # Weapon that goes in the third weapon slot
+var primary_weapon                   # Weapon that goes in the first weapon slot
+var secondary_weapon                 # Weapon that goes in the second weapon slot
+var ability                          # Weapon that goes in the third weapon slot
 var opponent         = KinematicBody # The bots' opponent
 var is_player        = 0        # Is the mech controlled by a player
 var relative_mouse   = Vector2()
@@ -25,17 +25,20 @@ var aim_angle_diff   = 0
 var psuedo_aim_left  = 0
 var psuedo_aim_right = 0
 
+var shielded = false # When true, the bot takes no damage. Used by the 'shield' ability
+
 
 signal game_end # The signal indicate the the arena match is over
 
-onready var aby_shield    = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
+#onready var aby_shield    = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
 onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn")  # The heavy scene to be instanced
 #onready var quick_attack  = preload("res://Scenes/atk_quick.tscn")  # The quick scene to be instanced
 #onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged scene to be instanced
-onready var aby_evade     = preload("res://Scenes/aby_evade.tscn")  # The evade scene to be instanced
+#onready var aby_evade     = preload("res://Scenes/aby_evade.tscn")  # The evade scene to be instanced
 
 func _ready():
-	set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_EXPLODING_SHURIKEN), weapon_creator.create_weapon(weapon_creator.W_SEC_SCYTHE), aby_evade)
+	#set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_SWORD), weapon_creator.create_weapon(weapon_creator.W_SEC_SCYTHE), weapon_creator.create_weapon(weapon_creator.W_ABI_SHIELD))
+	pass
 
 # Function to change weapons; is sent weapon scene as a parameter
 func set_weapons(new_primary, new_secondary, new_ability):
@@ -47,7 +50,7 @@ func set_weapons(new_primary, new_secondary, new_ability):
 	self.add_child(primary_weapon)
 	secondary_weapon = new_secondary
 	self.add_child(secondary_weapon)
-	ability          = new_ability.instance()
+	ability          = new_ability
 	self.add_child(ability)
 
 func get_hit_points():
@@ -57,7 +60,8 @@ func get_trajectory():
 	return direction
 
 func increment_hitpoints(damage): # this decremements now because we make health go down.
-	hit_points -= damage
+	if not shielded:
+		hit_points -= damage
 
 func set_opponent(new_opponent):
 	opponent = new_opponent
