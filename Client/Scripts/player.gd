@@ -76,5 +76,5 @@ func _physics_process(delta):
 			get_node("animation_bot").reset_animation()
 	
 	
-	move_and_slide(direction.normalized()*movement_speed, UP)
+	move_bot()
 	get_node("Label").set_text(str(get_hit_points()))

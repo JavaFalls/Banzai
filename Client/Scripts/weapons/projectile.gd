@@ -1,4 +1,4 @@
-# This projectile scene is instanced by the atk_range scene and targets
+# This projectile scene is instanced by the projectile_launcher scene and targets
 # its owner's mouse position
 extends Area2D
 

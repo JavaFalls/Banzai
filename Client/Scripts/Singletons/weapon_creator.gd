@@ -51,6 +51,11 @@ enum weapon_types {
 # Type "ranged" weapons also have:
 #  projectile_speed - given in pixels per second
 #  projectile_scene - The preloaded scene that controls how a projectile behaves, this is the scene that is the projectile
+# Type "melee" weapons also have:
+#  swing_scene - The scene to instance that represents the sword swing
+# Type "trap" weapons also have:
+#  lifetime   - How long a trap will remain on the screen before self destructing
+#  trap_scene - A scene that controls how an individual trap behaves once planted.
 const W_PRI_STATS = [
 	{"id": W_PRI_ACID_BOW          , "implemented": true , "name": "Acid Bow"          , "description": "Leaves a residue on contact, which causes latent damage for 2.5 seconds"                                , "info": "Deals an extra 5 damage over 2.5 seconds"          , "attack":   1, "speed":  0.25, "type": "Ranged", "icon": preload("res://assets/weapons/acid_bow.png")          , "sprite": preload("res://assets/weapons/acid_arrow.png")        , "scene": preload("res://scenes/weapons/projectile_launcher.tscn") , "projectile_speed": 400, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")},
 	{"id": W_PRI_EXPLODING_SHURIKEN, "implemented": true , "name": "Exploding Shuriken", "description": "Thrown projectile which detonates on contact with opponent or barrier"                                  , "info": "Explosion radius is roughly 1 times bot size"      , "attack":   5, "speed":  0.2 , "type": "Ranged", "icon": preload("res://assets/weapons/exploding_shuriken.png"), "sprite": preload("res://assets/weapons/exploding_shuriken.png"), "scene": preload("res://scenes/weapons/projectile_launcher.tscn") , "projectile_speed": 250, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")},
@@ -61,10 +66,10 @@ const W_PRI_STATS = [
 	{"id": W_PRI_ZORROS_GLARE      , "implemented": false, "name": "Zorro's Glare"     , "description": "If looks could kill, this would kill you. Oh wait, it can kill you."                                    , "info": "Death Laser"                                       , "attack":  50, "speed":  0.0 , "type": "Ranged", "icon": preload("res://assets/weapons/bow_regular.png")       , "sprite": preload("res://assets/weapons/arrow_regular.png")     , "scene": preload("res://scenes/weapons/primary/zorros_glare.tscn"), "projectile_speed": 250, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")}
 ]
 const W_SEC_STATS = [
-	{"id": W_SEC_MINE              , "implemented": false, "name": "Mine"              , "description": "A trap set on the ground, explodes when triggered"                                                      , "info": "Explosion radius is roughly 2 times bot size"      , "attack":  10, "speed":  1.0, "type": "Trap"  , "icon": preload("res://assets/weapons/bow_regular.png"), "sprite": preload("res://assets/weapons/arrow_regular.png"), "scene": preload("res://scenes/weapons/secondary/mine.tscn")},
+	{"id": W_SEC_MINE              , "implemented": true , "name": "Mine"              , "description": "A trap set on the ground, explodes when triggered"                                                      , "info": "Explosion radius is roughly 2 times bot size"      , "attack":  10, "speed":  1.0, "type": "Trap"  , "icon": preload("res://assets/weapons/mine.png")       , "sprite": preload("res://assets/weapons/mine.png")         , "scene": preload("res://scenes/weapons/trap.tscn"), "lifetime": 5.0, "trap_scene": preload("res://scenes/weapons/traps/mine.tscn")},
 	{"id": W_SEC_NUKE              , "implemented": false, "name": "Nuke"              , "description": "Really big boom"                                                                                        , "info": "Explosion radius is roughly 1/4th of the arena"    , "attack": 200, "speed": 15.0, "type": "Tech"  , "icon": preload("res://assets/weapons/bow_regular.png"), "sprite": preload("res://assets/weapons/arrow_regular.png"), "scene": preload("res://scenes/weapons/secondary/nuke.tscn")},
 	{"id": W_SEC_SCYTHE            , "implemented": true , "name": "Scythe"            , "description": "Ever wanted to be the grim reaper? Then use this"                                                       , "info": "Hebrews 9:27"                                      , "attack": 100, "speed":  1.5, "type": "Melee" , "icon": preload("res://assets/weapons/scythe.png")     , "sprite": preload("res://assets/weapons/scythe.png")       , "scene": preload("res://scenes/weapons/melee.tscn"), "swing_scene": preload("res://scenes/weapons/melee_animations/scythe.tscn"), "scale" : 3.0},
-	{"id": W_SEC_SNARE             , "implemented": false, "name": "Snare"             , "description": "A trap set on the ground, disables motion of target for 0.75 seconds when triggered"                    , "info": "Disables movement"                                 , "attack":   0, "speed":  1.0, "type": "Trap"  , "icon": preload("res://assets/weapons/bow_regular.png"), "sprite": preload("res://assets/weapons/arrow_regular.png"), "scene": preload("res://scenes/weapons/secondary/snare.tscn")},
+	{"id": W_SEC_SNARE             , "implemented": true , "name": "Snare"             , "description": "A trap set on the ground, disables motion of target for 0.75 seconds when triggered"                    , "info": "Disables movement"                                 , "attack":   0, "speed":  1.0, "type": "Trap"  , "icon": preload("res://assets/weapons/snare.png")      , "sprite": preload("res://assets/weapons/snare.png")        , "scene": preload("res://scenes/weapons/trap.tscn"), "lifetime": 5.0, "trap_scene": preload("res://scenes/weapons/traps/snare.tscn")},
 	{"id": W_SEC_ZORROS_WIT        , "implemented": false, "name": "Zorro's Wit"       , "description": "Become invisible for a 2 seconds"                                                                       , "info": "This provides concealment, not cover"              , "attack":   0, "speed":  5.0, "type": "Tech"  , "icon": preload("res://assets/weapons/bow_regular.png"), "sprite": preload("res://assets/weapons/arrow_regular.png"), "scene": preload("res://scenes/weapons/secondary/zorros_wit.tscn")}
 ]
 const W_ABI_STATS = [
@@ -128,8 +133,12 @@ func create_weapon(w_ID):
 			weapon.set_sheathed_sprite(w_stats["icon"])
 			weapon.scale = Vector2(w_stats["scale"], w_stats["scale"])
 		"Trap":
+			weapon.id = w_stats["id"]
 			weapon.damage = w_stats["attack"]
 			weapon.cooldown = w_stats["speed"]
+			weapon.lifetime = w_stats["lifetime"]
+			weapon.trap_scene = w_stats["trap_scene"]
+			weapon.trap_sprite = w_stats["icon"]
 		"Tech":
 			weapon.cooldown = w_stats["speed"]
 	return weapon
