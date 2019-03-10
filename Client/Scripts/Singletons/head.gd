@@ -14,9 +14,9 @@ const resolutions = [
 ]
 
 # The abilities used by a default robot
-const DEFAULT_UTILITY = 0
-const DEFAULT_PRIMARY = 0
-const DEFAULT_SECONDARY = 0
+const DEFAULT_UTILITY = 14
+const DEFAULT_PRIMARY = 2
+const DEFAULT_SECONDARY = 9
 const DEFAULT_PRIMARY_COLOR = Color(1, 1, 1)
 const DEFAULT_SECONDARY_COLOR = Color(1, 1, 1)
 const DEFAULT_ACCENT_COLOR = Color(1, 1, 1)

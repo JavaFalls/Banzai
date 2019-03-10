@@ -26,7 +26,8 @@ extents = Vector2( 15, 10 )
 
 [node name="arena" type="Node2D"]
 
-_sections_unfolded = [ "Pause" ]
+z_index = -10
+_sections_unfolded = [ "Pause", "Z Index" ]
 
 [node name="background" type="Node2D" parent="." index="0"]
 

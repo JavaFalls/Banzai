@@ -25,10 +25,9 @@ tracks/0/keys = {
 "values": [ -96.2965, 95.7035 ]
 }
 
-[node name="sword" type="Area2D" index="0"]
+[node name="sword" type="Area2D"]
 
 rotation = -1.68069
-scale = Vector2( 1.5, 1.5 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0

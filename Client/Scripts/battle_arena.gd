@@ -34,14 +34,19 @@ func _ready():
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
+	# TODO: Load weapons from DB or wherever else they might be handy to grap from
+	fighter1.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SCYTHE), weapon_creator.create_weapon(weapon_creator.W_ABI_SHIELD))
+	get_node("fighter1_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter1.primary_weapon, weapon_creator.W_SEC_SCYTHE, fighter1.secondary_weapon, weapon_creator.W_ABI_SHIELD, fighter1.ability)
 	fighter1.is_player = 1
 #	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 
 	fighter2 = bot_scene.instance() # fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
-	#fighter2.attack_primary = false
 	fighter2.set_name("fighter2")
+	# TODO: Load weapons from DB or wherever else they might be handy to grap from
+	fighter2.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SCYTHE), weapon_creator.create_weapon(weapon_creator.W_ABI_SHIELD))
+	get_node("fighter2_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter2.primary_weapon, weapon_creator.W_SEC_SCYTHE, fighter2.secondary_weapon, weapon_creator.W_ABI_SHIELD, fighter2.ability)
 #	fighter2.get_node("animation_bot").load_colors_from_DB(opponent_bot_ID)
 
 	# tell fighters who theyre opponent is

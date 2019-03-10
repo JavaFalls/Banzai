@@ -6,9 +6,9 @@
 
 extends Node2D
 
-# Contants
+# Signals
 #------------------------------------------------------------------------
-#const weapon_creator = preload("res://Scripts/weapons/weapon_creator.gd")
+signal use # All weapons must have this signal so that cooldowns can be displayed
 
 # The variables
 #------------------------------------------------------------------------
@@ -52,6 +52,7 @@ func use():
 				#spawn_projectile((bot.psuedo_mouse - get_node("sprite_container/Sprite").global_position).normalized())
 				spawn_projectile(Vector2(cos(bot.aim_angle),sin(bot.aim_angle)))
 		cooldown_timer.start()
+		emit_signal("use") # Notify anybody who cares that we did our thing
 
 func spawn_projectile(direction_vector):
 	var bullet = projectile_scene.instance()

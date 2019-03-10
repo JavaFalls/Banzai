@@ -5,6 +5,8 @@
 
 extends Node2D
 
+signal use # All weapons must have this signal so that cooldowns can be displayed
+
 # Stat variables
 var damage
 var cooldown
@@ -27,20 +29,16 @@ func _process(delta):
 
 # Called by the bots to activate the ability
 func use():
-#	self.look_at(self.get_parent().get_position() + Vector2(sin(get_parent().aim_angle), cos(get_parent().aim_angle)))
-#	self.rotate(get_parent().aim_angle)
 	if sheathed and cooldown_time <= 0.0:
 		sheathed = false
 		cooldown_time = cooldown
 		get_node("sheathed_sword").visible = false
 		sword_swing = swing_scene.instance()
-		#sword_swing.position = get_parent().global_position
-		#sword_swing.rotation = get_parent().aim_angle
-		#sword_swing.look_at(get_parent().psuedo_mouse - get_parent().global_position)
 		sword_swing.get_node("AnimationPlayer").play("attack")
 		sword_swing.connect("body_entered", self, "_on_sword_swing_body_entered")
 		get_node("sword_swing_holder").add_child(sword_swing)
 		get_node("sword_swing_holder").rotation = get_parent().aim_angle
+		emit_signal("use") # Notify anybody who cares that we did our thing
 
 # Function that is called when the sword hits a body
 func _on_sword_swing_body_entered(body):
