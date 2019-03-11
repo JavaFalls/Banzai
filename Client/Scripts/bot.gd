@@ -37,6 +37,8 @@ func set_bot_info():
 	psuedo_ability       = 0
 	psuedo_secondary     = 0
 	psuedo_primary       = 0
+	game_state.predicted_bot_aim_left = 0
+	game_state.predicted_bot_aim_right = 0
 
 
 	if game_state.predicted_bot_psuedo_primary:
@@ -89,6 +91,8 @@ func set_opponent_info():
 	psuedo_ability       = 0
 	psuedo_secondary     = 0
 	psuedo_primary       = 0
+	game_state.predicted_opponent_aim_left = 0
+	game_state.predicted_opponent_aim_right = 0
 
 	if game_state.predicted_opponent_psuedo_primary:
 		primary_weapon.use()

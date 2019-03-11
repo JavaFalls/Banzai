@@ -224,19 +224,19 @@ class DQN_agent:
 
         new_reward = 0
         new_reward += (gamestate[9] - next_gamestate[9]) * 20                    # reward for dealing damage
-        #new_reward += (bot_aim_angle_diff - bot_aim_next_angle_diff) * -5000      # reward for good aim
-        #new_reward += 1/(bot_aim_next_angle_diff + 0.0001)                        # reward for pointing at player
-        #new_reward += (gamestate[8]+next_gamestate[8]) * 10000                    # reward for putting the player in peril
-        #new_reward += ((1/next_gamestate[6]+.001)*10)-20                     # test. reward for being close to opponent
+        # new_reward += (bot_aim_angle_diff - bot_aim_next_angle_diff) * -5000      # reward for good aim
+        # new_reward += 1/(bot_aim_next_angle_diff + 0.0001)                        # reward for pointing at player
+        # new_reward += (gamestate[8]+next_gamestate[8]) * 10000                    # reward for putting the player in peril
+        # new_reward += ((1/next_gamestate[6]+.001)*10)-20                     # test. reward for being close to opponent
 
-        #new_reward -= (gamestate[3] - next_gamestate[3]) * 20                    # criticism for losing health
+        # new_reward -= (gamestate[3] - next_gamestate[3]) * 20                    # criticism for losing health
 
-        #new_reward -= (player_aim_angle_diff - player_aim_next_angle_diff) * 5   # criticism for being targeted # dont use
+        # new_reward -= (player_aim_angle_diff - player_aim_next_angle_diff) * 5   # criticism for being targeted # dont use
         # new_reward -= (gamestate[4]+next_gamestate[4]) * 10                    # criticism for the bot being in peril # dont use
 
-        #if (((gamestate[3] - next_gamestate[3]) == 0) and ((gamestate[4] - next_gamestate[4]) == 1)): # reward for dodging
-        #       new_reward += 100
-        print("                                                                               reward     ",new_reward)
+        # if (((gamestate[3] - next_gamestate[3]) == 0) and ((gamestate[4] - next_gamestate[4]) == 1)): # reward for dodging
+        # new_reward += 100
+        # print("                                                                               reward     ",new_reward)
         return new_reward
 
 
