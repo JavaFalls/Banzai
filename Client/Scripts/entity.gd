@@ -6,7 +6,8 @@ extends KinematicBody2D
 const UP             = Vector2(0,0) # Indicates top-down view
 
 var movement_speed   = 100           # Movement speed of the entity
-var hit_points       = 1000000000            # The hit point counter for the fighter
+var max_HP           = 1000000000    # The maximum amount of HP the bot can have
+var hit_points                       # The hit point counter for the fighter
 var direction        = Vector2()     # Direction the entity is moving
 var primary_weapon                   # Weapon that goes in the first weapon slot
 var secondary_weapon                 # Weapon that goes in the second weapon slot
@@ -38,6 +39,7 @@ onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn")  # The heavy 
 #onready var aby_evade     = preload("res://Scenes/aby_evade.tscn")  # The evade scene to be instanced
 
 func _ready():
+	hit_points = max_HP
 	#set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_SWORD), weapon_creator.create_weapon(weapon_creator.W_SEC_SCYTHE), weapon_creator.create_weapon(weapon_creator.W_ABI_SHIELD))
 	pass
 

@@ -9,7 +9,8 @@
 [ext_resource path="res://Assets/weapons/evade_animation/airV003effect006.png" type="Texture" id=7]
 [ext_resource path="res://Assets/weapons/evade_animation/airV003effect007.png" type="Texture" id=8]
 [ext_resource path="res://Assets/weapons/evade_animation/airV003effect008.png" type="Texture" id=9]
-[ext_resource path="res://Scripts/weapons/ability/evade_animation.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/weapons/tech/evade_animation.gd" type="Script" id=10]
+
 
 [sub_resource type="SpriteFrames" id=1]
 

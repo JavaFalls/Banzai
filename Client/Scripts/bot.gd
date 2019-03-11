@@ -51,7 +51,7 @@ func set_bot_info():
 
 
 	# Control bot animation
-	if (psuedo_mouse.x > get_position().x):
+	if aim_angle > - (PI*0.5) and aim_angle <= (PI*0.5):
 		get_node("animation_bot").face_right()
 		if direction.x != 0 || direction.y != 0:
 			if (direction.x > 0):
@@ -102,7 +102,7 @@ func set_opponent_info():
 
 
 	# Control bot animation
-	if (psuedo_mouse.x > get_position().x):
+	if aim_angle > - (PI*0.5) and aim_angle <= (PI*0.5):
 		get_node("animation_bot").face_right()
 		if direction.x != 0 || direction.y != 0:
 			if (direction.x > 0):
