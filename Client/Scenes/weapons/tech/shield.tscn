@@ -1,6 +1,6 @@
 [gd_scene load_steps=19 format=2]
 
-[ext_resource path="res://Scripts/weapons/ability/shield.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/weapons/tech/shield.gd" type="Script" id=1]
 [ext_resource path="res://Assets/weapons/shield_animation/energyV004effect000.png" type="Texture" id=2]
 [ext_resource path="res://Assets/weapons/shield_animation/energyV004effect001.png" type="Texture" id=3]
 [ext_resource path="res://Assets/weapons/shield_animation/energyV004effect002.png" type="Texture" id=4]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Assets/weapons/shield_animation/energyV004effect009.png" type="Texture" id=11]
 [ext_resource path="res://Assets/weapons/shield_animation/energyV004effect010.png" type="Texture" id=12]
 [ext_resource path="res://Assets/weapons/shield_animation/energyV004effect011.png" type="Texture" id=13]
+
 
 [sub_resource type="SpriteFrames" id=1]
 

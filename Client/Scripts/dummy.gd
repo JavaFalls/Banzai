@@ -70,7 +70,7 @@ func _physics_process(delta):
 		direction = (self.get_position() - opponent_position)
 	
 	# Control bot animation
-	if (relative_direction.x > get_position().x):
+	if aim_angle > - (PI*0.5) and aim_angle <= (PI*0.5):
 		get_node("animation_bot").face_right()
 		if direction.x != 0 || direction.y != 0:
 			if (direction.x > 0):
@@ -89,5 +89,5 @@ func _physics_process(delta):
 		else:
 			get_node("animation_bot").reset_animation()
 
-	move_and_slide(direction.normalized()*movement_speed, UP)
+	move_bot()
 	get_node("Label").set_text(str(get_hit_points()))

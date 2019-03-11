@@ -6,7 +6,8 @@ extends KinematicBody2D
 const UP             = Vector2(0,0) # Indicates top-down view
 
 var movement_speed   = 100           # Movement speed of the entity
-var hit_points       = 1000000000            # The hit point counter for the fighter
+var max_HP           = 1000000000    # The maximum amount of HP the bot can have
+var hit_points                       # The hit point counter for the fighter
 var direction        = Vector2()     # Direction the entity is moving
 var primary_weapon                   # Weapon that goes in the first weapon slot
 var secondary_weapon                 # Weapon that goes in the second weapon slot
@@ -26,6 +27,7 @@ var psuedo_aim_left  = 0
 var psuedo_aim_right = 0
 
 var shielded = false # When true, the bot takes no damage. Used by the 'shield' ability
+var immobilized = 0.0 # How long the bot will be unable to move for. Used by the 'snare' secondary
 
 
 signal game_end # The signal indicate the the arena match is over
@@ -37,6 +39,7 @@ onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn")  # The heavy 
 #onready var aby_evade     = preload("res://Scenes/aby_evade.tscn")  # The evade scene to be instanced
 
 func _ready():
+	hit_points = max_HP
 	#set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_SWORD), weapon_creator.create_weapon(weapon_creator.W_SEC_SCYTHE), weapon_creator.create_weapon(weapon_creator.W_ABI_SHIELD))
 	pass
 
@@ -88,6 +91,13 @@ func get_state():
 	state.append(Input.is_action_pressed("ability"))
 	return state
 
+# Moves the bot in the current specified direction, unless it is immobilized
+func move_bot():
+	if immobilized <= 0.0:
+		move_and_slide(direction.normalized()*movement_speed, UP)
+
 func _process(delta):
 	if get_hit_points() <= 0 and opponent.get_hit_points() != 0:
 		emit_signal("game_end")
+	if immobilized > 0.0:
+		immobilized -= delta

@@ -16,7 +16,7 @@ var speed_multi = 5            # The amount to multiply the speed by and then di
 onready var cooldown_timer  = get_node("cooldown_timer") # Timer for evade cooldown
 onready var active_timer    = get_node("active_timer")   # Timer for how long the ability is active
 onready var parent_node     = self.get_parent()          # The mech that uses this ability
-onready var evade_animation = preload("res://scenes/weapons/ability/evade_animation.tscn") # Scene to be instanced for the animation
+onready var evade_animation = preload("res://scenes/weapons/tech/evade_animation.tscn") # Scene to be instanced for the animation
 
 # Function called as soon as the scene is instanced by its mech
 func _ready():
