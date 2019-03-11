@@ -9,9 +9,9 @@ onready var name_choice_scene = preload("res://Scenes/name_choice.tscn")
 
 const STATS_SPACE = "           "
 
-onready var w_pri = weapon_creator.W_PRI_STATS
-onready var w_sec = weapon_creator.W_SEC_STATS
-onready var w_abi = weapon_creator.W_ABI_STATS
+onready var w_pri = weapon_creator.get_w_pri_stats()
+onready var w_sec = weapon_creator.get_w_sec_stats()
+onready var w_abi = weapon_creator.get_w_abi_stats()
 
 # Every loaded bot is temporarily stored
 var bots = [] # Both the id and its bot will have the same index
@@ -207,9 +207,9 @@ func update_current_bot():
 # Display/organize data
 #------------------------------------------------
 func format_info(speed, attack, type, info):
-	if typeof(speed) == TYPE_INT and typeof(attack) == TYPE_INT:
+	if typeof(speed) == TYPE_REAL and typeof(attack) == TYPE_INT:
 		return (
-			STATS_SPACE + "%d" % speed + "\n" +
+			STATS_SPACE + "%.2f" % speed + "\n" +
 			STATS_SPACE + "%d" % attack + "\n" +
 			STATS_SPACE + "%s" % type + "\n" +
 			STATS_SPACE + "%s" % info

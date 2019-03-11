@@ -5,7 +5,7 @@ extends "res://Scripts/entity.gd"
 onready var game_state = self.get_parent().get_child(1) #Currently child 1 is game state apparently. this is temporary code it needs to set gamestate automatically to the right child
 
 func _process(delta):
-	game_state.set_player_action(self)
+	#game_state.set_player_action(self)
 	if is_player:
 		game_state.set_opponent_state(self)
 	else:
@@ -76,5 +76,5 @@ func _physics_process(delta):
 			get_node("animation_bot").reset_animation()
 	
 	
-	move_and_slide(direction.normalized()*movement_speed, UP)
+	move_bot()
 	get_node("Label").set_text(str(get_hit_points()))

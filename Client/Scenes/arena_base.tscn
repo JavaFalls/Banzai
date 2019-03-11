@@ -26,7 +26,8 @@ extents = Vector2( 15, 10 )
 
 [node name="arena" type="Node2D"]
 
-_sections_unfolded = [ "Pause" ]
+z_index = -10
+_sections_unfolded = [ "Pause", "Z Index" ]
 
 [node name="background" type="Node2D" parent="." index="0"]
 
@@ -123,18 +124,21 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="bottom wall" index="1"]
 
+visible = false
 position = Vector2( -228, -171 )
 shape = SubResource( 4 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="bottom wall" index="2"]
 
+visible = false
 position = Vector2( -86, -171 )
 shape = SubResource( 4 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="bottom wall" index="3"]
 
+visible = false
 position = Vector2( 57, -171 )
 shape = SubResource( 4 )
 _sections_unfolded = [ "Transform" ]

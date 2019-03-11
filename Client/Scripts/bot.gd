@@ -16,7 +16,7 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	move_and_slide(direction.normalized()*movement_speed, UP)
+	move_bot()
 	get_node("Label").set_text("NN" + str(get_hit_points()))
 
 func set_bot_info():
