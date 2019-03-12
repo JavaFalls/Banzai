@@ -17,15 +17,12 @@ func loop_music():
 		if random_loop == 1:
 			self.stream = loop1
 			self.play()
-			self.loop_mode = 1
 		elif random_loop == 2:
 			self.stream = loop2
 			self.play()
-			self.loop_mode = 1
 		elif random_loop == 3:
 			self.stream = loop3
 			self.play()
-			self.loop_mode = 1
 
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.
