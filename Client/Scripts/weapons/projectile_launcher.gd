@@ -36,7 +36,7 @@ func _ready():
 func _process(delta):
 	get_node("sprite_container").rotation = bot.aim_angle
 
-# Function that is called when the sword hits a body
+# Function that is called when the bot uses the launcher
 func use():
 	# Only shoot if cooldown is finished
 	if cooldown_timer.is_stopped():
