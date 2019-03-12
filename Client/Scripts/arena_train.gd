@@ -21,7 +21,7 @@ onready var t               = Timer.new()
 
 func _ready():
 #	 The player's bot or AI
-	fighter1 = player_scene.instance()
+	fighter1 = dummy_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_pause_mode(Node.PAUSE_MODE_STOP)
 	fighter1.set_position(start_pos1)

@@ -30,7 +30,7 @@ func _ready():
 	#f.open('res://NeuralNetwork/gamestates', 3)
     # Call get opponent here
 #	var opponent_bot_ID = get_opponent(head.bot_ID)
-	fighter1 = bot_scene.instance() #player_scene.instance()
+	fighter1 = dummy_scene.instance() #player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
@@ -128,7 +128,7 @@ func get_opponent(bot_id):
 func send_nn_state(bot_number):
 	var output = []
 	var message
-	message = '{ "Message Type": "Battle", "Message": %s }' % str(game_state.get_battle_state())
+	message = '{ "Message Type": "Train", "Message": %s }' % str(game_state.get_battle_state())
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 
@@ -136,9 +136,10 @@ func send_nn_state(bot_number):
 	output = output.split_floats(",", 0)
 	for x in output:
 		x = int(x)
-
+	print(output[0])
 	game_state.set_predictions(output[0])
-	game_state.set_opponent_predictions(output[1])
+	
+	#game_state.set_opponent_predictions(output[1])
 	#game_state.set_opponent_predictions(output)
 	return
 
