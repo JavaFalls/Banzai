@@ -229,14 +229,15 @@ class DQN_agent:
         # new_reward += (gamestate[8]+next_gamestate[8]) * 10000                    # reward for putting the player in peril
         # new_reward += ((1/next_gamestate[6]+.001)*10)-20                     # test. reward for being close to opponent
 
-        # new_reward -= (gamestate[3] - next_gamestate[3]) * 20                    # criticism for losing health
+        new_reward -= (gamestate[3] - next_gamestate[3]) *  5                   # criticism for losing health
 
         # new_reward -= (player_aim_angle_diff - player_aim_next_angle_diff) * 5   # criticism for being targeted # dont use
         # new_reward -= (gamestate[4]+next_gamestate[4]) * 10                    # criticism for the bot being in peril # dont use
 
         # if (((gamestate[3] - next_gamestate[3]) == 0) and ((gamestate[4] - next_gamestate[4]) == 1)): # reward for dodging
         # new_reward += 100
-        # print("                                                                               reward     ",new_reward)
+        print("                                                                               reward     ",new_reward)
+        
         return new_reward
 
 
@@ -266,7 +267,7 @@ def process_message(message):
         if message["Message Type"] == "Train"  :
                 output = fighter1.train(   reshape(message["Message"] , fighter1.get_state_size()) )
         elif message["Message Type"] == "Battle"  :
-                output = fighter1.predict(   reshape(message["Message"] , fighter1.get_state_size()) ),  fighter2.predict(   reshape(message["Message"] , fighter1.get_state_size()) )
+                output = fighter1.predict(   reshape(message["Message"] , fighter1.get_state_size()) ),  fighter2.predict(   reshape(message["Message"] , fighter2.get_state_size()) )
         elif message["Message Type"] == "Battle"  :
                 output = fighter1.predict(   reshape(message["Message"] , fighter1.get_state_size()) ),  fighter2.predict(   reshape(message["Message"] , fighter1.get_state_size()) )
         elif message["Message Type"] == "Load"   :

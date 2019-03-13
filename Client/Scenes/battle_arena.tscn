@@ -7,7 +7,7 @@
 [ext_resource path="res://assets/white block.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/UI Nodes/ui_weapon_cooldowns.tscn" type="PackedScene" id=6]
 
-[node name="battle_arena" type="Node2D"]
+[node name="battle_arena" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]

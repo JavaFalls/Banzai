@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Track 1 - Loop 2 - Organ.wav-07abf62860ad6fede59ac27f75418735.sample"
+
+[deps]
+
+source_file="res://sounds/Background Sounds/Track 1 - Loop 2 - Organ.wav"
+dest_files=[ "res://.import/Track 1 - Loop 2 - Organ.wav-07abf62860ad6fede59ac27f75418735.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=true
+compress/mode=1
