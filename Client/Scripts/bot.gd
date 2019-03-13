@@ -8,10 +8,10 @@ func _ready():
 
 func _process(delta):
 	if is_player:
-		game_state.set_opponent_state(self)
+#		game_state.set_opponent_state(self)
 		set_opponent_info()
 	else:
-		game_state.set_bot_state(self)
+#		game_state.set_bot_state(self)
 		set_bot_info()
 
 
@@ -33,6 +33,7 @@ func set_bot_info():
 	relative_mouse   = psuedo_mouse - self.get_position()
 #	aim_angle        = atan2(relative_mouse.x, relative_mouse.y) # gives angle in radians
 	direction        = game_state.predicted_bot_vector
+#	print(game_state.predicted_bot_vector)
 #	direction        = Vector2(0,0)
 	psuedo_ability       = 0
 	psuedo_secondary     = 0

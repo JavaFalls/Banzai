@@ -10,7 +10,6 @@
 [node name="battle_arena" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
-_sections_unfolded = [ "Transform" ]
 
 [node name="arena" parent="." index="0" instance=ExtResource( 2 )]
 

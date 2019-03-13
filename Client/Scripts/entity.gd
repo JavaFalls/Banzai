@@ -27,7 +27,8 @@ var psuedo_aim_left  = 0
 var psuedo_aim_right = 0
 
 var shielded = false # When true, the bot takes no damage. Used by the 'shield' ability
-var immobilized = 0.0 # How long the bot will be unable to move for. Used by the 'snare' secondary
+var immobilized = 0.0 # How long the bot will be unable to move for. Used by the 'snare' secondary and 'freeze' ability
+var disabled = 0.0 # How long the bot will be unable to attack. Used by the 'freeze' ability
 
 
 signal game_end # The signal indicate the the arena match is over
@@ -45,10 +46,13 @@ func _ready():
 
 # Function to change weapons; is sent weapon scene as a parameter
 func set_weapons(new_primary, new_secondary, new_ability):
-	if self.get_child_count() > 4:   # Don't remove children if there aren't any
-		self.remove_child(primary_weapon)  #queue_free()?
-		self.remove_child(secondary_weapon)
-		self.remove_child(ability)
+	# Don't remove children if there aren't any
+	if primary_weapon != null:
+		primary_weapon.queue_free()
+	if secondary_weapon != null:
+		secondary_weapon.queue_free()
+	if ability != null:
+		ability.queue_free()
 	primary_weapon   = new_primary
 	self.add_child(primary_weapon)
 	secondary_weapon = new_secondary
@@ -91,7 +95,7 @@ func get_state():
 	state.append(Input.is_action_pressed("ability"))
 	return state
 
-# Moves the bot in the current specified direction, unless it is immobilized
+# Moves the bot in the current specified direction, unless it is immobilized or frozen
 func move_bot():
 	if immobilized <= 0.0:
 		move_and_slide(direction.normalized()*movement_speed, UP)

@@ -2,6 +2,9 @@
 # its owner's mouse position
 extends Area2D
 
+# Constants:
+const FREEZE_DURATION = 0.5
+
 # Stat Variables:
 var        speed    = 1
 var        damage   = 0
@@ -17,6 +20,7 @@ onready var t = Timer.new()
 # Helper scenes
 onready var explosion = preload("res://Scenes/weapons/explosion.tscn") # Basic explosion that can be instanced.
 onready var acid = preload("res://Scenes/weapons/acid.tscn") # Basic acid that can be instanced (deals damage over time).
+onready var freeze = preload("res://Scenes/weapons/freeze_effect.tscn") # Freeze affect that freezes its target for the specified duration
 
 #func set_target(new_target):
 #	self.target = new_target
@@ -63,6 +67,17 @@ func _on_projectile_body_entered(body):
 				# know how to bounce, so the bounce is handled by shape_entered
 				if body.get_name() == "fighter1" or body.get_name() == "fighter2":
 					body.increment_hitpoints(damage)
+					self.queue_free()
+			weapon_creator.W_ABI_FREEZE:
+				if body.get_name() == "fighter1" or body.get_name() == "fighter2":
+					# 'freeze' the target
+					body.immobilized = FREEZE_DURATION
+					body.disabled = FREEZE_DURATION
+					# Add a 'frozen' effect to the target
+					var frozen = freeze.instance()
+					frozen.duration = FREEZE_DURATION
+					body.add_child(frozen)
+					
 					self.queue_free()
 			_: # Default case (W_PRI_ACID_BOW, W_PRI_PRECISION_BOW, W_PRI_SCATTER_BOW, W_PRI_ZORROS_GLARE)
 				if body.get_name() == "fighter1" or body.get_name() == "fighter2":
