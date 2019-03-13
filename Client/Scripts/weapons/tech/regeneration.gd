@@ -1,8 +1,6 @@
 # Regenerates the host bot by the specified amount
 extends Node2D
 
-#
-
 # Signals
 #------------------------------------------------------------------------
 signal use # All weapons must have this signal so that cooldowns can be displayed
