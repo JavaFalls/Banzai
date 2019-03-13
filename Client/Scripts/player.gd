@@ -20,15 +20,16 @@ func _physics_process(delta):
 	psuedo_secondary = 0
 	psuedo_primary   = 0
 	
-	if Input.is_action_pressed("ability"):
-		ability.use()
-		psuedo_ability = 1
-	elif Input.is_action_pressed("secondary_attack"):
-		secondary_weapon.use()
-		psuedo_secondary = 1
-	elif Input.is_action_pressed("primary_attack"):
-		primary_weapon.use() 
-		psuedo_primary = 1
+	if disabled <= 0.0:
+		if Input.is_action_pressed("ability"):
+			ability.use()
+			psuedo_ability = 1
+		elif Input.is_action_pressed("secondary_attack"):
+			secondary_weapon.use()
+			psuedo_secondary = 1
+		elif Input.is_action_pressed("primary_attack"):
+			primary_weapon.use() 
+			psuedo_primary = 1
 	if Input.is_action_pressed("ui_right"):
 		direction.x = 1
 	if Input.is_action_pressed("ui_left"):
