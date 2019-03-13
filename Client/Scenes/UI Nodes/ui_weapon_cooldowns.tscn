@@ -1,11 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://Scenes/UI Nodes/ui_weapon_cooldowns.gd" type="Script" id=1]
-[ext_resource path="res://Assets/weapons/scatter_bow.png" type="Texture" id=2]
-[ext_resource path="res://Assets/weapons/scythe.png" type="Texture" id=3]
-[ext_resource path="res://Assets/weapons/icon_evade.png" type="Texture" id=4]
 
-[node name="ui_weapon_cooldowns" type="Container"]
+[node name="ui_weapon_cooldowns" type="Container" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -60,7 +57,6 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="primary_icon" type="Sprite" parent="horizontal_container/primary" index="0"]
 
-texture = ExtResource( 2 )
 centered = false
 _sections_unfolded = [ "Offset" ]
 
@@ -101,7 +97,6 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="secondary_icon" type="Sprite" parent="horizontal_container/secondary" index="0"]
 
-texture = ExtResource( 3 )
 centered = false
 
 [node name="secondary_cooldown" type="ColorRect" parent="horizontal_container/secondary" index="1"]
@@ -141,7 +136,6 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="ability_icon" type="Sprite" parent="horizontal_container/ability" index="0"]
 
-texture = ExtResource( 4 )
 centered = false
 
 [node name="ability_cooldown" type="ColorRect" parent="horizontal_container/ability" index="1"]

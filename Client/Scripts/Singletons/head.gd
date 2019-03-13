@@ -1,6 +1,6 @@
 extends Node
 
-# Noraml screen size
+# Normal screen size
 const NORMAL_HEIGHT = 900
 const NORMAL_WIDTH = 1600
 

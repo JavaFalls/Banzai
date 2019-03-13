@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tile_grey.png-6a26a35a34dafc7f3dc7b61eadcd1cdf.stex"
+path="res://.import/heal_bubble.png-92075d9b3fb4ada91b9d0a84308a7eed.stex"
 
 [deps]
 
-source_file="res://Assets/menu/bot_construction/tile_grey.png"
-dest_files=[ "res://.import/tile_grey.png-6a26a35a34dafc7f3dc7b61eadcd1cdf.stex" ]
+source_file="res://Assets/weapons/heal_effects/heal_bubble.png"
+dest_files=[ "res://.import/heal_bubble.png-92075d9b3fb4ada91b9d0a84308a7eed.stex" ]
 
 [params]
 

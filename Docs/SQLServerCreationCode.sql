@@ -63,4 +63,5 @@ GRANT UPDATE ON [javafalls].[ai_model] TO [sei_JavaFallsUser]
 GRANT INSERT ON [javafalls].[bot] TO [sei_JavaFallsUser]
 GRANT SELECT ON [javafalls].[bot] TO [sei_JavaFallsUser]
 GRANT UPDATE ON [javafalls].[bot] TO [sei_JavaFallsUser]
+GRANT SELECT ON [javafalls].[player_name] TO [sei_JavaFallsUser]
 GO

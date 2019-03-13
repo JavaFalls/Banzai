@@ -6,7 +6,7 @@
 [ext_resource path="res://assets/health bars.png" type="Texture" id=4]
 [ext_resource path="res://assets/white block.png" type="Texture" id=5]
 
-[node name="battle_arena" type="Node2D"]
+[node name="battle_arena" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 

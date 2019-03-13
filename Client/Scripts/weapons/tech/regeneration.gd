@@ -23,6 +23,9 @@ var cooldown         = 0.0        # Time for using cooldown
 var cooldown_timer = Timer.new() # Timer for firing cooldown
 var cycle_timer    = Timer.new() # Timer for healing the bot periodically
 var amt_healed = 0         # How much healing has already been done
+
+var regeneration_effect = preload("res://Scenes/weapons/tech/regeneration_effect.tscn")
+
 onready var bot = get_parent() # The bot that is holding the ability
 
 # Functions
@@ -48,6 +51,11 @@ func use():
 		emit_signal("use") # Notify anybody who cares that we did our thing
 
 func cycle_timer_timeout():
+	# Effect
+	var regen_bubble = regeneration_effect.instance()
+	regen_bubble.position = global_position
+	bot.get_parent().add_child(regen_bubble)
+	# Actual Heal
 	bot.hit_points += 1
 	amt_healed += 1
 	if bot.hit_points > bot.max_HP:
