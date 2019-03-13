@@ -6,10 +6,11 @@ onready var game_state = self.get_parent().get_child(1) #Currently child 1 is ga
 
 func _process(delta):
 	#game_state.set_player_action(self)
-	if is_player:
-		game_state.set_opponent_state(self)
-	else:
-		game_state.set_bot_state(self)
+#	if is_player:
+#		game_state.set_opponent_state(self)
+#	else:
+#		game_state.set_bot_state(self)
+	pass
 
 func _physics_process(delta):
 	psuedo_mouse     = get_global_mouse_position()

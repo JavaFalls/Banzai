@@ -21,7 +21,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 state_size  = 13
 action_size = 108
-batch_size  = 1
+batch_size  = 16
 
 # Create pipes
 request_handle = win32pipe.CreateNamedPipe(
@@ -112,10 +112,10 @@ class DQN_agent:
         self.state_size = state_size
         self.action_size = action_size
 
-        self.memory = deque(maxlen=2)
-        self.gamma         = 0.95 # discount future reward
+        self.memory = deque(maxlen=32)
+        self.gamma         = 0.5 # discount future reward
         self.epsilon       = 1.0 # exploration rate; initial rate; skew 100% towards exploration
-        self.epsilon_decay = 0.995 # rate at which epsilon decays; get multiplied to epsilon
+        self.epsilon_decay = 0.9995 # rate at which epsilon decays; get multiplied to epsilon
         self.epsilon_min   = 0.01 # floor that epsilon will rest at after heavy training
 
         self.learning_rate = 2
@@ -130,7 +130,7 @@ class DQN_agent:
 
     def _build_model(self): # defines the NN
         model = Sequential()
-        model.add(Dense(108, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(216, input_dim = self.state_size, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
 
         model.compile(loss='mean_absolute_error', optimizer=Adam(lr = self.learning_rate))
@@ -142,10 +142,13 @@ class DQN_agent:
 
     def predict(self, state):
         if np.random.rand() <= self.epsilon: # if we randomly select a number less than our epilson we will choose 1 random action
+            print()
+            print()
+            print()
             return random.randrange(self.action_size)
         act_values = self.model.predict(state)
         print("act_value1")
-        print(act_values[0,0:5])
+        print(act_values[0,0:5],";")
         print("                                                " ,np.amax(act_values[0]))
         return np.argmax(act_values[0]) # chooses the best choice
 
@@ -157,7 +160,8 @@ class DQN_agent:
         #     print(action)
         #     print(reward)
         #     print(next_state)
-            target = (reward) # + self.gamma * np.amax(self.model.predict(next_state)[0]))
+        #    print("action/reward: ",action,":",reward,"-------")
+            target = (reward)# + self.gamma * np.amax(self.model.predict(next_state)[0]))
             target_f = self.model.predict(state)
             target_f[0] [action] = target
 
@@ -192,8 +196,9 @@ class DQN_agent:
             next_gamestate = new_gamestate # get the gamestate
             #self.reward = self.get_reward(np.flip(self.gamestate,1)[0], np.flip(next_gamestate,1)[0]) # for train on player
             self.reward = self.get_reward(self.gamestate[0], next_gamestate[0])
-            #self.remember(np.flip(self.gamestate,1),self.action,self.reward,np.flip(next_gamestate,1))# for train on player
-            self.remember(self.gamestate,self.player_action,self.reward,next_gamestate)
+            print("########################################")
+            #self.remember(np.flip(self.gamestate,1),self.player_action,self.reward,np.flip(next_gamestate,1))# for train on player
+            self.remember(self.gamestate,self.action,self.reward,next_gamestate)
             self.gamestate = next_gamestate
         else:
             self.gamestate = new_gamestate # get the gamestate
@@ -207,27 +212,36 @@ class DQN_agent:
         return self.action
 
     def get_reward(self, gamestate, next_gamestate):
-        gamestate = gamestate
-        next_gamestate = next_gamestate # select the actual array instead of [[]]
-        bot_aim_angle_diff      = abs(gamestate[2] - gamestate[5])
-        bot_aim_next_angle_diff = abs(next_gamestate[2] - next_gamestate[5])
-        if bot_aim_angle_diff > .5:
-                bot_aim_angle_diff = 1 - bot_aim_angle_diff
-        if bot_aim_next_angle_diff > .5:
-                bot_aim_next_angle_diff = 1 - bot_aim_next_angle_diff
-        player_aim_angle_diff      = abs(gamestate[10] - gamestate[7])
-        player_aim_next_angle_diff = abs(next_gamestate[10] - next_gamestate[7])
-        if player_aim_angle_diff > .5:
-                player_aim_angle_diff = 1 - player_aim_angle_diff
-        if player_aim_next_angle_diff > .5:
-                player_aim_next_angle_diff = 1 - player_aim_next_angle_diff
+        # gamestate = gamestate
+        # next_gamestate = next_gamestate # select the actual array instead of [[]]
+        # bot_aim_angle_diff      = abs(gamestate[2] - gamestate[5])
+        # bot_aim_next_angle_diff = abs(next_gamestate[2] - next_gamestate[5])
+        # if bot_aim_angle_diff > .5:
+        #         bot_aim_angle_diff = 1 - bot_aim_angle_diff
+        # if bot_aim_next_angle_diff > .5:
+        #         bot_aim_next_angle_diff = 1 - bot_aim_next_angle_diff
+        # player_aim_angle_diff      = abs(gamestate[10] - gamestate[7])
+        # player_aim_next_angle_diff = abs(next_gamestate[10] - next_gamestate[7])
+        # if player_aim_angle_diff > .5:
+        #         player_aim_angle_diff = 1 - player_aim_angle_diff
+        # if player_aim_next_angle_diff > .5:
+        #         player_aim_next_angle_diff = 1 - player_aim_next_angle_diff
 
         new_reward = 0
-        new_reward += (gamestate[9] - next_gamestate[9]) * 20                    # reward for dealing damage
+        #new_reward += (gamestate[9] - next_gamestate[9]) * 20                    # reward for dealing damage
         # new_reward += (bot_aim_angle_diff - bot_aim_next_angle_diff) * -5000      # reward for good aim
-        # new_reward += 1/(bot_aim_next_angle_diff + 0.0001)                        # reward for pointing at player
+        #new_reward += 1/(bot_aim_next_angle_diff + 0.0001)                        # reward for pointing at player
         # new_reward += (gamestate[8]+next_gamestate[8]) * 10000                    # reward for putting the player in peril
-        # new_reward += ((1/next_gamestate[6]+.001)*10)-20                     # test. reward for being close to opponent
+
+        # Reward for being close to the opponent
+        if (gamestate[6] - next_gamestate[6]):
+                if gamestate[6] < next_gamestate[6]:
+                        new_reward -= 70
+                else:
+                        new_reward += 70
+        else:
+                new_reward +=  (1-next_gamestate[6])*100
+
 
         # new_reward -= (gamestate[3] - next_gamestate[3]) * 20                    # criticism for losing health
 
@@ -236,7 +250,7 @@ class DQN_agent:
 
         # if (((gamestate[3] - next_gamestate[3]) == 0) and ((gamestate[4] - next_gamestate[4]) == 1)): # reward for dodging
         # new_reward += 100
-        # print("                                                                               reward     ",new_reward)
+        print("                                                                               *reward     ",new_reward)
         return new_reward
 
 
@@ -341,7 +355,7 @@ while True:
         request_completed = False
         try:
                 request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '').replace('\x00', '')
-                print(request)
+                #print(request)
                 request = json.loads(request)
                 request_completed = True
 
@@ -350,13 +364,13 @@ while True:
                 input("Do you want to retry?")
 
         ### Process Request ###
-        if process_message(request) == 109:
-                break
         response = process_message(request)
+        if response == 109:
+                break
         #print(request)
         #response = fighter1.train(request)
         send_response(response) # send the action or actions or load successful message based on packet type
-        print(response)
+        print("response: ", response)
 
 # Close pipes
 print("Shutting Down...")

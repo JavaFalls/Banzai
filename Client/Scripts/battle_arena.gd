@@ -30,23 +30,23 @@ func _ready():
 	#f.open('res://NeuralNetwork/gamestates', 3)
     # Call get opponent here
 #	var opponent_bot_ID = get_opponent(head.bot_ID)
-	fighter1 = bot_scene.instance() #player_scene.instance()
+	fighter1 = player_scene.instance() #player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
 	# TODO: Load weapons from DB or wherever else they might be handy to grap from
 	fighter1.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SNARE), weapon_creator.create_weapon(weapon_creator.W_ABI_REGENERATION))
-	get_node("fighter1_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter1.primary_weapon, weapon_creator.W_SEC_SNARE, fighter1.secondary_weapon, weapon_creator.W_ABI_REGENERATION, fighter1.ability)
+#	get_node("fighter1_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter1.primary_weapon, weapon_creator.W_SEC_SNARE, fighter1.secondary_weapon, weapon_creator.W_ABI_REGENERATION, fighter1.ability)
 	fighter1.is_player = 1
 #	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 
-	fighter2 = bot_scene.instance() # fighter2 = dummy_scene.instance()
+	fighter2 = player_scene.instance() # fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
 	# TODO: Load weapons from DB or wherever else they might be handy to grap from
 	fighter2.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SNARE), weapon_creator.create_weapon(weapon_creator.W_ABI_REGENERATION))
-	get_node("fighter2_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter2.primary_weapon, weapon_creator.W_SEC_SNARE, fighter2.secondary_weapon, weapon_creator.W_ABI_REGENERATION, fighter2.ability)
+#	get_node("fighter2_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter2.primary_weapon, weapon_creator.W_SEC_SNARE, fighter2.secondary_weapon, weapon_creator.W_ABI_REGENERATION, fighter2.ability)
 #	fighter2.get_node("animation_bot").load_colors_from_DB(opponent_bot_ID)
 
 	# tell fighters who theyre opponent is
@@ -128,7 +128,7 @@ func get_opponent(bot_id):
 func send_nn_state(bot_number):
 	var output = []
 	var message
-	message = '{ "Message Type": "Battle", "Message": %s }' % str(game_state.get_battle_state())
+	message = '{ "Message Type": "Train", "Message": %s }' % str(game_state.get_battle_state())
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 
@@ -138,7 +138,7 @@ func send_nn_state(bot_number):
 		x = int(x)
 
 	game_state.set_predictions(output[0])
-	game_state.set_opponent_predictions(output[1])
+#	game_state.set_opponent_predictions(output[1])
 	#game_state.set_opponent_predictions(output)
 	return
 

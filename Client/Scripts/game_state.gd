@@ -63,6 +63,8 @@ func get_battle_state():  # get the battle state for the player/player_bot
 	game_state.append(self.opponent_health)
 	game_state.append(self.opponent_aim_angle)
 	game_state.append(self.opponent_position)
+#	print("bot x     , bot y    , aim, bot_health, 0 , opp angle , distance , botangle, 0 , health, aima , posx ,posy")
+#	print(game_state)
 	return game_state
 
 func set_bot_state(bot):
@@ -96,7 +98,7 @@ func set_predictions(predictions):
 	predicted_bot_psuedo_ability   = 0
 	predicted_bot_aim_right        = 0
 	predicted_bot_aim_left         = 0
-
+	#print(predicted_action)
 	if predicted_action  == 0:
 		predicted_bot_vector = Vector2(0,0)
 	elif predicted_action == 1:
