@@ -28,26 +28,46 @@ signal game_end
 
 func _ready():
 	#f.open('res://NeuralNetwork/gamestates', 3)
+	# Get data about the bots from the DB
     # Call get opponent here
-#	var opponent_bot_ID = get_opponent(head.bot_ID)
+	var opponent_bot_ID = get_opponent(head.bot_ID)
+	var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
+	var opponent_data = JSON.parse(head.DB.get_bot(opponent_bot_ID)).result["data"][0]
+	
+	# Initialize the bots
 	fighter1 = dummy_scene.instance() #player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
-	# TODO: Load weapons from DB or wherever else they might be handy to grap from
-	fighter1.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SNARE), weapon_creator.create_weapon(weapon_creator.W_ABI_REGENERATION))
-	get_node("fighter1_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter1.primary_weapon, weapon_creator.W_SEC_SNARE, fighter1.secondary_weapon, weapon_creator.W_ABI_REGENERATION, fighter1.ability)
+	# Hardcoded method to setup bot weapons-------------------
+	#fighter1.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SNARE), weapon_creator.create_weapon(weapon_creator.W_ABI_REGENERATION))
+	#get_node("fighter1_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter1.primary_weapon, weapon_creator.W_SEC_SNARE, fighter1.secondary_weapon, weapon_creator.W_ABI_REGENERATION, fighter1.ability)
+	#---------------------------------------------------------
+	# Get bot weapons from DB---------------------------------
+	print(bot_data)
+	fighter1.set_weapons(weapon_creator.create_weapon(bot_data["primary_weapon"]), weapon_creator.create_weapon(bot_data["secondary_weapon"]), weapon_creator.create_weapon(bot_data["utility"]))
+	get_node("fighter1_cooldowns").init(bot_data["primary_weapon"], fighter1.primary_weapon,
+	                                    bot_data["secondary_weapon"], fighter1.secondary_weapon,
+										bot_data["utility"], fighter1.ability)
+	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
+	#---------------------------------------------------------
 	fighter1.is_player = 1
-#	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 
 	fighter2 = bot_scene.instance() # fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
-	# TODO: Load weapons from DB or wherever else they might be handy to grap from
-	fighter2.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SNARE), weapon_creator.create_weapon(weapon_creator.W_ABI_REGENERATION))
-	get_node("fighter2_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter2.primary_weapon, weapon_creator.W_SEC_SNARE, fighter2.secondary_weapon, weapon_creator.W_ABI_REGENERATION, fighter2.ability)
-#	fighter2.get_node("animation_bot").load_colors_from_DB(opponent_bot_ID)
+	# Hardcoded method to setup bot weapons-------------------
+	#fighter2.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SNARE), weapon_creator.create_weapon(weapon_creator.W_ABI_REGENERATION))
+	#get_node("fighter2_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter2.primary_weapon, weapon_creator.W_SEC_SNARE, fighter2.secondary_weapon, weapon_creator.W_ABI_REGENERATION, fighter2.ability)
+	#---------------------------------------------------------
+	# Get bot weapons from DB---------------------------------
+	fighter2.set_weapons(weapon_creator.create_weapon(opponent_data["primary_weapon"]), weapon_creator.create_weapon(opponent_data["secondary_weapon"]), weapon_creator.create_weapon(opponent_data["utility"]))
+	get_node("fighter2_cooldowns").init(opponent_data["primary_weapon"], fighter2.primary_weapon,
+	                                    opponent_data["secondary_weapon"], fighter2.secondary_weapon,
+										opponent_data["utility"], fighter2.ability)
+	fighter2.get_node("animation_bot").load_colors_from_DB(opponent_bot_ID)
+	#---------------------------------------------------------
 
 	# tell fighters who theyre opponent is
 	fighter1.set_opponent(fighter2)

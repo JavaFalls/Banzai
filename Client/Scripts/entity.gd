@@ -45,10 +45,13 @@ func _ready():
 
 # Function to change weapons; is sent weapon scene as a parameter
 func set_weapons(new_primary, new_secondary, new_ability):
-	if self.get_child_count() > 4:   # Don't remove children if there aren't any
-		self.remove_child(primary_weapon)  #queue_free()?
-		self.remove_child(secondary_weapon)
-		self.remove_child(ability)
+	# Don't remove children if there aren't any
+	if primary_weapon != null:
+		primary_weapon.queue_free()
+	if secondary_weapon != null:
+		secondary_weapon.queue_free()
+	if ability != null:
+		ability.queue_free()
 	primary_weapon   = new_primary
 	self.add_child(primary_weapon)
 	secondary_weapon = new_secondary
