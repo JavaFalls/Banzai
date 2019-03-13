@@ -27,7 +27,8 @@ var psuedo_aim_left  = 0
 var psuedo_aim_right = 0
 
 var shielded = false # When true, the bot takes no damage. Used by the 'shield' ability
-var immobilized = 0.0 # How long the bot will be unable to move for. Used by the 'snare' secondary
+var immobilized = 0.0 # How long the bot will be unable to move for. Used by the 'snare' secondary and 'freeze' ability
+var disabled = 0.0 # How long the bot will be unable to attack. Used by the 'freeze' ability
 
 
 signal game_end # The signal indicate the the arena match is over
@@ -94,7 +95,7 @@ func get_state():
 	state.append(Input.is_action_pressed("ability"))
 	return state
 
-# Moves the bot in the current specified direction, unless it is immobilized
+# Moves the bot in the current specified direction, unless it is immobilized or frozen
 func move_bot():
 	if immobilized <= 0.0:
 		move_and_slide(direction.normalized()*movement_speed, UP)

@@ -2,9 +2,6 @@
 # Deals damage overtime to the victim
 # Expects to be a child of the victim
 # Original implementation of this intends for projectile.tscn to be the one responsible for instancing this scene
-
-# TODO:
-# Find  some green animated sparkle graphics to represent the acid on the bot
 extends Node2D
 
 # Stat variables:

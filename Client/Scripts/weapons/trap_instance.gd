@@ -4,7 +4,7 @@
 extends Area2D
 
 # Constants
-const SNARE_DURATION = 0.75
+const SNARE_DURATION = 1.00
 
 # Stat Variables:
 var        id       = -1
