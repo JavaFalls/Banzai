@@ -244,11 +244,14 @@ shortcut = null
 group = null
 flat = true
 align = 1
-_sections_unfolded = [ "custom_styles" ]
 
 [connection signal="pressed" from="go_to_prev" to="." method="_on_go_to_prev_pressed"]
 
 [connection signal="pressed" from="go_to_next" to="." method="_on_go_to_next_pressed"]
+
+[connection signal="mouse_entered" from="info_button" to="." method="_on_info_button_mouse_entered"]
+
+[connection signal="mouse_exited" from="info_button" to="." method="_on_info_button_mouse_exited"]
 
 [connection signal="pressed" from="info_button" to="." method="_on_info_button_pressed"]
 
