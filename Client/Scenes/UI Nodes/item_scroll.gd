@@ -16,6 +16,7 @@ var current = 0 setget set_current
 
 var shifting = false
 
+signal shift
 signal shift_completed
 signal info_queried
 signal info_reserved
@@ -58,6 +59,7 @@ func _on_go_to_prev_pressed():
 		else:
 			set_current(current-1)
 		sprites.front().modulate.a = 1.0
+		emit_signal("shift")
 		move_left()
 		shifting = true
 		yield(self, "shift_completed")
@@ -70,6 +72,7 @@ func _on_go_to_next_pressed():
 		else:
 			set_current(current+1)
 		sprites.back().modulate.a = 1.0
+		emit_signal("shift")
 		move_right()
 		shifting = true
 		yield(self, "shift_completed")

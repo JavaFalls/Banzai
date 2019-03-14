@@ -401,7 +401,7 @@ margin_left = 14.0
 margin_top = 24.0
 margin_right = 142.0
 margin_bottom = 44.0
-colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
+colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0.827451, 0, 1, 1, 0, 1, 0.647059, 1, 0.921569, 1, 0, 1, 1, 0.513726, 0, 1, 1, 0.371094, 0.813293, 1, 0.601563, 0.352478, 0, 1, 0.492188, 0.101898, 0.20252, 1 )
 
 [node name="selected_sprite" parent="color_scroll/HBoxContainer/colors/color2" index="0"]
 
@@ -414,7 +414,7 @@ margin_left = 14.0
 margin_top = 65.0
 margin_right = 142.0
 margin_bottom = 85.0
-colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
+colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0.827451, 0, 1, 1, 0, 1, 0.647059, 1, 0.921569, 1, 0, 1, 1, 0.513726, 0, 1, 1, 0.368627, 0.811765, 1, 0.6, 0.34902, 0, 1, 0.490196, 0.0980392, 0.2, 1 )
 indicator_offset = 0.3
 
 [node name="selected_sprite" parent="color_scroll2/HBoxContainer/colors/color2" index="0"]
@@ -429,7 +429,7 @@ margin_top = 106.0
 margin_right = 142.0
 margin_bottom = 126.0
 _sections_unfolded = [ "Material" ]
-colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1 )
+colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0.827451, 0, 1, 1, 0, 1, 0.647059, 1, 0.921569, 1, 0, 1, 1, 0.513726, 0, 1, 1, 0.368627, 0.811765, 1, 0.6, 0.34902, 0, 1, 0.490196, 0.0980392, 0.2, 1 )
 indicator_offset = 0.6
 
 [node name="selected_sprite" parent="color_scroll3/HBoxContainer/colors/color2" index="0"]
@@ -832,9 +832,15 @@ align = 1
 
 [connection signal="pressed" from="bot_right" to="." method="_on_bot_right_pressed"]
 
+[connection signal="mouse_entered" from="new_button" to="." method="button_hover_enter"]
+
 [connection signal="pressed" from="new_button" to="." method="_on_new_button_pressed"]
 
+[connection signal="mouse_entered" from="test_button" to="." method="button_hover_enter"]
+
 [connection signal="pressed" from="test_button" to="." method="_on_test_button_pressed"]
+
+[connection signal="mouse_entered" from="finish_button" to="." method="button_hover_enter"]
 
 [connection signal="pressed" from="finish_button" to="." method="_on_finish_button_pressed"]
 

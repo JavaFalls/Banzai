@@ -60,7 +60,7 @@ Various nodes' signal methods
 
 func scene_change(button):
 ### TEST AUDIO
-	head_audio.play_stream(head_audio.ui1, head_audio.BUTTON_ACCEPT)
+	head_audio.play_stream(head_audio.ui2, head_audio.SCENE_CHANGE, true)
 ###
 	
 	match (button):
