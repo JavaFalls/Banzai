@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/health bars.png-e2729fb4157a13f769a4b54c4dd180fd.stex"
+path="res://.import/health bars.png-956861c55783d5955531fad58ec863de.stex"
 
 [deps]
 
-source_file="res://Assets/health bars.png"
-dest_files=[ "res://.import/health bars.png-e2729fb4157a13f769a4b54c4dd180fd.stex" ]
+source_file="res://assets/health bars.png"
+dest_files=[ "res://.import/health bars.png-956861c55783d5955531fad58ec863de.stex" ]
 
 [params]
 

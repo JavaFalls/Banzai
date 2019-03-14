@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/sci-fi_beep_computer_ui_06.wav-8d4bfc193e48733a09780934fd34994c.sample"
+
+[deps]
+
+source_file="res://sounds/ui/sci-fi_beep_computer_ui_06.wav"
+dest_files=[ "res://.import/sci-fi_beep_computer_ui_06.wav-8d4bfc193e48733a09780934fd34994c.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=1

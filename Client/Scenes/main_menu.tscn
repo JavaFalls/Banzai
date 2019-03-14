@@ -824,17 +824,27 @@ align = 1
 visible = false
 theme = SubResource( 6 )
 
+[connection signal="mouse_entered" from="Control/credits_button" to="." method="button_hover_enter"]
+
 [connection signal="pressed" from="Control/credits_button" to="." method="scene_change" binds= [ "credits" ]]
 
 [connection signal="mouse_entered" from="Control/ranking_button" to="." method="button_hover_enter"]
 
 [connection signal="pressed" from="Control/ranking_button" to="." method="scene_change" binds= [ "ranking" ]]
 
+[connection signal="mouse_entered" from="Control/custom_button" to="." method="button_hover_enter"]
+
 [connection signal="pressed" from="Control/custom_button" to="." method="scene_change" binds= [ "custom" ]]
+
+[connection signal="mouse_entered" from="Control/fight_button" to="." method="button_hover_enter"]
 
 [connection signal="pressed" from="Control/fight_button" to="." method="scene_change" binds= [ "fight" ]]
 
+[connection signal="mouse_entered" from="Control/train_button" to="." method="button_hover_enter"]
+
 [connection signal="pressed" from="Control/train_button" to="." method="scene_change" binds= [ "train" ]]
+
+[connection signal="mouse_entered" from="Control/logout_button" to="." method="button_hover_enter"]
 
 [connection signal="pressed" from="Control/logout_button" to="." method="logout"]
 
