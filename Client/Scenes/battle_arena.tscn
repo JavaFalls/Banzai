@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/battle_arena.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/arena_base.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/health bars.png" type="Texture" id=4]
 [ext_resource path="res://assets/white block.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/UI Nodes/ui_weapon_cooldowns.tscn" type="PackedScene" id=6]
+[ext_resource path="res://sounds/Sound_scripts/BattleAudio.gd" type="Script" id=7]
 
 [node name="battle_arena" type="Node2D" index="0"]
 
@@ -53,5 +54,17 @@ margin_left = 232.0
 margin_top = 20.0
 margin_right = 280.0
 margin_bottom = 36.0
+
+[node name="BattleAudio" type="AudioStreamPlayer" parent="." index="5"]
+
+stream = null
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+script = ExtResource( 7 )
+
+[connection signal="finished" from="BattleAudio" to="BattleAudio" method="_on_BattleAudio_finished"]
 
 
