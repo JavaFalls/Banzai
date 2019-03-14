@@ -34,7 +34,7 @@ var disabled = 0.0 # How long the bot will be unable to attack. Used by the 'fre
 signal game_end # The signal indicate the the arena match is over
 
 #onready var aby_shield    = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
-onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn")  # The heavy scene to be instanced
+#onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn")  # The heavy scene to be instanced
 #onready var quick_attack  = preload("res://Scenes/atk_quick.tscn")  # The quick scene to be instanced
 #onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged scene to be instanced
 #onready var aby_evade     = preload("res://Scenes/aby_evade.tscn")  # The evade scene to be instanced
@@ -105,3 +105,5 @@ func _process(delta):
 		emit_signal("game_end")
 	if immobilized > 0.0:
 		immobilized -= delta
+	if disabled > 0.0:
+		disabled -= delta
