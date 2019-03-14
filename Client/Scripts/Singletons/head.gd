@@ -111,6 +111,7 @@ onready var abilities = [
 
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
+	Input.set_custom_mouse_cursor(load("res://assets/pixel_cursor.png"), Input.CURSOR_ARROW, Vector2(15, 15))
 	#_test_DB()
 
 func _input(event):

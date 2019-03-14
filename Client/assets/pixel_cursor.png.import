@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/B1-2-B.png-95257d9dc746aea34098f19d851860e7.stex"
+path="res://.import/pixel_cursor.png-8e1712e1615d467b352c51b38ec26493.stex"
 
 [deps]
 
-source_file="res://assets/bots/b1/B1-2-B.png"
-dest_files=[ "res://.import/B1-2-B.png-95257d9dc746aea34098f19d851860e7.stex" ]
+source_file="res://assets/pixel_cursor.png"
+dest_files=[ "res://.import/pixel_cursor.png-8e1712e1615d467b352c51b38ec26493.stex" ]
 
 [params]
 
