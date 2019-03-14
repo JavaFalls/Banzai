@@ -21,11 +21,5 @@ func loop_music():
 		self.stream = loop2
 		self.play()
 
-#func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass
-
-
-func _on_ArenaAudio_finished():
+func _on_BattleAudio_finished():
 	loop_music()

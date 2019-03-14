@@ -62,6 +62,7 @@ func scene_change(button):
 ### TEST AUDIO
 	head_audio.play_stream(head_audio.ui1, head_audio.BUTTON_ACCEPT)
 ###
+	Menu_audio.menu_audio.stop()
 	
 	match (button):
 		"ranking":
@@ -116,6 +117,7 @@ func hover_logout_confirm(mouse_entered):
 func _on_logout_warning_confirmed():
 #	head.save_bots(head.bots)
 #	head.init_bots()
+	Menu_audio.menu_audio.stop()
 	get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
 
