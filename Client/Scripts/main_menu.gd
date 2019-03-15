@@ -11,6 +11,8 @@ onready var _bot = $animation_bot
 var ty34918jj = false
 
 func _ready():
+	if(!Menu_audio.menu_audio.playing):
+		Menu_audio.menu_audio.play()
 	get_node("logout_warning").connect("popup_hide", self, "unfade")
 	get_node("logout_warning/button_face/Button").connect("mouse_entered", self, "hover_logout_confirm", [true])
 	get_node("logout_warning/button_face/Button").connect("mouse_exited", self, "hover_logout_confirm", [false])
