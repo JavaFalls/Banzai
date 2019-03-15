@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/sci-fi_hacking_aliens_03.wav-a129f8a3efebd46cac701caab5b3bb29.sample"
+
+[deps]
+
+source_file="res://sounds/ui/sci-fi_hacking_aliens_03.wav"
+dest_files=[ "res://.import/sci-fi_hacking_aliens_03.wav-a129f8a3efebd46cac701caab5b3bb29.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=1

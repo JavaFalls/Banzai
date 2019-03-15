@@ -75,7 +75,7 @@ enum sounds {
 	TEXT_SCROLL, GAME_START
 }
 onready var wavs = [
-	preload("res://sounds/ui/sci-fi_deep_electric_hum_loop_01.wav"),
+	preload("res://sounds/ui/sci-fi_hacking_aliens_03.wav"),
 	preload("res://sounds/ui/sci-fi_beep_computer_ui_06.wav"),
 	preload("res://sounds/ui/sci-fi_power_up_05.wav"),
 	preload("res://sounds/ui/sci-fi_power_up_07.wav"),
