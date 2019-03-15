@@ -176,7 +176,7 @@ func _on_finish_button_pressed():
 			print("  light_color:      %d" % bots[i]["light_color"])
 			print("  name:             %d" % bots[i]["name"])
 	
-	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.YIELD)
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 func _on_switch_description_pressed():
@@ -213,16 +213,18 @@ func update_current_bot():
 #	bots[current]["light_color"] = $color_scroll4.get_selected_color().to_rgba32()
 
 func weapon_changed():
-	if not randi() % 5:
-		var stream
-		match randi() % 3:
-			0:
-				stream = head.sounds.BOT_CHANGE_1
-			1:
-				stream = head.sounds.BOT_CHANGE_2
-			2:
-				stream = head.sounds.BOT_CHANGE_3
-		head.play_stream(head.ui1, stream)
+	var stream
+	match randi() % 15:
+		0:
+			stream = head.sounds.BOT_CHANGE_1
+		1:
+			stream = head.sounds.BOT_CHANGE_2
+		2:
+			stream = head.sounds.BOT_CHANGE_3
+		_:
+			pass
+	if typeof(stream) != TYPE_NIL:
+		head.play_stream(head.ui2, stream)
 
 # Display/organize data
 #------------------------------------------------

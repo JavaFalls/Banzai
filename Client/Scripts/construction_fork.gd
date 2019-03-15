@@ -34,7 +34,7 @@ func _ready():
 # Signal methods
 #------------------------------------------------
 func _on_customize_player_pressed():
-	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.YIELD)
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
 	head.construction = head.PLAYER
 	get_tree().change_scene(CUSTOMIZE_BOT_PATH)
 
@@ -48,7 +48,7 @@ func _on_customize_player_mouse_exited():
 	$buttons/customize_player/Label.modulate = MOUSE_OUT_COLOR
 
 func _on_customize_bot_pressed():
-	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.YIELD)
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
 	head.construction = head.BOT
 	get_tree().change_scene(CUSTOMIZE_BOT_PATH)
 
@@ -62,7 +62,7 @@ func _on_customize_bot_mouse_exited():
 	$buttons/customize_bot/Label.modulate = MOUSE_OUT_COLOR
 
 func _on_back_pressed():
-	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.YIELD)
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
 	get_tree().change_scene(MAIN_MENU_PATH)
 
 func _on_back_mouse_entered():
