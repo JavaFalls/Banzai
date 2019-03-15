@@ -10,6 +10,8 @@ onready var alpha_modifier = get_node("alpha_timer").wait_time
 onready var name_choice_screen = preload("res://Scenes/name_choice.tscn").instance(PackedScene.GEN_EDIT_STATE_DISABLED)
 
 func _ready():
+	if(!Menu_audio.menu_audio.playing):
+		Menu_audio.menu_audio.play()
 	pass
 
 func _process(delta):

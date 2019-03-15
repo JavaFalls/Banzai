@@ -59,7 +59,6 @@ Various nodes' signal methods
 
 func scene_change(button):
 	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
-	Menu_audio.menu_audio.stop()
 	
 	match (button):
 		"ranking":
@@ -69,8 +68,10 @@ func scene_change(button):
 		"credits":
 			get_tree().change_scene("res://Scenes/Screens/credits.tscn")
 		"train":
+			Menu_audio.menu_audio.stop()
 			get_tree().change_scene("res://Scenes/Load_training.tscn")
 		"fight":
+			Menu_audio.menu_audio.stop()
 			head.load_scene("res://Scenes/battle_arena.tscn")
 	pass
 

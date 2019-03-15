@@ -16,7 +16,10 @@ func _ready():
 	var raw_JSON
 	var name_dictionary
 	var name_index
-	Menu_audio.menu_audio.play()
+
+	if(!Menu_audio.menu_audio.playing):
+		Menu_audio.menu_audio.play()
+
 	for group in get_tree().get_nodes_in_group("buttons"):
 		name_index = 0
 		raw_JSON = head.DB.get_name_parts(name_section)
