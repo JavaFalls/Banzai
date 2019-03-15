@@ -176,7 +176,7 @@ func _on_finish_button_pressed():
 			print("  light_color:      %d" % bots[i]["light_color"])
 			print("  name:             %d" % bots[i]["name"])
 	
-	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, true)
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.YIELD)
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 func _on_switch_description_pressed():
@@ -232,7 +232,7 @@ func format_info(speed, attack, type, info):
 			STATS_SPACE + "%.2f" % speed + "\n" +
 			STATS_SPACE + "%d" % attack + "\n" +
 			STATS_SPACE + "%s" % type + "\n" +
-			STATS_SPACE + "%s" % info
+			"   %s" % info
 		)
 	else:
 		return ""

@@ -65,25 +65,39 @@ var bot = {
 
 # Audio
 #----------------
+enum options {
+	OVERRIDE, WAIT, YIELD
+}
+
 enum sounds {
 	SCENE_CHANGE, BUTTON_HOVER,
-	BOT_CHANGE_1, BOT_CHANGE_2, BOT_CHANGE_3
+	BOT_CHANGE_1, BOT_CHANGE_2, BOT_CHANGE_3,
+	TEXT_SCROLL, GAME_START
 }
 onready var wavs = [
 	preload("res://sounds/ui/sci-fi_deep_electric_hum_loop_01.wav"),
 	preload("res://sounds/ui/sci-fi_beep_computer_ui_06.wav"),
 	preload("res://sounds/ui/sci-fi_power_up_05.wav"),
 	preload("res://sounds/ui/sci-fi_power_up_07.wav"),
-	preload("res://sounds/ui/sci-fi_power_up_09.wav")
+	preload("res://sounds/ui/sci-fi_power_up_09.wav"),
+	preload("res://sounds/ui/sci-fi_code_fail_04.wav"),
+	preload("res://sounds/ui/sci-fi_driod_robot_emote_beeps_05.wav")
 ]
 var ui1
 var ui2
 
-func play_stream(player, audio_index, wait=false):
+func play_stream(player, audio_index, option=options.OVERRIDE):
 	if not player is AudioStreamPlayer:
 		print("Not an audio player")
-	if wait and player.playing:
-		yield(player, "finished")
+	match option:
+		options.OVERRIDE:
+			pass
+		options.WAIT:
+			if player.playing:
+				yield(player, "finished")
+		options.YIELD:
+			if player.playing:
+				return
 	player.set_stream(wavs[audio_index])
 	player.play()
 #----------------
