@@ -58,7 +58,7 @@ Various nodes' signal methods
 """
 
 func scene_change(button):
-	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, true)
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.YIELD)
 	Menu_audio.menu_audio.stop()
 	
 	match (button):
