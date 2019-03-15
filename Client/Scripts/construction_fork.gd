@@ -2,7 +2,6 @@ extends Node
 
 # Get head singleton
 onready var head = get_tree().get_root().get_node("/root/head")
-onready var head_audio = get_tree().get_root().get_node("/root/audio_stream")
 
 onready var bot_player = $animation_bot
 onready var bot_bot = $animation_bot2
@@ -35,12 +34,12 @@ func _ready():
 # Signal methods
 #------------------------------------------------
 func _on_customize_player_pressed():
-	head_audio.play_stream(head_audio.ui2, head_audio.SCENE_CHANGE, true)
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, true)
 	head.construction = head.PLAYER
 	get_tree().change_scene(CUSTOMIZE_BOT_PATH)
 
 func _on_customize_player_mouse_entered():
-	head_audio.play_stream(head_audio.ui1, head_audio.BUTTON_HOVER)
+	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
 	bot_player.start_walking_forward()
 	$buttons/customize_player/Label.modulate = MOUSE_IN_COLOR
 
@@ -49,12 +48,12 @@ func _on_customize_player_mouse_exited():
 	$buttons/customize_player/Label.modulate = MOUSE_OUT_COLOR
 
 func _on_customize_bot_pressed():
-	head_audio.play_stream(head_audio.ui2, head_audio.SCENE_CHANGE, true)
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, true)
 	head.construction = head.BOT
 	get_tree().change_scene(CUSTOMIZE_BOT_PATH)
 
 func _on_customize_bot_mouse_entered():
-	head_audio.play_stream(head_audio.ui1, head_audio.BUTTON_HOVER)
+	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
 	bot_bot.start_walking_forward()
 	$buttons/customize_bot/Label.modulate = MOUSE_IN_COLOR
 
@@ -63,11 +62,11 @@ func _on_customize_bot_mouse_exited():
 	$buttons/customize_bot/Label.modulate = MOUSE_OUT_COLOR
 
 func _on_back_pressed():
-	head_audio.play_stream(head_audio.ui2, head_audio.SCENE_CHANGE, true)
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, true)
 	get_tree().change_scene(MAIN_MENU_PATH)
 
 func _on_back_mouse_entered():
-	head_audio.play_stream(head_audio.ui1, head_audio.BUTTON_HOVER)
+	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
 	$buttons/back/Label.modulate = MOUSE_IN_COLOR
 
 func _on_back_mouse_exited():

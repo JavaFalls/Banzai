@@ -63,55 +63,45 @@ var bot = {
 	"utility"   : 0003
 }
 
-# Weapons/abilities
-enum WPN {ROBOT_FACE, SWORD, RED_BLOCK}
-enum ABL {SWORD1, SWORD2, SWORD3}
-
-onready var weapons = [
-	{ # Robot face
-		"scene": null,
-		"texture": load("res://assets/icon.png"),
-		"name": "Robot Face",
-		"stats": 0
-	},
-	{ # Sword
-		"scene": null,
-		"texture": load("res://assets/sword.png"),
-		"name": "Sword",
-		"stats": 0
-	},
-	{ # Red block
-		"scene": null,
-		"texture": load("res://assets/wall.png"),
-		"name": "Nothing Particular",
-		"stats": 0
-	}
+# Audio
+#----------------
+enum sounds {
+	SCENE_CHANGE, BUTTON_HOVER,
+	BOT_CHANGE_1, BOT_CHANGE_2, BOT_CHANGE_3
+}
+onready var wavs = [
+	preload("res://sounds/ui/sci-fi_deep_electric_hum_loop_01.wav"),
+	preload("res://sounds/ui/sci-fi_beep_computer_ui_06.wav"),
+	preload("res://sounds/ui/sci-fi_power_up_05.wav"),
+	preload("res://sounds/ui/sci-fi_power_up_07.wav"),
+	preload("res://sounds/ui/sci-fi_power_up_09.wav")
 ]
+var ui1
+var ui2
 
-onready var abilities = [
-	{ # Sword 1
-		"scene": null,
-		"texture": load("res://assets/bots/front.png"),
-		"name": "Sword1",
-		"stats": 0
-	},
-	{ # Sword 2
-		"scene": null,
-		"texture": load("res://assets/sword.png"),
-		"name": "Sword2",
-		"stats": 0
-	},
-	{ # Sword 3
-		"scene": null,
-		"texture": load("res://assets/sword.png"),
-		"name": "Sword3",
-		"stats": 0
-	}
-]
+func play_stream(player, audio_index, wait=false):
+	if not player is AudioStreamPlayer:
+		print("Not an audio player")
+	if wait and player.playing:
+		yield(player, "finished")
+	player.set_stream(wavs[audio_index])
+	player.play()
+#----------------
+# End Audio
 
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
 	Input.set_custom_mouse_cursor(load("res://assets/pixel_cursor.png"), Input.CURSOR_ARROW, Vector2(15, 15))
+	
+	# Initialize audio players
+	add_child(AudioStreamPlayer.new())
+	ui1 = get_child(0)
+	ui1.set_stream(wavs[SCENE_CHANGE])
+	ui1.set_bus("UI")
+	add_child(AudioStreamPlayer.new())
+	ui2 = get_child(1)
+	ui2.set_stream(wavs[SCENE_CHANGE])
+	ui2.set_bus("UI")
 	#_test_DB()
 
 func _input(event):

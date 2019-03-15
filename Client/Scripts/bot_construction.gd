@@ -2,7 +2,6 @@ extends Node
 
 # Get head singleton
 onready var head = get_tree().get_root().get_node("/root/head")
-onready var head_audio = get_tree().get_root().get_node("/root/audio_stream")
 onready var weapon_creator = get_tree().get_root().get_node("/root/weapon_creator")
 
 onready var constructing_player = (head.construction == head.PLAYER)
@@ -177,7 +176,7 @@ func _on_finish_button_pressed():
 			print("  light_color:      %d" % bots[i]["light_color"])
 			print("  name:             %d" % bots[i]["name"])
 	
-	head_audio.play_stream(head_audio.ui2, head_audio.SCENE_CHANGE, true)
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, true)
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 func _on_switch_description_pressed():
@@ -200,7 +199,7 @@ func _on_switch_description_mouse_exited():
 	$switch_description.modulate = Color("#aaaaaa")
 
 func button_hover_enter():
-	head_audio.play_stream(head_audio.ui1, head_audio.BUTTON_HOVER)
+	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
 
 # Update local bots
 #------------------------------------------------
@@ -218,12 +217,12 @@ func weapon_changed():
 		var stream
 		match randi() % 3:
 			0:
-				stream = head_audio.BOT_CHANGE_1
+				stream = head.sounds.BOT_CHANGE_1
 			1:
-				stream = head_audio.BOT_CHANGE_2
+				stream = head.sounds.BOT_CHANGE_2
 			2:
-				stream = head_audio.BOT_CHANGE_3
-		head_audio.play_stream(head_audio.ui1, stream)
+				stream = head.sounds.BOT_CHANGE_3
+		head.play_stream(head.ui1, stream)
 
 # Display/organize data
 #------------------------------------------------
