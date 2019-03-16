@@ -24,9 +24,6 @@ func _ready():
 	primary_timer.one_shot = true
 	secondary_timer.one_shot = true
 	ability_timer.one_shot = true
-	primary_timer.stop()
-	secondary_timer.stop()
-	ability_timer.stop()
 	add_child(primary_timer)
 	add_child(secondary_timer)
 	add_child(ability_timer)
@@ -46,6 +43,8 @@ func init(w_pri_ID, w_pri_node,
 	w_pri_node.connect("use", self, "primary_use")
 	w_sec_node.connect("use", self, "secondary_use")
 	w_abi_node.connect("use", self, "ability_use")
+	if (w_sec_ID == weapon_creator.W_SEC_NUKE):
+		secondary_timer.start()
 	initalized = true
 
 func _process(delta):

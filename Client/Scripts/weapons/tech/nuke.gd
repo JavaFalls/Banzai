@@ -30,7 +30,7 @@ func _ready():
 	cooldown_timer.wait_time = cooldown
 	cooldown_timer.one_shot = true
 	add_child(cooldown_timer)
-	cooldown_timer.stop()
+	cooldown_timer.start() # NUKE is the only weapon that starts on cooldown
 
 # Function that is called when the ability is used
 func use():

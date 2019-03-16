@@ -14,7 +14,7 @@
 [ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (11).png" type="Texture" id=12]
 [ext_resource path="res://Scripts/weapons/proj_path.gd" type="Script" id=13]
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="SpriteFrames" id=5]
 
 animations = [ {
 "frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ) ],
@@ -49,7 +49,7 @@ _sections_unfolded = [ "Collision", "Pause", "Pickable", "Transform", "Visibilit
 [node name="AnimatedSprite" type="AnimatedSprite" parent="." index="0"]
 
 z_as_relative = false
-frames = SubResource( 1 )
+frames = SubResource( 5 )
 animation = "default"
 _sections_unfolded = [ "Material", "Offset", "Transform", "Visibility", "Z Index" ]
 
@@ -79,8 +79,6 @@ _sections_unfolded = [ "Collision", "Pickable" ]
 scale = Vector2( 1.25, 1.25 )
 shape = SubResource( 3 )
 _sections_unfolded = [ "Transform" ]
-
-[connection signal="area_entered" from="." to="." method="_on_projectile_area_entered"]
 
 [connection signal="body_entered" from="." to="." method="_on_projectile_body_entered"]
 
