@@ -1,7 +1,10 @@
 extends Label
 
+var head
+
 export(float, 0.0, 5.0) var delay = 0.1
 export(int, 1, 100) var step = 1
+export(bool) var play_sound
 
 var text_length = 0
 var text_position = 0
@@ -14,6 +17,8 @@ signal scroll_finished
 # Godot methods
 #----------------------------------------
 func _ready():
+	if play_sound:
+		head = get_tree().get_root().get_node("/root/head")
 	set_process(false)
 
 func _process(delta):
@@ -30,6 +35,9 @@ func _process(delta):
 			text_position += step
 			tick = 0.0
 			tick_start = 0.0
+			
+			if play_sound:
+				head.play_stream(head.ui1, head.sounds.TEXT_SCROLL)
 	else:
 		emit_signal("scroll_finished")
 		set_process(false)

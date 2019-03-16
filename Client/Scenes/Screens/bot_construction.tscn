@@ -140,11 +140,20 @@ texture = ExtResource( 2 )
 [node name="corner" type="Sprite" parent="." index="1"]
 
 modulate = Color( 1, 1, 1, 0.501961 )
-position = Vector2( 137, 187 )
+position = Vector2( 137, 174 )
 texture = ExtResource( 3 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="backlight" type="Sprite" parent="." index="2"]
+[node name="corner2" type="Sprite" parent="." index="2"]
+
+modulate = Color( 1, 1, 1, 0.501961 )
+position = Vector2( 137, 219 )
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( -29, 0, 273, 13 )
+_sections_unfolded = [ "Offset", "Region", "Transform", "Visibility" ]
+
+[node name="backlight" type="Sprite" parent="." index="3"]
 
 modulate = Color( 1, 1, 1, 0.501961 )
 position = Vector2( 336.634, 54.2086 )
@@ -176,16 +185,16 @@ shadow_filter = 0
 shadow_filter_smooth = 0.0
 shadow_item_cull_mask = 1
 
-[node name="platform" type="Sprite" parent="." index="3"]
+[node name="platform" type="Sprite" parent="." index="4"]
 
 position = Vector2( 337, 108 )
 texture = ExtResource( 5 )
 
-[node name="animation_bot" parent="." index="4" instance=ExtResource( 6 )]
+[node name="animation_bot" parent="." index="5" instance=ExtResource( 6 )]
 
 position = Vector2( 337, 76 )
 
-[node name="bot_name" type="Label" parent="." index="5"]
+[node name="bot_name" type="Label" parent="." index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -213,7 +222,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "custom_constants" ]
 
-[node name="bot_left" type="Button" parent="." index="6"]
+[node name="bot_left" type="Button" parent="." index="7"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -243,7 +252,7 @@ flat = true
 align = 1
 _sections_unfolded = [ "Textures", "custom_styles" ]
 
-[node name="bot_right" type="Button" parent="." index="7"]
+[node name="bot_right" type="Button" parent="." index="8"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -273,7 +282,7 @@ flat = true
 align = 1
 _sections_unfolded = [ "Textures", "custom_styles" ]
 
-[node name="Label" type="Label" parent="." index="8"]
+[node name="Label" type="Label" parent="." index="9"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -298,7 +307,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="Label2" type="Label" parent="." index="9"]
+[node name="Label2" type="Label" parent="." index="10"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -323,7 +332,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="Label3" type="Label" parent="." index="10"]
+[node name="Label3" type="Label" parent="." index="11"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -348,7 +357,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="Label4" type="Label" parent="." index="11"]
+[node name="Label4" type="Label" parent="." index="12"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -373,28 +382,28 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="item_scroll" parent="." index="12" instance=ExtResource( 13 )]
+[node name="item_scroll" parent="." index="13" instance=ExtResource( 13 )]
 
 position = Vector2( 163, 34 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 1
 
-[node name="item_scroll2" parent="." index="13" instance=ExtResource( 13 )]
+[node name="item_scroll2" parent="." index="14" instance=ExtResource( 13 )]
 
 position = Vector2( 163, 75 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 2
 
-[node name="item_scroll3" parent="." index="14" instance=ExtResource( 13 )]
+[node name="item_scroll3" parent="." index="15" instance=ExtResource( 13 )]
 
 position = Vector2( 163, 116 )
 _sections_unfolded = [ "Transform" ]
 non_selected_alpha = 0.6
 arrow_color = 0
 
-[node name="color_scroll" parent="." index="15" instance=ExtResource( 14 )]
+[node name="color_scroll" parent="." index="16" instance=ExtResource( 14 )]
 
 editor/display_folded = true
 margin_left = 14.0
@@ -407,7 +416,7 @@ colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0.82745
 
 material = SubResource( 1 )
 
-[node name="color_scroll2" parent="." index="16" instance=ExtResource( 14 )]
+[node name="color_scroll2" parent="." index="17" instance=ExtResource( 14 )]
 
 editor/display_folded = true
 margin_left = 14.0
@@ -421,7 +430,7 @@ indicator_offset = 0.3
 
 material = SubResource( 2 )
 
-[node name="color_scroll3" parent="." index="17" instance=ExtResource( 14 )]
+[node name="color_scroll3" parent="." index="18" instance=ExtResource( 14 )]
 
 editor/display_folded = true
 margin_left = 14.0
@@ -436,7 +445,7 @@ indicator_offset = 0.6
 
 material = SubResource( 3 )
 
-[node name="new_button" type="Button" parent="." index="18"]
+[node name="new_button" type="Button" parent="." index="19"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -482,7 +491,7 @@ size_flags_vertical = 1
 texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="test_button" type="Button" parent="." index="19"]
+[node name="test_button" type="Button" parent="." index="20"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -528,7 +537,7 @@ size_flags_vertical = 1
 texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="finish_button" type="Button" parent="." index="20"]
+[node name="finish_button" type="Button" parent="." index="21"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -574,16 +583,16 @@ size_flags_vertical = 1
 texture = ExtResource( 16 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="item_name" type="Label" parent="." index="21"]
+[node name="item_name" type="Label" parent="." index="22"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 9.0
-margin_top = 149.0
+margin_top = 136.0
 margin_right = 211.0
-margin_bottom = 165.0
+margin_bottom = 152.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -597,7 +606,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme" ]
 
-[node name="item_description" type="Label" parent="." index="22"]
+[node name="item_description" type="Label" parent="." index="23"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -605,7 +614,7 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 16.0
-margin_top = 166.0
+margin_top = 153.0
 margin_right = 261.0
 margin_bottom = 225.0
 rect_pivot_offset = Vector2( 0, 0 )
@@ -620,11 +629,11 @@ autowrap = true
 clip_text = true
 percent_visible = 1.0
 lines_skipped = 0
-max_lines_visible = 4
+max_lines_visible = 5
 script = ExtResource( 18 )
-_sections_unfolded = [ "custom_fonts" ]
 delay = 0.07
 step = 1
+play_sound = true
 
 [node name="stats" type="Label" parent="item_description" index="0"]
 
@@ -654,16 +663,16 @@ lines_skipped = 0
 max_lines_visible = 4
 _sections_unfolded = [ "custom_fonts" ]
 
-[node name="ColorRect" type="ColorRect" parent="." index="23"]
+[node name="ColorRect" type="ColorRect" parent="." index="24"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 207.0
-margin_top = 149.0
+margin_top = 136.0
 margin_right = 244.0
-margin_bottom = 166.0
+margin_bottom = 153.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -673,7 +682,7 @@ size_flags_vertical = 1
 color = Color( 0.4, 0.4, 0.4, 1 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="switch_description" type="Button" parent="." index="24"]
+[node name="switch_description" type="Button" parent="." index="25"]
 
 modulate = Color( 0.666667, 0.666667, 0.666667, 1 )
 anchor_left = 0.0
@@ -681,9 +690,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 207.0
-margin_top = 148.0
+margin_top = 135.0
 margin_right = 244.0
-margin_bottom = 168.0
+margin_bottom = 155.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -700,7 +709,7 @@ text = "desc"
 flat = true
 align = 1
 
-[node name="confirm_finish" type="ColorRect" parent="." index="25"]
+[node name="confirm_finish" type="ColorRect" parent="." index="26"]
 
 editor/display_folded = true
 visible = false

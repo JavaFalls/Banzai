@@ -16,7 +16,10 @@ func _ready():
 	var raw_JSON
 	var name_dictionary
 	var name_index
-	Menu_audio.menu_audio.play()
+
+	if(!Menu_audio.menu_audio.playing):
+		Menu_audio.menu_audio.play()
+
 	for group in get_tree().get_nodes_in_group("buttons"):
 		name_index = 0
 		raw_JSON = head.DB.get_name_parts(name_section)
@@ -28,6 +31,7 @@ func _ready():
 			if (name_index < name_dictionary.size()):
 				button.text = name_dictionary[name_index]["name"]
 			button.get_node("PathFollow2D/Button").connect("pressed", self, "select_name", [button.text, name_pos])
+			button.get_node("PathFollow2D/Button").connect("mouse_entered", self, "button_hover")
 			button.delay = delay
 			delay += 0.15
 			button.slide()
@@ -35,6 +39,9 @@ func _ready():
 		delay = 1.0
 		name_pos += 1
 		name_section += 1
+	
+	yield(get_tree().create_timer(1.0), "timeout")
+	head.play_stream(head.ui2, head.sounds.GAME_START)
 
 func get_username():
 	return sub_names[0] + " " + sub_names[1] + " " + sub_names[2]
@@ -49,5 +56,9 @@ func select_name(text, position):
 		confirm.get_child(0).scroll("r\ne\na\nd\ny")
 		one_pass = true
 
+func button_hover():
+	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
+
 func start():
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE)
 	emit_signal("name_entered")

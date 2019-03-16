@@ -18,7 +18,6 @@ config/icon="res://icon.png"
 
 head="*res://Scripts/Singletons/head.gd"
 Menu_audio="*res://sounds/Sound_scripts/Menu_audio.gd"
-audio_stream="*res://Scripts/Singletons/audio_stream.gd"
 weapon_creator="*res://Scripts/Singletons/weapon_creator.gd"
 
 [display]
