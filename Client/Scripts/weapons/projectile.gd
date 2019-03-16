@@ -130,7 +130,7 @@ func _on_projectile_body_shape_entered(body_id, body, body_shape_ID, area_shape_
 			if delta_y == 0.0:
 				# Course of movement is vertical, therefore we must have hit a horizontal side
 				hit_horizontal_side = true
-			if movement.y > 0.0:
+			elif movement.y > 0.0:
 				# Did we smash the top side of the collision rectangle shape?
 				# (((other_y - y1) * (x2 - x1)) / (y2 - y1)) + x2
 				var x_possible_contact = (((top_left_corner.y - point1.y) * (delta_x)) / (delta_y)) + point2.x
