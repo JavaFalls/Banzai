@@ -8,18 +8,19 @@ signal use # All weapons must have this signal so that cooldowns can be displaye
 
 # The Constants
 #------------------------------------------------------------------------
+const FIRING_DISTANCE = 200 # How far, in pixels, the nuke travels from the bot
+const DISABLE_TIME = 1.0 # How long to disable and immoblize the bot after launching a nuke
 
 # The variables
 #------------------------------------------------------------------------
 # Stat variables:
+var damage         = 0
 var cooldown       = 0.0        # Time for using cooldown
 
 # Other variables:
 var cooldown_timer = Timer.new() # Timer for firing cooldown
-var min_coordinate = Vector2(21,44) # The top left corner of the area that is valid for teleportation
-var max_coordinate = Vector2(385,225) # The bottom right corner of the area that is valid for teleportation
 
-var teleport_effect = preload("res://Scenes/weapons/tech/teleport_effect.tscn")
+var nuke_missle = preload("res://Scenes/weapons/tech/nuke_missle.tscn")
 
 onready var bot = get_parent() # The bot that is holding the ability
 
@@ -36,14 +37,12 @@ func use():
 	# Only use if cooldown is finished
 	if cooldown_timer.is_stopped():
 		# Create a teleport_effect at the bots current location
-		var portal_entrance = teleport_effect.instance()
-		portal_entrance.position = bot.global_position
-		bot.get_parent().add_child(portal_entrance)
-		# Teleport the bot
-		bot.position = Vector2(rand_range(min_coordinate.x, max_coordinate.x), rand_range(min_coordinate.y, max_coordinate.y))
-		# Create a teleport_effect at the bots new location
-		var portal_exit = teleport_effect.instance()
-		portal_exit.position = bot.global_position
-		bot.get_parent().add_child(portal_exit)
+		var missle = nuke_missle.instance()
+		missle.damage = damage
+		missle.position = global_position
+		missle.target = (Vector2(cos(bot.aim_angle),sin(bot.aim_angle)) * FIRING_DISTANCE) + global_position
+		bot.get_parent().add_child(missle)
+		bot.disabled += DISABLE_TIME
+		bot.immobilized += DISABLE_TIME
 		cooldown_timer.start()
 		emit_signal("use") # Notify anybody who cares that we did our thing

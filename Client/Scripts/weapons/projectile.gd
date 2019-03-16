@@ -71,8 +71,8 @@ func _on_projectile_body_entered(body):
 			weapon_creator.W_ABI_FREEZE:
 				if body.get_name() == "fighter1" or body.get_name() == "fighter2":
 					# 'freeze' the target
-					body.immobilized = FREEZE_DURATION
-					body.disabled = FREEZE_DURATION
+					body.immobilized += FREEZE_DURATION
+					body.disabled += FREEZE_DURATION
 					# Add a 'frozen' effect to the target
 					var frozen = freeze.instance()
 					frozen.duration = FREEZE_DURATION
