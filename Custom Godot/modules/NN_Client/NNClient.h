@@ -1,3 +1,23 @@
+/*
+   This file is a product of:
+        {        {  {     {  {
+         }     }  }  }     }  }
+        {     {  {  {  {  {  {
+         }  }  }  }  }  }  }  }
+        {  {  {  {  {  {  {  {                JJJJJJJJJJJJ              FFFFFFFFF  LL LL
+     |   }  }  }  }  }  }  }  }  |                JJJ                   FFFFFFFF   LL LL
+     |\_________________________/|                JJJ                   FFF        LL LL
+     |\_________________________/|==\\            JJJ                   FFFFFF     LL LL
+     |\_____ _ ______ _ ________/|==\\\           JJJ                   FFFFF      LL LL
+     |\_____ _ ______ _ ________/|   ||     JJJJ  JJJ  AAAA V   V  AAAA FFF   AAAA LL LL SSSSS
+     |\__________ ______________/|   ||      JJ   JJJ AAAAA VV VV AAAAA FFF  AAAAA LL LL SSS
+     |\__________ ______________/|==///      JJJJJJJ  AA AA  V V  AA AA FFF  AA AA LL LL    SS
+     |\___ ______________ ______/|==//        JJJJJ   AAAAA   V   AAAAA FFF  AAAAA LL LL SSSSS
+     \\________ _ _ ___________//
+      \_______________________//
+
+*/
+
 #ifndef NNCLIENT_H
 #define NNCLIENT_H
 

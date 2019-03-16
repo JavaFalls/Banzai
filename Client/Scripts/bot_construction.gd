@@ -67,6 +67,9 @@ func _ready():
 	is1.connect("info_queried", self, "grab_info", [head.PRIMARY])
 	is2.connect("info_queried", self, "grab_info", [head.SECONDARY])
 	is3.connect("info_queried", self, "grab_info", [head.ABILITY])
+	is1.connect("shift", self, "weapon_changed")
+	is2.connect("shift", self, "weapon_changed")
+	is3.connect("shift", self, "weapon_changed")
 	
 	$color_scroll.connect("color_changed", self, "set_display_bot_colors")
 	$color_scroll2.connect("color_changed", self, "set_display_bot_colors")
@@ -76,6 +79,7 @@ func _ready():
 		get_bot_info(bots[0])
 	
 	$animation_bot.face_left()
+	randomize()
 
 # Signal methods
 #------------------------------------------------
@@ -172,6 +176,7 @@ func _on_finish_button_pressed():
 			print("  light_color:      %d" % bots[i]["light_color"])
 			print("  name:             %d" % bots[i]["name"])
 	
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 func _on_switch_description_pressed():
@@ -193,6 +198,9 @@ func _on_switch_description_mouse_entered():
 func _on_switch_description_mouse_exited():
 	$switch_description.modulate = Color("#aaaaaa")
 
+func button_hover_enter():
+	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
+
 # Update local bots
 #------------------------------------------------
 func update_current_bot():
@@ -204,6 +212,20 @@ func update_current_bot():
 	bots[current]["accent_color"] = $color_scroll3.get_selected_color().to_rgba32()
 #	bots[current]["light_color"] = $color_scroll4.get_selected_color().to_rgba32()
 
+func weapon_changed():
+	var stream
+	match randi() % 15:
+		0:
+			stream = head.sounds.BOT_CHANGE_1
+		1:
+			stream = head.sounds.BOT_CHANGE_2
+		2:
+			stream = head.sounds.BOT_CHANGE_3
+		_:
+			pass
+	if typeof(stream) != TYPE_NIL:
+		head.play_stream(head.ui2, stream)
+
 # Display/organize data
 #------------------------------------------------
 func format_info(speed, attack, type, info):
@@ -212,7 +234,7 @@ func format_info(speed, attack, type, info):
 			STATS_SPACE + "%.2f" % speed + "\n" +
 			STATS_SPACE + "%d" % attack + "\n" +
 			STATS_SPACE + "%s" % type + "\n" +
-			STATS_SPACE + "%s" % info
+			"   %s" % info
 		)
 	else:
 		return ""

@@ -11,7 +11,7 @@
 [ext_resource path="res://assets/local_scoreboard/button_small_hover.png" type="Texture" id=9]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=10]
 
-[node name="screen_local_scoreboard" type="Node" index="0"]
+[node name="screen_local_scoreboard" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -460,6 +460,8 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Material", "Rect", "Theme", "Visibility", "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
+
+[connection signal="mouse_entered" from="back_button" to="." method="button_hover"]
 
 [connection signal="pressed" from="back_button" to="." method="_on_back_button_pressed"]
 

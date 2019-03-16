@@ -54,12 +54,6 @@ func _physics_process(delta):
 		self.queue_free()
 		t.queue_free()
 
-func _on_projectile_area_entered(area):
-#	if not area.get_name() == "proj_path":
-#		queue_free()
-	# Freeing is handled by _on_projectile_body_entered(body)
-	pass
-
 func _on_projectile_body_entered(body):
 	if (body.get_name() == "fighter1" or body.get_name() == "fighter2"):
 		# Did we already damage this target?

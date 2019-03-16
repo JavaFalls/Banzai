@@ -6,7 +6,7 @@ extends KinematicBody2D
 const UP             = Vector2(0,0) # Indicates top-down view
 
 var movement_speed   = 100           # Movement speed of the entity
-var max_HP           = 1000000000    # The maximum amount of HP the bot can have
+var max_HP           = 1000    # The maximum amount of HP the bot can have
 var hit_points                       # The hit point counter for the fighter
 var direction        = Vector2()     # Direction the entity is moving
 var primary_weapon                   # Weapon that goes in the first weapon slot
@@ -27,13 +27,14 @@ var psuedo_aim_left  = 0
 var psuedo_aim_right = 0
 
 var shielded = false # When true, the bot takes no damage. Used by the 'shield' ability
-var immobilized = 0.0 # How long the bot will be unable to move for. Used by the 'snare' secondary
+var immobilized = 0.0 # How long the bot will be unable to move for. Used by the 'snare' and 'nuke' secondaries and the 'freeze' ability
+var disabled = 0.0 # How long the bot will be unable to attack. Used by the 'nuke' secondary and 'freeze' ability
 
 
 signal game_end # The signal indicate the the arena match is over
 
 #onready var aby_shield    = preload("res://Scenes/aby_shield.tscn") # The shield scene to be instanced
-onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn")  # The heavy scene to be instanced
+#onready var heavy_attack  = preload("res://Scenes/atk_heavy.tscn")  # The heavy scene to be instanced
 #onready var quick_attack  = preload("res://Scenes/atk_quick.tscn")  # The quick scene to be instanced
 #onready var ranged_attack = preload("res://Scenes/atk_ranged.tscn") # The ranged scene to be instanced
 #onready var aby_evade     = preload("res://Scenes/aby_evade.tscn")  # The evade scene to be instanced
@@ -94,7 +95,7 @@ func get_state():
 	state.append(Input.is_action_pressed("ability"))
 	return state
 
-# Moves the bot in the current specified direction, unless it is immobilized
+# Moves the bot in the current specified direction, unless it is immobilized or frozen
 func move_bot():
 	if immobilized <= 0.0:
 		move_and_slide(direction.normalized()*movement_speed, UP)
@@ -104,3 +105,5 @@ func _process(delta):
 		emit_signal("game_end")
 	if immobilized > 0.0:
 		immobilized -= delta
+	if disabled > 0.0:
+		disabled -= delta

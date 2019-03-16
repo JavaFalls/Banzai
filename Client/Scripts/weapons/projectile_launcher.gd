@@ -48,7 +48,7 @@ func use():
 					spawn_projectile(Vector2(cos(angle),sin(angle)))
 			weapon_creator.W_PRI_ZORROS_GLARE:
 				pass
-			_: # Default case (W_PRI_ACID_BOW, W_PRI_EXPLODING_SHURIKEN, W_PRI_RUBBER_BOW, W_PRI_PRECISION_BOW)
+			_: # Default case (W_PRI_ACID_BOW, W_PRI_EXPLODING_SHURIKEN, W_PRI_RUBBER_BOW, W_PRI_PRECISION_BOW, W_ABI_FREEZE)
 				#spawn_projectile((bot.psuedo_mouse - get_node("sprite_container/Sprite").global_position).normalized())
 				spawn_projectile(Vector2(cos(bot.aim_angle),sin(bot.aim_angle)))
 		cooldown_timer.start()

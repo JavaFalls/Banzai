@@ -2,9 +2,6 @@ extends Node
 
 # Get head singleton
 onready var head = get_tree().get_root().get_node("/root/head")
-### TEST ###
-onready var head_audio = get_tree().get_root().get_node("/root/audio_stream")
-############
 
 onready var _background = get_node("Control/MarginContainer/background")
 onready var _timer = get_node("timeout")
@@ -14,6 +11,8 @@ onready var _bot = $animation_bot
 var ty34918jj = false
 
 func _ready():
+	if(!Menu_audio.menu_audio.playing):
+		Menu_audio.menu_audio.play()
 	get_node("logout_warning").connect("popup_hide", self, "unfade")
 	get_node("logout_warning/button_face/Button").connect("mouse_entered", self, "hover_logout_confirm", [true])
 	get_node("logout_warning/button_face/Button").connect("mouse_exited", self, "hover_logout_confirm", [false])
@@ -59,9 +58,7 @@ Various nodes' signal methods
 """
 
 func scene_change(button):
-### TEST AUDIO
-	head_audio.play_stream(head_audio.ui1, head_audio.BUTTON_ACCEPT)
-###
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
 	
 	match (button):
 		"ranking":
@@ -71,15 +68,15 @@ func scene_change(button):
 		"credits":
 			get_tree().change_scene("res://Scenes/Screens/credits.tscn")
 		"train":
+			Menu_audio.menu_audio.stop()
 			get_tree().change_scene("res://Scenes/Load_training.tscn")
 		"fight":
+			Menu_audio.menu_audio.stop()
 			head.load_scene("res://Scenes/battle_arena.tscn")
 	pass
 
-### TEST AUDIO
 func button_hover_enter():
-	head_audio.play_stream(head_audio.ui1, head_audio.BUTTON_HOVER)
-###
+	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
 
 func screen_idle_timeout():
 	fade()
@@ -116,6 +113,7 @@ func hover_logout_confirm(mouse_entered):
 func _on_logout_warning_confirmed():
 #	head.save_bots(head.bots)
 #	head.init_bots()
+	Menu_audio.menu_audio.stop()
 	get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
 

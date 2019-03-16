@@ -35,7 +35,7 @@ func _ready():
 	var opponent_data = JSON.parse(head.DB.get_bot(opponent_bot_ID)).result["data"][0]
 	
 	# Initialize the bots
-	fighter1 = dummy_scene.instance() #player_scene.instance()
+	fighter1 = player_scene.instance() #dummy_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
@@ -53,7 +53,7 @@ func _ready():
 	#---------------------------------------------------------
 	fighter1.is_player = 1
 
-	fighter2 = player_scene.instance() # fighter2 = dummy_scene.instance()
+	fighter2 = dummy_scene.instance() # fighter2 = player_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
@@ -100,14 +100,23 @@ func _process(delta):
 func post_game():
 	var popup_message
 	head.battle_winner_calc(fighter1.get_hit_points(), fighter2.get_hit_points())
-	if head.battle_won:
-		fighter2.queue_free()
-		fighter1.set_physics_process(false)
-		popup_message = "Your robot is victorious, ranking + " + String(head.score_change)
-	else:
+	var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
+	head.DB.update_bot(head.bot_ID, [head.DB.NULL_INT, head.DB.NULL_INT, bot_data["ranking"] + head.score_change, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_COLOR, head.DB.NULL_COLOR, head.DB.NULL_COLOR, head.DB.NULL_COLOR], "")
+	# Remove destroyed bots from the arena:
+	if fighter1.hit_points <= 0:
 		fighter1.queue_free()
+	else:
+		fighter1.set_physics_process(false)
+	if fighter2.hit_points <= 0:
+		fighter2.queue_free()
+	else:
 		fighter2.set_physics_process(false)
-		popup_message = "Your robot has been defeated, ranking - " + String(head.score_change)
+	# Prepare message:
+	if head.battle_won:
+		popup_message = "Your robot is victorious, ranking +" + String(head.score_change)
+	else:
+		popup_message = "Your robot has been defeated, ranking " + String(head.score_change)
+	# Display battle over popup:
 	popup = arena_end_popup.instance()
 	self.add_child(popup)
 	popup.init("Battle Has Ended", "Again?", "Main Menu", self, "fight_again", self, "main_menu", popup_message)

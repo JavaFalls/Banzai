@@ -16,6 +16,7 @@ var current = 0 setget set_current
 
 var shifting = false
 
+signal shift
 signal shift_completed
 signal info_queried
 signal info_reserved
@@ -58,6 +59,7 @@ func _on_go_to_prev_pressed():
 		else:
 			set_current(current-1)
 		sprites.front().modulate.a = 1.0
+		emit_signal("shift")
 		move_left()
 		shifting = true
 		yield(self, "shift_completed")
@@ -70,19 +72,34 @@ func _on_go_to_next_pressed():
 		else:
 			set_current(current+1)
 		sprites.back().modulate.a = 1.0
+		emit_signal("shift")
 		move_right()
 		shifting = true
 		yield(self, "shift_completed")
 		shifting = false
 
 func _on_info_button_pressed():
-	get_node("background/info_rect").visible = true
+	var info_rect = $background/info_rect
+	info_rect.modulate.a = 1.0
+	info_rect.visible = true
 	get_node("info_button").set_block_signals(true)
 	emit_signal("info_queried")
 
 func deny_info():
 	get_node("background/info_rect").visible = false
 	get_node("info_button").set_block_signals(false)
+
+func _on_info_button_mouse_entered():
+	if not $info_button.is_blocking_signals():
+		var info_rect = $background/info_rect
+		info_rect.modulate.a = 0.47
+		info_rect.visible = true
+
+func _on_info_button_mouse_exited():
+	if not $info_button.is_blocking_signals():
+		var info_rect = $background/info_rect
+		info_rect.modulate.a = 1.0
+		info_rect.visible = false
 
 # Setters
 #-------------

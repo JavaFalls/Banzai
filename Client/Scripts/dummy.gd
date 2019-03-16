@@ -50,15 +50,16 @@ func _physics_process(delta):
 	relative_direction = get_position() - opponent_position
 	#direction = Vector2(0,0)
 	
-	if attack_primary:
-		primary_weapon.use()
-		psuedo_primary = 1
-	if attack_secondary:
-		secondary_weapon.use()
-		psuedo_secondary = 1
-	if use_ability:
-		ability.use()
-		psuedo_ability = 1
+	if disabled <= 0.0:
+		if attack_primary:
+			primary_weapon.use()
+			psuedo_primary = 1
+		if attack_secondary:
+			secondary_weapon.use()
+			psuedo_secondary = 1
+		if use_ability:
+			ability.use()
+			psuedo_ability = 1
 		
 	if move_random:
 		if randi() % 20 == 0:

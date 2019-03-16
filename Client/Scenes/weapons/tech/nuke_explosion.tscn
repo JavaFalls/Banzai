@@ -1,0 +1,91 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Scripts/weapons/tech/nuke_explosion.gd" type="Script" id=1]
+[ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (1).png" type="Texture" id=2]
+[ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (2).png" type="Texture" id=3]
+[ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (3).png" type="Texture" id=4]
+[ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (4).png" type="Texture" id=5]
+[ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (5).png" type="Texture" id=6]
+[ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (6).png" type="Texture" id=7]
+[ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (7).png" type="Texture" id=8]
+[ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (8).png" type="Texture" id=9]
+[ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (9).png" type="Texture" id=10]
+[ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (10).png" type="Texture" id=11]
+[ext_resource path="res://Assets/weapons/nuke_effect/bonusBOMBeffect (11).png" type="Texture" id=12]
+[ext_resource path="res://Scripts/weapons/proj_path.gd" type="Script" id=13]
+
+[sub_resource type="SpriteFrames" id=5]
+
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ) ],
+"loop": true,
+"name": "default",
+"speed": 20.0
+} ]
+
+[sub_resource type="ConvexPolygonShape2D" id=4]
+
+custom_solver_bias = 0.0
+points = PoolVector2Array( 0, -150, 100, -175, 150, 0, 150, 100, 100, 100, 0, 175, -150, 175, -125, 0, -100, -100 )
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 100, 100 )
+
+[node name="nuke_explosion" type="Area2D" index="0"]
+
+pause_mode = 2
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 0.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision", "Pause", "Pickable", "Transform", "Visibility" ]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="." index="0"]
+
+z_as_relative = false
+frames = SubResource( 5 )
+animation = "default"
+_sections_unfolded = [ "Material", "Offset", "Transform", "Visibility", "Z Index" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+
+scale = Vector2( 0.5, 0.5 )
+shape = SubResource( 4 )
+_sections_unfolded = [ "Material", "Transform" ]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="proj_path" type="Area2D" parent="." index="2"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 13 )
+_sections_unfolded = [ "Collision", "Pickable" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="proj_path" index="0"]
+
+scale = Vector2( 1.25, 1.25 )
+shape = SubResource( 3 )
+_sections_unfolded = [ "Transform" ]
+
+[connection signal="body_entered" from="." to="." method="_on_projectile_body_entered"]
+
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+
+[connection signal="body_entered" from="proj_path" to="proj_path" method="_on_proj_path_body_entered"]
+
+[connection signal="body_exited" from="proj_path" to="proj_path" method="_on_proj_path_body_exited"]
+
+

@@ -4,7 +4,7 @@
 extends Area2D
 
 # Constants
-const SNARE_DURATION = 0.75
+const SNARE_DURATION = 1.00
 
 # Stat Variables:
 var        id       = -1
@@ -45,7 +45,7 @@ func activate(target):
 			bot.get_parent().add_child(boom)
 		weapon_creator.W_SEC_SNARE:
 			if (target != null):
-				target.immobilized = SNARE_DURATION
+				target.immobilized += SNARE_DURATION
 	self.queue_free()
 
 func set_sprite(value):

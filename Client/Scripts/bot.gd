@@ -41,16 +41,16 @@ func set_bot_info():
 	game_state.predicted_bot_aim_left = 0
 	game_state.predicted_bot_aim_right = 0
 
-
-	if game_state.predicted_bot_psuedo_primary:
-		primary_weapon.use()
-		psuedo_primary = 1
-	if game_state.predicted_bot_psuedo_secondary:
-		secondary_weapon.use()
-		psuedo_secondary = 1
-	if game_state.predicted_bot_psuedo_ability:
-		ability.use()
-		psuedo_ability = 1
+	if disabled <= 0.0:
+		if game_state.predicted_bot_psuedo_primary:
+			primary_weapon.use()
+			psuedo_primary = 1
+		if game_state.predicted_bot_psuedo_secondary:
+			secondary_weapon.use()
+			psuedo_secondary = 1
+		if game_state.predicted_bot_psuedo_ability:
+			ability.use()
+			psuedo_ability = 1
 
 
 	# Control bot animation
@@ -95,15 +95,16 @@ func set_opponent_info():
 	game_state.predicted_opponent_aim_left = 0
 	game_state.predicted_opponent_aim_right = 0
 
-	if game_state.predicted_opponent_psuedo_primary:
-		primary_weapon.use()
-		psuedo_primary = 1
-	if game_state.predicted_opponent_psuedo_secondary:
-		secondary_weapon.use()
-		psuedo_secondary = 1
-	if game_state.predicted_opponent_psuedo_ability:
-		ability.use()
-		psuedo_ability = 1
+	if disabled <= 0.0:
+		if game_state.predicted_opponent_psuedo_primary:
+			primary_weapon.use()
+			psuedo_primary = 1
+		if game_state.predicted_opponent_psuedo_secondary:
+			secondary_weapon.use()
+			psuedo_secondary = 1
+		if game_state.predicted_opponent_psuedo_ability:
+			ability.use()
+			psuedo_ability = 1
 
 
 	# Control bot animation

@@ -2,6 +2,9 @@
 # its owner's mouse position
 extends Area2D
 
+# Constants:
+const FREEZE_DURATION = 0.5
+
 # Stat Variables:
 var        speed    = 1
 var        damage   = 0
@@ -17,6 +20,7 @@ onready var t = Timer.new()
 # Helper scenes
 onready var explosion = preload("res://Scenes/weapons/explosion.tscn") # Basic explosion that can be instanced.
 onready var acid = preload("res://Scenes/weapons/acid.tscn") # Basic acid that can be instanced (deals damage over time).
+onready var freeze = preload("res://Scenes/weapons/freeze_effect.tscn") # Freeze affect that freezes its target for the specified duration
 
 #func set_target(new_target):
 #	self.target = new_target
@@ -64,6 +68,17 @@ func _on_projectile_body_entered(body):
 				if body.get_name() == "fighter1" or body.get_name() == "fighter2":
 					body.increment_hitpoints(damage)
 					self.queue_free()
+			weapon_creator.W_ABI_FREEZE:
+				if body.get_name() == "fighter1" or body.get_name() == "fighter2":
+					# 'freeze' the target
+					body.immobilized += FREEZE_DURATION
+					body.disabled += FREEZE_DURATION
+					# Add a 'frozen' effect to the target
+					var frozen = freeze.instance()
+					frozen.duration = FREEZE_DURATION
+					body.add_child(frozen)
+					
+					self.queue_free()
 			_: # Default case (W_PRI_ACID_BOW, W_PRI_PRECISION_BOW, W_PRI_SCATTER_BOW, W_PRI_ZORROS_GLARE)
 				if body.get_name() == "fighter1" or body.get_name() == "fighter2":
 					body.increment_hitpoints(damage)
@@ -94,27 +109,37 @@ func _on_projectile_body_shape_entered(body_id, body, body_shape_ID, area_shape_
 			var point2 = global_position + movement
 			var top_left_corner = Vector2(body_collision_shape.global_position.x - body_collision_shape.shape.extents.x, body_collision_shape.global_position.y - body_collision_shape.shape.extents.y)
 			var bottom_right_corner = Vector2(body_collision_shape.global_position.x + body_collision_shape.shape.extents.x, body_collision_shape.global_position.y + body_collision_shape.shape.extents.y)
-			if movement.x > 0:
+			# Precalculate the x and y distances between the two points.
+			# This is necessary because inaccuracies in floating point calculations can result in point1 and point2 sharing the same x or y coordinate even when movement.x or movement.y is not equal to zero
+			var delta_x = point2.x - point1.x
+			var delta_y = point2.y - point1.y
+			if delta_x == 0.0:
+				# Course of movement is vertical, therefore we must have hit a horizontal side
+				hit_vertical_side = true
+			elif movement.x > 0.0:
 				# Did we smash the left side of the collision rectangle shape?
 				# (((y2 - y1) * (other_x - x2)) / (x2 - x1)) + y1
-				var y_possible_contact = (((point2.y - point1.y) * (top_left_corner.x - point2.x)) / (point2.x - point1.x)) + point1.y
+				var y_possible_contact = (((delta_y) * (top_left_corner.x - point2.x)) / (delta_x)) + point1.y
 				if (y_possible_contact >= top_left_corner.y and y_possible_contact <= bottom_right_corner.y):
 					hit_vertical_side = true
-			else:
+			else: # movement.x < 0.0
 				# Did we smash the right side of the collision rectangle shape?
-				var y_possible_contact = (((point2.y - point1.y) * (bottom_right_corner.x - point2.x)) / (point2.x - point1.x)) + point1.y
+				var y_possible_contact = (((delta_y) * (bottom_right_corner.x - point2.x)) / (delta_x)) + point1.y
 				if (y_possible_contact >= top_left_corner.y and y_possible_contact <= bottom_right_corner.y):
 					hit_vertical_side = true
-			if movement.y > 0:
+			if delta_y == 0.0:
+				# Course of movement is vertical, therefore we must have hit a horizontal side
+				hit_horizontal_side = true
+			elif movement.y > 0.0:
 				# Did we smash the top side of the collision rectangle shape?
 				# (((other_y - y1) * (x2 - x1)) / (y2 - y1)) + x2
-				var x_possible_contact = (((top_left_corner.y - point1.y) * (point2.x - point1.x)) / (point2.y - point1.y)) + point2.x
+				var x_possible_contact = (((top_left_corner.y - point1.y) * (delta_x)) / (delta_y)) + point2.x
 				if (x_possible_contact >= top_left_corner.x and x_possible_contact <= bottom_right_corner.x):
 					hit_horizontal_side = true
-			else:
+			else: # movement.y < 0.0:
 				# Did we smash the bottom side of the collision rectangle shape?
 				# (((other_y - y1) * (x2 - x1)) / (y2 - y1)) + x2
-				var x_possible_contact = (((bottom_right_corner.y - point1.y) * (point2.x - point1.x)) / (point2.y - point1.y)) + point2.x
+				var x_possible_contact = (((bottom_right_corner.y - point1.y) * (delta_x)) / (delta_y)) + point2.x
 				if (x_possible_contact >= top_left_corner.x and x_possible_contact <= bottom_right_corner.x):
 					hit_horizontal_side = true
 
