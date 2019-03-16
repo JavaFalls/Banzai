@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/scatter_arrow.png-a570bd374c50a9ea1ab782f78508e4ba.stex"
+path="res://.import/scatter_arrow.png-5599e249cc78eee3391063b9c6c131d8.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/scatter_arrow.png"
-dest_files=[ "res://.import/scatter_arrow.png-a570bd374c50a9ea1ab782f78508e4ba.stex" ]
+source_file="res://assets/weapons/scatter_arrow.png"
+dest_files=[ "res://.import/scatter_arrow.png-5599e249cc78eee3391063b9c6c131d8.stex" ]
 
 [params]
 

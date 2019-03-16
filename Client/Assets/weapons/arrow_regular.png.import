@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/arrow_regular.png-57cc10cdbd7c5c4e2296fada7a23f94a.stex"
+path="res://.import/arrow_regular.png-f440805461f1810fd00873be58d241d6.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/arrow_regular.png"
-dest_files=[ "res://.import/arrow_regular.png-57cc10cdbd7c5c4e2296fada7a23f94a.stex" ]
+source_file="res://assets/weapons/arrow_regular.png"
+dest_files=[ "res://.import/arrow_regular.png-f440805461f1810fd00873be58d241d6.stex" ]
 
 [params]
 

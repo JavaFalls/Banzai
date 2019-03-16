@@ -47,10 +47,13 @@ func get_battle_state():  # get the battle state for the player/player_bot
 	var game_state = []
 
 	relative_vector   = bot_position - opponent_position
-	opponent_distance = sqrt(pow(relative_vector.x,2) + pow(relative_vector.y,2))
-	bot_angle         = (atan2(relative_vector.x,relative_vector.y)-PI)/(-2*PI)
+#	opponent_distance = sqrt(pow(relative_vector.x,2) + pow(relative_vector.y,2))
+	opponent_distance = bot_position.distance_to(opponent_position)	
+#	bot_angle         = (atan2(relative_vector.x,relative_vector.y)-PI)/(-2*PI)
+	bot_angle         = (relative_vector.angle()-PI)/(-2*PI)
 	relative_vector  *= -1
-	opponent_angle    = (atan2(relative_vector.x, relative_vector.y)-PI)/(-2*PI)
+#	opponent_angle    = (atan2(relative_vector.x, relative_vector.y)-PI)/(-2*PI)
+	opponent_angle    = (relative_vector.angle()-PI)/(-2*PI)
 
 	game_state.append(self.bot_position)
 	game_state.append(self.bot_aim_angle)
@@ -459,6 +462,14 @@ func set_predictions(predictions):
 		predicted_bot_vector = Vector2(-1,-1)
 		predicted_bot_psuedo_ability = 1
 		predicted_bot_aim_left = 1
+		
+# Test. overwrites things. for testing aim angle.
+#	if predicted_action  == 0:
+#		pass
+#	elif predicted_action == 1:
+#		predicted_bot_aim_left = 1
+#	elif predicted_action == 2:
+#		predicted_bot_aim_right = 1
 
 func set_opponent_predictions(predictions):
 	var predicted_action = predictions

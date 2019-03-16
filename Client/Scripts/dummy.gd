@@ -4,11 +4,11 @@
 extends "res://Scripts/entity.gd"
 
 var relative_direction = Vector2()
-var move_random        = true               # Move randomly
+var move_random        = false               # Move randomly
 var move_aggressive    = false              # Move toward opponent's locatoin
 var move_defensive     = false              # Move away from the opponent's location
 var move_square        = false
-var attack_primary     = true               # Use the primary attack as often as possible
+var attack_primary     = false               # Use the primary attack as often as possible
 var attack_secondary   = false              # Use the secondary attack as often as possible
 var use_ability        = false               # Use the ability as often as possible
 var opponent_position  = Vector2()          # The position of the opponent

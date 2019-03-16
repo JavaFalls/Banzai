@@ -218,21 +218,22 @@ margin_top = 20.0
 margin_right = 280.0
 margin_bottom = 36.0
 
-[node name="ArenaAudio" type="AudioStreamPlayer" parent="." index="5"]
+[node name="ArenaAudio" type="AudioStreamPlayer2D" parent="." index="5"]
 
+visible = false
 stream = null
 volume_db = 0.0
 pitch_scale = 1.0
 autoplay = true
-mix_target = 0
+max_distance = 2000.0
+attenuation = 1.0
 bus = "Master"
+area_mask = 4
 script = ExtResource( 6 )
 _sections_unfolded = [ "Material", "Pause", "Visibility" ]
 
 [connection signal="pressed" from="exit/exit/confirm" to="." method="_on_confirm_pressed"]
 
 [connection signal="pressed" from="exit/exit/back" to="." method="_on_back_pressed"]
-
-[connection signal="finished" from="ArenaAudio" to="ArenaAudio" method="_on_ArenaAudio_finished"]
 
 
