@@ -255,37 +255,40 @@ class DQN_agent:
         # print("bot_aim_next_angle_diff                      ",bot_aim_next_angle_diff)
 
         # reward for good aim #################################################################################
-        # if (bot_aim_angle_diff - bot_aim_next_angle_diff):
-        #         if bot_aim_angle_diff < bot_aim_next_angle_diff:
-        #                 new_reward -= 45
-        #         else:
-        #                 new_reward += 45
-        # else:
-        #         new_reward +=  (1-bot_aim_next_angle_diff)*50
-        #         if bot_aim_next_angle_diff < .05:
-        #                 new_reward += 15
+        accuracy_reward = 0
+        if (bot_aim_angle_diff - bot_aim_next_angle_diff):
+                if bot_aim_angle_diff < bot_aim_next_angle_diff:
+                        accuracy_reward -= 45
+                else:
+                        accuracy_reward += 45
+        else:
+                accuracy_reward +=  (1-bot_aim_next_angle_diff)*50
+                if bot_aim_next_angle_diff < .05:
+                        accuracy_reward += 15
 
         # Reward for being close to the opponent ##############################################################
+        distance_reward = 0
         if (gamestate[OPPONENT_DISTANCE] - next_gamestate[OPPONENT_DISTANCE]):
                 if gamestate[OPPONENT_DISTANCE] < next_gamestate[OPPONENT_DISTANCE]:
-                        new_reward -= 70
+                        distance_reward -= 70
                 else:
-                        new_reward += 70
+                        distance_reward += 70
         else:
-                new_reward +=  (1-next_gamestate[OPPONENT_DISTANCE])*100
+                distance_reward +=  (1-next_gamestate[OPPONENT_DISTANCE])*100
 
         # reward for avoiding being targeted ##################################################################
-        # if (opponent_aim_angle_diff - opponent_aim_next_angle_diff):
-        #         if opponent_aim_angle_diff > opponent_aim_next_angle_diff:
-        #                 new_reward -= 45
-        #         else:
-        #                 new_reward += 45
-        # else:
-        #         new_reward +=  (opponent_aim_next_angle_diff)*50
-        #         if opponent_aim_next_angle_diff < .1:
-        #                 new_reward -= 50
-        #         if opponent_aim_next_angle_diff > .3:
-        #                 new_reward += 30
+        avoidance_reward = 0
+        if (opponent_aim_angle_diff - opponent_aim_next_angle_diff):
+                if opponent_aim_angle_diff > opponent_aim_next_angle_diff:
+                        avoidance_reward -= 45
+                else:
+                        avoidance_reward += 45
+        else:
+                avoidance_reward +=  (opponent_aim_next_angle_diff)*50
+                if opponent_aim_next_angle_diff < .1:
+                        avoidance_reward -= 50
+                if opponent_aim_next_angle_diff > .3:
+                        avoidance_reward += 30
 
         #new_reward -= (gamestate[3] - next_gamestate[3]) *  5                   # criticism for losing health
 
@@ -293,7 +296,14 @@ class DQN_agent:
         # new_reward -= (gamestate[4]+next_gamestate[4]) * 10                    # criticism for the bot being in peril # dont use
 
         # if (((gamestate[3] - next_gamestate[3]) == 0) and ((gamestate[4] - next_gamestate[4]) == 1)): # reward for dodging
-        # new_reward += 100
+
+        print("accuracy_reward:           ", accuracy_reward)
+        print("avoidance_reward:          ", avoidance_reward)
+        print("distance_reward:           ", distance_reward)
+
+        new_reward += accuracy_reward
+        new_reward += avoidance_reward
+        new_reward += distance_reward
         print("                                                                               *reward     ",new_reward)
         return new_reward
 
