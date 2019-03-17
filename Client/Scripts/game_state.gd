@@ -470,7 +470,7 @@ func set_predictions(predictions):
 #		predicted_bot_aim_left = 1
 #	elif predicted_action == 2:
 #		predicted_bot_aim_right = 1
-
+#	predicted_bot_vector = Vector2(0,0)
 func set_opponent_predictions(predictions):
 	var predicted_action = predictions
 

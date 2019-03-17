@@ -126,18 +126,18 @@ class DQN_agent:
         self.state_size = state_size
         self.action_size = action_size
 
-        self.memory = deque(maxlen=1)
-        self.gamma         = 0.9 # discount future reward
-        self.epsilon       = 1.0 # exploration rate; initial rate; skew 100% towards exploration
-        self.epsilon_decay = 0.995 # rate at which epsilon decays; get multiplied to epsilon
-        self.epsilon_min   = 0.1 # floor that epsilon will rest at after heavy training
+        self.memory = deque(maxlen=16)
+        self.gamma         = 0.9 # discount future reward; used for Q which doesn't work for us
+        self.epsilon       = 1 # exploration rate; initial rate; skew 100% towards exploration
+        self.epsilon_decay = .9995 # rate at which epsilon decays; get multiplied to epsilon
+        self.epsilon_min   = 0.0 # floor that epsilon will rest at after heavy training
 
-        self.learning_rate = 4
+        self.learning_rate = .5
 
         self.reward        = 0
         self.state_counter = 0
         self.action        = 0
-        self.player_action = 0      # the action performed by the human and not the neural netork
+        self.player_action = 0      # the action performed by the human and not the neural network
         self.gamestate     = 0
 
         self.model = self._build_model()
@@ -179,7 +179,7 @@ class DQN_agent:
             target_f = self.model.predict(state)
             target_f[0] [action] = target
 
-            self.model.fit(state, target_f, epochs=8, verbose=0)
+            self.model.fit(state, target_f, epochs=1, verbose=0)
 
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
@@ -228,6 +228,14 @@ class DQN_agent:
         return self.action
 
     def get_reward(self, gamestate, next_gamestate):
+        # if gamestate[OPPONENT_POSITION_X] < .3:
+        #         self.epsilon = 0
+        # elif gamestate[OPPONENT_POSITION_X] > .7:
+        #         self.epsilon = 1
+        # else:
+        #         self.epsilon = .1
+        # print(gamestate[OPPONENT_POSITION_X], "gamestate[OPPONENT_POSITION_X]")
+
         bot_aim_angle_diff      = abs(gamestate[BOT_AIM_ANGLE] - gamestate[BOT_OPPONENT_ANGLE])
         bot_aim_next_angle_diff = abs(next_gamestate[BOT_AIM_ANGLE] - next_gamestate[BOT_OPPONENT_ANGLE])
         if bot_aim_angle_diff > .5:
@@ -258,37 +266,40 @@ class DQN_agent:
         accuracy_reward = 0
         if (bot_aim_angle_diff - bot_aim_next_angle_diff):
                 if bot_aim_angle_diff < bot_aim_next_angle_diff:
-                        accuracy_reward -= 45
+                        accuracy_reward = -1
                 else:
-                        accuracy_reward += 45
+                        accuracy_reward = 1
         else:
-                accuracy_reward +=  (1-bot_aim_next_angle_diff)*50
+                # accuracy_reward +=  (1-bot_aim_next_angle_diff)*50
                 if bot_aim_next_angle_diff < .05:
-                        accuracy_reward += 15
+                        accuracy_reward = 2
+                else:
+                        accuracy_reward = -1
 
         # Reward for being close to the opponent ##############################################################
         distance_reward = 0
         if (gamestate[OPPONENT_DISTANCE] - next_gamestate[OPPONENT_DISTANCE]):
                 if gamestate[OPPONENT_DISTANCE] < next_gamestate[OPPONENT_DISTANCE]:
-                        distance_reward -= 70
+                        distance_reward = -1
                 else:
-                        distance_reward += 70
+                        distance_reward = 1
         else:
-                distance_reward +=  (1-next_gamestate[OPPONENT_DISTANCE])*100
-
+                if gamestate[OPPONENT_DISTANCE] <= .15:
+                     distance_reward = 2
+        print(gamestate[OPPONENT_DISTANCE])
         # reward for avoiding being targeted ##################################################################
         avoidance_reward = 0
         if (opponent_aim_angle_diff - opponent_aim_next_angle_diff):
                 if opponent_aim_angle_diff > opponent_aim_next_angle_diff:
-                        avoidance_reward -= 45
+                        avoidance_reward = -1 # should this be included; may overpower whole thing
                 else:
-                        avoidance_reward += 45
+                        avoidance_reward = 1
         else:
-                avoidance_reward +=  (opponent_aim_next_angle_diff)*50
+                # avoidance_reward +=  (opponent_aim_next_angle_diff)*50
                 if opponent_aim_next_angle_diff < .1:
-                        avoidance_reward -= 50
+                        avoidance_reward = -1
                 if opponent_aim_next_angle_diff > .3:
-                        avoidance_reward += 30
+                        avoidance_reward = 2
 
         #new_reward -= (gamestate[3] - next_gamestate[3]) *  5                   # criticism for losing health
 
@@ -304,6 +315,12 @@ class DQN_agent:
         new_reward += accuracy_reward
         new_reward += avoidance_reward
         new_reward += distance_reward
+        if accuracy_reward < 0:
+                new_reward = -1
+        if avoidance_reward < 0:
+                new_reward = -1
+        if distance_reward < 0:
+                new_reward = -1
         print("                                                                               *reward     ",new_reward)
         return new_reward
 
