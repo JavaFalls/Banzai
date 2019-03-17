@@ -12,8 +12,7 @@ from tensorflow.keras.optimizers import Adam
 import random
 import numpy as np
 from collections import deque
-#import mss                                    # For taking screen shots
-#from PIL import Image                         # For image stuff
+import matplotlib.pyplot as plt 
 
 # Just disables the warning, doesn't enable AVX/FMA
 import os
@@ -139,6 +138,7 @@ class DQN_agent:
         self.action        = 0
         self.player_action = 0      # the action performed by the human and not the neural network
         self.gamestate     = 0
+        self.rewards       = [] 
 
         self.model = self._build_model()
 
@@ -203,8 +203,10 @@ class DQN_agent:
         # output_list = output_list[1:self.state_size+1]
         output_list = np.reshape(output_list, (1, self.state_size))
         return output_list
+
     def get_state_size(self):
         return self.state_size
+
     def train(self, new_gamestate):
         if self.state_counter >= 1:
             next_gamestate = new_gamestate # get the gamestate
@@ -226,7 +228,14 @@ class DQN_agent:
                 self.replay(batch_size)
 
         return self.action
+    def graph_rewards(self):
+        plt.title('Rewards Graph')
+        plt.ylabel('Rewards')
+        plt.xlabel('Epoch')
+        plt.plot(self.rewards)
+        plt.show()
 
+        return
     def get_reward(self, gamestate, next_gamestate):
         # if gamestate[OPPONENT_POSITION_X] < .3:
         #         self.epsilon = 0
@@ -307,13 +316,13 @@ class DQN_agent:
         # new_reward -= (gamestate[4]+next_gamestate[4]) * 10                    # criticism for the bot being in peril # dont use
 
         # if (((gamestate[3] - next_gamestate[3]) == 0) and ((gamestate[4] - next_gamestate[4]) == 1)): # reward for dodging
-
-        print("accuracy_reward:           ", accuracy_reward)
-        print("avoidance_reward:          ", avoidance_reward)
+        
+        #print("accuracy_reward:           ", accuracy_reward)
+        #print("avoidance_reward:          ", avoidance_reward)
         print("distance_reward:           ", distance_reward)
 
-        new_reward += accuracy_reward
-        new_reward += avoidance_reward
+        #new_reward += accuracy_reward
+        #new_reward += avoidance_reward
         new_reward += distance_reward
         if accuracy_reward < 0:
                 new_reward = -1
@@ -321,6 +330,7 @@ class DQN_agent:
                 new_reward = -1
         if distance_reward < 0:
                 new_reward = -1
+        self.rewards.append([new_reward/70, self.epsilon])
         print("                                                                               *reward     ",new_reward)
         return new_reward
 
@@ -415,7 +425,9 @@ while not successful:
 
 connect_request()
 connect_response()
+count = 1
 while True:
+
         print("Server Code\n\n")
         #print("get request")
         gamestate = []
@@ -440,6 +452,9 @@ while True:
                 break
         #print(request)
         #response = fighter1.train(request)
+        if(count % 1009 == 0):
+            fighter1.graph_rewards()
+        count+=1
         send_response(response) # send the action or actions or load successful message based on packet type
         print("response: ", response)
 
