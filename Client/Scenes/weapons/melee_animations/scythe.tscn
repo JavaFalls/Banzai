@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
-extents = Vector2( 10, 10 )
+extents = Vector2( 10, 30 )
 
 [sub_resource type="Animation" id=2]
 
@@ -25,7 +25,7 @@ tracks/0/keys = {
 "values": [ -96.2965, 95.7035 ]
 }
 
-[node name="sword" type="Area2D"]
+[node name="sword" type="Area2D" index="0"]
 
 rotation = -1.68069
 input_pickable = true
@@ -39,7 +39,7 @@ _sections_unfolded = [ "Collision", "Transform" ]
 
 [node name="CollisionPolygon2D" type="CollisionShape2D" parent="." index="0"]
 
-position = Vector2( 13.6939, -1.26565 )
+position = Vector2( 10.6939, -1.26565 )
 rotation = 1.5708
 scale = Vector2( 0.486232, 0.19398 )
 shape = SubResource( 1 )
