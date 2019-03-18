@@ -3,6 +3,8 @@ extends Node2D
 var spawn = Vector2(200,73)              # location of the spawn point
 var player                               # player object
 
+onready var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
+
 # The preloaded scenes
 onready var player_scene    = preload("res://Scenes/player.tscn")
 
@@ -13,10 +15,11 @@ func _ready():
 	player.set_position(spawn)
 	player.set_name("player")
 	player.set_pause_mode(Node.PAUSE_MODE_STOP)
-	player.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SCYTHE), weapon_creator.create_weapon(weapon_creator.W_ABI_SHIELD))
-	get_node("cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, player.primary_weapon, weapon_creator.W_SEC_SCYTHE, player.secondary_weapon, weapon_creator.W_ABI_SHIELD, player.ability)
+	player.set_weapons(weapon_creator.create_weapon(bot_data["primary_weapon"]), weapon_creator.create_weapon(bot_data["secondary_weapon"]), weapon_creator.create_weapon(bot_data["utility"]))
+	get_node("cooldowns").init(bot_data["primary_weapon"], player.primary_weapon, bot_data["secondary_weapon"], player.secondary_weapon, bot_data["utility"], player.ability)
 	player.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 	player.is_player = 1
+	player.set_opponent(player);
 	
 	# Set popup as the bottom node
 	move_child($exit, player.get_index())
