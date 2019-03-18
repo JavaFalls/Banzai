@@ -93,6 +93,9 @@ func get_accent_color():
 func set_accent_color(color):
 	layer_accent_color.modulate = color
 
+func is_facing_right():
+	return layer_base.flip_h
+
 # Refer to ANIMATION_SET_ constants when passing values to this function
 func set_bot_type(animation_set):
 	bot_type = animation_set

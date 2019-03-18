@@ -24,7 +24,13 @@ func _process(delta):
 			sword_swing.queue_free()
 			sheathed = true
 			get_node("sheathed_sword").visible = true
-	elif cooldown_time > 0.0:
+	elif get_parent().get_node("animation_bot").is_facing_right():
+		get_node("sheathed_sword").flip_h = false
+		get_node("sheathed_sword").rotation_degrees = 200
+	else:
+		get_node("sheathed_sword").flip_h = true
+		get_node("sheathed_sword").rotation_degrees = -200
+	if cooldown_time > 0.0:
 		cooldown_time -= delta
 
 # Called by the bots to activate the ability

@@ -20,6 +20,7 @@ var trigger_timer = Timer.new() # Timer to control how long to wait between trig
 
 var source_position      = Vector2()
 var destination_position = Vector2()
+var renable_collisions   = -1
 
 var substitution_effect = preload("res://Scenes/weapons/tech/substitution_effect.tscn")
 var substitution_destination_sprite = preload("res://Assets/weapons/substitute_destination.png")
@@ -41,37 +42,49 @@ func _ready():
 	trigger_timer.connect("timeout", self, "_trigger_timer_timeout")
 	trigger_timer.stop()
 
+func _process(delta):
+	if renable_collisions > 0:
+		renable_collisions -= 1
+	elif renable_collisions == 0:
+		# We have to wait until the frame after we move the bots to enable collisions
+		bot.remove_collision_exception_with(bot.opponent)
+		bot.opponent.remove_collision_exception_with(bot)
+		renable_collisions = -1
+
 # Function that is called when the ability is used
 func use():
 	# Only use if cooldown is finished
 	if cooldown_timer.is_stopped():
-		# Save locations to switch between
-		source_position = bot.position
-		destination_position = bot.opponent.position
-		
 		# Create a substitution_effect at source_position
 		var substitution_source = substitution_effect.instance()
-		substitution_source.position = source_position
-		substitution_source.target = destination_position
+		substitution_source.position = bot.get_position()
+		substitution_source.target = bot.opponent
 		substitution_source.set_sprite(substitution_source_sprite)
 		substitution_source.duration = duration
 		bot.get_parent().add_child(substitution_source)
 		# Create a substitution_effect at destination_position
 		var substitution_destination = substitution_effect.instance()
-		substitution_destination.position = destination_position
-		substitution_destination.target = source_position
+		substitution_destination.position = bot.opponent.get_position()
+		substitution_destination.target = bot
 		substitution_destination.set_sprite(substitution_destination_sprite)
 		substitution_destination.duration = duration
 		bot.get_parent().add_child(substitution_destination)
 		
-		# Move the bots offscreen, and start the timer. We'll place the bots back on the battlefield when the timer goes off
-		bot.position = Vector2(-2000,-2000)
-		bot.opponent.position = Vector2(2000,2000)
+		# Start the timer. We'll move the bots once the graphic effects reach their targets
 		trigger_timer.start()
 		
 		cooldown_timer.start()
 		emit_signal("use") # Notify anybody who cares that we did our thing
 
 func _trigger_timer_timeout():
-	bot.position = destination_position
-	bot.opponent.position = source_position
+	# Stop a collision from being detected when we move the bots
+	bot.add_collision_exception_with(bot.opponent)
+	bot.opponent.add_collision_exception_with(bot)
+	# Swap the bots
+	var old_position = bot.position
+	bot.position = bot.opponent.position
+	bot.opponent.position = old_position
+	#bot.position = destination_position
+	#bot.opponent.position = source_position
+	# Wait until next frame to renable collisions
+	renable_collisions = 1

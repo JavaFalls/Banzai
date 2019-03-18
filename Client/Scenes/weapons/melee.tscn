@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/weapons/melee.gd" type="Script" id=1]
 [ext_resource path="res://Assets/weapons/sword.png" type="Texture" id=2]
 
-[node name="melee" type="Node2D"]
+[node name="melee" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Transform", "Visibility" ]
@@ -13,7 +13,7 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 rotation = 3.49066
 z_index = -1
 texture = ExtResource( 2 )
-_sections_unfolded = [ "Transform", "Z Index" ]
+_sections_unfolded = [ "Offset", "Transform", "Z Index" ]
 
 [node name="sword_swing_holder" type="Node2D" parent="." index="1"]
 
