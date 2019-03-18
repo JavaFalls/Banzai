@@ -125,11 +125,11 @@ class DQN_agent:
         self.state_size = state_size
         self.action_size = action_size
 
-        self.memory = deque(maxlen=16)
+        self.memory = deque(maxlen=64)
         self.gamma         = 0.9 # discount future reward; used for Q which doesn't work for us
-        self.epsilon       = 1 # exploration rate; initial rate; skew 100% towards exploration
-        self.epsilon_decay = .995 # rate at which epsilon decays; get multiplied to epsilon
-        self.epsilon_min   = 0.01 # floor that epsilon will rest at after heavy training
+        self.epsilon       = .1 # exploration rate; initial rate; skew 100% towards exploration
+        self.epsilon_decay = 1 # rate at which epsilon decays; get multiplied to epsilon
+        self.epsilon_min   = 0.1 # floor that epsilon will rest at after heavy training
 
         self.learning_rate = .5
 
@@ -176,7 +176,7 @@ class DQN_agent:
         #     print(action)
         #     print(reward)
         #     print(next_state)
-        #     print("action/reward: ",action,":",reward,"-------")
+            print("action/reward: ",action,":",reward,"-------")
             target = (reward)# + self.gamma * np.amax(self.model.predict(next_state)[0]))
             target_f = self.model.predict(state)
             target_f[0] [action] = target
@@ -235,12 +235,11 @@ class DQN_agent:
         plt.ylabel('Rewards')
         plt.xlabel('Epoch')
         plt.plot(self.rewards)
+        plt.legend(['Average Total Rewards', 'Epsilon'], loc='bottom right')
         plt.show()
-
         return
+
     def get_reward(self, gamestate, next_gamestate):
-        negative_reward_count = 0
-        reward_count = 0
         # if gamestate[OPPONENT_POSITION_X] < .3:
         #         self.epsilon = 0
         # elif gamestate[OPPONENT_POSITION_X] > .7:
@@ -299,7 +298,8 @@ class DQN_agent:
         else:
                 if gamestate[OPPONENT_DISTANCE] <= .15:
                      approach_reward = 2
-
+                     
+        print(gamestate[OPPONENT_DISTANCE])
         # reward for avoiding being targeted ##################################################################
         avoidance_reward = 0
         if (opponent_aim_angle_diff - opponent_aim_next_angle_diff):
@@ -525,7 +525,7 @@ while True:
                 break
         #print(request)
         #response = fighter1.train(request)
-        if(count % 1009 == 0):
+        if(count % 109 == 0):
             fighter1.graph_rewards()
         count+=1
         send_response(response) # send the action or actions or load successful message based on packet type
