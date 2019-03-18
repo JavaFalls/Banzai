@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon_teleport.png-117fe0723246f9d8fbf9a6574436bd74.stex"
+path="res://.import/icon_teleport.png-c80aab1c4201d3c523b225ccc0bdd711.stex"
 
 [deps]
 
-source_file="res://assets/weapons/icon_teleport.png"
-dest_files=[ "res://.import/icon_teleport.png-117fe0723246f9d8fbf9a6574436bd74.stex" ]
+source_file="res://Assets/weapons/icon_teleport.png"
+dest_files=[ "res://.import/icon_teleport.png-c80aab1c4201d3c523b225ccc0bdd711.stex" ]
 
 [params]
 
