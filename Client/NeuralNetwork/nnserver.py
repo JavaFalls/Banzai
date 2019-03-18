@@ -176,7 +176,7 @@ class DQN_agent:
         #     print(action)
         #     print(reward)
         #     print(next_state)
-            print("action/reward: ",action,":",reward,"-------")
+        #    print("action/reward: ",action,":",reward,"-------")
             target = (reward)# + self.gamma * np.amax(self.model.predict(next_state)[0]))
             target_f = self.model.predict(state)
             target_f[0] [action] = target
@@ -264,7 +264,9 @@ class DQN_agent:
         # print("player_aim angle diff", player_aim_angle_diff,"^^^^")
         # print("opponent aim angle: ",gamestate[10])
 
-        new_reward = 0
+        new_reward   = 0
+        reward_count = 0
+        negative_reward_count = 0
         #new_reward += (gamestate[9] - next_gamestate[9]) * 20                    # reward for dealing damage
         # new_reward += (bot_aim_angle_diff - bot_aim_next_angle_diff) * -5000      # reward for good aim
         #new_reward += 1/(bot_aim_next_angle_diff + 0.0001)                        # reward for pointing at player
