@@ -1,8 +1,8 @@
 extends Node2D
 
 # The Bot
-onready var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
-#onready var bot_data = JSON.parse(head.DB.get_bot(1)).result["data"][0] # for seth
+#onready var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
+onready var bot_data = JSON.parse(head.DB.get_bot(1)).result["data"][0] # for seth
 
 
 # The variables
@@ -51,7 +51,7 @@ func _ready():
 	fighter1.set_opponent(fighter2)
 	fighter2.set_opponent(fighter1)
 	
-	t.set_wait_time(.01)
+	t.set_wait_time(.3)
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.set_pause_mode(Node.PAUSE_MODE_STOP)
