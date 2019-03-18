@@ -2,7 +2,7 @@ extends Node2D
 
 # The Bot
 onready var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
-#onready var bot_data = JSON.parse(head.DB.get_bot(1)).result["data"][0] # for seth
+#onready var bot_data = JSON.parse(head.DB.get_bot(1)).result["data"][0] # for seth and jonathan
 
 
 # The variables

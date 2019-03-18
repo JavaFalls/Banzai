@@ -276,7 +276,6 @@ class DQN_agent:
         # print("bot_aim_next_angle_diff                      ",bot_aim_next_angle_diff)
 
         # reward for good aim #################################################################################
-        reward_count += 1
         accuracy_reward = 0
         if (bot_aim_angle_diff - bot_aim_next_angle_diff):
                 if bot_aim_angle_diff < bot_aim_next_angle_diff:
@@ -291,19 +290,17 @@ class DQN_agent:
                         accuracy_reward = -1
 
         # Reward for being close to the opponent ##############################################################
-        reward_count += 1
-        distance_reward = 0
+        approach_reward = 0
         if (gamestate[OPPONENT_DISTANCE] - next_gamestate[OPPONENT_DISTANCE]):
                 if gamestate[OPPONENT_DISTANCE] < next_gamestate[OPPONENT_DISTANCE]:
-                        distance_reward = -1
+                        approach_reward = -1
                 else:
-                        distance_reward = 1
+                        approach_reward = 1
         else:
                 if gamestate[OPPONENT_DISTANCE] <= .15:
-                     distance_reward = 2
+                     approach_reward = 2
 
         # reward for avoiding being targeted ##################################################################
-        reward_count += 1
         avoidance_reward = 0
         if (opponent_aim_angle_diff - opponent_aim_next_angle_diff):
                 if opponent_aim_angle_diff > opponent_aim_next_angle_diff:
@@ -318,7 +315,6 @@ class DQN_agent:
                         avoidance_reward = 2
 
         # Reward for running away from opponent ###############################################################
-        reward_count += 1
         flee_reward   = 0
         if (gamestate[OPPONENT_DISTANCE] - next_gamestate[OPPONENT_DISTANCE]):
                 if gamestate[OPPONENT_DISTANCE] > next_gamestate[OPPONENT_DISTANCE]:
@@ -329,7 +325,20 @@ class DQN_agent:
                 if gamestate[OPPONENT_DISTANCE] >= .35:
                      flee_reward = 2
 
+        # reward for dealing damage to opponent ###############################################################
+        damage_dealt_reward = 0
+        if (gamestate[OPPONENT_HEALTH] > next_gamestate[OPPONENT_HEALTH]):
+                damage_dealt_reward = 2
 
+        # Criticism for getting damaged ######################################################################
+        damage_received_reward = 0
+        if (gamestate[BOT_HEALTH] > next_gamestate[BOT_HEALTH]):
+                damage_received_reward = -1
+
+        # Criticism for getting damaged ######################################################################
+        health_received_reward = 0
+        if (gamestate[BOT_HEALTH] < next_gamestate[BOT_HEALTH]):
+                health_received_reward = 2
 
         #new_reward -= (gamestate[3] - next_gamestate[3]) *  5                   # criticism for losing health
 
@@ -340,26 +349,58 @@ class DQN_agent:
         
         print("accuracy_reward:           ", accuracy_reward)
         print("avoidance_reward:          ", avoidance_reward)
-        print("distance_reward:           ", distance_reward)
+        print("approach_reward:           ", approach_reward)
         print("flee_reward                ", flee_reward)
+        print("damage_dealt_reward        ", damage_dealt_reward)
+        print("damage_received_reward     ", damage_received_reward)
+        print("health_received_reward     ", health_received_reward)
 
-        # new_reward += accuracy_reward
-        # new_reward += avoidance_reward
-        # new_reward += distance_reward
-        new_reward += flee_reward
-        # if accuracy_reward < 0:
-        #         negative_reward_count += 1
-        # if avoidance_reward < 0:
-        #         negative_reward_count += 1
-        # if distance_reward < 0:
-        #         negative_reward_count += 1
-        if flee_reward < 0:
+        # Accuracy
+        new_reward += accuracy_reward
+        reward_count += 1
+        if accuracy_reward < 0:
                 negative_reward_count += 1
 
-        if negative_reward_count >= reward_count-1:
-                new_reward = -1
-        if distance_reward < 0:
-                new_reward = -1
+        # Avoidance
+        new_reward += avoidance_reward
+        reward_count += 1
+        if avoidance_reward < 0:
+                negative_reward_count += 1
+
+        # approach
+        new_reward += approach_reward
+        reward_count += 1
+        if approach_reward < 0:
+                negative_reward_count += 1
+
+        # Flee
+        # new_reward += flee_reward
+        # reward_count += 1
+        # if flee_reward < 0:
+                # negative_reward_count += 1
+
+        # Deal Damage # probably isn't effective
+        new_reward += damage_dealt_reward
+        reward_count += 1
+        if damage_dealt_reward < 0:
+                negative_reward_count += 1
+
+        # Damage Received # # probably isn't effective
+        new_reward += damage_received_reward
+        reward_count += 1
+        if damage_received_reward < 0:
+                negative_reward_count += 1
+
+        # health received reward # probably isn't effective
+        new_reward += health_received_reward
+        reward_count += 1
+        if health_received_reward < 0:
+                negative_reward_count += 1
+
+        # If a bunch of the rewards are negative, set reward to negative 1
+        # if negative_reward_count >= reward_count-1:
+        #         new_reward = -1
+
         self.reward_total += new_reward
         self.number_of_rewards +=1
         self.rewards.append([(self.reward_total / self.number_of_rewards), self.epsilon])
