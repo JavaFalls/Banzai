@@ -139,6 +139,8 @@ class DQN_agent:
         self.player_action = 0      # the action performed by the human and not the neural network
         self.gamestate     = 0
         self.rewards       = [] 
+        self.reward_total  = 0
+        self.number_of_rewards = 0
 
         self.model = self._build_model()
 
@@ -330,7 +332,9 @@ class DQN_agent:
                 new_reward = -1
         if distance_reward < 0:
                 new_reward = -1
-        self.rewards.append([new_reward/70, self.epsilon])
+        self.reward_total += new_reward
+        self.number_of_rewards +=1
+        self.rewards.append([(self.reward_total / self.number_of_rewards), self.epsilon])
         print("                                                                               *reward     ",new_reward)
         return new_reward
 
