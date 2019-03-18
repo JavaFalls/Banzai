@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/explosion.png-1cc35c77f70717cc0317411fbdcf6e76.stex"
+path="res://.import/explosion.png-83b3056ef4ab6b1e476b51947b2ff063.stex"
 
 [deps]
 
-source_file="res://assets/weapons/explosion.png"
-dest_files=[ "res://.import/explosion.png-1cc35c77f70717cc0317411fbdcf6e76.stex" ]
+source_file="res://Assets/weapons/explosion.png"
+dest_files=[ "res://.import/explosion.png-83b3056ef4ab6b1e476b51947b2ff063.stex" ]
 
 [params]
 

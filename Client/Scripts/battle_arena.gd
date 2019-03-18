@@ -157,7 +157,7 @@ func get_opponent(bot_id):
 func send_nn_state(bot_number):
 	var output = []
 	var message
-	message = '{ "Message Type": "Train", "Message": %s }' % str(game_state.get_battle_state())
+	message = '{ "Message Type": "Battle", "Message": %s }' % str(game_state.get_battle_state())
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 

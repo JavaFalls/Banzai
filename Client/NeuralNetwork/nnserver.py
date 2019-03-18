@@ -125,7 +125,7 @@ class DQN_agent:
         self.state_size = state_size
         self.action_size = action_size
 
-        self.memory = deque(maxlen=64)
+        self.memory = deque(maxlen=32)
         self.gamma         = 0.9 # discount future reward; used for Q which doesn't work for us
         self.epsilon       = .1 # exploration rate; initial rate; skew 100% towards exploration
         self.epsilon_decay = 1 # rate at which epsilon decays; get multiplied to epsilon
@@ -140,6 +140,13 @@ class DQN_agent:
         self.gamestate     = 0
         self.rewards       = [] 
         self.reward_total  = 0
+        self.total_accuracy_reward = 0
+        self.total_avoidance_reward = 0
+        self.total_approach_reward = 0
+        self.total_flee_reward = 0
+        self.total_damage_dealt_reward = 0
+        self.ptotal_damage_received_reward = 0
+        self.total_health_received_reward = 0
         self.number_of_rewards = 0
 
         self.model = self._build_model()
@@ -405,7 +412,7 @@ class DQN_agent:
 
         self.reward_total += new_reward
         self.number_of_rewards +=1
-        self.rewards.append([(self.reward_total / self.number_of_rewards), self.epsilon])
+        self.rewards.append([(self.reward_total / self.number_of_rewards), ])
         print("                                                                               *reward     ",new_reward)
         return new_reward
 
