@@ -234,11 +234,11 @@ class DQN_agent:
         plt.title('Rewards Graph')
         plt.ylabel('Rewards')
         plt.xlabel('Epoch')
-        plt.legend(['Average Total Rewards', 'Epsilon'], loc='upper left')
         plt.plot(self.rewards)
+        plt.legend(['Average Total Rewards', 'Epsilon'], loc='bottom right')
         plt.show()
-
         return
+
     def get_reward(self, gamestate, next_gamestate):
         # if gamestate[OPPONENT_POSITION_X] < .3:
         #         self.epsilon = 0
@@ -457,7 +457,7 @@ while True:
                 break
         #print(request)
         #response = fighter1.train(request)
-        if(count % 1009 == 0):
+        if(count % 109 == 0):
             fighter1.graph_rewards()
         count+=1
         send_response(response) # send the action or actions or load successful message based on packet type
