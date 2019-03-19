@@ -68,7 +68,9 @@ func _ready():
 	$color_scroll3.connect("color_changed", self, "set_display_bot_colors")
 	
 	if not bots.empty():
-		get_bot_info(bots[0])
+		for i in range(bot_ids.size()):
+			if bot_ids[i] == head.bot_ID:
+				get_bot_info(bots[i])
 	
 	$animation_bot.face_left()
 	randomize()
@@ -89,18 +91,9 @@ func _on_bot_right_pressed():
 
 # Entering a name
 func _on_new_button_pressed():
-	var new_name = ""
-	if name_choice_scene.can_instance():
-		$backlight/Light2D.enabled = false
-		var name_choice_node = name_choice_scene.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
-		name_choice_node.get_node("confirm_button/Label").text = "n\ne\nw\n\nb\no\nt"
-		add_child(name_choice_node)
-		yield(name_choice_node, "name_entered")
-		new_name = name_choice_node.get_username()
-		name_choice_node.queue_free()
-		$backlight/Light2D.enabled = true
-	
-	if not head.DB.new_bot(head.player_ID, [0,0,0,0,0,0,0,0], new_name):
+	var new_name = yield(change_name(), "completed")
+	var default_color = Color("#ffffffff").to_rgba32() # Default to white
+	if not head.DB.new_bot(head.player_ID, [0,0,0,0,default_color,default_color,default_color,0], new_name):
 		print("Creating a new bot failed")
 	else:
 		# Get the newest bot
@@ -122,13 +115,20 @@ func _on_new_button_pressed():
 			else:
 				id += c
 		
+		update_current_bot()
 		current = bots.size()-1
 		get_bot_info(bots[current])
 		reset_info()
 
 func _on_test_button_pressed():
 	update_current_bot()
+	
+	###
+#	var update = update_bots()
+#	update_bots().resume()
 	update_bots()
+	###
+	
 	head.bot_ID = bot_ids[current]
 	get_tree().change_scene("res://Scenes/arena_test.tscn")
 
@@ -137,7 +137,13 @@ func _on_finish_button_pressed():
 	yield($confirm_finish/confirm, "pressed")
 	
 	update_current_bot()
+	
+	###
+#	var update = update_bots()
+#	update_bots().resume()
 	update_bots()
+	###
+	
 	head.bot_ID = bot_ids[current]
 	
 	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
@@ -162,12 +168,24 @@ func _on_switch_description_mouse_entered():
 func _on_switch_description_mouse_exited():
 	$switch_description.modulate = Color("#aaaaaa")
 
+func _on_change_name_button_pressed():
+	var new_name = yield(change_name(), "completed")
+	$bot_name.text = new_name
+	update_current_bot()
+
+func _on_change_name_button_mouse_entered():
+	$change_name.modulate = Color("#ffffff")
+	
+func _on_change_name_button_mouse_exited():
+	$change_name.modulate = Color("#aaaaaa")
+
 func button_hover_enter():
 	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
 
 # Update local bots
 #------------------------------------------------
 func update_current_bot():
+	bots[current]["name"] = $bot_name.text
 	bots[current]["primary_weapon"] = $item_scroll.current_item()["id"]
 	bots[current]["secondary_weapon"] = $item_scroll2.current_item()["id"]
 	bots[current]["utility"] = $item_scroll3.current_item()["id"]
@@ -175,6 +193,19 @@ func update_current_bot():
 	bots[current]["secondary_color"] = $color_scroll2.get_selected_color().to_rgba32()
 	bots[current]["accent_color"] = $color_scroll3.get_selected_color().to_rgba32()
 #	bots[current]["light_color"] = $color_scroll4.get_selected_color().to_rgba32()
+
+func change_name():
+	var new_name = ""
+	if name_choice_scene.can_instance():
+		$backlight/Light2D.enabled = false
+		var name_choice_node = name_choice_scene.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
+		name_choice_node.get_node("confirm_button/Label").text = "n\ne\nw\n\nb\no\nt"
+		add_child(name_choice_node)
+		yield(name_choice_node, "name_entered")
+		new_name = name_choice_node.get_username()
+		name_choice_node.queue_free()
+		$backlight/Light2D.enabled = true
+	return new_name
 
 func weapon_changed():
 	var stream
