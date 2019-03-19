@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/heal_bubble.png-92075d9b3fb4ada91b9d0a84308a7eed.stex"
+path="res://.import/heal_bubble.png-62b499b0e04c82155c9273e00c8eb11f.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/heal_effects/heal_bubble.png"
-dest_files=[ "res://.import/heal_bubble.png-92075d9b3fb4ada91b9d0a84308a7eed.stex" ]
+source_file="res://assets/weapons/heal_effects/heal_bubble.png"
+dest_files=[ "res://.import/heal_bubble.png-62b499b0e04c82155c9273e00c8eb11f.stex" ]
 
 [params]
 

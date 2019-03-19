@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/mew.jpg-c45e7805e11884f3543b0435dd2cdfa2.stex"
+path="res://.import/mew.jpg-5a5e503e06c7804b536cac518960541c.stex"
 
 [deps]
 
-source_file="res://Assets/mew.jpg"
-dest_files=[ "res://.import/mew.jpg-c45e7805e11884f3543b0435dd2cdfa2.stex" ]
+source_file="res://assets/mew.jpg"
+dest_files=[ "res://.import/mew.jpg-5a5e503e06c7804b536cac518960541c.stex" ]
 
 [params]
 

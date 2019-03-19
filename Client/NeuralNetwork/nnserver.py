@@ -242,7 +242,7 @@ class DQN_agent:
         plt.ylabel('Rewards')
         plt.xlabel('Epoch')
         plt.plot(self.rewards)
-        plt.legend(['Average Total Rewards', 'Epsilon'], loc='bottom right')
+        plt.legend(['Total Rewards', 'accuracy_reward', 'avoidance_reward', 'approach_reward', 'flee_reward', 'damage_dealt_reward', 'damage_received_reward' , 'health_received_reward' ], loc='bottom right')
         plt.show()
         return
 
@@ -411,8 +411,21 @@ class DQN_agent:
         #         new_reward = -1
 
         self.reward_total += new_reward
+        self.total_accuracy_reward += accuracy_reward
+        self.total_avoidance_reward += avoidance_reward
+        self.total_approach_reward  += approach_reward
+        self.total_flee_reward += flee_reward
+        self.total_damage_dealt_reward +=damage_dealt_reward
+        self.ptotal_damage_received_reward += damage_received_reward
+        self.total_health_received_reward += health_received_reward
         self.number_of_rewards +=1
-        self.rewards.append([(self.reward_total / self.number_of_rewards), ])
+        self.rewards.append([(self.reward_total / self.number_of_rewards),  self.total_accuracy_reward/ self.number_of_rewards,
+        self.total_avoidance_reward/ self.number_of_rewards,
+        self.total_approach_reward / self.number_of_rewards,
+        self.total_flee_reward/ self.number_of_rewards,
+        self.total_damage_dealt_reward/ self.number_of_rewards,
+        self.ptotal_damage_received_reward/ self.number_of_rewards,
+        self.total_health_received_reward/ self.number_of_rewards])
         print("                                                                               *reward     ",new_reward)
         return new_reward
 
