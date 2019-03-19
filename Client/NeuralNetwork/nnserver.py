@@ -127,8 +127,8 @@ class DQN_agent:
 
         self.memory = deque(maxlen=32)
         self.gamma         = 0.9 # discount future reward; used for Q which doesn't work for us
-        self.epsilon       = .1 # exploration rate; initial rate; skew 100% towards exploration
-        self.epsilon_decay = 1 # rate at which epsilon decays; get multiplied to epsilon
+        self.epsilon       = 1 # exploration rate; initial rate; skew 100% towards exploration
+        self.epsilon_decay = .99 # rate at which epsilon decays; get multiplied to epsilon
         self.epsilon_min   = 0.1 # floor that epsilon will rest at after heavy training
 
         self.learning_rate = .5
@@ -153,7 +153,9 @@ class DQN_agent:
 
     def _build_model(self): # defines the NN
         model = Sequential()
-        model.add(Dense(216, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(55, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(110, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(55, input_dim = self.state_size, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
 
         model.compile(loss='mean_absolute_error', optimizer=Adam(lr = self.learning_rate))
@@ -195,7 +197,8 @@ class DQN_agent:
 
     def load(self):
         self.model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
-    def save(self):
+    
+    def save_bot(self):
         self.model = save_model(self.model, __file__.replace('nnserver.py', 'my_model.h5'))
 
     def reshape(self, gamestate):
@@ -474,7 +477,7 @@ def process_message(message):
                         return print("Invalid Game Mode")
                 pass
         elif message["Message Type"] == "save"   :
-                player_bot = save_bot(message["File Name"])
+                player_bot = fighter1.save_bot()
         elif message["Message Type"] == "Kill"   :
                 output = 109
         else:
