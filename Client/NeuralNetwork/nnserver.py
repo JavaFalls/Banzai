@@ -137,19 +137,24 @@ class DQN_agent:
         self.state_counter = 0      # how many game states have been sent from Godot
         self.action        = 0      # the action predicted by the neural network
         self.player_action = 0      # the action performed by the human and not the neural network
-        self.gamestate     = 0      # the current game state from Godot
-        self.rewards       = []     # contains all of the rewards in a list?
-        self.reward_total  = 0      # the sum of all rewards in the rewards list
-        self.number_of_rewards = 0  # the total number of rewards in the rewards list
+        self.gamestate     = 0
+        self.rewards       = [] 
+        self.reward_total  = 0
+        self.total_accuracy_reward = 0
+        self.total_avoidance_reward = 0
+        self.total_approach_reward = 0
+        self.total_flee_reward = 0
+        self.total_damage_dealt_reward = 0
+        self.ptotal_damage_received_reward = 0
+        self.total_health_received_reward = 0
+        self.number_of_rewards = 0
 
         self.model = self._build_model()
 
     def _build_model(self): # defines the NN
         model = Sequential()
         model.add(Dense(self.state_size, activation='relu'))     # does not have a hidden layer   
-        # model.add(Dense(10000, input_dim = self.state_size, activation='relu'))
-        
-        
+        # model.add(Dense(10000, input_dim = self.state_size, activation='relu')) # has a hidden layer
         model.add(Dense(self.action_size, activation='linear'))
 
         model.compile(loss='mean_absolute_error', optimizer=Adam(lr = self.learning_rate))
@@ -241,7 +246,7 @@ class DQN_agent:
         plt.ylabel('Rewards')
         plt.xlabel('Epoch')
         plt.plot(self.rewards)
-        plt.legend(['Average Total Rewards', 'Epsilon'], loc='bottom right')
+        plt.legend(['Total Rewards', 'accuracy_reward', 'avoidance_reward', 'approach_reward', 'flee_reward', 'damage_dealt_reward', 'damage_received_reward' , 'health_received_reward' ], loc='bottom right')
         plt.show()
         return
 
@@ -410,8 +415,21 @@ class DQN_agent:
         #         new_reward = -1
 
         self.reward_total += new_reward
+        self.total_accuracy_reward += accuracy_reward
+        self.total_avoidance_reward += avoidance_reward
+        self.total_approach_reward  += approach_reward
+        self.total_flee_reward += flee_reward
+        self.total_damage_dealt_reward +=damage_dealt_reward
+        self.ptotal_damage_received_reward += damage_received_reward
+        self.total_health_received_reward += health_received_reward
         self.number_of_rewards +=1
-        self.rewards.append([(self.reward_total / self.number_of_rewards), self.epsilon])
+        self.rewards.append([(self.reward_total / self.number_of_rewards),  self.total_accuracy_reward/ self.number_of_rewards,
+        self.total_avoidance_reward/ self.number_of_rewards,
+        self.total_approach_reward / self.number_of_rewards,
+        self.total_flee_reward/ self.number_of_rewards,
+        self.total_damage_dealt_reward/ self.number_of_rewards,
+        self.ptotal_damage_received_reward/ self.number_of_rewards,
+        self.total_health_received_reward/ self.number_of_rewards])
         print("                                                                               *reward     ",new_reward)
         return new_reward
 

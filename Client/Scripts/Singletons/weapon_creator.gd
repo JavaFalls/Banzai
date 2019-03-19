@@ -18,19 +18,19 @@ enum weapon_types {
 	W_PRI_SCATTER_BOW,
 	W_PRI_RUBBER_BOW,
 	W_PRI_ZORROS_GLARE, # not yet implemented
-	W_SEC_MINE, # not yet implemented
-	W_SEC_NUKE, # not yet implemented
+	W_SEC_MINE,
+	W_SEC_NUKE,
 	W_SEC_SCYTHE,
-	W_SEC_SNARE, # not yet implemented
+	W_SEC_SNARE,
 	W_SEC_ZORROS_WIT, # not yet implemented
 	W_ABI_CHARGE, # not yet implemented
 	W_ABI_CLONE, # not yet implemented
 	W_ABI_EVADE,
-	W_ABI_FREEZE, # not yet implemented
-	W_ABI_REGENERATION, # not yet implemented
+	W_ABI_FREEZE,
+	W_ABI_REGENERATION,
 	W_ABI_SHIELD,
-	W_ABI_SUBSTITUTION, # not yet implemented
-	W_ABI_TELEPORT, # not yet implemented
+	W_ABI_SUBSTITUTION,
+	W_ABI_TELEPORT,
 	W_ABI_ZORROS_HONOR # not yet implemented
 }
 
