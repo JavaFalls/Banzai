@@ -165,7 +165,6 @@ func send_nn_state(bot_number):
 	output = output.split_floats(",", 0)
 	for x in output:
 		x = int(x)
-	print(output[0])
 	game_state.set_predictions(output[0])
 	
 	#game_state.set_opponent_predictions(output[1])
