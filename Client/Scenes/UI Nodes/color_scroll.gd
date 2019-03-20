@@ -3,7 +3,7 @@ extends MarginContainer
 export(PoolColorArray) var colors
 export(float) var indicator_offset = 0.0 # The time offset for flashing
 
-var current = 0 setget set_current
+var current = 0
 
 onready var color_boxes = [
 	get_node("HBoxContainer/colors/color0"),
