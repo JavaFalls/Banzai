@@ -122,12 +122,7 @@ func _on_new_button_pressed():
 
 func _on_test_button_pressed():
 	update_current_bot()
-	
-	###
-#	var update = update_bots()
-#	update_bots().resume()
 	update_bots()
-	###
 	
 	head.bot_ID = bot_ids[current]
 	get_tree().change_scene("res://Scenes/arena_test.tscn")
@@ -137,12 +132,7 @@ func _on_finish_button_pressed():
 	yield($confirm_finish/confirm, "pressed")
 	
 	update_current_bot()
-	
-	###
-#	var update = update_bots()
-#	update_bots().resume()
 	update_bots()
-	###
 	
 	head.bot_ID = bot_ids[current]
 	

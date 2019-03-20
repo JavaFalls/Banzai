@@ -25,7 +25,7 @@ onready var t               = Timer.new()
 
 # Get Opponent
 onready var opponent_bot_ID = get_opponent(head.bot_ID)
-	
+
 # Get bot information, and load bot models from the database
 onready var bot_data        = JSON.parse(
 				        head.DB.get_bot(head.bot_ID,
@@ -35,16 +35,17 @@ onready var opponent_data   = JSON.parse(
 										"File_%s.h5" % str(opponent_bot_ID))).result["data"][0]
 
 # The signal that is emitted when a fighter's hit_points reach zero
-signal game_end
+signal post_game
 
 func _ready():
 	#f.open('res://NeuralNetwork/gamestates', 3)
 
 	# Load bots into the Neural Network
 	load_bot()
-	
+
 	# Initialize the bots
-	fighter1 = bot_scene.instance() #dummy_scene.instance()
+	fighter1 = bot_scene.instance()
+	#fighter1 = player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
@@ -62,7 +63,8 @@ func _ready():
 	#---------------------------------------------------------
 	fighter1.is_player = 1
 
-	fighter2 = bot_scene.instance() # fighter2 = player_scene.instance()
+	fighter2 = bot_scene.instance()
+	#fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
@@ -107,6 +109,7 @@ func _process(delta):
 
 # This function is called when one of the fighters hits zero hit_points
 func post_game():
+	self.emit_signal("post_game")
 	var popup_message
 	head.battle_winner_calc(fighter1.get_hit_points(), fighter2.get_hit_points())
 	var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
@@ -188,16 +191,14 @@ func fight_again():
 func main_menu():
 	get_tree().paused = false
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
-	
+
 # Load Bot for Battle
 func load_bot():
 	# Load Opponent bot into Neural Network
-	var output = []
-	var message
-	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "Yes" }' % str(opponent_bot_ID)
+	var message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "Yes" }' % str(opponent_bot_ID)
 	head.Client.send_request(message)
-	output = head.Client.get_response()
-	
+	var output = head.Client.get_response()
+
 	# Load Player bot into Neural Network
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
 	head.Client.send_request(message)

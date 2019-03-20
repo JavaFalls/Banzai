@@ -8,6 +8,7 @@ extends Node2D
 signal use # All weapons must have this signal so that cooldowns can be displayed
 
 # Stat variables
+var id
 var damage
 var cooldown
 var swing_scene
