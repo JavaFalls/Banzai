@@ -12,7 +12,7 @@ from tensorflow.keras.optimizers import Adam
 import random
 import numpy as np
 from collections import deque
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 
 # Just disables the warning, doesn't enable AVX/FMA
 import os
@@ -138,7 +138,7 @@ class DQN_agent:
         self.action        = 0      # the action predicted by the neural network
         self.player_action = 0      # the action performed by the human and not the neural network
         self.gamestate     = 0
-        self.rewards       = [] 
+        self.rewards       = []
         self.reward_total  = 0
         self.total_accuracy_reward = 0
         self.total_avoidance_reward = 0
@@ -153,8 +153,9 @@ class DQN_agent:
 
     def _build_model(self): # defines the NN
         model = Sequential()
-        model.add(Dense(self.state_size, activation='relu'))     # does not have a hidden layer   
-        # model.add(Dense(10000, input_dim = self.state_size, activation='relu')) # has a hidden layer
+        model.add(Dense(55, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(110, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(55, input_dim = self.state_size, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
 
         model.compile(loss='mean_absolute_error', optimizer=Adam(lr = self.learning_rate))
@@ -196,7 +197,8 @@ class DQN_agent:
 
     def load(self):
         self.model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
-    def save(self):
+
+    def save_bot(self):
         self.model = save_model(self.model, __file__.replace('nnserver.py', 'my_model.h5'))
 
     def reshape(self, gamestate):
@@ -311,7 +313,7 @@ class DQN_agent:
         else:
                 if gamestate[OPPONENT_DISTANCE] <= .15:
                      approach_reward = 2
-                     
+
         print(gamestate[OPPONENT_DISTANCE])
         # reward for avoiding being targeted ##################################################################
         avoidance_reward = 0
@@ -359,7 +361,7 @@ class DQN_agent:
         # new_reward -= (gamestate[4]+next_gamestate[4]) * 10                    # criticism for the bot being in peril # dont use
 
         # if (((gamestate[3] - next_gamestate[3]) == 0) and ((gamestate[4] - next_gamestate[4]) == 1)): # reward for dodging
-        
+
         print("accuracy_reward:           ", accuracy_reward)
         print("avoidance_reward:          ", avoidance_reward)
         print("approach_reward:           ", approach_reward)
@@ -478,7 +480,7 @@ def process_message(message):
                         return print("Invalid Game Mode")
                 pass
         elif message["Message Type"] == "save"   :
-                player_bot = save_bot(message["File Name"])
+                player_bot = fighter1.save_bot()
         elif message["Message Type"] == "Kill"   :
                 output = 109
         else:
