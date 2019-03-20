@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon_nuke.png-bf60c60d529b6b12d0fd5aa6254a5c9e.stex"
+path="res://.import/icon_nuke.png-bf39ed4410b559411c8d95caa088808e.stex"
 
 [deps]
 
-source_file="res://assets/weapons/icon_nuke.png"
-dest_files=[ "res://.import/icon_nuke.png-bf60c60d529b6b12d0fd5aa6254a5c9e.stex" ]
+source_file="res://Assets/weapons/icon_nuke.png"
+dest_files=[ "res://.import/icon_nuke.png-bf39ed4410b559411c8d95caa088808e.stex" ]
 
 [params]
 
