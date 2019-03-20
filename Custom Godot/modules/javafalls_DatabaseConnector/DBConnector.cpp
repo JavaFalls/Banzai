@@ -337,6 +337,9 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, Stri
       if (model_file_name.length()) {
          update_model_by_bot_id(bot_ID, model_file_name); // Includes a commit or rollback
       }
+      else {
+         commit();
+      }
    }
    else {
       rollback();

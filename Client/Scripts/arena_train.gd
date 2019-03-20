@@ -4,8 +4,7 @@ extends Node2D
 onready var bot_data = JSON.parse(
 					   head.DB.get_bot(head.bot_ID,
 									   "File_%s.h5" % str(head.bot_ID))).result["data"][0]
-#onready var bot_data = JSON.parse(head.DB.get_bot(1)).result["data"][0] # for seth and jonathan
-
+#onready var bot_data = JSON.parse(head.DB.get_bot(1,"File_%s.h5" % str(1))).result["data"][0]# for seth and jonathan
 
 # The variables
 var fighter1                             # Player or his AI bot
@@ -120,7 +119,9 @@ func _on_back_pressed():
 
 # Load Bot for Training
 func load_bot():
-	var message = '{ "Message Type":"Load", "Game Mode": "Train", "File Name": "File_%s.h5" }' % str(head.bot_ID)
+	var output = []
+	var message
+	message = '{ "Message Type":"Load", "Game Mode": "Train", "File Name": "File_%s.h5" }' % str(head.bot_ID)
 	head.Client.send_request(message)
 	var output = head.Client.get_response()
 	return output == 'true'

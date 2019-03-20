@@ -11,6 +11,7 @@ signal use # All weapons must have this signal so that cooldowns can be displaye
 # The variables
 #------------------------------------------------------------------------
 # Stat variables:
+var id
 var cooldown = 0.0 # Time for using cooldown
 var duration       # How long it takes for the substitution to actually take place
 
