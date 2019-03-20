@@ -418,8 +418,8 @@ class DQN_agent:
 
 
 def load_bot(file_name = 'my_model.h5'):
-   model = load_model(__file__.replace('nnserver.py', file_name))
-   return model
+   return load_model(__file__.replace('nnserver.py', file_name))
+   
 def reshape(gamestate, state_size):
         input_list = []
         output_list = []
@@ -449,7 +449,8 @@ def process_message(message):
         elif message["Message Type"] == "Load"   :
                 if   message["Game Mode"] == "Train":
                         player_bot = load_bot(message["File Name"])
-                        return
+                        print("Player Bot Loaded")
+                        return "successful"
                 elif message["Game Mode"] == "Battle":
                         if   message["Opponent?"] == "Yes":
                                 opponent_bot = load_bot(message["File Name"])
@@ -457,6 +458,8 @@ def process_message(message):
                                 player_bot = load_bot(message["File Name"])
                         else:
                                 return print("Invalid Opponent")
+                        print("Player || Opponent Bot Loaded")
+                        return "successful"
                 else:
                         return print("Invalid Game Mode")
                 pass
@@ -483,6 +486,9 @@ fighter2 = DQN_agent(state_size, action_size)
 bot = load_bot()
 response = []
 
+########################################################################################################################
+###                                                  MAIN FUNCTION                                                   ###
+########################################################################################################################
 # Tell Godot I'm ready to connect
 successful = False
 while not successful:
@@ -505,19 +511,22 @@ while not successful:
                         print("Closed Pipe")
                         successful = True
 
+# Connect both ends of the pipes
 connect_request()
 connect_response()
+
 count = 1
+
+# Process a message and give a response
 while True:
 
         print("Server Code\n\n")
-        #print("get request")
         gamestate = []
         next_gamestate = []
-        # print("Server Code\n\n")
-        # print("get request")
 
         request_completed = False
+
+        # Receive a request from the client
         try:
                 request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '').replace('\x00', '')
                 #print(request)

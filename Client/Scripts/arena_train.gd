@@ -1,8 +1,10 @@
 extends Node2D
 
 # The Bot
-#onready var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
-onready var bot_data = JSON.parse(head.DB.get_bot(1)).result["data"][0] # for seth and jonathan
+onready var bot_data = JSON.parse(
+					   head.DB.get_bot(head.bot_ID,
+									   "File_%s.h5" % str(head.bot_ID))).result["data"][0]
+#onready var bot_data = JSON.parse(head.DB.get_bot(1)).result["data"][0] # for seth and jonathan
 
 
 # The variables
@@ -115,3 +117,10 @@ func _on_confirm_pressed():
 func _on_back_pressed():
 	get_tree().set_pause(false)
 	$exit.visible = false
+
+# Load Bot for Training
+func load_bot():
+	message = '{ "Message Type":"Load", "Game Mode": "Train", "File Name": "File_%s.h5" }' % str(head.bot_ID)
+	head.Client.send_request(message)
+	output = head.Client.get_response()
+	return output == 'true'
