@@ -85,7 +85,6 @@ func _ready():
 	fighter2.set_opponent(fighter1)
 
 	# Connect signal for post game
-	connect("game_end", self, "post_game")
 	fighter1.connect("game_end", self, "post_game")
 	fighter2.connect("game_end", self, "post_game")
 
@@ -196,7 +195,7 @@ func main_menu():
 func load_bot():
 	var message
 	# Load Opponent bot into Neural Network
-	var message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "Yes" }' % str(opponent_bot_ID)
+	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "Yes" }' % str(opponent_bot_ID)
 	head.Client.send_request(message)
 	var output = head.Client.get_response()
 	

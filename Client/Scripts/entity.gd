@@ -6,7 +6,7 @@ extends KinematicBody2D
 const UP             = Vector2(0,0) # Indicates top-down view
 
 var movement_speed   = 100           # Movement speed of the entity
-var max_HP           = 1000    # The maximum amount of HP the bot can have
+var max_HP           = 500    # The maximum amount of HP the bot can have
 var hit_points                       # The hit point counter for the fighter
 var direction        = Vector2()     # Direction the entity is moving
 var primary_weapon                   # Weapon that goes in the first weapon slot

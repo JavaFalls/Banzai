@@ -9,7 +9,7 @@ signal use # All weapons must have this signal so that cooldowns can be displaye
 
 # The Constants
 #------------------------------------------------------------------------
-const DUMMY_LIFETIME = 5 # How long, in seconds, that the dummy will be on the battlefield
+const DUMMY_LIFETIME = 2.5 # How long, in seconds, that the dummy will be on the battlefield
 
 # The variables
 #------------------------------------------------------------------------
@@ -53,7 +53,7 @@ func use():
 	if cooldown_timer.is_stopped():
 		# Create a dummy at the bots current location
 		dummy = dummy_scene.instance()
-		dummy.position = global_position
+		dummy.position = global_position + (Vector2(cos(bot.aim_angle),sin(bot.aim_angle)) * 5)
 		var dummy_primary = weapon_creator.create_weapon(bot.primary_weapon.id)
 		var dummy_secondary = weapon_creator.create_weapon(bot.secondary_weapon.id)
 		var dummy_ability = weapon_creator.create_weapon(bot.ability.id)
@@ -66,6 +66,8 @@ func use():
 		dummy.attack_secondary = false
 		dummy.use_ability = false
 		dummy.opponent = bot.opponent
+		if bot.is_player:
+			dummy.modulate = Color(1, 1, 1, 0.75) # Modify the players bot slightly so that the human brain doesn't go crazy trying to figure out which is which when clone is used
 		bot.get_parent().add_child(dummy)
 		dummy.get_node("animation_bot").set_primary_color(bot.get_node("animation_bot").get_primary_color())
 		dummy.get_node("animation_bot").set_secondary_color(bot.get_node("animation_bot").get_secondary_color())

@@ -123,7 +123,7 @@ func load_bot():
 	var message
 	message = '{ "Message Type":"Load", "Game Mode": "Train", "File Name": "File_%s.h5" }' % str(head.bot_ID)
 	head.Client.send_request(message)
-	var output = head.Client.get_response()
+	output = head.Client.get_response()
 	return output == 'true'
 
 # Save Bot after training
