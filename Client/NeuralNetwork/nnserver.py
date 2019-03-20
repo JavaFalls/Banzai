@@ -20,7 +20,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 state_size  = 13
 action_size = 108
-batch_size  = 1
+batch_size  = 16
 
 BOT_POSITION_X      = 0
 BOT_POSITION_Y      = 1
@@ -125,7 +125,7 @@ class DQN_agent:
         self.state_size = state_size
         self.action_size = action_size
 
-        self.memory = deque(maxlen=8)
+        self.memory = deque(maxlen=20000)
         self.gamma         = 0.9 # discount future reward; used for Q which doesn't work for us
         self.epsilon       = 1 # exploration rate; initial rate; skew 100% towards exploration
         self.epsilon_decay = .995 # rate at which epsilon decays; get multiplied to epsilon
@@ -154,8 +154,8 @@ class DQN_agent:
     def _build_model(self): # defines the NN
         model = Sequential()
         model.add(Dense(55, input_dim = self.state_size, activation='relu'))
-        model.add(Dense(110, input_dim = self.state_size, activation='relu'))
-        model.add(Dense(55, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(110, activation='relu'))
+        model.add(Dense(55, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
 
         model.compile(loss='mean_absolute_error', optimizer=Adam(lr = self.learning_rate))
@@ -180,7 +180,7 @@ class DQN_agent:
     def replay(self, batch_size):
         minibatch = random.sample(self.memory, batch_size)
 
-        for state, action, reward, next_state in self.memory: # use minibatch for a random smaller sample
+        for state, action, reward, next_state in minibatch: # use minibatch for a random smaller sample
         #     print(state)
         #     print(action)
         #     print(reward)
@@ -199,7 +199,7 @@ class DQN_agent:
         self.model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
 
     def save_bot(self):
-        self.model = save_model(self.model, __file__.replace('nnserver.py', 'my_model.h5'))
+        save_model(self.model, __file__.replace('nnserver.py', 'my_model.h5'))
 
     def reshape(self, gamestate):
         input_list = []
@@ -237,10 +237,11 @@ class DQN_agent:
         self.state_counter +=1
         self.action = self.predict(self.gamestate)
 
-        # if len(self.memory) % batch_size == 0 and len(self.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
-        #         self.replay(batch_size)
-        if len(self.memory) > 0: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+        if len(self.memory) % batch_size == 0 and len(self.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
                 self.replay(batch_size)
+                self.save_bot()
+        # if len(self.memory) > 0: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+        #         self.replay(batch_size)
 
         return self.action
     def graph_rewards(self):
@@ -437,8 +438,8 @@ class DQN_agent:
 
 
 def load_bot(file_name = 'my_model.h5'):
-   model = load_model(__file__.replace('nnserver.py', file_name))
-   return model
+   return load_model(__file__.replace('nnserver.py', file_name))
+   
 def reshape(gamestate, state_size):
         input_list = []
         output_list = []
@@ -468,7 +469,8 @@ def process_message(message):
         elif message["Message Type"] == "Load"   :
                 if   message["Game Mode"] == "Train":
                         player_bot = load_bot(message["File Name"])
-                        return
+                        print("Player Bot Loaded")
+                        return "successful"
                 elif message["Game Mode"] == "Battle":
                         if   message["Opponent?"] == "Yes":
                                 opponent_bot = load_bot(message["File Name"])
@@ -476,6 +478,8 @@ def process_message(message):
                                 player_bot = load_bot(message["File Name"])
                         else:
                                 return print("Invalid Opponent")
+                        print("Player || Opponent Bot Loaded")
+                        return "successful"
                 else:
                         return print("Invalid Game Mode")
                 pass
@@ -502,6 +506,9 @@ fighter2 = DQN_agent(state_size, action_size)
 bot = load_bot()
 response = []
 
+########################################################################################################################
+###                                                  MAIN FUNCTION                                                   ###
+########################################################################################################################
 # Tell Godot I'm ready to connect
 successful = False
 while not successful:
@@ -524,19 +531,22 @@ while not successful:
                         print("Closed Pipe")
                         successful = True
 
+# Connect both ends of the pipes
 connect_request()
 connect_response()
+
 count = 1
+
+# Process a message and give a response
 while True:
 
         print("Server Code\n\n")
-        #print("get request")
         gamestate = []
         next_gamestate = []
-        # print("Server Code\n\n")
-        # print("get request")
 
         request_completed = False
+
+        # Receive a request from the client
         try:
                 request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '').replace('\x00', '')
                 #print(request)
