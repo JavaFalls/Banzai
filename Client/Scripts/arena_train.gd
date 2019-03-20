@@ -1,9 +1,10 @@
 extends Node2D
 
 # The Bot
-onready var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
-#onready var bot_data = JSON.parse(head.DB.get_bot(1)).result["data"][0] # for seth and jonathan
-
+onready var bot_data = JSON.parse(
+					   head.DB.get_bot(head.bot_ID,
+									   "File_%s.h5" % str(head.bot_ID))).result["data"][0]
+#onready var bot_data = JSON.parse(head.DB.get_bot(1,"File_%s.h5" % str(1))).result["data"][0]# for seth and jonathan
 
 # The variables
 var fighter1                             # Player or his AI bot
@@ -90,7 +91,7 @@ func send_nn_state():
 # Popup Functions
 func keep_data():
 	get_tree().paused = false
-	#head.DB.update_model(head.model_ID, "idk_what_the_filename_for_the_model_would_be")
+	save_bot()
 	popup.free()
 	final_popup()
 func drop_data():
@@ -115,3 +116,19 @@ func _on_confirm_pressed():
 func _on_back_pressed():
 	get_tree().set_pause(false)
 	$exit.visible = false
+
+# Load Bot for Training
+func load_bot():
+	var output = []
+	var message
+	message = '{ "Message Type":"Load", "Game Mode": "Train", "File Name": "File_%s.h5" }' % str(head.bot_ID)
+	head.Client.send_request(message)
+	output = head.Client.get_response()
+	return output == 'true'
+
+# Save Bot after training
+func save_bot():
+	var message = '{ "Message Type": "Save", "File Name": "%s"}' % str(head.bot_ID)
+	head.Client.send_request(message)
+	var output = head.Client.get_response()
+	head.DB.update_model_by_bot_id()

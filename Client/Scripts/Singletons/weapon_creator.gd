@@ -18,19 +18,19 @@ enum weapon_types {
 	W_PRI_SCATTER_BOW,
 	W_PRI_RUBBER_BOW,
 	W_PRI_ZORROS_GLARE, # not yet implemented
-	W_SEC_MINE, # not yet implemented
-	W_SEC_NUKE, # not yet implemented
+	W_SEC_MINE,
+	W_SEC_NUKE,
 	W_SEC_SCYTHE,
-	W_SEC_SNARE, # not yet implemented
+	W_SEC_SNARE,
 	W_SEC_ZORROS_WIT, # not yet implemented
 	W_ABI_CHARGE, # not yet implemented
 	W_ABI_CLONE, # not yet implemented
 	W_ABI_EVADE,
-	W_ABI_FREEZE, # not yet implemented
-	W_ABI_REGENERATION, # not yet implemented
+	W_ABI_FREEZE,
+	W_ABI_REGENERATION,
 	W_ABI_SHIELD,
-	W_ABI_SUBSTITUTION, # not yet implemented
-	W_ABI_TELEPORT, # not yet implemented
+	W_ABI_SUBSTITUTION,
+	W_ABI_TELEPORT,
 	W_ABI_ZORROS_HONOR # not yet implemented
 }
 
@@ -74,7 +74,7 @@ const W_SEC_STATS = [
 ]
 const W_ABI_STATS = [
 	{"id": W_ABI_CHARGE            , "implemented": false, "name": "Charge"            , "description": "Rush towards the opponent in a straight line dealing damage on contact"                                 , "info": "Rush speed is 3 times normal movement"             , "attack":    50, "speed":  1.5 , "type": "Melee" , "icon": preload("res://assets/weapons/bow_regular.png")      , "sprite": preload("res://assets/weapons/arrow_regular.png")    , "scene": preload("res://scenes/weapons/tech/charge.tscn")},
-	{"id": W_ABI_CLONE             , "implemented": false, "name": "Clone"             , "description": "Creates a dummy model alongside the bot that cannot do damage but reacts with a simple AI"              , "info": "Disrupt, Detect, Delay, Defeat"                    , "attack":     0, "speed":  5.0 , "type": "Tech"  , "icon": preload("res://assets/weapons/bow_regular.png")      , "sprite": preload("res://assets/weapons/arrow_regular.png")    , "scene": preload("res://scenes/weapons/tech/clone.tscn")},
+	{"id": W_ABI_CLONE             , "implemented": true , "name": "Clone"             , "description": "Creates a dummy model alongside the bot that cannot do damage but reacts with a simple AI"              , "info": "Disrupt, Detect, Delay, Defeat"                    , "attack":     0, "speed":  5.0 , "type": "Tech"  , "icon": preload("res://assets/weapons/icon_clone.png")       , "sprite": preload("res://assets/weapons/icon_clone.png")       , "scene": preload("res://scenes/weapons/tech/clone.tscn")},
 	{"id": W_ABI_EVADE             , "implemented": true , "name": "Evade"             , "description": "Gain a brief (0.1 seconds) boost of speed to sprint out of the way of an incoming projectile"           , "info": "Move 5 times faster for 0.1 seconds"               , "attack":     0, "speed":  0.3 , "type": "Tech"  , "icon": preload("res://assets/weapons/icon_evade.png")       , "sprite": preload("res://assets/weapons/arrow_regular.png")    , "scene": preload("res://scenes/weapons/tech/evade.tscn")},
 	{"id": W_ABI_FREEZE            , "implemented": true , "name": "Freeze"            , "description": "Freeze the opponent for 0.5 seconds, completely immobilizing them (target cannot attack or move)"       , "info": "Freeze affects target for 0.5 seconds"             , "attack":     0, "speed":  1.0 , "type": "Ranged", "icon": preload("res://assets/weapons/icon_freeze.png")      , "sprite": preload("res://assets/weapons/freeze_projectile.png"), "scene": preload("res://scenes/weapons/projectile_launcher.tscn"), "projectile_speed": 325, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")},
 	{"id": W_ABI_REGENERATION      , "implemented": true , "name": "Regeneration"      , "description": "Heals the bot 10 points over a period of 2 seconds"                                                     , "info": "Heal 10 damage over 2 seconds"                     , "attack":     0, "speed":  4.0 , "type": "Tech"  , "icon": preload("res://assets/weapons/icon_heal.png")        , "sprite": preload("res://assets/weapons/icon_heal.png")        , "scene": preload("res://scenes/weapons/tech/regeneration.tscn")},
@@ -131,6 +131,7 @@ func create_weapon(w_ID):
 			weapon.projectile_speed = w_stats["projectile_speed"]
 			weapon.projectile_scene = w_stats["projectile_scene"]
 		"Melee":
+			weapon.id = w_stats["id"]
 			weapon.damage = w_stats["attack"]
 			weapon.cooldown = w_stats["speed"]
 			weapon.swing_scene = w_stats["swing_scene"]
@@ -144,6 +145,7 @@ func create_weapon(w_ID):
 			weapon.trap_scene = w_stats["trap_scene"]
 			weapon.trap_sprite = w_stats["icon"]
 		"Tech":
+			weapon.id = w_stats["id"]
 			weapon.cooldown = w_stats["speed"]
 			if w_stats["id"] == W_SEC_NUKE:
 				weapon.damage = w_stats["attack"]

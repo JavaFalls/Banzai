@@ -28,15 +28,7 @@ func _ready():
 		$bot_right.visible = false
 		$new_button.visible = false
 	
-#### FOR TESTING #
-	var player_id = head.player_ID
-	if player_id == -1:
-		player_id = 1
-	var bot_id = head.bot_ID
-	if bot_id == -1:
-		bot_id = 1
-##################
-	var player_bots = parse_json(head.DB.get_player_bots(player_id))
+	var player_bots = parse_json(head.DB.get_player_bots(head.player_ID))
 	var id = ""
 	for c in player_bots["data"][0]["player_bots"]:
 		if c == ",":
@@ -45,7 +37,7 @@ func _ready():
 				if not constructing_player:
 					bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
 					bot_ids.append(id.to_int())
-				elif constructing_player and id.to_int() == bot_id:
+				elif constructing_player and id.to_int() == head.bot_ID:
 					bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
 					bot_ids.append(id.to_int())
 					break
@@ -76,7 +68,9 @@ func _ready():
 	$color_scroll3.connect("color_changed", self, "set_display_bot_colors")
 	
 	if not bots.empty():
-		get_bot_info(bots[0])
+		for i in range(bot_ids.size()):
+			if bot_ids[i] == head.bot_ID:
+				get_bot_info(bots[i])
 	
 	$animation_bot.face_left()
 	randomize()
@@ -97,27 +91,13 @@ func _on_bot_right_pressed():
 
 # Entering a name
 func _on_new_button_pressed():
-	var new_name = ""
-	if name_choice_scene.can_instance():
-		$backlight/Light2D.enabled = false
-		var name_choice_node = name_choice_scene.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
-		name_choice_node.get_node("confirm_button/Label").text = "n\ne\nw\n\nb\no\nt"
-		add_child(name_choice_node)
-		yield(name_choice_node, "name_entered")
-		new_name = name_choice_node.get_username()
-		name_choice_node.queue_free()
-		$backlight/Light2D.enabled = true
-	
-#### FOR TESTING #
-	var player_id = head.player_ID
-	if player_id == -1:
-		player_id = 1
-##################
-	if not head.DB.new_bot(player_id, [0,0,0,0,0,0,0,0], new_name):
+	var new_name = yield(change_name(), "completed")
+	var default_color = Color("#ffffffff").to_rgba32() # Default to white
+	if not head.DB.new_bot(head.player_ID, [0,0,0,0,default_color,default_color,default_color,0], new_name):
 		print("Creating a new bot failed")
 	else:
 		# Get the newest bot
-		var player_bots = parse_json(head.DB.get_player_bots(player_id))
+		var player_bots = parse_json(head.DB.get_player_bots(head.player_ID))
 		var id = ""
 		for c in player_bots["data"][0]["player_bots"]:
 			if c == ",":
@@ -135,11 +115,16 @@ func _on_new_button_pressed():
 			else:
 				id += c
 		
+		update_current_bot()
 		current = bots.size()-1
 		get_bot_info(bots[current])
 		reset_info()
 
 func _on_test_button_pressed():
+	update_current_bot()
+	update_bots()
+	
+	head.bot_ID = bot_ids[current]
 	get_tree().change_scene("res://Scenes/arena_test.tscn")
 
 func _on_finish_button_pressed():
@@ -147,6 +132,88 @@ func _on_finish_button_pressed():
 	yield($confirm_finish/confirm, "pressed")
 	
 	update_current_bot()
+	update_bots()
+	
+	head.bot_ID = bot_ids[current]
+	
+	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
+	get_tree().change_scene("res://Scenes/main_menu.tscn")
+
+func _on_switch_description_pressed():
+	var button = $switch_description
+	if button.pressed:
+		button.text = "desc"
+		$item_description/stats.visible = false
+	else:
+		button.text = "stats"
+		$item_description/stats.visible = true
+	grab_info(current_info_type)
+
+func _on_not_confirm_pressed():
+	$confirm_finish.visible = false
+
+func _on_switch_description_mouse_entered():
+	$switch_description.modulate = Color("#ffffff")
+
+func _on_switch_description_mouse_exited():
+	$switch_description.modulate = Color("#aaaaaa")
+
+func _on_change_name_button_pressed():
+	var new_name = yield(change_name(), "completed")
+	$bot_name.text = new_name
+	update_current_bot()
+
+func _on_change_name_button_mouse_entered():
+	$change_name.modulate = Color("#ffffff")
+	
+func _on_change_name_button_mouse_exited():
+	$change_name.modulate = Color("#aaaaaa")
+
+func button_hover_enter():
+	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
+
+# Update local bots
+#------------------------------------------------
+func update_current_bot():
+	bots[current]["name"] = $bot_name.text
+	bots[current]["primary_weapon"] = $item_scroll.current_item()["id"]
+	bots[current]["secondary_weapon"] = $item_scroll2.current_item()["id"]
+	bots[current]["utility"] = $item_scroll3.current_item()["id"]
+	bots[current]["primary_color"] = $color_scroll.get_selected_color().to_rgba32()
+	bots[current]["secondary_color"] = $color_scroll2.get_selected_color().to_rgba32()
+	bots[current]["accent_color"] = $color_scroll3.get_selected_color().to_rgba32()
+#	bots[current]["light_color"] = $color_scroll4.get_selected_color().to_rgba32()
+
+func change_name():
+	var new_name = ""
+	if name_choice_scene.can_instance():
+		$backlight/Light2D.enabled = false
+		var name_choice_node = name_choice_scene.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
+		name_choice_node.get_node("confirm_button/Label").text = "n\ne\nw\n\nb\no\nt"
+		add_child(name_choice_node)
+		yield(name_choice_node, "name_entered")
+		new_name = name_choice_node.get_username()
+		name_choice_node.queue_free()
+		$backlight/Light2D.enabled = true
+	return new_name
+
+func weapon_changed():
+	var stream
+	match randi() % 15:
+		0:
+			stream = head.sounds.BOT_CHANGE_1
+		1:
+			stream = head.sounds.BOT_CHANGE_2
+		2:
+			stream = head.sounds.BOT_CHANGE_3
+		_:
+			pass
+	if typeof(stream) != TYPE_NIL:
+		head.play_stream(head.ui2, stream)
+
+# Update DB bots
+#------------------------------------------------
+func update_bots():
 	for i in range(bot_ids.size()):
 		if not head.DB.update_bot(
 				bot_ids[i],
@@ -175,56 +242,6 @@ func _on_finish_button_pressed():
 			print("  accent_color:     %d" % bots[i]["accent_color"])
 			print("  light_color:      %d" % bots[i]["light_color"])
 			print("  name:             %d" % bots[i]["name"])
-	
-	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
-	get_tree().change_scene("res://Scenes/main_menu.tscn")
-
-func _on_switch_description_pressed():
-	var button = $switch_description
-	if button.pressed:
-		button.text = "desc"
-		$item_description/stats.visible = false
-	else:
-		button.text = "stats"
-		$item_description/stats.visible = true
-	grab_info(current_info_type)
-
-func _on_not_confirm_pressed():
-	$confirm_finish.visible = false
-
-func _on_switch_description_mouse_entered():
-	$switch_description.modulate = Color("#ffffff")
-
-func _on_switch_description_mouse_exited():
-	$switch_description.modulate = Color("#aaaaaa")
-
-func button_hover_enter():
-	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
-
-# Update local bots
-#------------------------------------------------
-func update_current_bot():
-	bots[current]["primary_weapon"] = $item_scroll.current_item()["id"]
-	bots[current]["secondary_weapon"] = $item_scroll2.current_item()["id"]
-	bots[current]["utility"] = $item_scroll3.current_item()["id"]
-	bots[current]["primary_color"] = $color_scroll.get_selected_color().to_rgba32()
-	bots[current]["secondary_color"] = $color_scroll2.get_selected_color().to_rgba32()
-	bots[current]["accent_color"] = $color_scroll3.get_selected_color().to_rgba32()
-#	bots[current]["light_color"] = $color_scroll4.get_selected_color().to_rgba32()
-
-func weapon_changed():
-	var stream
-	match randi() % 15:
-		0:
-			stream = head.sounds.BOT_CHANGE_1
-		1:
-			stream = head.sounds.BOT_CHANGE_2
-		2:
-			stream = head.sounds.BOT_CHANGE_3
-		_:
-			pass
-	if typeof(stream) != TYPE_NIL:
-		head.play_stream(head.ui2, stream)
 
 # Display/organize data
 #------------------------------------------------

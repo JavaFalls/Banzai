@@ -23,19 +23,29 @@ onready var game_state      = get_node("game_state")
 onready var f               = File.new()
 onready var t               = Timer.new()
 
+# Get Opponent
+onready var opponent_bot_ID = get_opponent(head.bot_ID)
+
+# Get bot information, and load bot models from the database
+onready var bot_data        = JSON.parse(
+				        head.DB.get_bot(head.bot_ID,
+								        "File_%s.h5" % str(head.bot_ID))).result["data"][0]
+onready var opponent_data   = JSON.parse(
+						head.DB.get_bot(opponent_bot_ID,
+										"File_%s.h5" % str(opponent_bot_ID))).result["data"][0]
+
 # The signal that is emitted when a fighter's hit_points reach zero
-signal game_end
+signal post_game
 
 func _ready():
 	#f.open('res://NeuralNetwork/gamestates', 3)
-	# Get data about the bots from the DB
-    # Call get opponent here
-	var opponent_bot_ID = get_opponent(head.bot_ID)
-	var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
-	var opponent_data = JSON.parse(head.DB.get_bot(opponent_bot_ID)).result["data"][0]
-	
+
+	# Load bots into the Neural Network
+	load_bot()
+
 	# Initialize the bots
-	fighter1 = player_scene.instance() #dummy_scene.instance()
+	fighter1 = bot_scene.instance()
+	#fighter1 = player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
@@ -53,7 +63,8 @@ func _ready():
 	#---------------------------------------------------------
 	fighter1.is_player = 1
 
-	fighter2 = dummy_scene.instance() # fighter2 = player_scene.instance()
+	fighter2 = bot_scene.instance()
+	#fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
@@ -74,7 +85,6 @@ func _ready():
 	fighter2.set_opponent(fighter1)
 
 	# Connect signal for post game
-	connect("game_end", self, "post_game")
 	fighter1.connect("game_end", self, "post_game")
 	fighter2.connect("game_end", self, "post_game")
 
@@ -98,6 +108,7 @@ func _process(delta):
 
 # This function is called when one of the fighters hits zero hit_points
 func post_game():
+	self.emit_signal("post_game")
 	var popup_message
 	head.battle_winner_calc(fighter1.get_hit_points(), fighter2.get_hit_points())
 	var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
@@ -155,9 +166,11 @@ func get_opponent(bot_id):
 	return opponent
 
 func send_nn_state(bot_number):
+	game_state.set_opponent_state(fighter1)
+	game_state.set_bot_state(fighter2)
 	var output = []
 	var message
-	message = '{ "Message Type": "Train", "Message": %s }' % str(game_state.get_battle_state())
+	message = '{ "Message Type": "Battle", "Message": %s }' % str(game_state.get_battle_state())
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 
@@ -165,10 +178,8 @@ func send_nn_state(bot_number):
 	output = output.split_floats(",", 0)
 	for x in output:
 		x = int(x)
-	print(output[0])
 	game_state.set_predictions(output[0])
-	
-	#game_state.set_opponent_predictions(output[1])
+	game_state.set_opponent_predictions(output[1])
 	#game_state.set_opponent_predictions(output)
 	return
 
@@ -179,3 +190,17 @@ func fight_again():
 func main_menu():
 	get_tree().paused = false
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
+
+# Load Bot for Battle
+func load_bot():
+	var message
+	# Load Opponent bot into Neural Network
+	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "Yes" }' % str(opponent_bot_ID)
+	head.Client.send_request(message)
+	var output = head.Client.get_response()
+	
+	# Load Player bot into Neural Network
+	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
+	head.Client.send_request(message)
+	output = head.Client.get_response()
+	return !(output == 'successful')

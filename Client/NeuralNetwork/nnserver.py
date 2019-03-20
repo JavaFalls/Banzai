@@ -12,7 +12,7 @@ from tensorflow.keras.optimizers import Adam
 import random
 import numpy as np
 from collections import deque
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 
 # Just disables the warning, doesn't enable AVX/FMA
 import os
@@ -20,7 +20,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 state_size  = 13
 action_size = 108
-batch_size  = 1
+batch_size  = 16
 
 BOT_POSITION_X      = 0
 BOT_POSITION_Y      = 1
@@ -125,28 +125,37 @@ class DQN_agent:
         self.state_size = state_size
         self.action_size = action_size
 
-        self.memory = deque(maxlen=64)
+        self.memory = deque(maxlen=20000)
         self.gamma         = 0.9 # discount future reward; used for Q which doesn't work for us
-        self.epsilon       = .1 # exploration rate; initial rate; skew 100% towards exploration
-        self.epsilon_decay = 1 # rate at which epsilon decays; get multiplied to epsilon
+        self.epsilon       = 1 # exploration rate; initial rate; skew 100% towards exploration
+        self.epsilon_decay = .995 # rate at which epsilon decays; get multiplied to epsilon
         self.epsilon_min   = 0.1 # floor that epsilon will rest at after heavy training
 
         self.learning_rate = .5
 
-        self.reward        = 0
-        self.state_counter = 0
-        self.action        = 0
+        self.reward        = 0      # reward calculated from two consecutive gamestates
+        self.state_counter = 0      # how many game states have been sent from Godot
+        self.action        = 0      # the action predicted by the neural network
         self.player_action = 0      # the action performed by the human and not the neural network
         self.gamestate     = 0
-        self.rewards       = [] 
+        self.rewards       = []
         self.reward_total  = 0
+        self.total_accuracy_reward = 0
+        self.total_avoidance_reward = 0
+        self.total_approach_reward = 0
+        self.total_flee_reward = 0
+        self.total_damage_dealt_reward = 0
+        self.ptotal_damage_received_reward = 0
+        self.total_health_received_reward = 0
         self.number_of_rewards = 0
 
         self.model = self._build_model()
 
     def _build_model(self): # defines the NN
         model = Sequential()
-        model.add(Dense(216, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(55, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(110, activation='relu'))
+        model.add(Dense(55, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
 
         model.compile(loss='mean_absolute_error', optimizer=Adam(lr = self.learning_rate))
@@ -171,7 +180,7 @@ class DQN_agent:
     def replay(self, batch_size):
         minibatch = random.sample(self.memory, batch_size)
 
-        for state, action, reward, next_state in self.memory: # use minibatch for a random smaller sample
+        for state, action, reward, next_state in minibatch: # use minibatch for a random smaller sample
         #     print(state)
         #     print(action)
         #     print(reward)
@@ -188,8 +197,9 @@ class DQN_agent:
 
     def load(self):
         self.model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
-    def save(self):
-        self.model = save_model(self.model, __file__.replace('nnserver.py', 'my_model.h5'))
+
+    def save_bot(self, file_name = 'my_model.h5'):
+        self.model = save_model(self.model, __file__.replace('nnserver.py', file_name))
 
     def reshape(self, gamestate):
         input_list = []
@@ -217,6 +227,9 @@ class DQN_agent:
             print("########################################")
             #self.remember(np.flip(self.gamestate,1),self.player_action,self.reward,np.flip(next_gamestate,1))# for train on player
             self.remember(self.gamestate,self.action,self.reward,next_gamestate)
+            if np.amax(self.model.predict(self.gamestate)[0]) < self.reward: #if predicted reward < actual reward then explore
+                    self.epsilon *= 1.04
+                    print("epsilon increased-----")
             self.gamestate = next_gamestate
         else:
             self.gamestate = new_gamestate # get the gamestate
@@ -224,10 +237,11 @@ class DQN_agent:
         self.state_counter +=1
         self.action = self.predict(self.gamestate)
 
-        # if len(self.memory) % batch_size == 0 and len(self.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
-        #         self.replay(batch_size)
-        if len(self.memory) > 0: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+        if len(self.memory) % batch_size == 0 and len(self.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
                 self.replay(batch_size)
+                self.save_bot()
+        # if len(self.memory) > 0: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+        #         self.replay(batch_size)
 
         return self.action
     def graph_rewards(self):
@@ -235,7 +249,7 @@ class DQN_agent:
         plt.ylabel('Rewards')
         plt.xlabel('Epoch')
         plt.plot(self.rewards)
-        plt.legend(['Average Total Rewards', 'Epsilon'], loc='bottom right')
+        plt.legend(['Total Rewards', 'accuracy_reward', 'avoidance_reward', 'approach_reward', 'flee_reward', 'damage_dealt_reward', 'damage_received_reward' , 'health_received_reward' ], loc='bottom right')
         plt.show()
         return
 
@@ -300,7 +314,7 @@ class DQN_agent:
         else:
                 if gamestate[OPPONENT_DISTANCE] <= .15:
                      approach_reward = 2
-                     
+
         print(gamestate[OPPONENT_DISTANCE])
         # reward for avoiding being targeted ##################################################################
         avoidance_reward = 0
@@ -348,7 +362,7 @@ class DQN_agent:
         # new_reward -= (gamestate[4]+next_gamestate[4]) * 10                    # criticism for the bot being in peril # dont use
 
         # if (((gamestate[3] - next_gamestate[3]) == 0) and ((gamestate[4] - next_gamestate[4]) == 1)): # reward for dodging
-        
+
         print("accuracy_reward:           ", accuracy_reward)
         print("avoidance_reward:          ", avoidance_reward)
         print("approach_reward:           ", approach_reward)
@@ -404,15 +418,28 @@ class DQN_agent:
         #         new_reward = -1
 
         self.reward_total += new_reward
+        self.total_accuracy_reward += accuracy_reward
+        self.total_avoidance_reward += avoidance_reward
+        self.total_approach_reward  += approach_reward
+        self.total_flee_reward += flee_reward
+        self.total_damage_dealt_reward +=damage_dealt_reward
+        self.ptotal_damage_received_reward += damage_received_reward
+        self.total_health_received_reward += health_received_reward
         self.number_of_rewards +=1
-        self.rewards.append([(self.reward_total / self.number_of_rewards), self.epsilon])
+        self.rewards.append([(self.reward_total / self.number_of_rewards),  self.total_accuracy_reward/ self.number_of_rewards,
+        self.total_avoidance_reward/ self.number_of_rewards,
+        self.total_approach_reward / self.number_of_rewards,
+        self.total_flee_reward/ self.number_of_rewards,
+        self.total_damage_dealt_reward/ self.number_of_rewards,
+        self.ptotal_damage_received_reward/ self.number_of_rewards,
+        self.total_health_received_reward/ self.number_of_rewards])
         print("                                                                               *reward     ",new_reward)
         return new_reward
 
 
 def load_bot(file_name = 'my_model.h5'):
-   model = load_model(__file__.replace('nnserver.py', file_name))
-   return model
+   return load_model(__file__.replace('nnserver.py', file_name))
+   
 def reshape(gamestate, state_size):
         input_list = []
         output_list = []
@@ -442,7 +469,8 @@ def process_message(message):
         elif message["Message Type"] == "Load"   :
                 if   message["Game Mode"] == "Train":
                         player_bot = load_bot(message["File Name"])
-                        return
+                        print("Player Bot Loaded")
+                        return "successful"
                 elif message["Game Mode"] == "Battle":
                         if   message["Opponent?"] == "Yes":
                                 opponent_bot = load_bot(message["File Name"])
@@ -450,11 +478,13 @@ def process_message(message):
                                 player_bot = load_bot(message["File Name"])
                         else:
                                 return print("Invalid Opponent")
+                        print("Player || Opponent Bot Loaded")
+                        return "successful"
                 else:
                         return print("Invalid Game Mode")
                 pass
         elif message["Message Type"] == "save"   :
-                player_bot = save_bot(message["File Name"])
+                player_bot = fighter1.save_bot(message["File Name"])
         elif message["Message Type"] == "Kill"   :
                 output = 109
         else:
@@ -476,6 +506,9 @@ fighter2 = DQN_agent(state_size, action_size)
 bot = load_bot()
 response = []
 
+########################################################################################################################
+###                                                  MAIN FUNCTION                                                   ###
+########################################################################################################################
 # Tell Godot I'm ready to connect
 successful = False
 while not successful:
@@ -498,19 +531,22 @@ while not successful:
                         print("Closed Pipe")
                         successful = True
 
+# Connect both ends of the pipes
 connect_request()
 connect_response()
+
 count = 1
+
+# Process a message and give a response
 while True:
 
         print("Server Code\n\n")
-        #print("get request")
         gamestate = []
         next_gamestate = []
-        # print("Server Code\n\n")
-        # print("get request")
 
         request_completed = False
+
+        # Receive a request from the client
         try:
                 request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '').replace('\x00', '')
                 #print(request)
@@ -527,7 +563,7 @@ while True:
                 break
         #print(request)
         #response = fighter1.train(request)
-        if(count % 109 == 0):
+        if(count % 1009 == 0):
             fighter1.graph_rewards()
         count+=1
         send_response(response) # send the action or actions or load successful message based on packet type

@@ -14,6 +14,7 @@ const DISABLE_TIME = 1.0 # How long to disable and immoblize the bot after launc
 # The variables
 #------------------------------------------------------------------------
 # Stat variables:
+var id
 var damage         = 0
 var cooldown       = 0.0        # Time for using cooldown
 
