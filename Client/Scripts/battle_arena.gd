@@ -164,6 +164,8 @@ func get_opponent(bot_id):
 	return opponent
 
 func send_nn_state(bot_number):
+	game_state.set_opponent_state(fighter1)
+	game_state.set_bot_state(fighter2)
 	var output = []
 	var message
 	message = '{ "Message Type": "Battle", "Message": %s }' % str(game_state.get_battle_state())
@@ -190,6 +192,8 @@ func main_menu():
 # Load Bot for Battle
 func load_bot():
 	# Load Opponent bot into Neural Network
+	var output = []
+	var message
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "Yes" }' % str(opponent_bot_ID)
 	head.Client.send_request(message)
 	output = head.Client.get_response()
