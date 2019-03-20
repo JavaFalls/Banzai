@@ -195,11 +195,8 @@ class DQN_agent:
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
 
-    def load(self):
-        self.model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
-
-    def save_bot(self, file_name = 'my_model.h5'):
-        self.model = save_model(self.model, __file__.replace('nnserver.py', file_name))
+    def save_bot(self, file_name = 'my_model.h5'): # remove the assigment when save gets sent from godot
+        save_model(self.model, __file__.replace('nnserver.py', file_name))
 
     def reshape(self, gamestate):
         input_list = []
@@ -306,6 +303,7 @@ class DQN_agent:
 
         # Reward for being close to the opponent ##############################################################
         approach_reward = 0
+
         if (gamestate[OPPONENT_DISTANCE] - next_gamestate[OPPONENT_DISTANCE]):
                 if gamestate[OPPONENT_DISTANCE] < next_gamestate[OPPONENT_DISTANCE]:
                         approach_reward = -1
@@ -473,9 +471,9 @@ def process_message(message):
                         return "successful"
                 elif message["Game Mode"] == "Battle":
                         if   message["Opponent?"] == "Yes":
-                                opponent_bot = load_bot(message["File Name"])
+                                fighter2.model = load_bot(message["File Name"])
                         elif message["Opponent?"] == "No":
-                                player_bot = load_bot(message["File Name"])
+                                fighter1.model = load_bot(message["File Name"])
                         else:
                                 return print("Invalid Opponent")
                         print("Player || Opponent Bot Loaded")
@@ -484,7 +482,7 @@ def process_message(message):
                         return print("Invalid Game Mode")
                 pass
         elif message["Message Type"] == "save"   :
-                player_bot = fighter1.save_bot(message["File Name"])
+                fighter1.save_bot(message["File Name"])
         elif message["Message Type"] == "Kill"   :
                 output = 109
         else:
@@ -492,18 +490,9 @@ def process_message(message):
         return output
 
 
-# Loaded Bot files
-player_bot = None
-opponent_bot = None
-def load():
-        #if we load and don't start fresh
-       fighter1.load()
-       fighter2.load()
-
 fighter1 = DQN_agent(state_size, action_size)
 fighter2 = DQN_agent(state_size, action_size)
 
-bot = load_bot()
 response = []
 
 ########################################################################################################################
