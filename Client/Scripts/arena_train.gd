@@ -92,7 +92,7 @@ func send_nn_state():
 # Popup Functions
 func keep_data():
 	get_tree().paused = false
-	#head.DB.update_model(head.model_ID, "idk_what_the_filename_for_the_model_would_be")
+	save_bot()
 	popup.free()
 	final_popup()
 func drop_data():
@@ -120,7 +120,14 @@ func _on_back_pressed():
 
 # Load Bot for Training
 func load_bot():
-	message = '{ "Message Type":"Load", "Game Mode": "Train", "File Name": "File_%s.h5" }' % str(head.bot_ID)
+	var message = '{ "Message Type":"Load", "Game Mode": "Train", "File Name": "File_%s.h5" }' % str(head.bot_ID)
 	head.Client.send_request(message)
-	output = head.Client.get_response()
+	var output = head.Client.get_response()
 	return output == 'true'
+
+# Save Bot after training
+func save_bot():
+	var message = '{ "Message Type": "Save", "File Name": "%s"}' % str(head.bot_ID)
+	head.Client.send_request(message)
+	var output = head.Client.get_response()
+	head.DB.update_model_by_bot_id()

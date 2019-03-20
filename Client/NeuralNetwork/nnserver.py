@@ -198,8 +198,8 @@ class DQN_agent:
     def load(self):
         self.model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
 
-    def save_bot(self):
-        self.model = save_model(self.model, __file__.replace('nnserver.py', 'my_model.h5'))
+    def save_bot(self, file_name = 'my_model.h5'):
+        self.model = save_model(self.model, __file__.replace('nnserver.py', file_name))
 
     def reshape(self, gamestate):
         input_list = []

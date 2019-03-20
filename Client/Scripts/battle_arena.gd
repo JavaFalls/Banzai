@@ -189,10 +189,11 @@ func main_menu():
 	
 # Load Bot for Battle
 func load_bot():
+	var message
 	# Load Opponent bot into Neural Network
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "Yes" }' % str(opponent_bot_ID)
 	head.Client.send_request(message)
-	output = head.Client.get_response()
+	var output = head.Client.get_response()
 	
 	# Load Player bot into Neural Network
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
