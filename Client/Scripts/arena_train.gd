@@ -132,7 +132,7 @@ func load_bot():
 
 # Save Bot after training
 func save_bot():
-	var message = '{ "Message Type": "Save", "File Name": "%s"}' % str(head.bot_ID)
+	var message = '{ "Message Type": "Save", "File Name": "File_%s.h5"}' % str(head.bot_ID)
 	head.Client.send_request(message)
 	var output = head.Client.get_response()
 	head.DB.update_model_by_bot_id(head.bot_ID, 'File_%s.h5' % str(head.bot_ID))
