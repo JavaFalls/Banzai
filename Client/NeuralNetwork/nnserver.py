@@ -465,18 +465,19 @@ def process_message(message):
         elif message["Message Type"] == "Battle"  :
                 fighter1.epsilon = 0
                 fighter2.epsilon = 0
-                # output = fighter1.train(   reshape(message["Message"] , fighter1.get_state_size()) ), 0  #fighter2.predict(   reshape(message["Message"] , fighter2.get_state_size()) )
-                output = [0,0]
+                output = np.argmax(fighter1.model.predict(   reshape(message["Message"] , fighter1.get_state_size()) )), 0 # np.argmax(fighter2.model.predict(   reshape(message["Message"] , fighter2.get_state_size()) ))
+                # output = [0,0]
         elif message["Message Type"] == "Load"   :
                 if   message["Game Mode"] == "Train": # todo: don't load for train
-                        fighter1.model = load_bot(message["File Name"])
+                        #fighter1.model = load_bot(message["File Name"])
                         print("Player Bot Loaded:", message["File Name"])
                         return "successful"
                 elif message["Game Mode"] == "Battle": # todo: dont load the player's bot only the opponent's bot
                         if   message["Opponent?"] == "Yes":
                                 fighter2.model = load_bot(message["File Name"])
                         elif message["Opponent?"] == "No":
-                                fighter1.model = load_bot(message["File Name"])
+                                #fighter1.model = load_bot(message["File Name"])
+                                print()
                         else:
                                 return print("Invalid Opponent")
                         print("Player || Opponent Bot Loaded", message["File Name"])
@@ -484,7 +485,7 @@ def process_message(message):
                 else:
                         return print("Invalid Game Mode")
                 pass
-        elif message["Message Type"] == "save"   :
+        elif message["Message Type"] == "Save"   :
                 fighter1.save_bot(message["File Name"])
         elif message["Message Type"] == "Kill"   :
                 output = 109
