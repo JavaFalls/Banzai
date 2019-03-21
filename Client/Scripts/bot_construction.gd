@@ -37,7 +37,7 @@ func _ready():
 				if not constructing_player:
 					bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
 					bot_ids.append(id.to_int())
-				elif constructing_player and id.to_int() == head.bot_ID:
+				elif id.to_int() == head.player_bot_ID:
 					bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
 					bot_ids.append(id.to_int())
 					break
@@ -68,10 +68,14 @@ func _ready():
 	$color_scroll3.connect("color_changed", self, "set_display_bot_colors")
 	
 	if not bots.empty():
-		for i in range(bot_ids.size()):
-			if bot_ids[i] == head.bot_ID:
-				get_bot_info(bots[i])
-				break
+		if constructing_player:
+			get_bot_info(bots[current])
+		else:
+			for i in range(bot_ids.size()):
+				if bot_ids[i] == head.bot_ID:
+					current = i
+					get_bot_info(bots[current])
+					break
 	
 	$animation_bot.face_left()
 	randomize()
@@ -125,7 +129,10 @@ func _on_test_button_pressed():
 	update_current_bot()
 	update_bots()
 	
-	head.bot_ID = bot_ids[current]
+	if constructing_player:
+		head.player_bot_ID = bot_ids[current]
+	else:
+		head.bot_ID = bot_ids[current]
 	get_tree().change_scene("res://Scenes/arena_test.tscn")
 
 func _on_finish_button_pressed():
@@ -135,7 +142,10 @@ func _on_finish_button_pressed():
 	update_current_bot()
 	update_bots()
 	
-	head.bot_ID = bot_ids[current]
+	if constructing_player:
+		head.player_bot_ID = bot_ids[current]
+	else:
+		head.bot_ID = bot_ids[current]
 	
 	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
