@@ -197,6 +197,7 @@ class DQN_agent:
 
     def save_bot(self, file_name = 'my_model.h5'): # remove the assigment when save gets sent from godot
         save_model(self.model, __file__.replace('nnserver.py', file_name))
+        print("saved model: ", file_name)
 
     def reshape(self, gamestate):
         input_list = []
@@ -349,7 +350,7 @@ class DQN_agent:
         if (gamestate[BOT_HEALTH] > next_gamestate[BOT_HEALTH]):
                 damage_received_reward = -1
 
-        # Criticism for getting damaged ######################################################################
+        # reward for healing ######################################################################
         health_received_reward = 0
         if (gamestate[BOT_HEALTH] < next_gamestate[BOT_HEALTH]):
                 health_received_reward = 2
@@ -459,24 +460,26 @@ def process_message(message):
 
 
         if message["Message Type"] == "Train"  :
+                fighter1.epsilon = 1
                 output = fighter1.train(   reshape(message["Message"] , fighter1.get_state_size()) )
         elif message["Message Type"] == "Battle"  :
-                output = fighter1.predict(   reshape(message["Message"] , fighter1.get_state_size()) ),  fighter2.predict(   reshape(message["Message"] , fighter2.get_state_size()) )
-        elif message["Message Type"] == "Battle"  :
-                output = fighter1.predict(   reshape(message["Message"] , fighter1.get_state_size()) ),  fighter2.predict(   reshape(message["Message"] , fighter1.get_state_size()) )
+                fighter1.epsilon = 0
+                fighter2.epsilon = 0
+                # output = fighter1.train(   reshape(message["Message"] , fighter1.get_state_size()) ), 0  #fighter2.predict(   reshape(message["Message"] , fighter2.get_state_size()) )
+                output = [0,0]
         elif message["Message Type"] == "Load"   :
-                if   message["Game Mode"] == "Train":
-                        player_bot = load_bot(message["File Name"])
-                        print("Player Bot Loaded")
+                if   message["Game Mode"] == "Train": # todo: don't load for train
+                        fighter1.model = load_bot(message["File Name"])
+                        print("Player Bot Loaded:", message["File Name"])
                         return "successful"
-                elif message["Game Mode"] == "Battle":
+                elif message["Game Mode"] == "Battle": # todo: dont load the player's bot only the opponent's bot
                         if   message["Opponent?"] == "Yes":
                                 fighter2.model = load_bot(message["File Name"])
                         elif message["Opponent?"] == "No":
                                 fighter1.model = load_bot(message["File Name"])
                         else:
                                 return print("Invalid Opponent")
-                        print("Player || Opponent Bot Loaded")
+                        print("Player || Opponent Bot Loaded", message["File Name"])
                         return "successful"
                 else:
                         return print("Invalid Game Mode")
