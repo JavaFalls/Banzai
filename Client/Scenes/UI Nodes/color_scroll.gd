@@ -50,20 +50,23 @@ func _on_right_pressed():
 
 # Setters
 #--------
-func set_current(index=null, color=null):
-	if typeof(index) == TYPE_INT:
-		current = index
-	elif typeof(color) == TYPE_INT or typeof(color) == TYPE_REAL:
+func set_current(color):
+	if typeof(color) == TYPE_INT or typeof(color) == TYPE_REAL:
 		var c_color = Color(int(color)) if typeof(color) == TYPE_REAL else Color(color) # RGBA integer construction
-		var h = c_color.h
-		var s = c_color.s
+		var m_color
 		for i in range(colors.size()):
-			if h == colors[i].h and s == colors[i].s:
-				current = i
-				reset_color_boxes()
-				set_box_color(c_color.v)
-				emit_signal("color_changed")
-				break
+			var value = 0.2
+			m_color = colors[i]
+			for m in range(5):
+				m_color.v = value
+				if c_color.to_rgba32() < m_color.to_rgba32() + 2000 and c_color.to_rgba32() > m_color.to_rgba32() - 2000:
+					current = i
+					reset_color_boxes()
+					set_box_color(c_color.v)
+					emit_signal("color_changed")
+					i = colors.size()
+					break
+				value += 0.2
 
 func set_box_color(value):
 	if value < 0.9:

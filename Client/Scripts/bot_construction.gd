@@ -37,7 +37,7 @@ func _ready():
 				if not constructing_player:
 					bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
 					bot_ids.append(id.to_int())
-				elif constructing_player and id.to_int() == head.bot_ID:
+				elif id.to_int() == head.player_bot_ID:
 					bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
 					bot_ids.append(id.to_int())
 					break
@@ -68,9 +68,14 @@ func _ready():
 	$color_scroll3.connect("color_changed", self, "set_display_bot_colors")
 	
 	if not bots.empty():
-		for i in range(bot_ids.size()):
-			if bot_ids[i] == head.bot_ID:
-				get_bot_info(bots[i])
+		if constructing_player:
+			get_bot_info(bots[current])
+		else:
+			for i in range(bot_ids.size()):
+				if bot_ids[i] == head.bot_ID:
+					current = i
+					get_bot_info(bots[current])
+					break
 	
 	$animation_bot.face_left()
 	randomize()
@@ -115,16 +120,19 @@ func _on_new_button_pressed():
 			else:
 				id += c
 		
-		update_current_bot()
-		current = bots.size()-1
-		get_bot_info(bots[current])
-		reset_info()
+	update_current_bot()
+	current = bots.size()-1
+	get_bot_info(bots[current])
+	reset_info()
 
 func _on_test_button_pressed():
 	update_current_bot()
 	update_bots()
 	
-	head.bot_ID = bot_ids[current]
+	if constructing_player:
+		head.player_bot_ID = bot_ids[current]
+	else:
+		head.bot_ID = bot_ids[current]
 	get_tree().change_scene("res://Scenes/arena_test.tscn")
 
 func _on_finish_button_pressed():
@@ -134,7 +142,10 @@ func _on_finish_button_pressed():
 	update_current_bot()
 	update_bots()
 	
-	head.bot_ID = bot_ids[current]
+	if constructing_player:
+		head.player_bot_ID = bot_ids[current]
+	else:
+		head.bot_ID = bot_ids[current]
 	
 	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
@@ -214,6 +225,7 @@ func weapon_changed():
 # Update DB bots
 #------------------------------------------------
 func update_bots():
+	var default_color = Color("#ffffffff").to_rgba32() # Default to white
 	for i in range(bot_ids.size()):
 		if not head.DB.update_bot(
 				bot_ids[i],
@@ -227,7 +239,7 @@ func update_bots():
 					bots[i]["primary_color"],
 					bots[i]["secondary_color"],
 					bots[i]["accent_color"],
-					bots[i]["light_color"]
+					default_color
 				],
 				bots[i]["name"]):
 			print("Updating bot_id %d failed with args:" % bot_ids[i])
@@ -240,7 +252,6 @@ func update_bots():
 			print("  primary_color:    %d" % bots[i]["primary_color"])
 			print("  secondary_color:  %d" % bots[i]["secondary_color"])
 			print("  accent_color:     %d" % bots[i]["accent_color"])
-			print("  light_color:      %d" % bots[i]["light_color"])
 			print("  name:             %d" % bots[i]["name"])
 
 # Display/organize data
@@ -308,9 +319,9 @@ func get_bot_info(bot_data):
 	$item_scroll.set_current(null, bot_data["primary_weapon"])
 	$item_scroll2.set_current(null, bot_data["secondary_weapon"])
 	$item_scroll3.set_current(null, bot_data["utility"])
-	$color_scroll.set_current(null, bot_data["primary_color"])
-	$color_scroll2.set_current(null, bot_data["secondary_color"])
-	$color_scroll3.set_current(null, bot_data["accent_color"])
+	$color_scroll.set_current(bot_data["primary_color"])
+	$color_scroll2.set_current(bot_data["secondary_color"])
+	$color_scroll3.set_current(bot_data["accent_color"])
 #	$color_scroll4.set_current(null, bot_data["light_color"])
 
 func set_display_bot_colors():

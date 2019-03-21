@@ -1,6 +1,8 @@
 extends Node2D
 
-# The Bot
+# The Player and Bot
+onready var player_data = JSON.parse(
+	head.DB.get_bot(head.player_bot_ID, "File_%s.h5" % str(head.player_bot_ID))).result["data"][0]
 onready var bot_data = JSON.parse(
 					   head.DB.get_bot(head.bot_ID,
 									   "File_%s.h5" % str(head.bot_ID))).result["data"][0]
@@ -29,12 +31,12 @@ func _ready():
 	fighter1.set_pause_mode(Node.PAUSE_MODE_STOP)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
-	fighter1.set_weapons(weapon_creator.create_weapon(bot_data["primary_weapon"]), weapon_creator.create_weapon(bot_data["secondary_weapon"]), weapon_creator.create_weapon(bot_data["utility"]))
-	get_node("fighter1_cooldowns").init(bot_data["primary_weapon"], fighter1.primary_weapon,
-	                                    bot_data["secondary_weapon"], fighter1.secondary_weapon,
-										bot_data["utility"], fighter1.ability)
+	fighter1.set_weapons(weapon_creator.create_weapon(player_data["primary_weapon"]), weapon_creator.create_weapon(player_data["secondary_weapon"]), weapon_creator.create_weapon(player_data["utility"]))
+	get_node("fighter1_cooldowns").init(player_data["primary_weapon"], fighter1.primary_weapon,
+	                                    player_data["secondary_weapon"], fighter1.secondary_weapon,
+										player_data["utility"], fighter1.ability)
 	fighter1.is_player = 1
-	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
+	fighter1.get_node("animation_bot").load_colors_from_DB(head.player_bot_ID)
 
 
 	fighter2 = bot_scene.instance()
@@ -72,6 +74,8 @@ func _process(delta):
 
 func _input(event):
 	if Input.is_action_just_pressed("exit_arena"):
+		save_bot()
+		print("bot saved", head.bot_ID)
 		if not get_tree().is_paused():
 			get_tree().set_pause(true)
 			$exit.visible = true
@@ -82,6 +86,7 @@ func send_nn_state():
 	var output = []
 	var message
 	message = '{ "Message Type": "Train", "Message": %s }' % str(game_state.get_battle_state())
+	print(message,"arena train sendnnserver")
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 	output = int(output)
@@ -124,11 +129,13 @@ func load_bot():
 	message = '{ "Message Type":"Load", "Game Mode": "Train", "File Name": "File_%s.h5" }' % str(head.bot_ID)
 	head.Client.send_request(message)
 	output = head.Client.get_response()
+	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/File_%s.h5' % str(head.bot_ID)))
 	return output == 'true'
 
 # Save Bot after training
 func save_bot():
-	var message = '{ "Message Type": "Save", "File Name": "%s"}' % str(head.bot_ID)
+	var message = '{ "Message Type": "Save", "File Name": "File_%s.h5"}' % str(head.bot_ID)
 	head.Client.send_request(message)
 	var output = head.Client.get_response()
-	head.DB.update_model_by_bot_id()
+	head.DB.update_model_by_bot_id(head.bot_ID, 'File_%s.h5' % str(head.bot_ID))
+	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/File_%s.h5' % str(head.bot_ID)))
