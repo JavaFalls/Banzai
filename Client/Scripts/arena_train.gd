@@ -127,6 +127,7 @@ func load_bot():
 	message = '{ "Message Type":"Load", "Game Mode": "Train", "File Name": "File_%s.h5" }' % str(head.bot_ID)
 	head.Client.send_request(message)
 	output = head.Client.get_response()
+	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/File_%s.h5' % str(head.bot_ID)))
 	return output == 'true'
 
 # Save Bot after training
@@ -134,4 +135,5 @@ func save_bot():
 	var message = '{ "Message Type": "Save", "File Name": "%s"}' % str(head.bot_ID)
 	head.Client.send_request(message)
 	var output = head.Client.get_response()
-	head.DB.update_model_by_bot_id()
+	head.DB.update_model_by_bot_id(head.bot_ID, 'File_%s.h5' % str(head.bot_ID))
+	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/File_%s.h5' % str(head.bot_ID)))

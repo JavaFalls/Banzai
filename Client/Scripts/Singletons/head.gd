@@ -34,7 +34,8 @@ var loader = preload("res://Scenes/loading.tscn")
 # Screen Position and Size
 var screen_size = OS.get_screen_size()
 var window_size = OS.get_window_size()
-var pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
+
+var dir = Directory.new()
 
 # Username
 var username = ""
@@ -50,6 +51,7 @@ var player_ID = -1;
 var model_ID = -1;
 var bot_ID = -1;
 onready var DB = DBConnector.new()
+onready var pid = launch_neural_network()
 onready var Client = NNClient.new()
 
 # Bot Info
@@ -126,6 +128,16 @@ func load_scene(path):
 	get_tree().change_scene_to(loader)
 	yield(get_tree(), "node_added")
 	get_node("/root/loading").load_scene(path)
+
+# Launch Neural Network
+func launch_neural_network():
+	var pid
+	if dir.file_exists(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py')):
+		pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
+	else:
+		if dir.file_exists(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.exe')):
+			pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.exe'))
+	return pid
 
 func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
 	var hit_points_diff = fighter1_hit_points - fighter2_hit_points
