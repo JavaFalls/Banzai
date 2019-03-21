@@ -71,6 +71,7 @@ func _ready():
 		for i in range(bot_ids.size()):
 			if bot_ids[i] == head.bot_ID:
 				get_bot_info(bots[i])
+				break
 	
 	$animation_bot.face_left()
 	randomize()
@@ -115,10 +116,10 @@ func _on_new_button_pressed():
 			else:
 				id += c
 		
-		update_current_bot()
-		current = bots.size()-1
-		get_bot_info(bots[current])
-		reset_info()
+	update_current_bot()
+	current = bots.size()-1
+	get_bot_info(bots[current])
+	reset_info()
 
 func _on_test_button_pressed():
 	update_current_bot()
@@ -214,6 +215,7 @@ func weapon_changed():
 # Update DB bots
 #------------------------------------------------
 func update_bots():
+	var default_color = Color("#ffffffff").to_rgba32() # Default to white
 	for i in range(bot_ids.size()):
 		if not head.DB.update_bot(
 				bot_ids[i],
@@ -227,7 +229,7 @@ func update_bots():
 					bots[i]["primary_color"],
 					bots[i]["secondary_color"],
 					bots[i]["accent_color"],
-					bots[i]["light_color"]
+					default_color
 				],
 				bots[i]["name"]):
 			print("Updating bot_id %d failed with args:" % bot_ids[i])
@@ -240,7 +242,6 @@ func update_bots():
 			print("  primary_color:    %d" % bots[i]["primary_color"])
 			print("  secondary_color:  %d" % bots[i]["secondary_color"])
 			print("  accent_color:     %d" % bots[i]["accent_color"])
-			print("  light_color:      %d" % bots[i]["light_color"])
 			print("  name:             %d" % bots[i]["name"])
 
 # Display/organize data
@@ -308,9 +309,9 @@ func get_bot_info(bot_data):
 	$item_scroll.set_current(null, bot_data["primary_weapon"])
 	$item_scroll2.set_current(null, bot_data["secondary_weapon"])
 	$item_scroll3.set_current(null, bot_data["utility"])
-	$color_scroll.set_current(null, bot_data["primary_color"])
-	$color_scroll2.set_current(null, bot_data["secondary_color"])
-	$color_scroll3.set_current(null, bot_data["accent_color"])
+	$color_scroll.set_current(bot_data["primary_color"])
+	$color_scroll2.set_current(bot_data["secondary_color"])
+	$color_scroll3.set_current(bot_data["accent_color"])
 #	$color_scroll4.set_current(null, bot_data["light_color"])
 
 func set_display_bot_colors():

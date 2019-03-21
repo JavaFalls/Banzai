@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bonusBOMBeffect (9).png-197e082a7f8d8d0f597211014828bf4d.stex"
+path="res://.import/bonusBOMBeffect (9).png-300360b4febd1defe8eb17ea1df78af1.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/nuke_effect/bonusBOMBeffect (9).png"
-dest_files=[ "res://.import/bonusBOMBeffect (9).png-197e082a7f8d8d0f597211014828bf4d.stex" ]
+source_file="res://assets/weapons/nuke_effect/bonusBOMBeffect (9).png"
+dest_files=[ "res://.import/bonusBOMBeffect (9).png-300360b4febd1defe8eb17ea1df78af1.stex" ]
 
 [params]
 
