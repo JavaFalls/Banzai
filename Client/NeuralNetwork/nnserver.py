@@ -196,7 +196,10 @@ class DQN_agent:
             self.epsilon *= self.epsilon_decay
 
     def save_bot(self, file_name = 'my_model.h5'): # remove the assigment when save gets sent from godot
-        save_model(self.model, __file__.replace('nnserver.py', file_name))
+        if __file__.find('nnserver.py') != -1:
+                save_model(self.model, __file__.replace('nnserver.py', file_name))
+        else:
+                save_model(self.model, __file__.replace('nnserver.exe', '/NeuralNetwork/' + file_name))
 
     def reshape(self, gamestate):
         input_list = []
@@ -436,7 +439,10 @@ class DQN_agent:
 
 
 def load_bot(file_name = 'my_model.h5'):
-   return load_model(__file__.replace('nnserver.py', file_name))
+        if __file__.find('nnserver.py') == -1:
+                return load_model(__file__.replace('nnserver.py', file_name))
+        else:
+                return load_model(__file__.replace('nnserver.exe', '/NeuralNetwork/' + file_name))
    
 def reshape(gamestate, state_size):
         input_list = []
@@ -466,7 +472,7 @@ def process_message(message):
                 output = fighter1.predict(   reshape(message["Message"] , fighter1.get_state_size()) ),  fighter2.predict(   reshape(message["Message"] , fighter1.get_state_size()) )
         elif message["Message Type"] == "Load"   :
                 if   message["Game Mode"] == "Train":
-                        player_bot = load_bot(message["File Name"])
+                        fighter1.model = load_bot(message["File Name"])
                         print("Player Bot Loaded")
                         return "successful"
                 elif message["Game Mode"] == "Battle":
