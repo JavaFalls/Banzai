@@ -196,7 +196,10 @@ class DQN_agent:
             self.epsilon *= self.epsilon_decay
 
     def save_bot(self, file_name = 'my_model.h5'): # remove the assigment when save gets sent from godot
-        save_model(self.model, __file__.replace('nnserver.py', file_name))
+        if __file__.find('nnserver.py') != -1:
+                save_model(self.model, __file__.replace('nnserver.py', file_name))
+        else:
+                save_model(self.model, __file__.replace('nnserver.exe', '/NeuralNetwork/' + file_name))
         print("saved model: ", file_name)
 
     def reshape(self, gamestate):
@@ -437,7 +440,10 @@ class DQN_agent:
 
 
 def load_bot(file_name = 'my_model.h5'):
-   return load_model(__file__.replace('nnserver.py', file_name))
+        if __file__.find('nnserver.py') == -1:
+                return load_model(__file__.replace('nnserver.py', file_name))
+        else:
+                return load_model(__file__.replace('nnserver.exe', '/NeuralNetwork/' + file_name))
    
 def reshape(gamestate, state_size):
         input_list = []
