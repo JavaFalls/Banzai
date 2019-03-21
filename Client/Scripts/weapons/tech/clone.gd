@@ -44,7 +44,6 @@ func _ready():
 		if a_signal["name"] == "post_game":
 			has_post_end_signal = true
 	if has_post_end_signal:
-		print("connected")
 		bot.get_parent().connect("post_game", self, "_post_end")
 
 # Function that is called when the ability is used
@@ -81,6 +80,5 @@ func _dummy_timer_timeout():
 	dummy = null
 
 func _post_end():
-	print("_post_end()")
 	if dummy != null:
 		dummy.set_physics_process(false)
