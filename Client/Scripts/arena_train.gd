@@ -72,6 +72,8 @@ func _process(delta):
 
 func _input(event):
 	if Input.is_action_just_pressed("exit_arena"):
+		save_bot()
+		print("bot saved", head.bot_ID)
 		if not get_tree().is_paused():
 			get_tree().set_pause(true)
 			$exit.visible = true
@@ -82,6 +84,7 @@ func send_nn_state():
 	var output = []
 	var message
 	message = '{ "Message Type": "Train", "Message": %s }' % str(game_state.get_battle_state())
+	print(message,"arena train sendnnserver")
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 	output = int(output)

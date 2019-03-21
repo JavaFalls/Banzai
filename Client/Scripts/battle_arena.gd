@@ -130,6 +130,7 @@ func post_game():
 	# Display battle over popup:
 	popup = arena_end_popup.instance()
 	self.add_child(popup)
+
 	popup.init("Battle Has Ended", "Again?", "Main Menu", self, "fight_again", self, "main_menu", popup_message)
 
 
@@ -171,8 +172,11 @@ func send_nn_state(bot_number):
 	var output = []
 	var message
 	message = '{ "Message Type": "Battle", "Message": %s }' % str(game_state.get_battle_state())
+	print(message,"arena battle sendnnserver")
 	head.Client.send_request(message)
 	output = head.Client.get_response()
+#	output = Vector2(1,1) # standin so that the nnserver doesn't have to be called.
+	
 
 	output = output.replacen("(", ",")
 	output = output.split_floats(",", 0)
