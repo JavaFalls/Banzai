@@ -195,7 +195,7 @@ class DQN_agent:
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
 
-    def save_bot(self, file_name = 'my_model.h5'): # remove the assigment when save gets sent from godot
+    def save_bot(self, file_name = 'my_model.h5'):
         if __file__.find('nnserver.py') != -1:
                 save_model(self.model, __file__.replace('nnserver.py', file_name))
         else:
@@ -440,6 +440,8 @@ class DQN_agent:
 
 
 def load_bot(file_name = 'my_model.h5'):
+        print("loading bot: ", file_name)
+        return load_model(__file__.replace('nnserver.py', file_name))
         if __file__.find('nnserver.py') == -1:
                 return load_model(__file__.replace('nnserver.py', file_name))
         else:
@@ -471,19 +473,23 @@ def process_message(message):
         elif message["Message Type"] == "Battle"  :
                 fighter1.epsilon = 0
                 fighter2.epsilon = 0
-                output = np.argmax(fighter1.model.predict(   reshape(message["Message"] , fighter1.get_state_size()) )), 0 # np.argmax(fighter2.model.predict(   reshape(message["Message"] , fighter2.get_state_size()) ))
+                output = np.argmax(fighter1.model.predict(   reshape(message["Message"] , fighter1.get_state_size()) )), np.argmax(fighter2.model.predict(   reshape(message["Message"] , fighter2.get_state_size()) ))
                 # output = [0,0]
         elif message["Message Type"] == "Load"   :
                 if   message["Game Mode"] == "Train": # todo: don't load for train
                         #fighter1.model = load_bot(message["File Name"])
-                        print("Player Bot Loaded:", message["File Name"])
+                        # print("Player Bot Loaded:", message["File Name"])
                         return "successful"
                 elif message["Game Mode"] == "Battle": # todo: dont load the player's bot only the opponent's bot
                         if   message["Opponent?"] == "Yes":
-                                fighter2.model = load_bot(message["File Name"])
-                        elif message["Opponent?"] == "No":
-                                #fighter1.model = load_bot(message["File Name"])
-                                print()
+                                # fighter2.model = load_bot("File_560.h5") # this works if File_560.h5 is present in the folder
+                                fighter2.model = load_bot(message["File Name"]) # what we want to use
+                                fighter2.model = fighter1.model # temp fix
+
+                        # elif message["Opponent?"] == "No":
+                                # fighter1.model = load_bot("File_561.h5") 
+                                # fighter1.model = load_bot(message["File Name"]) # what we want to use
+
                         else:
                                 return print("Invalid Opponent")
                         print("Player || Opponent Bot Loaded", message["File Name"])
