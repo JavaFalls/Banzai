@@ -35,9 +35,9 @@ func activate(target):
 		weapon_creator.W_SEC_MINE:
 			var boom = explosion.instance()
 			boom.id = id
-			boom.min_radius = 1.0
-			boom.max_radius = 3.0
-			boom.expansion_rate = 35.0
+			boom.min_radius = 1.0 * scale.x
+			boom.max_radius = 3.0 * scale.x
+			boom.expansion_rate = 35.0 * scale.x
 			boom.lifetime = 0.20
 			boom.damage = damage
 			boom.position = global_position

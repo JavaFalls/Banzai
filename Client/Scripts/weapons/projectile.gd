@@ -52,9 +52,9 @@ func _on_projectile_body_entered(body):
 				# Create an explosion
 				var boom = explosion.instance()
 				boom.id = id
-				boom.min_radius = 1.0
-				boom.max_radius = 3.0
-				boom.expansion_rate = 50.0
+				boom.min_radius = 1.0 * scale.x
+				boom.max_radius = 3.0 * scale.x
+				boom.expansion_rate = 50.0 * scale.x
 				boom.lifetime = 0.25
 				boom.damage = damage
 				boom.position = global_position

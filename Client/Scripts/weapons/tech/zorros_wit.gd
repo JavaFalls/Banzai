@@ -1,5 +1,5 @@
 # Zorros Wit
-# Makes the bot invincible and invisible
+# Makes the bot invisible
 extends Node2D
 
 # Signals

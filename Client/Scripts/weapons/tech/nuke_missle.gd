@@ -42,6 +42,7 @@ func _process(delta):
 			var explosion = nuke_explosion.instance()
 			explosion.damage = damage
 			explosion.position = target
+			explosion.scale = scale
 			get_parent().add_child(explosion)
 			queue_free()
 	else:
