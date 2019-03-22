@@ -34,3 +34,6 @@ func init(title_text,
 	get_node(NP_RIGHT_BUTTON).connect("pressed", right_button_receiver_node, right_button_receiver_function)
 	get_node(NP_OPTIONAL_MESSAGE_TEXT).text = optional_message
 	get_tree().paused = true
+
+func set_background_transparency(value):
+	get_node("shade").color = Color(0,0,0,value)

@@ -20,7 +20,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 state_size  = 13
 action_size = 108
-batch_size  = 1
+batch_size  = 16
 
 BOT_POSITION_X      = 0
 BOT_POSITION_Y      = 1
@@ -125,7 +125,7 @@ class DQN_agent:
         self.state_size = state_size
         self.action_size = action_size
 
-        self.memory = deque(maxlen=8)
+        self.memory = deque(maxlen=20000)
         self.gamma         = 0.9 # discount future reward; used for Q which doesn't work for us
         self.epsilon       = 1 # exploration rate; initial rate; skew 100% towards exploration
         self.epsilon_decay = .995 # rate at which epsilon decays; get multiplied to epsilon
@@ -154,8 +154,8 @@ class DQN_agent:
     def _build_model(self): # defines the NN
         model = Sequential()
         model.add(Dense(55, input_dim = self.state_size, activation='relu'))
-        model.add(Dense(110, input_dim = self.state_size, activation='relu'))
-        model.add(Dense(55, input_dim = self.state_size, activation='relu'))
+        model.add(Dense(110, activation='relu'))
+        model.add(Dense(55, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
 
         model.compile(loss='mean_absolute_error', optimizer=Adam(lr = self.learning_rate))
@@ -180,7 +180,7 @@ class DQN_agent:
     def replay(self, batch_size):
         minibatch = random.sample(self.memory, batch_size)
 
-        for state, action, reward, next_state in self.memory: # use minibatch for a random smaller sample
+        for state, action, reward, next_state in minibatch: # use minibatch for a random smaller sample
         #     print(state)
         #     print(action)
         #     print(reward)
@@ -195,11 +195,12 @@ class DQN_agent:
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
 
-    def load(self):
-        self.model = load_model(__file__.replace('nnserver.py', 'my_model.h5'))
-
-    def save_bot(self):
-        self.model = save_model(self.model, __file__.replace('nnserver.py', 'my_model.h5'))
+    def save_bot(self, file_name = 'my_model.h5'): # remove the assigment when save gets sent from godot
+        if 'nnserver.py' in __file__:
+                save_model(self.model, __file__.replace('nnserver.py', file_name))
+        else:
+                save_model(self.model, __file__.replace('nnserver.exe', '/NeuralNetwork/' + file_name))
+        print("saved model: ", file_name)
 
     def reshape(self, gamestate):
         input_list = []
@@ -237,10 +238,11 @@ class DQN_agent:
         self.state_counter +=1
         self.action = self.predict(self.gamestate)
 
-        # if len(self.memory) % batch_size == 0 and len(self.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
-        #         self.replay(batch_size)
-        if len(self.memory) > 0: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+        if len(self.memory) % batch_size == 0 and len(self.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
                 self.replay(batch_size)
+                self.save_bot()
+        # if len(self.memory) > 0: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+        #         self.replay(batch_size)
 
         return self.action
     def graph_rewards(self):
@@ -305,6 +307,7 @@ class DQN_agent:
 
         # Reward for being close to the opponent ##############################################################
         approach_reward = 0
+
         if (gamestate[OPPONENT_DISTANCE] - next_gamestate[OPPONENT_DISTANCE]):
                 if gamestate[OPPONENT_DISTANCE] < next_gamestate[OPPONENT_DISTANCE]:
                         approach_reward = -1
@@ -350,7 +353,7 @@ class DQN_agent:
         if (gamestate[BOT_HEALTH] > next_gamestate[BOT_HEALTH]):
                 damage_received_reward = -1
 
-        # Criticism for getting damaged ######################################################################
+        # reward for healing ######################################################################
         health_received_reward = 0
         if (gamestate[BOT_HEALTH] < next_gamestate[BOT_HEALTH]):
                 health_received_reward = 2
@@ -437,8 +440,12 @@ class DQN_agent:
 
 
 def load_bot(file_name = 'my_model.h5'):
-   model = load_model(__file__.replace('nnserver.py', file_name))
-   return model
+        print("loading bot: ", file_name)
+        if 'nnserver.py' in __file__:
+                return load_model(__file__.replace('nnserver.py', file_name))
+        else:
+                return load_model(__file__.replace('nnserver.exe', '/NeuralNetwork/' + file_name))
+   
 def reshape(gamestate, state_size):
         input_list = []
         output_list = []
@@ -460,27 +467,37 @@ def process_message(message):
 
 
         if message["Message Type"] == "Train"  :
+                fighter1.epsilon = 1
                 output = fighter1.train(   reshape(message["Message"] , fighter1.get_state_size()) )
         elif message["Message Type"] == "Battle"  :
-                output = fighter1.predict(   reshape(message["Message"] , fighter1.get_state_size()) ),  fighter2.predict(   reshape(message["Message"] , fighter2.get_state_size()) )
-        elif message["Message Type"] == "Battle"  :
-                output = fighter1.predict(   reshape(message["Message"] , fighter1.get_state_size()) ),  fighter2.predict(   reshape(message["Message"] , fighter1.get_state_size()) )
+                fighter1.epsilon = 0
+                fighter2.epsilon = 0
+                output = np.argmax(fighter1.model.predict(   reshape(message["Message"] , fighter1.get_state_size()) )), np.argmax(fighter2.model.predict(   reshape(message["Message"] , fighter2.get_state_size()) ))
+                # output = [0,0]
         elif message["Message Type"] == "Load"   :
-                if   message["Game Mode"] == "Train":
-                        player_bot = load_bot(message["File Name"])
-                        return
-                elif message["Game Mode"] == "Battle":
+                if   message["Game Mode"] == "Train": # todo: don't load for train
+                        #fighter1.model = load_bot(message["File Name"])
+                        # print("Player Bot Loaded:", message["File Name"])
+                        return "successful"
+                elif message["Game Mode"] == "Battle": # todo: dont load the player's bot only the opponent's bot
                         if   message["Opponent?"] == "Yes":
-                                opponent_bot = load_bot(message["File Name"])
-                        elif message["Opponent?"] == "No":
-                                player_bot = load_bot(message["File Name"])
+                                # fighter2.model = load_bot("File_560.h5") # this works if File_560.h5 is present in the folder
+                                fighter2.model = load_bot(message["File Name"]) # what we want to use
+                                fighter2.model = fighter1.model # temp fix
+
+                        # elif message["Opponent?"] == "No":
+                                # fighter1.model = load_bot("File_561.h5") 
+                                # fighter1.model = load_bot(message["File Name"]) # what we want to use
+
                         else:
                                 return print("Invalid Opponent")
+                        print("Player || Opponent Bot Loaded", message["File Name"])
+                        return "successful"
                 else:
                         return print("Invalid Game Mode")
                 pass
-        elif message["Message Type"] == "save"   :
-                player_bot = fighter1.save_bot()
+        elif message["Message Type"] == "Save"   :
+                fighter1.save_bot(message["File Name"])
         elif message["Message Type"] == "Kill"   :
                 output = 109
         else:
@@ -488,20 +505,14 @@ def process_message(message):
         return output
 
 
-# Loaded Bot files
-player_bot = None
-opponent_bot = None
-def load():
-        #if we load and don't start fresh
-       fighter1.load()
-       fighter2.load()
-
 fighter1 = DQN_agent(state_size, action_size)
 fighter2 = DQN_agent(state_size, action_size)
 
-bot = load_bot()
 response = []
 
+########################################################################################################################
+###                                                  MAIN FUNCTION                                                   ###
+########################################################################################################################
 # Tell Godot I'm ready to connect
 successful = False
 while not successful:
@@ -524,19 +535,22 @@ while not successful:
                         print("Closed Pipe")
                         successful = True
 
+# Connect both ends of the pipes
 connect_request()
 connect_response()
+
 count = 1
+
+# Process a message and give a response
 while True:
 
         print("Server Code\n\n")
-        #print("get request")
         gamestate = []
         next_gamestate = []
-        # print("Server Code\n\n")
-        # print("get request")
 
         request_completed = False
+
+        # Receive a request from the client
         try:
                 request = get_client_request()[1].decode('unicode-escape').replace('(', '').replace(')', '').replace('\x00', '')
                 #print(request)

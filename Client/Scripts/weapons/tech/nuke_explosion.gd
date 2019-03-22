@@ -8,7 +8,7 @@ extends Area2D
 var        damage   = 0
 
 # Other variables:
-var things_I_already_hit = Array() # An array of all nodes that have already been damaged by this explosion
+var things_I_already_hit = Array() # An array of instance ids of all the nodes that have already been damaged by this explosion
 
 # Godot Hooks:
 #---------------------------------------------------------
@@ -16,15 +16,15 @@ func _ready():
 	get_node("AnimatedSprite").play("default")
 
 func _on_projectile_body_entered(body):
-	if (body.get_name() == "fighter1" or body.get_name() == "fighter2"):
+	if body.is_in_group("damageable"):
 		# Did we already damage this target?
-		for already_damaged_name in things_I_already_hit:
-			if (body.get_name() == already_damaged_name):
+		for already_damaged_id in things_I_already_hit:
+			if body.get_instance_id() == already_damaged_id:
 				# Already damaged target, abort function
 				pass
 		# Damage target and add to array of damaged targets
 		body.increment_hitpoints(damage)
-		things_I_already_hit.append(body.get_name())
+		things_I_already_hit.append(body.get_instance_id())
 
 func _on_AnimatedSprite_animation_finished():
 	self.queue_free()

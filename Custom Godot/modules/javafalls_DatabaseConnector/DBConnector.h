@@ -29,8 +29,6 @@
 
 /*
    TODO LIST:
-   UNTESTED Create a table of names on the DB
-   Create a thing to help users set up a DEV server
 */
 
 /*

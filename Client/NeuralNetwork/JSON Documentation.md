@@ -20,7 +20,7 @@ The Messages from Godot will be as follows:
 
 ### 2. Save
 
-   "{ "Message Type": "save", .}"
+   "{ "Message Type": "save", "File Name": "file_name"}"
 
 ### 3. Battle
 

@@ -11,6 +11,7 @@ signal use # All weapons must have this signal so that cooldowns can be displaye
 const SHIELD_END_DURATION = 0.4 # How long it takes to animate the shield ending
 
 # Stat variables
+var id
 var cooldown
 var shield_duration = 2.0
 

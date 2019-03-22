@@ -8,6 +8,7 @@ extends Node2D
 signal use # All weapons must have this signal so that cooldowns can be displayed
 
 # Stat variables
+var id
 var damage
 var cooldown
 var swing_scene
@@ -48,8 +49,8 @@ func use():
 
 # Function that is called when the sword hits a body
 func _on_sword_swing_body_entered(body):
-	if (body.get_name() != get_parent().get_name()):
-		if body.get_name() == "fighter1" or body.get_name() == "fighter2":
+	if (body.get_instance_id() != get_parent().get_instance_id()):
+		if body.is_in_group("damageable"):
 			body.increment_hitpoints(damage)
 
 # Function used to set the sheathed graphic

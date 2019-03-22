@@ -34,7 +34,8 @@ var loader = preload("res://Scenes/loading.tscn")
 # Screen Position and Size
 var screen_size = OS.get_screen_size()
 var window_size = OS.get_window_size()
-var pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
+
+var dir = Directory.new()
 
 # Username
 var username = ""
@@ -48,8 +49,10 @@ var battle_won = false
 # Database
 var player_ID = -1;
 var model_ID = -1;
+var player_bot_ID = -1;
 var bot_ID = -1;
 onready var DB = DBConnector.new()
+onready var pid = launch_neural_network()
 onready var Client = NNClient.new()
 
 # Bot Info
@@ -127,6 +130,16 @@ func load_scene(path):
 	yield(get_tree(), "node_added")
 	get_node("/root/loading").load_scene(path)
 
+# Launch Neural Network
+func launch_neural_network():
+	var pid
+	if dir.file_exists(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py')):
+		pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
+	else:
+		if dir.file_exists(ProjectSettings.globalize_path('res://nnserver.exe')):
+			pid = OS.shell_open(ProjectSettings.globalize_path('res://nnserver.exe'))
+	return pid
+
 func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
 	var hit_points_diff = fighter1_hit_points - fighter2_hit_points
 	if hit_points_diff > 0:
@@ -175,6 +188,7 @@ func create_user():
 	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_ACCENT_COLOR] = DEFAULT_ACCENT_COLOR.to_rgba32()
 	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_LIGHT_COLOR] = DEFAULT_LIGHT_COLOR.to_rgba32()
 	bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, "v1")
+	player_bot_ID = bot_ID
 	model_ID = bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_MODEL_ID] # Since arrays are pass by reference, new_bot() is able to use the array like an OUT parameter to return the model_ID
 
 

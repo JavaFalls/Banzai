@@ -23,49 +23,52 @@ onready var game_state      = get_node("game_state")
 onready var f               = File.new()
 onready var t               = Timer.new()
 
+# Get Opponent
+onready var opponent_bot_ID = get_opponent(head.bot_ID)
+
+# Get bot information, and load bot models from the database
+onready var bot_data        = JSON.parse(
+				        head.DB.get_bot(head.bot_ID,
+								        "File_%s.h5" % str(head.bot_ID))).result["data"][0]
+onready var opponent_data   = JSON.parse(
+						head.DB.get_bot(opponent_bot_ID,
+										"File_%s.h5" % str(opponent_bot_ID))).result["data"][0]
+
 # The signal that is emitted when a fighter's hit_points reach zero
-signal game_end
+signal post_game
 
 func _ready():
 	#f.open('res://NeuralNetwork/gamestates', 3)
-	# Get data about the bots from the DB
-    # Call get opponent here
-	var opponent_bot_ID = get_opponent(head.bot_ID)
-	var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
-	var opponent_data = JSON.parse(head.DB.get_bot(opponent_bot_ID)).result["data"][0]
-	
+
+	# Load bots into the Neural Network
+	load_bot()
+
 	# Initialize the bots
-	fighter1 = player_scene.instance() #dummy_scene.instance()
+	#fighter1 = bot_scene.instance()
+	fighter1 = player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
-	# Hardcoded method to setup bot weapons-------------------
-	#fighter1.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SNARE), weapon_creator.create_weapon(weapon_creator.W_ABI_REGENERATION))
-	#get_node("fighter1_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter1.primary_weapon, weapon_creator.W_SEC_SNARE, fighter1.secondary_weapon, weapon_creator.W_ABI_REGENERATION, fighter1.ability)
-	#---------------------------------------------------------
 	# Get bot weapons from DB---------------------------------
 	print(bot_data)
 	fighter1.set_weapons(weapon_creator.create_weapon(bot_data["primary_weapon"]), weapon_creator.create_weapon(bot_data["secondary_weapon"]), weapon_creator.create_weapon(bot_data["utility"]))
-	get_node("fighter1_cooldowns").init(bot_data["primary_weapon"], fighter1.primary_weapon,
-	                                    bot_data["secondary_weapon"], fighter1.secondary_weapon,
-										bot_data["utility"], fighter1.ability)
+	get_node("UI_container/fighter1_cooldowns").init(bot_data["primary_weapon"], fighter1.primary_weapon,
+													 bot_data["secondary_weapon"], fighter1.secondary_weapon,
+													 bot_data["utility"], fighter1.ability)
 	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 	#---------------------------------------------------------
 	fighter1.is_player = 1
 
-	fighter2 = dummy_scene.instance() # fighter2 = player_scene.instance()
+	fighter2 = bot_scene.instance()
+	#fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
-	# Hardcoded method to setup bot weapons-------------------
-	#fighter2.set_weapons(weapon_creator.create_weapon(weapon_creator.W_PRI_PRECISION_BOW), weapon_creator.create_weapon(weapon_creator.W_SEC_SNARE), weapon_creator.create_weapon(weapon_creator.W_ABI_REGENERATION))
-	#get_node("fighter2_cooldowns").init(weapon_creator.W_PRI_PRECISION_BOW, fighter2.primary_weapon, weapon_creator.W_SEC_SNARE, fighter2.secondary_weapon, weapon_creator.W_ABI_REGENERATION, fighter2.ability)
-	#---------------------------------------------------------
 	# Get bot weapons from DB---------------------------------
 	fighter2.set_weapons(weapon_creator.create_weapon(opponent_data["primary_weapon"]), weapon_creator.create_weapon(opponent_data["secondary_weapon"]), weapon_creator.create_weapon(opponent_data["utility"]))
-	get_node("fighter2_cooldowns").init(opponent_data["primary_weapon"], fighter2.primary_weapon,
-	                                    opponent_data["secondary_weapon"], fighter2.secondary_weapon,
-										opponent_data["utility"], fighter2.ability)
+	get_node("UI_container/fighter2_cooldowns").init(opponent_data["primary_weapon"], fighter2.primary_weapon,
+													 opponent_data["secondary_weapon"], fighter2.secondary_weapon,
+													 opponent_data["utility"], fighter2.ability)
 	fighter2.get_node("animation_bot").load_colors_from_DB(opponent_bot_ID)
 	#---------------------------------------------------------
 
@@ -74,7 +77,6 @@ func _ready():
 	fighter2.set_opponent(fighter1)
 
 	# Connect signal for post game
-	connect("game_end", self, "post_game")
 	fighter1.connect("game_end", self, "post_game")
 	fighter2.connect("game_end", self, "post_game")
 
@@ -86,8 +88,8 @@ func _ready():
 	t.start()
 
 func _process(delta):
-	self.get_node("healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
-	self.get_node("healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
+	self.get_node("UI_container/healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
+	self.get_node("UI_container/healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
 	if t.is_stopped():
 		send_nn_state(1)
 		# a number mod two to decide wich one gets set when
@@ -98,6 +100,7 @@ func _process(delta):
 
 # This function is called when one of the fighters hits zero hit_points
 func post_game():
+	self.emit_signal("post_game")
 	var popup_message
 	head.battle_winner_calc(fighter1.get_hit_points(), fighter2.get_hit_points())
 	var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
@@ -119,6 +122,7 @@ func post_game():
 	# Display battle over popup:
 	popup = arena_end_popup.instance()
 	self.add_child(popup)
+
 	popup.init("Battle Has Ended", "Again?", "Main Menu", self, "fight_again", self, "main_menu", popup_message)
 
 
@@ -155,19 +159,23 @@ func get_opponent(bot_id):
 	return opponent
 
 func send_nn_state(bot_number):
+	game_state.set_opponent_state(fighter1)
+	game_state.set_bot_state(fighter2)
 	var output = []
 	var message
 	message = '{ "Message Type": "Battle", "Message": %s }' % str(game_state.get_battle_state())
+	print(message,"arena battle sendnnserver")
 	head.Client.send_request(message)
 	output = head.Client.get_response()
+#	output = Vector2(1,1) # standin so that the nnserver doesn't have to be called.
+	
 
 	output = output.replacen("(", ",")
 	output = output.split_floats(",", 0)
 	for x in output:
 		x = int(x)
 	game_state.set_predictions(output[0])
-	
-	#game_state.set_opponent_predictions(output[1])
+	game_state.set_opponent_predictions(output[1])
 	#game_state.set_opponent_predictions(output)
 	return
 
@@ -178,3 +186,19 @@ func fight_again():
 func main_menu():
 	get_tree().paused = false
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
+
+# Load Bot for Battle
+func load_bot():
+	var message
+	# Load Opponent bot into Neural Network
+	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "Yes" }' % str(opponent_bot_ID)
+	head.Client.send_request(message)
+	var output = head.Client.get_response()
+	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/File_%s.h5' % str(opponent_bot_ID)))
+	
+	# Load Player bot into Neural Network
+	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
+	head.Client.send_request(message)
+	output = head.Client.get_response()
+	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/File_%s.h5' % str(head.bot_ID)))
+	return !(output == 'successful')

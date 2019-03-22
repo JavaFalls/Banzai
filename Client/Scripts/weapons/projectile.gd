@@ -32,7 +32,7 @@ onready var freeze = preload("res://Scenes/weapons/freeze_effect.tscn") # Freeze
 #---------------------------------------------------------
 func _ready():
 	# Setup the timer
-	t.set_wait_time(2.5)
+	t.set_wait_time(5.0)
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.start()
@@ -40,13 +40,13 @@ func _ready():
 func _physics_process(delta):
 	self.global_position += movement*speed*delta                 # move the projectile
 	# Kill the projectile after the timer ends
-	if t.is_stopped():
-		get_parent().remove_child(self)
+	if global_position.x <= -200 or global_position.x > 625 or global_position.y < -200 or global_position.y > 400:
+		queue_free()
+	elif t.is_stopped():
 		self.queue_free()
-		t.queue_free()
 
 func _on_projectile_body_entered(body):
-	if (body.get_name() != projectile_owner.get_name()):
+	if (body.get_instance_id() != projectile_owner.get_instance_id()):
 		match id:
 			weapon_creator.W_PRI_EXPLODING_SHURIKEN:
 				# Create an explosion
@@ -65,11 +65,11 @@ func _on_projectile_body_entered(body):
 				# If we hit a fighter, act like a normal projectile, however, if we hit a wall,
 				# we need to bounce off of the wall. Body_entered does not provide enough information to
 				# know how to bounce, so the bounce is handled by shape_entered
-				if body.get_name() == "fighter1" or body.get_name() == "fighter2":
+				if body.is_in_group("damageable"):
 					body.increment_hitpoints(damage)
 					self.queue_free()
 			weapon_creator.W_ABI_FREEZE:
-				if body.get_name() == "fighter1" or body.get_name() == "fighter2":
+				if body.is_in_group("damageable"):
 					# 'freeze' the target
 					body.immobilized += FREEZE_DURATION
 					body.disabled += FREEZE_DURATION
@@ -77,10 +77,19 @@ func _on_projectile_body_entered(body):
 					var frozen = freeze.instance()
 					frozen.duration = FREEZE_DURATION
 					body.add_child(frozen)
-					
-					self.queue_free()
-			_: # Default case (W_PRI_ACID_BOW, W_PRI_PRECISION_BOW, W_PRI_SCATTER_BOW, W_PRI_ZORROS_GLARE)
-				if body.get_name() == "fighter1" or body.get_name() == "fighter2":
+				self.queue_free()
+			weapon_creator.W_PRI_ZORROS_GLARE:
+				if body.is_in_group("damageable"):
+					body.increment_hitpoints(damage)
+					if (id == weapon_creator.W_PRI_ACID_BOW):
+						# Add acid effect
+						var deadly_acid = acid.instance()
+						deadly_acid.duration = 2.5
+						deadly_acid.frequency = 0.5
+						deadly_acid.damage = 1
+						body.add_child(deadly_acid)
+			_: # Default case (W_PRI_ACID_BOW, W_PRI_PRECISION_BOW, W_PRI_SCATTER_BOW)
+				if body.is_in_group("damageable"):
 					body.increment_hitpoints(damage)
 					if (id == weapon_creator.W_PRI_ACID_BOW):
 						# Add acid effect
@@ -98,7 +107,8 @@ func _on_projectile_body_entered(body):
 func _on_projectile_body_shape_entered(body_id, body, body_shape_ID, area_shape_ID):
 	if id == weapon_creator.W_PRI_RUBBER_BOW:
 		# Did we hit a wall? If so bounce
-		if body.get_name().ends_with("wall"):
+		#if body.get_name().ends_with("wall"):
+		if body.is_in_group("wall"):
 			# New Solution:-----------------------------
 			# We know that we are dealing with squares, therefore the possible normalized vector lines we can bounce off of are:
 			# VECTOR_SIDE_LEFT, VECTOR_SIDE_RIGHT, VECTOR_SIDE_TOP, VECTOR_SIDE_BOTTOM

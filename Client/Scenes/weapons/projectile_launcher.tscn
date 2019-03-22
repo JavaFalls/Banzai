@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/weapons/projectile_launcher.gd" type="Script" id=1]
 [ext_resource path="res://Assets/weapons/bow_regular.png" type="Texture" id=2]
 
-[node name="projectile_launcher" type="Node2D" index="0"]
+[node name="projectile_launcher" type="Node2D"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Transform", "Visibility" ]

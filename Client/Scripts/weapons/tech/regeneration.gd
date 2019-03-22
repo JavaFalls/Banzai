@@ -15,6 +15,7 @@ const CYCLE_FREQUENCY = DURATION / (TOTAL_HEAL * AMT_PER_CYCLE) # How often to h
 # The variables
 #------------------------------------------------------------------------
 # Stat variables:
+var id
 var cooldown         = 0.0        # Time for using cooldown
 
 # Other variables:

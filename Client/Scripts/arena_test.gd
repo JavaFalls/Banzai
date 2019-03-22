@@ -3,8 +3,8 @@ extends Node2D
 var spawn = Vector2(200,73)              # location of the spawn point
 var player                               # player object
 
-onready var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
-
+onready var id = head.bot_ID if head.construction == head.BOT else head.player_bot_ID
+onready var bot_data = JSON.parse(head.DB.get_bot(id)).result["data"][0]
 # The preloaded scenes
 onready var player_scene    = preload("res://Scenes/player.tscn")
 
@@ -17,7 +17,7 @@ func _ready():
 	player.set_pause_mode(Node.PAUSE_MODE_STOP)
 	player.set_weapons(weapon_creator.create_weapon(bot_data["primary_weapon"]), weapon_creator.create_weapon(bot_data["secondary_weapon"]), weapon_creator.create_weapon(bot_data["utility"]))
 	get_node("cooldowns").init(bot_data["primary_weapon"], player.primary_weapon, bot_data["secondary_weapon"], player.secondary_weapon, bot_data["utility"], player.ability)
-	player.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
+	player.get_node("animation_bot").load_colors_from_DB(id)
 	player.is_player = 1
 	player.set_opponent(player);
 	
