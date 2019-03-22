@@ -27,7 +27,7 @@ func _ready():
 # Called by the mechs to activate the ability
 func use():
 	if cooldown_timer.is_stopped():
-		parent_node.movement_speed *= speed_multi # Think about adding instead of multiplying
+		parent_node.movement_speed *= speed_multi
 		active_timer.start()
 		cooldown_timer.start()
 		var animation = evade_animation.instance()

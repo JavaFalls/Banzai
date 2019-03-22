@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/button_blue.png" type="Texture" id=2]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=3]
 
-[node name="arena_end_popup" type="Node2D" index="0"]
+[node name="arena_end_popup" type="Node2D"]
 
 pause_mode = 2
 z_index = 10
