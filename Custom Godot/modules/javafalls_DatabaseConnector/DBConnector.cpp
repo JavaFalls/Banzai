@@ -16,7 +16,7 @@
 #define STRING_INT_SIZE        11                 // How long a string needs to be to hold an int that has been converted to a string, plus the null terminator
 #define BLOB_MAX               2147483647         // Max size of a BLOB (binary large object) in SQL Server
 #define FILENAME_GENERIC_MODEL "generic_model.h5" // Filename to use when storing a brand new network in the DBs
-#define FILEPATH_MODEL_FOLDER  "NeuralNetwork/"   // Folder used to store models
+#define FILEPATH_MODEL_FOLDER  "NeuralNetwork/models/"   // Folder used to store models
 
 // Values used in place of nulls when putting data in the database
 # define NULL_COLOR 0
