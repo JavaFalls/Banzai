@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon_charge.png-f68445dcd7ce8463fc7a879a98a25b8c.stex"
+path="res://.import/icon_charge.png-327e27de107880fadb0b3368ec16d07e.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/icon_charge.png"
-dest_files=[ "res://.import/icon_charge.png-f68445dcd7ce8463fc7a879a98a25b8c.stex" ]
+source_file="res://assets/weapons/icon_charge.png"
+dest_files=[ "res://.import/icon_charge.png-327e27de107880fadb0b3368ec16d07e.stex" ]
 
 [params]
 

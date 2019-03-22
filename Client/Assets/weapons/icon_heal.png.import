@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon_heal.png-0ae6dafbb1c29473a74bd6c1c8646fed.stex"
+path="res://.import/icon_heal.png-7a93f97aef844271b8a0081e9c50195c.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/icon_heal.png"
-dest_files=[ "res://.import/icon_heal.png-0ae6dafbb1c29473a74bd6c1c8646fed.stex" ]
+source_file="res://assets/weapons/icon_heal.png"
+dest_files=[ "res://.import/icon_heal.png-7a93f97aef844271b8a0081e9c50195c.stex" ]
 
 [params]
 

@@ -130,7 +130,7 @@ resource_local_to_scene = true
 default_font = ExtResource( 7 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="main_menu" type="Node" index="0"]
+[node name="main_menu" type="Node"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]

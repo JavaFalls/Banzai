@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tag_orange.png-65839b4b145a2ab5a521060eac756c70.stex"
+path="res://.import/tag_orange.png-d844620d887b3ead5cfee586dce04f7b.stex"
 
 [deps]
 
-source_file="res://Assets/local_scoreboard/tag_orange.png"
-dest_files=[ "res://.import/tag_orange.png-65839b4b145a2ab5a521060eac756c70.stex" ]
+source_file="res://assets/local_scoreboard/tag_orange.png"
+dest_files=[ "res://.import/tag_orange.png-d844620d887b3ead5cfee586dce04f7b.stex" ]
 
 [params]
 
