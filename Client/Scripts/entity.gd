@@ -27,6 +27,8 @@ var psuedo_aim_left  = 0
 var psuedo_aim_right = 0
 
 var shielded = false # When true, the bot takes no damage. Used by the 'shield' ability
+var invisible = false # When invisible, the opponents neural network receives incorrect data about the bots location. Used by 'zorro's wit'
+var last_known_location = Vector2() # This is the location data that the opponent's neural network receives when the bot is invisible. Used by 'zorro's wit'
 var immobilized = 0.0 # How long the bot will be unable to move for. Used by the 'snare' and 'nuke' secondaries and the 'freeze' ability
 var disabled = 0.0 # How long the bot will be unable to attack. Used by the 'nuke' secondary and 'freeze' ability
 
