@@ -112,11 +112,16 @@ def build_robodojo(is_testing=True):
    if is_testing:
       commands = ['cd "Custom Godot\\bin"',
                   'godot_64.exe --path ../../Client --export-debug "Default" ../bin/robo_dojo.exe']
-      cmd(commands)
    else:
       commands = ['cd "Custom Godot\\bin"',
                   'godot_64.exe --path ../../Client --export "Default" ../bin/robo_dojo.exe']
-      cmd(commands)
+   cmd(commands)
+
+   commands = ['cd "Custom Godot\\bin"',
+               'godot_64.exe --path ../../Client --export "Default" ../bin/robo_dojo.zip']
+   cmd(commands)
+   shutil.unpack_archive('bin/robo_dojo.zip', extract_dir='bin')
+   cmd(['del bin\\robo_dojo.zip'])
 
 # Build NNServer
 def build_nnserver():
@@ -165,12 +170,12 @@ def zip_directory():
 def main():
    initialize_log()
    initialize_export()
-   #build_godot()
+   build_godot()
    build_robodojo()
-   #build_nnserver()
+   build_nnserver()
    export_files()
    zip_directory()
-   #clean()
+   clean()
    log('------------------------------')
    log('    EXPORTING FINISHED!!!')
    log('------------------------------')
