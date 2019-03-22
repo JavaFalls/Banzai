@@ -194,11 +194,11 @@ func load_bot():
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "Yes" }' % str(opponent_bot_ID)
 	head.Client.send_request(message)
 	var output = head.Client.get_response()
-	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/File_%s.h5' % str(opponent_bot_ID)))
+	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(opponent_bot_ID)))
 	
 	# Load Player bot into Neural Network
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
 	head.Client.send_request(message)
 	output = head.Client.get_response()
-	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/File_%s.h5' % str(head.bot_ID)))
+	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(head.bot_ID)))
 	return !(output == 'successful')

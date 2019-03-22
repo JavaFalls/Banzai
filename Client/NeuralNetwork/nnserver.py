@@ -197,9 +197,9 @@ class DQN_agent:
 
     def save_bot(self, file_name = 'my_model.h5'): # remove the assigment when save gets sent from godot
         if 'nnserver.py' in __file__:
-                save_model(self.model, __file__.replace('nnserver.py', file_name))
+                save_model(self.model, __file__.replace('nnserver.py', 'models/' + file_name))
         else:
-                save_model(self.model, __file__.replace('nnserver.exe', '/NeuralNetwork/' + file_name))
+                save_model(self.model, __file__.replace('nnserver.exe', 'models/' + file_name))
         print("saved model: ", file_name)
 
     def reshape(self, gamestate):
@@ -442,9 +442,9 @@ class DQN_agent:
 def load_bot(file_name = 'my_model.h5'):
         print("loading bot: ", file_name)
         if 'nnserver.py' in __file__:
-                return load_model(__file__.replace('nnserver.py', file_name))
+                return load_model(__file__.replace('nnserver.py', 'models/' + file_name))
         else:
-                return load_model(__file__.replace('nnserver.exe', '/NeuralNetwork/' + file_name))
+                return load_model(__file__.replace('nnserver.exe', 'models/' + file_name))
    
 def reshape(gamestate, state_size):
         input_list = []

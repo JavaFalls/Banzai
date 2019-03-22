@@ -136,8 +136,8 @@ func launch_neural_network():
 	if dir.file_exists(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py')):
 		pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
 	else:
-		if dir.file_exists(ProjectSettings.globalize_path('res://nnserver.exe')):
-			pid = OS.shell_open(ProjectSettings.globalize_path('res://nnserver.exe'))
+		if dir.file_exists(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.exe')):
+			pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.exe'))
 	return pid
 
 func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
