@@ -17,14 +17,14 @@ enum weapon_types {
 	W_PRI_SWORD,
 	W_PRI_SCATTER_BOW,
 	W_PRI_RUBBER_BOW,
-	W_PRI_ZORROS_GLARE, # not yet implemented
+	W_PRI_ZORROS_GLARE,
 	W_SEC_MINE,
 	W_SEC_NUKE,
 	W_SEC_SCYTHE,
 	W_SEC_SNARE,
 	W_SEC_ZORROS_WIT, # not yet implemented
 	W_ABI_CHARGE, # not yet implemented
-	W_ABI_CLONE, # not yet implemented
+	W_ABI_CLONE,
 	W_ABI_EVADE,
 	W_ABI_FREEZE,
 	W_ABI_REGENERATION,

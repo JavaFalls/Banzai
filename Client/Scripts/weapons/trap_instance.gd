@@ -27,7 +27,7 @@ func _ready():
 	lifetime_timer.start()
 
 func _on_body_entered(body):
-	if (body.get_name() != bot.get_name() and (body.get_name() == "fighter1" or body.get_name() == "fighter2")):
+	if body.get_instance_id() != bot.get_instance_id() and body.is_in_group("damageable"):
 		activate(body)
 
 func activate(target):

@@ -37,7 +37,9 @@ texture = ExtResource( 1 )
 centered = false
 _sections_unfolded = [ "Material", "Transform", "Visibility" ]
 
-[node name="left wall" type="RigidBody2D" parent="." index="1"]
+[node name="left wall" type="RigidBody2D" parent="." index="1" groups=[
+"wall",
+]]
 
 position = Vector2( 0, 160 )
 input_pickable = false
@@ -65,7 +67,9 @@ _sections_unfolded = [ "Collision" ]
 shape = SubResource( 1 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="right wall" type="RigidBody2D" parent="." index="2"]
+[node name="right wall" type="RigidBody2D" parent="." index="2" groups=[
+"wall",
+]]
 
 position = Vector2( 400, 168 )
 input_pickable = false
@@ -93,7 +97,9 @@ _sections_unfolded = [ "Transform" ]
 position = Vector2( 0, -8 )
 shape = SubResource( 2 )
 
-[node name="bottom wall" type="RigidBody2D" parent="." index="3"]
+[node name="bottom wall" type="RigidBody2D" parent="." index="3" groups=[
+"wall",
+]]
 
 position = Vector2( 288, 224 )
 input_pickable = false
@@ -143,7 +149,9 @@ shape = SubResource( 4 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
 
-[node name="top wall" type="RigidBody2D" parent="." index="4"]
+[node name="top wall" type="RigidBody2D" parent="." index="4" groups=[
+"wall",
+]]
 
 position = Vector2( 288, 0 )
 input_pickable = false
