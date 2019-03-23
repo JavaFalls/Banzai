@@ -63,7 +63,7 @@ const W_PRI_STATS = [
 	{"id": W_PRI_SCATTER_BOW       , "implemented": true , "name": "Scatter Bow"       , "description": "Launches 3 projectiles which cause damage if contact is made with an opponent"                          , "info": "Projectile fired in a 90 degree cone randomly"     , "attack":     2, "speed":  0.2 , "type": "Ranged", "icon": preload("res://assets/weapons/scatter_bow.png")       , "sprite": preload("res://assets/weapons/scatter_arrow.png")      , "scene": preload("res://scenes/weapons/projectile_launcher.tscn"), "projectile_speed": 250, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")},
 	{"id": W_PRI_SWORD             , "implemented": true , "name": "Sword"             , "description": "The hack-n-slash of the ages. Get personal with this blade"                                             , "info": "Stab, stab, stab"                                  , "attack":    20, "speed":  0.01, "type": "Melee" , "icon": preload("res://assets/weapons/sword.png")             , "sprite": preload("res://assets/weapons/sword.png")              , "scene": preload("res://scenes/weapons/melee.tscn")              , "swing_scene": preload("res://scenes/weapons/melee_animations/sword.tscn"), "scale" : 1.5},
 	{"id": W_PRI_RUBBER_BOW        , "implemented": true , "name": "Rubber Bow"        , "description": "Launches projectiles which bounce off walls for 5 seconds, or until contact is made with a bot"         , "info": "Projectiles bounce off walls for 5 seconds"        , "attack":     2, "speed":  0.15, "type": "Ranged", "icon": preload("res://assets/weapons/bow_regular.png")       , "sprite": preload("res://assets/weapons/rubber_arrow.png")       , "scene": preload("res://scenes/weapons/projectile_launcher.tscn"), "projectile_speed": 250, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")},
-	{"id": W_PRI_ZORROS_GLARE      , "implemented": false, "name": "Zorro's Glare"     , "description": "If looks could kill, this would kill you. Oh wait, it can kill you."                                    , "info": "Death Laser"                                       , "attack":    50, "speed":  0.02, "type": "Ranged", "icon": preload("res://assets/weapons/icon_zorros_glare.png") , "sprite": preload("res://assets/weapons/lazer_beam_of_death.png"), "scene": preload("res://scenes/weapons/projectile_launcher.tscn"), "projectile_speed": 500, "projectile_scene": preload("res://Scenes/weapons/zorros_glare_projectile.tscn")}
+	{"id": W_PRI_ZORROS_GLARE      , "implemented": false, "name": "Zorro's Glare"     , "description": "If looks could kill, this would kill you. Oh wait, it can kill you."                                    , "info": "Death Laser"                                       , "attack":     5, "speed":  2.0 , "type": "Ranged", "icon": preload("res://assets/weapons/icon_zorros_glare.png") , "sprite": preload("res://assets/weapons/laser_beam_of_death.png"), "scene": preload("res://scenes/weapons/zorros_glare.tscn")       , "projectile_speed": 500, "projectile_scene": preload("res://Scenes/weapons/zorros_glare_projectile.tscn")}
 ]
 const W_SEC_STATS = [
 	{"id": W_SEC_MINE              , "implemented": true , "name": "Mine"              , "description": "A trap set on the ground, explodes when triggered"                                                      , "info": "Explosion radius is roughly 2 times bot size"      , "attack":    10, "speed":  1.0 , "type": "Trap"  , "icon": preload("res://assets/weapons/mine.png")           , "sprite": preload("res://assets/weapons/mine.png")           , "scene": preload("res://scenes/weapons/trap.tscn"), "lifetime": 5.0, "trap_scene": preload("res://scenes/weapons/traps/mine.tscn")},
@@ -122,7 +122,7 @@ func create_weapon(w_ID):
 	weapon.cooldown = w_stats["speed"]
 	match(w_stats["type"]):
 		"Ranged":
-			if w_stats["id"] == W_ABI_FREEZE or w_stats["id"] == W_PRI_ZORROS_GLARE:
+			if w_stats["id"] == W_ABI_FREEZE:# or w_stats["id"] == W_PRI_ZORROS_GLARE:
 				# Freeze and Zorro's Glare do not get a visible graphic
 				weapon.set_sprite(null)
 			else:
@@ -138,7 +138,5 @@ func create_weapon(w_ID):
 			weapon.lifetime = w_stats["lifetime"]
 			weapon.trap_scene = w_stats["trap_scene"]
 			weapon.trap_sprite = w_stats["icon"]
-		"Tech":
-			if w_stats["id"] == W_SEC_NUKE:
-				weapon.damage = w_stats["attack"]
+		#"Tech": Currently tech doesn't have any special attributes that we have to set (other then id, damage, and cooldown which all weapons have)
 	return weapon
