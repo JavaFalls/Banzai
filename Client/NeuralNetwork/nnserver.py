@@ -128,17 +128,20 @@ class DQN_agent:
         self.memory = deque(maxlen=8)
         self.gamma         = 0.9 # discount future reward; used for Q which doesn't work for us
         self.epsilon       = 1 # exploration rate; initial rate; skew 100% towards exploration
-        self.epsilon_decay = .9995 # rate at which epsilon decays; get multiplied to epsilon
+        self.epsilon_decay = .999 # rate at which epsilon decays; get multiplied to epsilon
         self.epsilon_min   = 0.1 # floor that epsilon will rest at after heavy training
 
         self.learning_rate = 0.001
 
+
         self.reward        = 0      # reward calculated from two consecutive gamestates
         self.state_counter = 0      # how many game states have been sent from Godot
+        self.state_counter_player = 0
         self.action        = 0      # the action predicted by the neural network
         self.player_action = 0      # the action performed by the human and not the neural network
         self.is_player     = 0
         self.gamestate     = 0
+        self.player_gamestate = 0
         self.rewards       = []
         self.reward_total  = 0
         self.total_accuracy_reward = 0
@@ -225,10 +228,7 @@ class DQN_agent:
             next_gamestate = new_gamestate # get the gamestate
             self.reward = self.get_reward(self.gamestate[0], next_gamestate[0])
             print("########################################")
-            if self.player_action == -1:
-                self.remember(self.gamestate,self.action,self.reward,next_gamestate)
-            else:
-                self.remember(self.gamestate,self.player_action,self.reward,next_gamestate)
+            self.remember(self.gamestate,self.action,self.reward,next_gamestate)
 
             # if np.amax(self.model.predict(self.gamestate)[0]) < self.reward: #if predicted reward < actual reward then explore
             #         self.epsilon *= 1.04
@@ -246,13 +246,47 @@ class DQN_agent:
             self.replay(batch_size)
 
         return self.action
+
+    def train_player(self, new_gamestate):
+        if self.state_counter_player >= 1:
+            next_gamestate = new_gamestate # get the gamestate
+            self.reward = self.get_reward(self.gamestate[0], next_gamestate[0])
+            print("########################################")
+            self.remember(self.player_gamestate,self.player_action,self.reward,next_gamestate)
+
+            # if np.amax(self.model.predict(self.gamestate)[0]) < self.reward: #if predicted reward < actual reward then explore
+            #         self.epsilon *= 1.04
+            #         print("epsilon increased-----")
+            self.player_gamestate = next_gamestate
+        else:
+            self.player_gamestate = new_gamestate # get the gamestate
+
+        self.state_counter_player +=1
+        self.action = self.predict(self.player_gamestate)
+
+        # if len(self.memory) % batch_size == 0 and len(self.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+        #         self.replay(batch_size)
+        if len(self.memory) > 0: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+            self.replay(batch_size)
+
+        return self.action
     def graph_rewards(self):
         plt.title('Rewards Graph')
         plt.ylabel('Rewards')
         plt.xlabel('Epoch')
         plt.plot(self.rewards)
-        plt.legend(['Total Rewards', 'accuracy_reward', 'avoidance_reward', 'approach_reward', 'flee_reward', 'damage_dealt_reward', 'damage_received_reward' , 'health_received_reward' ], loc='bottom right')
+        plt.legend(['Total Rewards' , 'epsilon' ], loc='lower right') # 'health_received_reward' 'accuracy_reward', 'avoidance_reward', 'approach_reward', 'flee_reward', 'damage_dealt_reward', 'damage_received_reward'
         plt.show()
+        self.rewards       = []
+        self.reward_total  = 0
+        self.total_accuracy_reward = 0
+        self.total_avoidance_reward = 0
+        self.total_approach_reward = 0
+        self.total_flee_reward = 0
+        self.total_damage_dealt_reward = 0
+        self.ptotal_damage_received_reward = 0
+        self.total_health_received_reward = 0
+        self.number_of_rewards = 0
         return
 
     def get_reward(self, gamestate, next_gamestate):
@@ -301,7 +335,7 @@ class DQN_agent:
                         accuracy_reward = 1
         else:
                 # accuracy_reward +=  (1-bot_aim_next_angle_diff)*50
-                if bot_aim_next_angle_diff < .05:
+                if bot_aim_next_angle_diff < .1:
                         accuracy_reward = 2
                 else:
                         accuracy_reward = -1
@@ -358,6 +392,10 @@ class DQN_agent:
         health_received_reward = 0
         if (gamestate[BOT_HEALTH] < next_gamestate[BOT_HEALTH]):
                 health_received_reward = 2
+        # reward for melee damage ###########################################################################
+        melee_damage_reward = 0
+        if gamestate[OPPONENT_DISTANCE] < .16 and (gamestate[OPPONENT_HEALTH] > next_gamestate[OPPONENT_HEALTH]):
+                melee_damage_reward = 2
 
         #new_reward -= (gamestate[3] - next_gamestate[3]) *  5                   # criticism for losing health
 
@@ -373,12 +411,13 @@ class DQN_agent:
         print("damage_dealt_reward        ", damage_dealt_reward)
         print("damage_received_reward     ", damage_received_reward)
         print("health_received_reward     ", health_received_reward)
+        print("melee_damage_reward        ", melee_damage_reward)
 
         # Accuracy
-        new_reward += accuracy_reward
-        reward_count += 1
-        if accuracy_reward < 0:
-                negative_reward_count += 1
+        # new_reward += accuracy_reward
+        # reward_count += 1
+        # if accuracy_reward < 0:
+        #         negative_reward_count += 1
 
         # Avoidance
         # new_reward += avoidance_reward
@@ -387,10 +426,10 @@ class DQN_agent:
         #         negative_reward_count += 1
 
         # approach
-        # new_reward += approach_reward
-        # reward_count += 1
-        # if approach_reward < 0:
-        #         negative_reward_count += 1
+        new_reward += approach_reward
+        reward_count += 1
+        if approach_reward < 0:
+                negative_reward_count += 1
 
         # Flee
         # new_reward += flee_reward
@@ -416,26 +455,35 @@ class DQN_agent:
         # if health_received_reward < 0:
         #         negative_reward_count += 1
 
+        # melee_damage_reward
+        new_reward += melee_damage_reward
+        reward_count += 1
+        if melee_damage_reward < 0:
+                negative_reward_count += 1
+
         # If a bunch of the rewards are negative, set reward to negative 1
         # if negative_reward_count >= reward_count-1:
         #         new_reward = -1
 
-        self.reward_total += new_reward
-        self.total_accuracy_reward += accuracy_reward
-        self.total_avoidance_reward += avoidance_reward
-        self.total_approach_reward  += approach_reward
-        self.total_flee_reward += flee_reward
-        self.total_damage_dealt_reward +=damage_dealt_reward
-        self.ptotal_damage_received_reward += damage_received_reward
-        self.total_health_received_reward += health_received_reward
-        self.number_of_rewards +=1
-        self.rewards.append([(self.reward_total / self.number_of_rewards),  self.total_accuracy_reward/ self.number_of_rewards,
-        self.total_avoidance_reward/ self.number_of_rewards,
-        self.total_approach_reward / self.number_of_rewards,
-        self.total_flee_reward/ self.number_of_rewards,
-        self.total_damage_dealt_reward/ self.number_of_rewards,
-        self.ptotal_damage_received_reward/ self.number_of_rewards,
-        self.total_health_received_reward/ self.number_of_rewards])
+    
+        if(self.player_action == -1):
+            self.reward_total += new_reward
+            self.total_accuracy_reward += accuracy_reward
+            self.total_avoidance_reward += avoidance_reward
+            self.total_approach_reward  += approach_reward
+            self.total_flee_reward += flee_reward
+            self.total_damage_dealt_reward +=damage_dealt_reward
+            self.ptotal_damage_received_reward += damage_received_reward
+            self.total_health_received_reward += health_received_reward
+            self.number_of_rewards +=1
+            self.rewards.append([(self.reward_total / self.number_of_rewards), self.epsilon])
+        # ,  self.total_accuracy_reward/ self.number_of_rewards,
+        # self.total_avoidance_reward/ self.number_of_rewards,
+        # self.total_approach_reward / self.number_of_rewards,
+        # self.total_flee_reward/ self.number_of_rewards,
+        # self.total_damage_dealt_reward/ self.number_of_rewards,
+        # self.ptotal_damage_received_reward/ self.number_of_rewards,
+        # self.total_health_received_reward/ self.number_of_rewards])
         print("                                                                               *reward     ",new_reward)
         return new_reward
 
@@ -470,7 +518,7 @@ def process_message(message):
                 fighter1.player_action = message["Message"][0]  # extract the player action from the from of game_state
                 output_list = (   reshape(message["Message"][1:fighter1.get_state_size()+1] , fighter1.get_state_size())) # remove player action from gamestate
                 
-                fighter1.train(np.flip(output_list,1)) # train on player
+                #fighter1.train_player(np.flip(output_list,1)) # train on player
                 fighter1.player_action = -1 # set it to invalid number so that it isn't used with regular bot's training state
                 output = fighter1.train( output_list ) # train and predict on bot
 
@@ -573,8 +621,8 @@ while True:
                 break
         #print(request)
         #response = fighter1.train(request)
-        # if(count % 1009 == 0):
-        #     fighter1.graph_rewards()
+        if(count % 109 == 0):
+            fighter1.graph_rewards()
         count+=1
         send_response(response) # send the action or actions or load successful message based on packet type
         print("response: ", response)

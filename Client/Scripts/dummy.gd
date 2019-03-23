@@ -13,6 +13,7 @@ var attack_secondary   = false              # Use the secondary attack as often 
 var use_ability        = false               # Use the ability as often as possible
 var opponent_position  = Vector2()          # The position of the opponent
 var inaccuracy         = 1                # Allowed range of variance from the true target
+var psuedo_counter     = 0
 
 onready var t = Timer.new()
 onready var game_state = self.get_parent().get_child(1)
@@ -46,6 +47,7 @@ func _physics_process(delta):
 	opponent_position = get_opponent().get_position()
 	psuedo_mouse = opponent_position + Vector2((randi() % inaccuracy) - (inaccuracy/2), (randi() % inaccuracy) - (inaccuracy/2))
 	relative_mouse   = psuedo_mouse - self.get_position()
+	aim_angle_old    = aim_angle
 	aim_angle = (psuedo_mouse - global_position).angle()
 	relative_direction = get_position() - opponent_position
 	#direction = Vector2(0,0)
@@ -70,5 +72,18 @@ func _physics_process(delta):
 			direction = (opponent_position - self.get_position())
 		elif move_defensive:
 			direction = (self.get_position() - opponent_position)
-	
+	#psuedo_counter = (psuedo_counter+1) % 4
+	if psuedo_counter == 0:
+		aim_angle_diff = aim_angle - aim_angle_old
+		if abs(aim_angle_diff) > .5:
+			aim_angle_diff *= -1
+		if aim_angle_diff > 0:
+			psuedo_aim_right = 1
+		elif aim_angle_diff < 0:
+			psuedo_aim_left  = 1
+		else:
+			psuedo_aim_right = 0
+			psuedo_aim_left  = 0
+#	print("psuedo counter = " , psuedo_counter )
+	game_state.set_player_action(self)
 	get_node("Label").set_text(str(get_hit_points()))

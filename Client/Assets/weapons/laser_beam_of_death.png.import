@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/laser_beam_of_death.png-f595720c4d526d67721a8741efe590b5.stex"
+path="res://.import/laser_beam_of_death.png-b4a7808e31341c0eecf35ab38723b49a.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/laser_beam_of_death.png"
-dest_files=[ "res://.import/laser_beam_of_death.png-f595720c4d526d67721a8741efe590b5.stex" ]
+source_file="res://assets/weapons/laser_beam_of_death.png"
+dest_files=[ "res://.import/laser_beam_of_death.png-b4a7808e31341c0eecf35ab38723b49a.stex" ]
 
 [params]
 
