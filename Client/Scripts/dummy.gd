@@ -60,35 +60,15 @@ func _physics_process(delta):
 		if use_ability:
 			ability.use()
 			psuedo_ability = 1
-		
-	if move_random:
-		if randi() % 20 == 0:
-			direction.x = (randi() % 3) - 1
-			direction.y = (randi() % 3) - 1
-	elif move_aggressive:
-		direction = (opponent_position - self.get_position())
-	elif move_defensive:
-		direction = (self.get_position() - opponent_position)
 	
-	# Control bot animation
-	if aim_angle > - (PI*0.5) and aim_angle <= (PI*0.5):
-		get_node("animation_bot").face_right()
-		if direction.x != 0 || direction.y != 0:
-			if (direction.x > 0):
-				get_node("animation_bot").start_walking_forward()
-			else:
-				get_node("animation_bot").start_walking_backward()
-		else:
-			get_node("animation_bot").reset_animation()
-	else:
-		get_node("animation_bot").face_left()
-		if direction.x != 0 || direction.y != 0:
-			if (direction.x > 0):
-				get_node("animation_bot").start_walking_backward()
-			else:
-				get_node("animation_bot").start_walking_forward()
-		else:
-			get_node("animation_bot").reset_animation()
-
-	move_bot()
+	if not ignore_movement_controls:
+		if move_random:
+			if randi() % 20 == 0:
+				direction.x = (randi() % 3) - 1
+				direction.y = (randi() % 3) - 1
+		elif move_aggressive:
+			direction = (opponent_position - self.get_position())
+		elif move_defensive:
+			direction = (self.get_position() - opponent_position)
+	
 	get_node("Label").set_text(str(get_hit_points()))

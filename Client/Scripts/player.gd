@@ -15,7 +15,6 @@ func _process(delta):
 func _physics_process(delta):
 	psuedo_mouse     = get_global_mouse_position()
 	relative_mouse   = get_viewport().get_mouse_position() - get_position()
-	direction        = Vector2(0,0)
 	psuedo_ability   = 0
 	psuedo_secondary = 0
 	psuedo_primary   = 0
@@ -30,18 +29,20 @@ func _physics_process(delta):
 		elif Input.is_action_pressed("primary_attack"):
 			primary_weapon.use() 
 			psuedo_primary = 1
-	if Input.is_action_pressed("ui_right"):
-		direction.x = 1
-	if Input.is_action_pressed("ui_left"):
-		direction.x = -1
-	if Input.is_action_pressed("ui_right") and Input.is_action_pressed("ui_left"):
-		direction.x = 0
-	if Input.is_action_pressed("ui_up"):
-		direction.y = -1
-	if Input.is_action_pressed("ui_down"):
-		direction.y = 1
-	if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_down"):
-		direction.y = 0
+	if not ignore_movement_controls:
+		direction = Vector2(0,0)
+		if Input.is_action_pressed("ui_right"):
+			direction.x = 1
+		if Input.is_action_pressed("ui_left"):
+			direction.x = -1
+		if Input.is_action_pressed("ui_right") and Input.is_action_pressed("ui_left"):
+			direction.x = 0
+		if Input.is_action_pressed("ui_up"):
+			direction.y = -1
+		if Input.is_action_pressed("ui_down"):
+			direction.y = 1
+		if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_down"):
+			direction.y = 0
 		
 		
 	aim_angle_old    = aim_angle
@@ -56,27 +57,5 @@ func _physics_process(delta):
 	else:
 		psuedo_aim_right = 0
 		psuedo_aim_left  = 0
-		
-	# Control bot animation
-	if aim_angle > - (PI*0.5) and aim_angle <= (PI*0.5):
-		get_node("animation_bot").face_right()
-		if direction.x != 0 || direction.y != 0:
-			if (direction.x > 0):
-				get_node("animation_bot").start_walking_forward()
-			else:
-				get_node("animation_bot").start_walking_backward()
-		else:
-			get_node("animation_bot").reset_animation()
-	else:
-		get_node("animation_bot").face_left()
-		if direction.x != 0 || direction.y != 0:
-			if (direction.x > 0):
-				get_node("animation_bot").start_walking_backward()
-			else:
-				get_node("animation_bot").start_walking_forward()
-		else:
-			get_node("animation_bot").reset_animation()
 	
-	
-	move_bot()
 	get_node("Label").set_text(str(get_hit_points()))

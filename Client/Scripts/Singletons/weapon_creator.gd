@@ -23,7 +23,7 @@ enum weapon_types {
 	W_SEC_SCYTHE,
 	W_SEC_SNARE,
 	W_SEC_ZORROS_WIT,
-	W_ABI_CHARGE, # not yet implemented
+	W_ABI_CHARGE,
 	W_ABI_CLONE,
 	W_ABI_EVADE,
 	W_ABI_FREEZE,
@@ -73,7 +73,7 @@ const W_SEC_STATS = [
 	{"id": W_SEC_ZORROS_WIT        , "implemented": false, "name": "Zorro's Wit"       , "description": "The bot becomes invisible for 3 seconds"                                                                , "info": "Can't outsmart this, can you?"                     , "attack":     0, "speed":  5.0 , "type": "Tech"  , "icon": preload("res://assets/weapons/icon_zorros_wit.png"), "sprite": preload("res://assets/weapons/icon_zorros_wit.png"), "scene": preload("res://scenes/weapons/tech/zorros_wit.tscn")}
 ]
 const W_ABI_STATS = [
-	{"id": W_ABI_CHARGE            , "implemented": false, "name": "Charge"            , "description": "Rush towards the opponent in a straight line dealing damage on contact"                                 , "info": "Rush speed is 3 times normal movement"             , "attack":    50, "speed":  1.5 , "type": "Melee" , "icon": preload("res://assets/weapons/bow_regular.png")      , "sprite": preload("res://assets/weapons/arrow_regular.png")    , "scene": preload("res://scenes/weapons/tech/charge.tscn")},
+	{"id": W_ABI_CHARGE            , "implemented": true , "name": "Charge"            , "description": "Rush towards the opponent in a straight line dealing damage on contact"                                 , "info": "Rush speed is 3 times normal movement"             , "attack":    50, "speed":  1.5 , "type": "Tech"  , "icon": preload("res://assets/weapons/icon_charge.png")      , "sprite": preload("res://assets/weapons/icon_charge.png")      , "scene": preload("res://scenes/weapons/tech/charge.tscn")},
 	{"id": W_ABI_CLONE             , "implemented": true , "name": "Clone"             , "description": "Creates a dummy model alongside the bot that cannot do damage but reacts with a simple AI"              , "info": "Disrupt, Detect, Delay, Defeat"                    , "attack":     0, "speed":  5.0 , "type": "Tech"  , "icon": preload("res://assets/weapons/icon_clone.png")       , "sprite": preload("res://assets/weapons/icon_clone.png")       , "scene": preload("res://scenes/weapons/tech/clone.tscn")},
 	{"id": W_ABI_EVADE             , "implemented": true , "name": "Evade"             , "description": "Gain a brief (0.1 seconds) boost of speed to sprint out of the way of an incoming projectile"           , "info": "Move 5 times faster for 0.1 seconds"               , "attack":     0, "speed":  0.3 , "type": "Tech"  , "icon": preload("res://assets/weapons/icon_evade.png")       , "sprite": preload("res://assets/weapons/arrow_regular.png")    , "scene": preload("res://scenes/weapons/tech/evade.tscn")},
 	{"id": W_ABI_FREEZE            , "implemented": true , "name": "Freeze"            , "description": "Freeze the opponent for 0.5 seconds, completely immobilizing them (target cannot attack or move)"       , "info": "Freeze affects target for 0.5 seconds"             , "attack":     0, "speed":  1.0 , "type": "Ranged", "icon": preload("res://assets/weapons/icon_freeze.png")      , "sprite": preload("res://assets/weapons/freeze_projectile.png"), "scene": preload("res://scenes/weapons/projectile_launcher.tscn"), "projectile_speed": 325, "projectile_scene": preload("res://Scenes/weapons/projectile.tscn")},
@@ -117,11 +117,11 @@ func get_w_stats_implemented_only(weapon_array):
 func create_weapon(w_ID):
 	var w_stats = get_weapon_stats(w_ID)
 	var weapon = w_stats["scene"].instance()
+	weapon.id = w_stats["id"]
+	weapon.damage = w_stats["attack"]
+	weapon.cooldown = w_stats["speed"]
 	match(w_stats["type"]):
 		"Ranged":
-			weapon.id = w_stats["id"]
-			weapon.damage = w_stats["attack"]
-			weapon.cooldown = w_stats["speed"]
 			if w_stats["id"] == W_ABI_FREEZE or w_stats["id"] == W_PRI_ZORROS_GLARE:
 				# Freeze and Zorro's Glare do not get a visible graphic
 				weapon.set_sprite(null)
@@ -131,22 +131,14 @@ func create_weapon(w_ID):
 			weapon.projectile_speed = w_stats["projectile_speed"]
 			weapon.projectile_scene = w_stats["projectile_scene"]
 		"Melee":
-			weapon.id = w_stats["id"]
-			weapon.damage = w_stats["attack"]
-			weapon.cooldown = w_stats["speed"]
 			weapon.swing_scene = w_stats["swing_scene"]
 			weapon.set_sheathed_sprite(w_stats["icon"])
 			weapon.scale = Vector2(w_stats["scale"], w_stats["scale"])
 		"Trap":
-			weapon.id = w_stats["id"]
-			weapon.damage = w_stats["attack"]
-			weapon.cooldown = w_stats["speed"]
 			weapon.lifetime = w_stats["lifetime"]
 			weapon.trap_scene = w_stats["trap_scene"]
 			weapon.trap_sprite = w_stats["icon"]
 		"Tech":
-			weapon.id = w_stats["id"]
-			weapon.cooldown = w_stats["speed"]
 			if w_stats["id"] == W_SEC_NUKE:
 				weapon.damage = w_stats["attack"]
 	return weapon

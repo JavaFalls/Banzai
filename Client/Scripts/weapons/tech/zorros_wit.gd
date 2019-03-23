@@ -14,7 +14,7 @@ const DURATION = 3.0 # How long, in seconds, the effect lasts
 #------------------------------------------------------------------------
 # Stat variables:
 var id
-var damage         = 0
+var damage         = 0 # unused by this weapon
 var cooldown       = 0.0        # Time for using cooldown
 
 # Other variables:
@@ -47,10 +47,10 @@ func use():
 		bot.last_known_location = global_position
 		if bot.is_player:
 			# Allow the player to contiune seeing their bot
-			bot.modulate = Color(1,1,1,0.5)
+			bot.modulate.a = 0.5
 		else:
 			# Make the bot completely invisible
-			bot.modulate = Color(1,1,1,0)
+			bot.modulate.a = 0
 		duration_timer.start()
 		# Special Effects
 		var effect = zorros_wit_effect.instance()
@@ -63,4 +63,4 @@ func use():
 # Function that is called when the duration ends
 func _duration_timer_timeout():
 	bot.invisible = false
-	bot.modulate = Color(1,1,1,1)
+	bot.modulate.a = 1

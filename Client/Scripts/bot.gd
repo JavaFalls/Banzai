@@ -16,7 +16,6 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	move_bot()
 	get_node("Label").set_text("NN" + str(get_hit_points()))
 
 func set_bot_info():
@@ -32,7 +31,8 @@ func set_bot_info():
 	psuedo_mouse     = opponent.get_position()
 	relative_mouse   = psuedo_mouse - self.get_position()
 #	aim_angle        = atan2(relative_mouse.x, relative_mouse.y) # gives angle in radians
-	direction        = game_state.predicted_bot_vector
+	if not ignore_movement_controls:
+		direction        = game_state.predicted_bot_vector
 #	print(game_state.predicted_bot_vector)
 #	direction        = Vector2(0,0)
 	psuedo_ability       = 0
@@ -52,27 +52,6 @@ func set_bot_info():
 			ability.use()
 			psuedo_ability = 1
 
-
-	# Control bot animation
-	if aim_angle > - (PI*0.5) and aim_angle <= (PI*0.5):
-		get_node("animation_bot").face_right()
-		if direction.x != 0 || direction.y != 0:
-			if (direction.x > 0):
-				get_node("animation_bot").start_walking_forward()
-			else:
-				get_node("animation_bot").start_walking_backward()
-		else:
-			get_node("animation_bot").reset_animation()
-	else:
-		get_node("animation_bot").face_left()
-		if direction.x != 0 || direction.y != 0:
-			if (direction.x > 0):
-				get_node("animation_bot").start_walking_backward()
-			else:
-				get_node("animation_bot").start_walking_forward()
-		else:
-			get_node("animation_bot").reset_animation()
-
 func set_opponent_info():
 	if game_state.predicted_opponent_aim_left == 1:
 		aim_angle -= .1*PI
@@ -87,7 +66,8 @@ func set_opponent_info():
 	psuedo_mouse     = opponent.get_position()
 	relative_mouse   = psuedo_mouse - self.get_position()
 #	aim_angle        = atan2(relative_mouse.x, relative_mouse.y) # gives angle in radians
-	direction        = game_state.predicted_opponent_vector
+	if not ignore_movement_controls:
+		direction        = game_state.predicted_opponent_vector
 #	direction        = Vector2(0,0)
 	psuedo_ability       = 0
 	psuedo_secondary     = 0
@@ -105,24 +85,3 @@ func set_opponent_info():
 		if game_state.predicted_opponent_psuedo_ability:
 			ability.use()
 			psuedo_ability = 1
-
-
-	# Control bot animation
-	if aim_angle > - (PI*0.5) and aim_angle <= (PI*0.5):
-		get_node("animation_bot").face_right()
-		if direction.x != 0 || direction.y != 0:
-			if (direction.x > 0):
-				get_node("animation_bot").start_walking_forward()
-			else:
-				get_node("animation_bot").start_walking_backward()
-		else:
-			get_node("animation_bot").reset_animation()
-	else:
-		get_node("animation_bot").face_left()
-		if direction.x != 0 || direction.y != 0:
-			if (direction.x > 0):
-				get_node("animation_bot").start_walking_backward()
-			else:
-				get_node("animation_bot").start_walking_forward()
-		else:
-			get_node("animation_bot").reset_animation()

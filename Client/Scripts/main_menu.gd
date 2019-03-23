@@ -117,6 +117,9 @@ func _on_logout_warning_confirmed():
 #	head.save_bots(head.bots)
 #	head.init_bots()
 	Menu_audio.menu_audio.stop()
+	weapon_creator.get_weapon_stats(weapon_creator.W_PRI_ZORROS_GLARE)["implemented"] = false
+	weapon_creator.get_weapon_stats(weapon_creator.W_SEC_ZORROS_WIT)["implemented"] = false
+	weapon_creator.get_weapon_stats(weapon_creator.W_ABI_ZORROS_HONOR)["implemented"] = false
 	get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
 

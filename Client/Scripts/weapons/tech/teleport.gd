@@ -12,6 +12,7 @@ signal use # All weapons must have this signal so that cooldowns can be displaye
 #------------------------------------------------------------------------
 # Stat variables:
 var id
+var damage # unused by this ability
 var cooldown       = 0.0        # Time for using cooldown
 
 # Other variables:
