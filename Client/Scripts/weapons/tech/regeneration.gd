@@ -16,6 +16,7 @@ const CYCLE_FREQUENCY = DURATION / (TOTAL_HEAL * AMT_PER_CYCLE) # How often to h
 #------------------------------------------------------------------------
 # Stat variables:
 var id
+var damage           = 0          # Unused by this weapon
 var cooldown         = 0.0        # Time for using cooldown
 
 # Other variables:

@@ -6,27 +6,19 @@ extends Area2D
 const FREEZE_DURATION = 0.5
 
 # Stat Variables:
+var        id       = -1
 var        speed    = 1
 var        damage   = 0
-var        id       = -1
 
 # Other variables:
 var        movement = Vector2()
-#var        target   = Vector2()
 onready var projectile_owner = get_parent().get_parent().get_parent()
 onready var t = Timer.new()
-#onready var atk_range_node = get_parent().get_parent() # get atk_range which is the parent of projectile_container
 
 # Helper scenes
 onready var explosion = preload("res://Scenes/weapons/explosion.tscn") # Basic explosion that can be instanced.
 onready var acid = preload("res://Scenes/weapons/acid.tscn") # Basic acid that can be instanced (deals damage over time).
 onready var freeze = preload("res://Scenes/weapons/freeze_effect.tscn") # Freeze affect that freezes its target for the specified duration
-
-#func set_target(new_target):
-#	self.target = new_target
-
-#x = r cos(theta)
-#y = r sin(theta)
 
 # Godot Hooks:
 #---------------------------------------------------------

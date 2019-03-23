@@ -7,6 +7,7 @@ onready var bot_data = JSON.parse(
 					   head.DB.get_bot(head.bot_ID,
 									   "File_%s.h5" % str(head.bot_ID))).result["data"][0]
 #onready var bot_data = JSON.parse(head.DB.get_bot(1,"File_%s.h5" % str(1))).result["data"][0]# for seth and jonathan
+#onready var player_data = JSON.parse(head.DB.get_bot(1,"File_%s.h5" % str(1))).result["data"][0]# for seth and jonathan
 
 # The variables
 var fighter1                             # Player or his AI bot
@@ -54,7 +55,7 @@ func _ready():
 	fighter1.set_opponent(fighter2)
 	fighter2.set_opponent(fighter1)
 	
-	t.set_wait_time(.3)
+	t.set_wait_time(.01)
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.set_pause_mode(Node.PAUSE_MODE_STOP)
@@ -85,8 +86,7 @@ func send_nn_state():
 	game_state.set_bot_state(fighter2)
 	var output = []
 	var message
-	message = '{ "Message Type": "Train", "Message": %s }' % str(game_state.get_battle_state())
-	print(message,"arena train sendnnserver")
+	message = '{ "Message Type": "Train", "Message": %s }' % str(game_state.get_training_state())
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 	output = int(output)
