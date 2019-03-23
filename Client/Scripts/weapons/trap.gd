@@ -47,6 +47,7 @@ func spawn_trap():
 	trap.lifetime = lifetime
 	trap.damage = damage
 	trap.position = bot.global_position
+	trap.scale = bot.scale
 	trap.bot = bot
 	trap.set_sprite(trap_sprite)
 	trap_container.add_child(trap)

@@ -87,7 +87,10 @@ func set_bot_state(bot):
 	self.bot_in_peril      = bot.in_peril
 
 func set_opponent_state(opponent):
-	self.opponent_position = opponent.get_position()
+	if opponent.invisible:
+		self.opponent_position = opponent.last_known_location
+	else:
+		self.opponent_position = opponent.get_position()
 	self.opponent_position[0]   = opponent_position[0] / 400
 	self.opponent_position[1]   = opponent_position[1] / 225
 	self.opponent_aim_angle     = (opponent.aim_angle-PI)/(-2*PI) # divide in order to normalize # this probably doesnt work ?

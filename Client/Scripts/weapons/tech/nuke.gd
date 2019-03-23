@@ -41,6 +41,7 @@ func use():
 		var missle = nuke_missle.instance()
 		missle.damage = damage
 		missle.position = global_position
+		missle.scale = bot.scale
 		missle.target = (Vector2(cos(bot.aim_angle),sin(bot.aim_angle)) * FIRING_DISTANCE) + global_position
 		bot.get_parent().add_child(missle)
 		bot.disabled += DISABLE_TIME

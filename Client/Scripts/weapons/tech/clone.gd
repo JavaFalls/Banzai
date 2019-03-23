@@ -15,7 +15,7 @@ const DUMMY_LIFETIME = 2.5 # How long, in seconds, that the dummy will be on the
 #------------------------------------------------------------------------
 # Stat variables:
 var id
-var damage         = 0
+var damage         = 0          # Unused by this ability
 var cooldown       = 0.0        # Time for using cooldown
 
 # Other variables:
@@ -44,7 +44,6 @@ func _ready():
 		if a_signal["name"] == "post_game":
 			has_post_end_signal = true
 	if has_post_end_signal:
-		print("connected")
 		bot.get_parent().connect("post_game", self, "_post_end")
 
 # Function that is called when the ability is used
@@ -69,6 +68,7 @@ func use():
 		if bot.is_player:
 			dummy.modulate = Color(1, 1, 1, 0.75) # Modify the players bot slightly so that the human brain doesn't go crazy trying to figure out which is which when clone is used
 		bot.get_parent().add_child(dummy)
+		dummy.connect("game_end", self, "_dummy_died")
 		dummy.get_node("animation_bot").set_primary_color(bot.get_node("animation_bot").get_primary_color())
 		dummy.get_node("animation_bot").set_secondary_color(bot.get_node("animation_bot").get_secondary_color())
 		dummy.get_node("animation_bot").set_accent_color(bot.get_node("animation_bot").get_accent_color())
@@ -77,10 +77,15 @@ func use():
 		emit_signal("use") # Notify anybody who cares that we did our thing
 
 func _dummy_timer_timeout():
-	dummy.queue_free()
-	dummy = null
+	if (dummy != null):
+		dummy.queue_free()
+		dummy = null
+
+func _dummy_died():
+	if (dummy != null):
+		dummy.queue_free()
+		dummy = null
 
 func _post_end():
-	print("_post_end()")
 	if dummy != null:
 		dummy.set_physics_process(false)

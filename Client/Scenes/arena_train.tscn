@@ -77,26 +77,22 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[node name="world" type="Node2D" index="0"]
+[node name="world" type="Node2D"]
 
-pause_mode = 2
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
 
 [node name="arena" parent="." index="0" instance=ExtResource( 2 )]
 
-pause_mode = 1
-
 [node name="game_state" parent="." index="1" instance=ExtResource( 3 )]
 
-pause_mode = 1
 _sections_unfolded = [ "Pause" ]
 
 [node name="exit" type="Node2D" parent="." index="2"]
 
 pause_mode = 2
 visible = false
-z_index = 1
+z_index = 2
 _sections_unfolded = [ "Pause", "Z Index" ]
 
 [node name="exit" type="ColorRect" parent="exit" index="0"]
@@ -203,22 +199,28 @@ text = "No"
 flat = true
 align = 1
 
-[node name="fighter1_cooldowns" parent="." index="3" instance=ExtResource( 5 )]
+[node name="UI_container" type="Node2D" parent="." index="3"]
+
+z_index = 1
+_sections_unfolded = [ "Z Index" ]
+
+[node name="fighter1_cooldowns" parent="UI_container" index="0" instance=ExtResource( 5 )]
 
 margin_left = 120.0
 margin_top = 20.0
 margin_right = 168.0
 margin_bottom = 36.0
-_sections_unfolded = [ "Grow Direction", "Rect" ]
+_sections_unfolded = [ "Grow Direction", "Pause", "Rect" ]
 
-[node name="fighter2_cooldowns" parent="." index="4" instance=ExtResource( 5 )]
+[node name="fighter2_cooldowns" parent="UI_container" index="1" instance=ExtResource( 5 )]
 
 margin_left = 232.0
 margin_top = 20.0
 margin_right = 280.0
 margin_bottom = 36.0
+_sections_unfolded = [ "Pause", "Rect" ]
 
-[node name="ArenaAudio" type="AudioStreamPlayer" parent="." index="5"]
+[node name="ArenaAudio" type="AudioStreamPlayer" parent="." index="4"]
 
 stream = null
 volume_db = 0.0

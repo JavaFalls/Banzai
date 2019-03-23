@@ -48,6 +48,9 @@ func _input(event):
 func _process(delta):
 	if Input.is_key_pressed(KEY_G) and Input.is_key_pressed(KEY_E) and Input.is_key_pressed(KEY_A) and Input.is_key_pressed(KEY_R) and Input.is_key_pressed(KEY_Y):
 		ty34918jj = true
+		weapon_creator.get_weapon_stats(weapon_creator.W_PRI_ZORROS_GLARE)["implemented"] = true
+		weapon_creator.get_weapon_stats(weapon_creator.W_SEC_ZORROS_WIT)["implemented"] = true
+		weapon_creator.get_weapon_stats(weapon_creator.W_ABI_ZORROS_HONOR)["implemented"] = true
 	if ty34918jj:
 		var look_at = get_tree().get_root().get_mouse_position() - _bot.position
 		if look_at.x != 0 and look_at.y != 0:
@@ -114,6 +117,9 @@ func _on_logout_warning_confirmed():
 #	head.save_bots(head.bots)
 #	head.init_bots()
 	Menu_audio.menu_audio.stop()
+	weapon_creator.get_weapon_stats(weapon_creator.W_PRI_ZORROS_GLARE)["implemented"] = false
+	weapon_creator.get_weapon_stats(weapon_creator.W_SEC_ZORROS_WIT)["implemented"] = false
+	weapon_creator.get_weapon_stats(weapon_creator.W_ABI_ZORROS_HONOR)["implemented"] = false
 	get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
 
