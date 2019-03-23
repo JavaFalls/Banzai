@@ -3,7 +3,7 @@
 
 extends "res://Scripts/entity.gd"
 onready var game_state = self.get_parent().get_child(1) #Currently child 1 is game state apparently. this is temporary code it needs to set gamestate automatically to the right child
-
+onready var psuedo_counter = 0
 func _process(delta):
 	#game_state.set_player_action(self)
 #	if is_player:
@@ -43,19 +43,22 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_up") and Input.is_action_pressed("ui_down"):
 		direction.y = 0
 		
-		
-	aim_angle_old    = aim_angle
-	aim_angle        = (psuedo_mouse - global_position).angle() # gives angle in radians
-	aim_angle_diff = aim_angle - aim_angle_old
-	if abs(aim_angle_diff) > .5:
-		aim_angle_diff *= -1
-	if aim_angle_diff > 0:
-		psuedo_aim_right = 1
-	elif aim_angle_diff < 0:
-		psuedo_aim_left  = 1
-	else:
-		psuedo_aim_right = 0
-		psuedo_aim_left  = 0
+	
+	psuedo_counter = (psuedo_counter+1) % 4
+	if psuedo_counter == 0:
+		aim_angle_old    = aim_angle
+		aim_angle        = (psuedo_mouse - global_position).angle() # gives angle in radians
+		aim_angle_diff = aim_angle - aim_angle_old
+		if abs(aim_angle_diff) > .5:
+			aim_angle_diff *= -1
+		if aim_angle_diff > 0:
+			psuedo_aim_right = 1
+		elif aim_angle_diff < 0:
+			psuedo_aim_left  = 1
+		else:
+			psuedo_aim_right = 0
+			psuedo_aim_left  = 0
+	game_state.set_player_action(self)
 		
 	# Control bot animation
 	if aim_angle > - (PI*0.5) and aim_angle <= (PI*0.5):

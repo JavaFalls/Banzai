@@ -20,7 +20,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 state_size  = 13
 action_size = 108
-batch_size  = 16
+batch_size  = 1
 
 BOT_POSITION_X      = 0
 BOT_POSITION_Y      = 1
@@ -125,18 +125,19 @@ class DQN_agent:
         self.state_size = state_size
         self.action_size = action_size
 
-        self.memory = deque(maxlen=20000)
+        self.memory = deque(maxlen=8)
         self.gamma         = 0.9 # discount future reward; used for Q which doesn't work for us
         self.epsilon       = 1 # exploration rate; initial rate; skew 100% towards exploration
-        self.epsilon_decay = .995 # rate at which epsilon decays; get multiplied to epsilon
+        self.epsilon_decay = .9995 # rate at which epsilon decays; get multiplied to epsilon
         self.epsilon_min   = 0.1 # floor that epsilon will rest at after heavy training
 
-        self.learning_rate = .5
+        self.learning_rate = 0.001
 
         self.reward        = 0      # reward calculated from two consecutive gamestates
         self.state_counter = 0      # how many game states have been sent from Godot
         self.action        = 0      # the action predicted by the neural network
         self.player_action = 0      # the action performed by the human and not the neural network
+        self.is_player     = 0
         self.gamestate     = 0
         self.rewards       = []
         self.reward_total  = 0
@@ -153,12 +154,13 @@ class DQN_agent:
 
     def _build_model(self): # defines the NN
         model = Sequential()
-        model.add(Dense(55, input_dim = self.state_size, activation='relu'))
-        model.add(Dense(110, activation='relu'))
-        model.add(Dense(55, activation='relu'))
+        model.add(Dense(self.state_size, activation='relu'))
+        model.add(Dense(200, activation='linear'))
+        model.add(Dense(200, activation='linear'))
+        # model.add(Dense(108, activation='linear'))
         model.add(Dense(self.action_size, activation='linear'))
 
-        model.compile(loss='mean_absolute_error', optimizer=Adam(lr = self.learning_rate))
+        model.compile(loss='mean_squared_error', optimizer=Adam(lr = self.learning_rate))
 
         return model
 
@@ -180,7 +182,7 @@ class DQN_agent:
     def replay(self, batch_size):
         minibatch = random.sample(self.memory, batch_size)
 
-        for state, action, reward, next_state in minibatch: # use minibatch for a random smaller sample
+        for state, action, reward, next_state in self.memory: # use minibatch for a random smaller sample
         #     print(state)
         #     print(action)
         #     print(reward)
@@ -212,8 +214,6 @@ class DQN_agent:
         .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")
         for item in input_list:
            output_list.append(float(item))
-        # self.player_action = int(output_list[0])
-        # output_list = output_list[1:self.state_size+1]
         output_list = np.reshape(output_list, (1, self.state_size))
         return output_list
 
@@ -223,14 +223,16 @@ class DQN_agent:
     def train(self, new_gamestate):
         if self.state_counter >= 1:
             next_gamestate = new_gamestate # get the gamestate
-            #self.reward = self.get_reward(np.flip(self.gamestate,1)[0], np.flip(next_gamestate,1)[0]) # for train on player
             self.reward = self.get_reward(self.gamestate[0], next_gamestate[0])
             print("########################################")
-            #self.remember(np.flip(self.gamestate,1),self.player_action,self.reward,np.flip(next_gamestate,1))# for train on player
-            self.remember(self.gamestate,self.action,self.reward,next_gamestate)
-            if np.amax(self.model.predict(self.gamestate)[0]) < self.reward: #if predicted reward < actual reward then explore
-                    self.epsilon *= 1.04
-                    print("epsilon increased-----")
+            if self.player_action == -1:
+                self.remember(self.gamestate,self.action,self.reward,next_gamestate)
+            else:
+                self.remember(self.gamestate,self.player_action,self.reward,next_gamestate)
+
+            # if np.amax(self.model.predict(self.gamestate)[0]) < self.reward: #if predicted reward < actual reward then explore
+            #         self.epsilon *= 1.04
+            #         print("epsilon increased-----")
             self.gamestate = next_gamestate
         else:
             self.gamestate = new_gamestate # get the gamestate
@@ -238,11 +240,10 @@ class DQN_agent:
         self.state_counter +=1
         self.action = self.predict(self.gamestate)
 
-        if len(self.memory) % batch_size == 0 and len(self.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
-                self.replay(batch_size)
-                self.save_bot()
-        # if len(self.memory) > 0: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+        # if len(self.memory) % batch_size == 0 and len(self.memory) > batch_size: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
         #         self.replay(batch_size)
+        if len(self.memory) > 0: # trains the model, automatically trains once a certain threshold of trainable memories has been reached
+            self.replay(batch_size)
 
         return self.action
     def graph_rewards(self):
@@ -380,16 +381,16 @@ class DQN_agent:
                 negative_reward_count += 1
 
         # Avoidance
-        new_reward += avoidance_reward
-        reward_count += 1
-        if avoidance_reward < 0:
-                negative_reward_count += 1
+        # new_reward += avoidance_reward
+        # reward_count += 1
+        # if avoidance_reward < 0:
+        #         negative_reward_count += 1
 
         # approach
-        new_reward += approach_reward
-        reward_count += 1
-        if approach_reward < 0:
-                negative_reward_count += 1
+        # new_reward += approach_reward
+        # reward_count += 1
+        # if approach_reward < 0:
+        #         negative_reward_count += 1
 
         # Flee
         # new_reward += flee_reward
@@ -398,22 +399,22 @@ class DQN_agent:
                 # negative_reward_count += 1
 
         # Deal Damage # probably isn't effective
-        new_reward += damage_dealt_reward
-        reward_count += 1
-        if damage_dealt_reward < 0:
-                negative_reward_count += 1
+        # new_reward += damage_dealt_reward
+        # reward_count += 1
+        # if damage_dealt_reward < 0:
+        #         negative_reward_count += 1
 
         # Damage Received # # probably isn't effective
-        new_reward += damage_received_reward
-        reward_count += 1
-        if damage_received_reward < 0:
-                negative_reward_count += 1
+        # new_reward += damage_received_reward
+        # reward_count += 1
+        # if damage_received_reward < 0:
+        #         negative_reward_count += 1
 
         # health received reward # probably isn't effective
-        new_reward += health_received_reward
-        reward_count += 1
-        if health_received_reward < 0:
-                negative_reward_count += 1
+        # new_reward += health_received_reward
+        # reward_count += 1
+        # if health_received_reward < 0:
+        #         negative_reward_count += 1
 
         # If a bunch of the rewards are negative, set reward to negative 1
         # if negative_reward_count >= reward_count-1:
@@ -457,24 +458,28 @@ def reshape(gamestate, state_size):
         .replace(")","").replace("'","").replace("\n","").replace("False", "0").replace("True", "1").replace('"',"").replace("''","'0'").split(",")
         for item in input_list:
            output_list.append(float(item))
-        # self.player_action = int(output_list[0])
-        # output_list = output_list[1:self.state_size+1]
+
         output_list = np.reshape(output_list, (1, state_size))
         return output_list
 
 # Godot Message Processor. See JSON Documentation to find out how we use this module
 def process_message(message):
         output = []
-
+        output_list = []
 
         if message["Message Type"] == "Train"  :
-                fighter1.epsilon = 1
-                output = fighter1.train(   reshape(message["Message"] , fighter1.get_state_size()) )
+                fighter1.player_action = message["Message"][0]  # extract the player action from the from of game_state
+                output_list = (   reshape(message["Message"][1:fighter1.get_state_size()+1] , fighter1.get_state_size())) # remove player action from gamestate
+                
+                fighter1.train(np.flip(output_list,1)) # train on player
+                fighter1.player_action = -1 # set it to invalid number so that it isn't used with regular bot's training state
+                output = fighter1.train( output_list ) # train and predict on bot
+
         elif message["Message Type"] == "Battle"  :
-                fighter1.epsilon = 0
-                fighter2.epsilon = 0
-                output = np.argmax(fighter1.model.predict(   reshape(message["Message"] , fighter1.get_state_size()) )), np.argmax(fighter2.model.predict(   reshape(message["Message"] , fighter2.get_state_size()) ))
-                # output = [0,0]
+                fighter1.epsilon = 0.1
+                fighter2.epsilon = 0.1
+                output = (fighter1.train(   reshape(message["Message"] , fighter1.get_state_size()) )), (fighter2.train(   reshape(message["Message"] , fighter2.get_state_size()) ))
+                # print((fighter2.model.predict(   reshape(message["Message"] , fighter2.get_state_size()) )))
         elif message["Message Type"] == "Load"   :
                 if   message["Game Mode"] == "Train": # todo: don't load for train
                         #fighter1.model = load_bot(message["File Name"])
@@ -483,7 +488,7 @@ def process_message(message):
                 elif message["Game Mode"] == "Battle": # todo: dont load the player's bot only the opponent's bot
                         if   message["Opponent?"] == "Yes":
                                 # fighter2.model = load_bot("File_560.h5") # this works if File_560.h5 is present in the folder
-                                fighter2.model = load_bot(message["File Name"]) # what we want to use
+                                # fighter2.model = load_bot(message["File Name"]) # what we want to use
                                 fighter2.model = fighter1.model # temp fix
 
                         # elif message["Opponent?"] == "No":
@@ -499,6 +504,7 @@ def process_message(message):
                 pass
         elif message["Message Type"] == "Save"   :
                 fighter1.save_bot(message["File Name"])
+                fighter1.epsilon = 1
         elif message["Message Type"] == "Kill"   :
                 output = 109
         else:
@@ -568,8 +574,8 @@ while True:
                 break
         #print(request)
         #response = fighter1.train(request)
-        if(count % 1009 == 0):
-            fighter1.graph_rewards()
+        # if(count % 1009 == 0):
+        #     fighter1.graph_rewards()
         count+=1
         send_response(response) # send the action or actions or load successful message based on packet type
         print("response: ", response)
