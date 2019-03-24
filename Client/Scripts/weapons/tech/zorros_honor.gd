@@ -1,5 +1,5 @@
 # Zorros Honor
-# Multiples the bots stats by 2 times
+# Multiplies the bots stats by 2
 extends Node2D
 
 # Signals
@@ -15,7 +15,7 @@ const BOOST_AMOUNT = 2 # How much to boost stats by
 #------------------------------------------------------------------------
 # Stat variables:
 var id
-var damage         = 0
+var damage         = 0 # unused by this weapon
 var cooldown       = 0.0        # Time for using cooldown
 
 # Other variables:
@@ -47,25 +47,8 @@ func use():
 		# Bot stats
 		bot.scale *= BOOST_AMOUNT
 		bot.movement_speed *= BOOST_AMOUNT
-		# Weapon stats
-		var w_pri_stats = weapon_creator.get_weapon_stats(bot.primary_weapon.id)
-		var w_sec_stats = weapon_creator.get_weapon_stats(bot.secondary_weapon.id)
-		match w_pri_stats["type"]:
-			"Ranged":
-				bot.primary_weapon.damage *= BOOST_AMOUNT
-			"Melee":
-				bot.primary_weapon.damage *= BOOST_AMOUNT
-			"Trap":
-				bot.primary_weapon.damage *= BOOST_AMOUNT
-		print(bot.primary_weapon.damage)
-		match w_sec_stats["type"]:
-			"Ranged":
-				bot.secondary_weapon.damage *= BOOST_AMOUNT
-			"Melee":
-				bot.secondary_weapon.damage *= BOOST_AMOUNT
-			"Trap":
-				bot.secondary_weapon.damage *= BOOST_AMOUNT
-		print(bot.secondary_weapon.damage)
+		bot.primary_weapon.damage *= BOOST_AMOUNT
+		bot.secondary_weapon.damage *= BOOST_AMOUNT
 		duration_timer.start()
 		# Basic Weapon stuff
 		cooldown_timer.start()
@@ -73,24 +56,9 @@ func use():
 
 # Function that is called when the duration ends
 func _duration_timer_timeout():
-	# Reduce stats BOOST_AMOUNT
+	# Reduce stats by BOOST_AMOUNT
 	# Bot stats
 	bot.scale /= BOOST_AMOUNT
 	bot.movement_speed /= BOOST_AMOUNT
-	# Weapon stats
-	var w_pri_stats = weapon_creator.get_weapon_stats(bot.primary_weapon.id)
-	var w_sec_stats = weapon_creator.get_weapon_stats(bot.secondary_weapon.id)
-	match w_pri_stats["type"]:
-		"Ranged":
-			bot.primary_weapon.damage /= BOOST_AMOUNT
-		"Melee":
-			bot.primary_weapon.damage /= BOOST_AMOUNT
-		"Trap":
-			bot.primary_weapon.damage /= BOOST_AMOUNT
-	match w_sec_stats["type"]:
-		"Ranged":
-			bot.secondary_weapon.damage /= BOOST_AMOUNT
-		"Melee":
-			bot.secondary_weapon.damage /= BOOST_AMOUNT
-		"Trap":
-			bot.secondary_weapon.damage /= BOOST_AMOUNT
+	bot.primary_weapon.damage /= BOOST_AMOUNT
+	bot.secondary_weapon.damage /= BOOST_AMOUNT

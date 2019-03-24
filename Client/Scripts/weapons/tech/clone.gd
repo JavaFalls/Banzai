@@ -15,7 +15,7 @@ const DUMMY_LIFETIME = 2.5 # How long, in seconds, that the dummy will be on the
 #------------------------------------------------------------------------
 # Stat variables:
 var id
-var damage         = 0
+var damage         = 0          # Unused by this ability
 var cooldown       = 0.0        # Time for using cooldown
 
 # Other variables:

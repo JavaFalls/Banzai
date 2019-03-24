@@ -59,9 +59,9 @@ func _ready():
 	is1.connect("info_queried", self, "grab_info", [head.PRIMARY])
 	is2.connect("info_queried", self, "grab_info", [head.SECONDARY])
 	is3.connect("info_queried", self, "grab_info", [head.ABILITY])
-	is1.connect("shift", self, "weapon_changed")
-	is2.connect("shift", self, "weapon_changed")
-	is3.connect("shift", self, "weapon_changed")
+	is1.connect("shift", self, "weapon_changed", [head.PRIMARY])
+	is2.connect("shift", self, "weapon_changed", [head.SECONDARY])
+	is3.connect("shift", self, "weapon_changed", [head.ABILITY])
 	
 	$color_scroll.connect("color_changed", self, "set_display_bot_colors")
 	$color_scroll2.connect("color_changed", self, "set_display_bot_colors")
@@ -208,7 +208,15 @@ func change_name():
 		$backlight/Light2D.enabled = true
 	return new_name
 
-func weapon_changed():
+func weapon_changed(info_type):
+	match info_type:
+		head.PRIMARY:
+			$item_scroll._on_info_button_pressed()
+		head.SECONDARY:
+			$item_scroll2._on_info_button_pressed()
+		head.ABILITY:
+			$item_scroll3._on_info_button_pressed()
+	
 	var stream
 	match randi() % 15:
 		0:

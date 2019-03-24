@@ -82,7 +82,7 @@ func _ready():
 
 	health = fighter1.get_hit_points()
 
-	t.set_wait_time(.5)
+	t.set_wait_time(.3)
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.start()
@@ -164,7 +164,6 @@ func send_nn_state(bot_number):
 	var output = []
 	var message
 	message = '{ "Message Type": "Battle", "Message": %s }' % str(game_state.get_battle_state())
-	print(message,"arena battle sendnnserver")
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 #	output = Vector2(1,1) # standin so that the nnserver doesn't have to be called.

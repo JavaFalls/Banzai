@@ -46,7 +46,7 @@ func use():
 				for i in range(3):
 					var angle = rand_range(bot.aim_angle - (PI*0.25), bot.aim_angle + (PI*0.25))
 					spawn_projectile(Vector2(cos(angle),sin(angle)))
-			_: # Default case (W_PRI_ACID_BOW, W_PRI_EXPLODING_SHURIKEN, W_PRI_RUBBER_BOW, W_PRI_PRECISION_BOW, W_PRI_ZORROS_GLARE, W_ABI_FREEZE)
+			_: # Default case (W_PRI_ACID_BOW, W_PRI_EXPLODING_SHURIKEN, W_PRI_RUBBER_BOW, W_PRI_PRECISION_BOW, W_ABI_FREEZE)
 				spawn_projectile(Vector2(cos(bot.aim_angle),sin(bot.aim_angle)))
 		cooldown_timer.start()
 		emit_signal("use") # Notify anybody who cares that we did our thing

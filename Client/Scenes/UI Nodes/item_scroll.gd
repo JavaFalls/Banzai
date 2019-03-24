@@ -210,8 +210,6 @@ func update_items(pop_first):
 	sprites.front().modulate.a = 0.0
 	sprites.back().modulate.a = 0.0
 	emit_signal("shift_completed")
-	if get_node("info_button").is_blocking_signals():
-		emit_signal("info_queried")
 
 # Reset items by current
 #-----------------------
