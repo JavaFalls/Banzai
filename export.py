@@ -9,28 +9,38 @@ KNOWN BUGS: A Batch file generated for starting the game from outside
                since the current directory is set to the location of
                the batch file. (possible Godot bug)
 """
-import os, shutil
+import os, shutil, sys
 
 def main():
    is_release = False
 
-   # Initialize directory for build
-   initialize(build_debug=(not is_release))
+   print(sys.argv)
 
-   # Build executables and move them to the created directory
-   build_godot(build_32=True, build_64=True, build_debug=(not is_release))
-   build_project(build_debug=(not is_release))
-   build_nnserver(build_debug=(not is_release))
+   visual_studio_path = (sys.argv[1] + '\\vcvarsall.bat')
 
-   # Package build files and clean remaining artifacts
-   export_files(build_debug=(not is_release))
-   zip_directory(build_debug=(not is_release))
-   clean()
+   if os.path.isfile(visual_studio_path):
+      # Initialize directory for build
+      initialize(build_debug=(not is_release))
 
-   # Print message to signify completion
-   print('------------------------------')
-   print('    EXPORTING FINISHED!!!')
-   print('------------------------------')
+      # Build executables and move them to the created directory
+      build_godot(build_32=True, build_64=True, build_debug=(not is_release), vs_path=('"' + visual_studio_path + '"'))
+      build_project(build_debug=(not is_release))
+      build_nnserver(build_debug=(not is_release))
+
+      # Package build files and clean remaining artifacts
+      export_files(build_debug=(not is_release))
+      zip_directory(build_debug=(not is_release))
+      clean()
+
+      # Print message to signify completion
+      print('------------------------------')
+      print('    EXPORTING FINISHED!!!')
+      print('------------------------------')
+
+   else:
+      print('------------------------------')
+      print('   vcvarsall.bat Not Found')
+      print('------------------------------')
 
 def clean():
    print('------------------------------')

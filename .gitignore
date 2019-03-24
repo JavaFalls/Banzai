@@ -37,19 +37,22 @@ Thumbs.db
 
 # Binary Files #
 ################
-.h5
+*.h5
 
 # Folders #
 ###########
 .import
 [Rr]obo_[Dd]ojo
+Client/NeuralNetwork/gamestates
 
 # Misc #
 ########
 DBConnectionOverride.ODBCconString
-.ODBCconString
-.pck
+*.ODBCconString
+*.pck
 export.bat
+export_log.txt
+*.spec
 
 # Append Visual Studio gitignore file #
 #######################################
@@ -388,4 +391,3 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
-Client/NeuralNetwork/gamestates
