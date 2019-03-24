@@ -14,8 +14,6 @@ import os, shutil, sys
 def main():
    is_release = False
 
-   print(sys.argv)
-
    visual_studio_path = (sys.argv[1] + '\\vcvarsall.bat')
 
    if os.path.isfile(visual_studio_path):
