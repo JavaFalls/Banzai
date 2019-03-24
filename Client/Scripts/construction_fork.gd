@@ -14,16 +14,8 @@ const MOUSE_OUT_COLOR = Color("#aaaaaa")
 # Godot overrides
 #------------------------------------------------
 func _ready():
-#### FOR TESTING #
-	var player_id = head.player_ID
-	if player_id == -1:
-		player_id = 1
-	var bot_id = head.bot_ID
-	if bot_id == -1:
-		bot_id = 1
-##################
-	bot_player.load_colors_from_DB(bot_id)
-	bot_bot.load_colors_from_DB(bot_id)
+	bot_player.load_colors_from_DB(head.player_bot_ID)
+	bot_bot.load_colors_from_DB(head.bot_ID)
 	bot_player.face_right()
 	bot_bot.face_left()
 	
