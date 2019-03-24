@@ -49,6 +49,7 @@ Thumbs.db
 DBConnectionOverride.ODBCconString
 .ODBCconString
 .pck
+export.bat
 
 # Append Visual Studio gitignore file #
 #######################################
