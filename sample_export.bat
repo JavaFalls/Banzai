@@ -1,0 +1,1 @@
+python export.py "%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VC\\Auxiliary\\Build\\" > export_log.txt

@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon_zorros_honor.png-d32c4f45e09fb51ab2e33973425d256f.stex"
+path="res://.import/icon_zorros_honor.png-0d6207203f2bc5873d3450b19f479d57.stex"
 
 [deps]
 
-source_file="res://assets/weapons/icon_zorros_honor.png"
-dest_files=[ "res://.import/icon_zorros_honor.png-d32c4f45e09fb51ab2e33973425d256f.stex" ]
+source_file="res://Assets/weapons/icon_zorros_honor.png"
+dest_files=[ "res://.import/icon_zorros_honor.png-0d6207203f2bc5873d3450b19f479d57.stex" ]
 
 [params]
 

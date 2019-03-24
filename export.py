@@ -1,184 +1,246 @@
 """
-Build and export each piece for the project Robo Dojo
+Script that automates the build process for the project Robo Dojo
+
+NOTES: Must be located in the directory that contains both the
+       'Client' folder as well as the 'Custom Godot' folder
+
+KNOWN BUGS: A Batch file generated for starting the game from outside
+               of the directory containing the exe will not work
+               since the current directory is set to the location of
+               the batch file. (possible Godot bug)
 """
-import os, shutil
+import os, shutil, sys
 
+def main():
+   is_release = False
 
-# Initialize a log file
-def initialize_log():
-   os.system('echo. > export_log.txt')
+   visual_studio_path = (sys.argv[1] + '\\vcvarsall.bat')
 
-def log(info, to_console=True):
-   if to_console:
-      print(info)
+   if os.path.isfile(visual_studio_path):
+      # Initialize directory for build
+      initialize(build_debug=(not is_release))
+
+      # Build executables and move them to the created directory
+      build_godot(build_32=True, build_64=True, build_debug=(not is_release), vs_path=('"' + visual_studio_path + '"'))
+      build_project(build_debug=(not is_release))
+      build_nnserver(build_debug=(not is_release))
+
+      # Package build files and clean remaining artifacts
+      export_files(build_debug=(not is_release))
+      zip_directory(build_debug=(not is_release))
+      clean()
+
+      # Print message to signify completion
+      print('------------------------------')
+      print('    EXPORTING FINISHED!!!')
+      print('------------------------------')
+
    else:
-      os.system(f'echo {info} >> export_log.txt')
+      print('------------------------------')
+      print('   vcvarsall.bat Not Found')
+      print('------------------------------')
 
-def pause():
-   os.system('pause')
+def clean():
+   print('------------------------------')
+   print('      Removing Artifacts')
+   print('------------------------------')
+   cmd(['rmdir /S /Q Robo_Dojo'])
+   cmd(['rename bin Robo_Dojo'])
 
-def cmd(commands, to_console=True):
+# Create a single Windows shell command from an array of commands
+def cmd(commands):
    command = ''
    total_commands = len(commands)
    current_command = 0
 
+   # Build Windows shell command string
    for each in commands:
       current_command +=1
       command = command + each
-      if not to_console:
-         command = command + ' >> ..\\export_log.txt'
       if current_command != total_commands:
          command = command + ' && '
-   print(command)
+
+   # Print and process command
+   print('\nRunning Command:')
+   print('   ' + command)
    os.system(command)
 
-# Build custom Godot version
-def build_godot():
-   log('------------------------------')
-   log('  Compile Godot 64-bit Tools')
-   log('------------------------------')
-   commands = ['cd "Custom Godot\\"',
-               '"%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VC\\Auxiliary\\Build\\vcvarsall.bat" amd64',
-               'scons -j4 p=windows']
-   cmd(commands)
+# Build Custom Godot version
+def build_godot(build_32=True, build_64=True, build_debug=True, vs_path='"%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VC\\Auxiliary\\Build\\vcvarsall.bat"'):
+   if build_64:
+      print('------------------------------')
+      print('  Compile Godot 64-bit Tools')
+      print('------------------------------')
+      commands = ['cd "Custom Godot\\"',
+                  vs_path + ' amd64',
+                  'scons -j4 p=windows']
+      cmd(commands)
+      
+      print('------------------------------')
+      print(' Compile Godot 64-bit Release')
+      print('------------------------------')
+      commands = ['cd "Custom Godot\\"',
+                  vs_path + ' amd64',
+                  'scons -j4 platform=windows tools=no target=release']
+      cmd(commands)
+      
+      if build_debug:
+         print('------------------------------')
+         print('  Compile Godot 64-bit Debug')
+         print('------------------------------')
+         commands = ['cd "Custom Godot\\"',
+                     vs_path + ' amd64',
+                     'scons -j4 platform=windows tools=no target=release_debug']
+         cmd(commands)
 
-   log('------------------------------')
-   log('  Compile Godot 32-bit Tools')
-   log('------------------------------')
-   commands = ['cd "Custom Godot\\"',
-               '"%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VC\\Auxiliary\\Build\\vcvarsall.bat" amd64_x86',
-               'scons -j4 p=windows']
-   cmd(commands)
-   
-   log('------------------------------')
-   log(' Compile Godot 64-bit Release')
-   log('------------------------------')
-   commands = ['cd "Custom Godot\\"',
-               '"%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VC\\Auxiliary\\Build\\vcvarsall.bat" amd64',
-               'scons -j4 platform=windows tools=no target=release']
-   cmd(commands)
-   
-   log('------------------------------')
-   log(' Compile Godot 32-bit Release')
-   log('------------------------------')
-   commands = ['cd "Custom Godot\\"',
-               '"%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VC\\Auxiliary\\Build\\vcvarsall.bat" amd64_x86',
-               'scons -j4 platform=windows tools=no target=release']
-   cmd(commands)
-   
-   log('------------------------------')
-   log('  Compile Godot 64-bit Debug')
-   log('------------------------------')
-   commands = ['cd "Custom Godot\\"',
-               '"%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VC\\Auxiliary\\Build\\vcvarsall.bat" amd64',
-               'scons -j4 platform=windows tools=no target=release_debug']
-   cmd(commands)
-   
-   log('------------------------------')
-   log('  Compile Godot 32-bit Debug')
-   log('------------------------------')
-   commands = ['cd "Custom Godot\\"',
-               '"%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VC\\Auxiliary\\Build\\vcvarsall.bat" amd64',
-               'scons -j4 platform=windows tools=no target=release_debug']
-   cmd(commands)
+   if build_32:
+      print('------------------------------')
+      print('  Compile Godot 32-bit Tools')
+      print('------------------------------')
+      commands = ['cd "Custom Godot\\"',
+                  vs_path + ' amd64_x86',
+                  'scons -j4 p=windows']
+      cmd(commands)
+      
+      print('------------------------------')
+      print(' Compile Godot 32-bit Release')
+      print('------------------------------')
+      commands = ['cd "Custom Godot\\"',
+                  vs_path + ' amd64_x86',
+                  'scons -j4 platform=windows tools=no target=release']
+      cmd(commands)
+      
+      if build_debug:
+         print('------------------------------')
+         print('  Compile Godot 32-bit Debug')
+         print('------------------------------')
+         commands = ['cd "Custom Godot\\"',
+                     vs_path + ' amd64',
+                     'scons -j4 platform=windows tools=no target=release_debug']
+         cmd(commands)
 
-   log('------------------------------')
-   log('   Rename Godot Executables')
-   log('------------------------------')
-   commands = ['cd "Custom Godot\\bin"',
-               'copy godot.windows.tools.64.exe godot_64.exe']
-   cmd(commands)
-   commands = ['cd "Custom Godot\\bin"',
-               'copy godot.windows.tools.32.exe godot_32.exe']
-   cmd(commands)
-   commands = ['cd "Custom Godot\\bin"',
-               'copy godot.windows.opt.64.exe windows_64_release.exe']
-   cmd(commands)
-   commands = ['cd "Custom Godot\\bin"',
-               'copy godot.windows.opt.32.exe windows_32_release.exe']
-   cmd(commands)
-   commands = ['cd "Custom Godot\\bin"',
-               'copy godot.windows.opt.debug.64.exe windows_64_debug.exe']
-   cmd(commands)
-   commands = ['cd "Custom Godot\\bin"',
-               'copy godot.windows.opt.debug.32.exe windows_32_debug.exe']
-   cmd(commands)
-
-# Build Godot project
-def build_robodojo(is_testing=True):
-   log('------------------------------')
-   log('    Building Main Project')
-   log('------------------------------')
-   if is_testing:
+   print('------------------------------')
+   print('   Rename Godot Executables')
+   print('------------------------------')
+   if build_64:
+      print('Copy file as godot_64.exe')
       commands = ['cd "Custom Godot\\bin"',
-                  'godot_64.exe --path ../../Client --export-debug "Default" ../bin/robo_dojo.exe']
-   else:
+                  'copy /Y godot.windows.tools.64.exe godot_64.exe']
+      cmd(commands)
+
+      print('Copy file as windows_64_release.exe')
       commands = ['cd "Custom Godot\\bin"',
-                  'godot_64.exe --path ../../Client --export "Default" ../bin/robo_dojo.exe']
-   cmd(commands)
+                  'copy /Y godot.windows.opt.64.exe windows_64_release.exe']
+      cmd(commands)
 
-   commands = ['cd "Custom Godot\\bin"',
-               'godot_64.exe --path ../../Client --export "Default" ../bin/robo_dojo.zip']
-   cmd(commands)
-   shutil.unpack_archive('bin/robo_dojo.zip', extract_dir='bin')
-   cmd(['del bin\\robo_dojo.zip'])
+      if build_debug:
+         print('Copy file as windows_64_release.exe')
+         commands = ['cd "Custom Godot\\bin"',
+                     'copy /Y godot.windows.opt.debug.64.exe windows_64_debug.exe']
+         cmd(commands)
 
-# Build NNServer
-def build_nnserver():
-   log('------------------------------')
-   log('Building Neural Network Server')
-   log('------------------------------')
+   if build_32:
+      print('Copy file as windows_64_release.exe')
+      commands = ['cd "Custom Godot\\bin"',
+                  'copy /Y godot.windows.tools.32.exe godot_32.exe']
+      cmd(commands)
+
+      print('Copy file as windows_64_release.exe')
+      commands = ['cd "Custom Godot\\bin"',
+                  'copy /Y godot.windows.opt.32.exe windows_32_release.exe']
+      cmd(commands)
+
+      if build_debug:
+         print('Copy file as windows_64_release.exe')
+         commands = ['cd "Custom Godot\\bin"',
+                     'copy /Y godot.windows.opt.debug.32.exe windows_32_debug.exe']
+         cmd(commands)
+
+# Build neural network module
+def build_nnserver(build_debug=True):
+   print('------------------------------')
+   print('Building Neural Network Server')
+   print('------------------------------')
    commands = ['cd Client\\NeuralNetwork',
                'pyinstaller nnserver.py',
                'move /Y dist\\nnserver dist\\NeuralNetwork',
-               'move /Y dist\\NeuralNetwork ..\\..\\bin',
+               'move /Y dist\\NeuralNetwork ..\\..\\bin\\Release',
                'rmdir /S /Q __pycache__',
                'rmdir /S /Q build',
                'rmdir /S /Q dist',
                'del nnserver.spec']
    cmd(commands)
+   if build_debug:
+      cmd(['cd bin',
+           'mkdir Debug\\NeuralNetwork',
+           'xcopy /Y /S Release\\NeuralNetwork Debug\\NeuralNetwork'])
+
+# Build project executable
+def build_project(build_debug=True):
+   print('------------------------------')
+   print('    Building Main Project')
+   print('------------------------------')
+
+   # Export asset information
+   cmd(['cd "Custom Godot\\bin"',
+        'godot_64.exe --path ../../Client --export "Default" ../bin/robo_dojo.zip'])
+
+   # Build release version
+   cmd(['cd "Custom Godot\\bin"',
+        'godot_64.exe --path ../../Client --export "Default" ../bin/Release/Robo_Dojo.exe'])
+   shutil.unpack_archive('bin/robo_dojo.zip', extract_dir='bin/Release')
+
+   # Build debug version
+   if build_debug:
+      cmd(['cd "Custom Godot\\bin"',
+           'godot_64.exe --path ../../Client --export-debug "Default" ../bin/Debug/Robo_Dojo.exe'])
+      shutil.unpack_archive('bin/robo_dojo.zip', extract_dir='bin/Debug')
+
+   # Delete Unneeded file
+   cmd(['del bin\\robo_dojo.zip'])
 
 # Export remaining dependencies
-def export_files(is_testing=True):
-   log('------------------------------')
-   log('   Exporting Various Files')
-   log('------------------------------')
-   cmd(['mkdir bin\\NeuralNetwork\\models'])
-   cmd(['copy /Y Client\\NeuralNetwork\\generic_model.h5 bin\\NeuralNetwork\\models\\generic_model.h5'])
-   if is_testing:
-      # Export database connection override file
-      cmd(['copy /Y Client\\DBConnectionOverride.ODBCconString bin\\DBConnectionOverride.ODBCconString'])
+def export_files(build_debug=True):
+   print('------------------------------')
+   print('   Exporting Various Files')
+   print('------------------------------')
 
-def initialize_export():
-   log('------------------------------')
-   log('     Initializing Export')
-   log('------------------------------')
-   cmd(['mkdir bin'])
+   # Export default neural network model
+   cmd(['mkdir bin\\Release\\NeuralNetwork\\models',
+        'copy /Y Client\\NeuralNetwork\\generic_model.h5 bin\\Release\\NeuralNetwork\\models\\generic_model.h5'])
 
-def clean():
-   log('------------------------------')
-   log('      Removing Artifacts')
-   log('------------------------------')
-   cmd(['rmdir /S /Q bin'])
+   # Export files for debug version
+   if build_debug:
+      # Export database connection override file and default neural network model
+      cmd(['copy /Y Client\\DBConnectionOverride.ODBCconString bin\\Debug\\DBConnectionOverride.ODBCconString',
+           'mkdir bin\\Debug\\NeuralNetwork\\models',
+           'copy /Y Client\\NeuralNetwork\\generic_model.h5 bin\\Debug\\NeuralNetwork\\models\\generic_model.h5'])
 
-def zip_directory():
-   log('------------------------------')
-   log('      Zipping Directory')
-   log('------------------------------')
-   shutil.make_archive('robo_dojo', 'zip', 'bin')
+def initialize(build_debug=True):
+   # Create directory to store all build files
+   print('------------------------------')
+   print('     Initializing Export')
+   print('------------------------------')
 
-def main():
-   initialize_log()
-   initialize_export()
-   build_godot()
-   build_robodojo()
-   build_nnserver()
-   export_files()
-   zip_directory()
-   clean()
-   log('------------------------------')
-   log('    EXPORTING FINISHED!!!')
-   log('------------------------------')
+   # Create build directory for release version
+   cmd(['mkdir bin',
+        'cd bin',
+        'mkdir Release'])
+
+   # Create build directory for debug version
+   if build_debug:
+      cmd(['cd bin',
+           'mkdir Debug'])
+
+def zip_directory(build_debug=True):
+   # Compress directory to a zip archive
+   print('------------------------------')
+   print('      Zipping Directory')
+   print('------------------------------')
+   shutil.make_archive('Robo_Dojo', 'zip', 'bin/Release')
+   if build_debug:
+      shutil.make_archive('Robo_Dojo_Debug', 'zip', 'bin/Debug')
+
 
 if __name__ == '__main__':
    main()
