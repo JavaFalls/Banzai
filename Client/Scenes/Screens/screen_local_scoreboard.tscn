@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/scoreboard_scripts/screen_local_scoreboard.gd" type="Script" id=1]
 [ext_resource path="res://assets/local_scoreboard/background.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://assets/local_scoreboard/button_small.png" type="Texture" id=8]
 [ext_resource path="res://assets/local_scoreboard/button_small_hover.png" type="Texture" id=9]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=10]
+[ext_resource path="res://Scenes/Entities/timeout.tscn" type="PackedScene" id=11]
 
 [node name="screen_local_scoreboard" type="Node"]
 
@@ -49,7 +50,6 @@ _sections_unfolded = [ "Offset", "Transform" ]
 
 position = Vector2( 340, 132 )
 scale = Vector2( 2, 2 )
-_sections_unfolded = [ "Transform", "Visibility", "Z Index" ]
 
 [node name="Light2D" type="Light2D" parent="graphics" index="4"]
 
@@ -460,6 +460,8 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Material", "Rect", "Theme", "Visibility", "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
+
+[node name="timeout" parent="." index="5" instance=ExtResource( 11 )]
 
 [connection signal="mouse_entered" from="back_button" to="." method="button_hover"]
 

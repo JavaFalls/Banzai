@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/credits.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -9,8 +9,9 @@
 [ext_resource path="res://assets/menu/main_menu/backlight.png" type="Texture" id=7]
 [ext_resource path="res://assets/menu/main_menu/platform.png" type="Texture" id=8]
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Entities/timeout.tscn" type="PackedScene" id=10]
 
-[node name="credits" type="Node" index="0"]
+[node name="credits" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -209,6 +210,8 @@ _sections_unfolded = [ "Transform" ]
 
 position = Vector2( 116, 186 )
 rotation = -1.57079
+
+[node name="timeout" parent="." index="8" instance=ExtResource( 10 )]
 
 [connection signal="mouse_entered" from="back_button" to="." method="_on_back_button_mouse_entered"]
 

@@ -10,10 +10,10 @@
 [ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=8]
 [ext_resource path="res://assets/menu/main_menu/button_large.png" type="Texture" id=9]
 [ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=10]
-[ext_resource path="res://Scripts/timeout_warning.gd" type="Script" id=11]
-[ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=12]
-[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=13]
-[ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=11]
+[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=12]
+[ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Scenes/Entities/timeout.tscn" type="PackedScene" id=14]
 
 [sub_resource type="Environment" id=1]
 
@@ -701,82 +701,7 @@ playback/active = false
 playback/repeat = false
 playback/speed = 1.0
 
-[node name="timeout_warning" type="Popup" parent="." index="2"]
-
-editor/display_folded = true
-visible = false
-anchor_left = 0.3
-anchor_top = 0.36444
-anchor_right = 0.7
-anchor_bottom = 0.63556
-margin_left = 7.62939e-06
-margin_top = 0.000999451
-margin_bottom = -0.000991821
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-popup_exclusive = false
-script = ExtResource( 11 )
-
-[node name="ColorRect" type="ColorRect" parent="timeout_warning" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-color = Color( 0.188235, 0.196078, 0.878431, 0.392157 )
-_sections_unfolded = [ "Theme" ]
-
-[node name="Label" type="Label" parent="timeout_warning" index="1"]
-
-modulate = Color( 0.773438, 0, 0, 1 )
-anchor_left = 0.0375
-anchor_top = 0.08696
-anchor_right = 0.9625
-anchor_bottom = 0.91304
-margin_left = 4.76837e-07
-margin_top = -0.00015974
-margin_bottom = 0.000160217
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = ExtResource( 7 )
-text = "The user has been inactive for too long. Exiting in 30 seconds."
-align = 1
-autowrap = true
-clip_text = true
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Visibility" ]
-
-[node name="Timer" type="Timer" parent="timeout_warning" index="2"]
-
-process_mode = 1
-wait_time = 30.0
-one_shot = true
-autostart = false
-
-[node name="timeout" type="Timer" parent="." index="3"]
-
-process_mode = 1
-wait_time = 300.0
-one_shot = true
-autostart = false
-
-[node name="Tween" type="Tween" parent="." index="4"]
+[node name="Tween" type="Tween" parent="." index="2"]
 
 repeat = false
 playback_process_mode = 1
@@ -785,11 +710,11 @@ playback/active = false
 playback/repeat = false
 playback/speed = 1.0
 
-[node name="animation_bot" parent="." index="5" instance=ExtResource( 12 )]
+[node name="animation_bot" parent="." index="3" instance=ExtResource( 11 )]
 
 position = Vector2( 198, 152 )
 
-[node name="go_to_instructions" type="Button" parent="." index="6"]
+[node name="go_to_instructions" type="Button" parent="." index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -815,14 +740,16 @@ enabled_focus_mode = 2
 shortcut = null
 group = null
 text = "Instructions"
-icon = ExtResource( 13 )
+icon = ExtResource( 12 )
 flat = true
 align = 1
 
-[node name="instructions" parent="." index="7" instance=ExtResource( 14 )]
+[node name="instructions" parent="." index="5" instance=ExtResource( 13 )]
 
 visible = false
 theme = SubResource( 6 )
+
+[node name="timeout" parent="." index="6" instance=ExtResource( 14 )]
 
 [connection signal="mouse_entered" from="Control/credits_button" to="." method="button_hover_enter"]
 
@@ -849,10 +776,6 @@ theme = SubResource( 6 )
 [connection signal="pressed" from="Control/logout_button" to="." method="logout"]
 
 [connection signal="pressed" from="logout_warning/button_face/Button" to="." method="_on_logout_warning_confirmed"]
-
-[connection signal="popup_hide" from="timeout_warning" to="." method="restart_timer"]
-
-[connection signal="timeout" from="timeout" to="." method="screen_idle_timeout"]
 
 [connection signal="pressed" from="go_to_instructions" to="." method="_on_go_to_instructions_pressed"]
 

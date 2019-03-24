@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://Scripts/bot_construction.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -18,6 +18,7 @@
 [ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=16]
 [ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=17]
 [ext_resource path="res://Scenes/UI Nodes/text_scroll.gd" type="Script" id=18]
+[ext_resource path="res://Scenes/Entities/timeout.tscn" type="PackedScene" id=19]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -163,7 +164,7 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[node name="Node" type="Node" index="0"]
+[node name="Node" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -929,6 +930,8 @@ group = null
 text = "NO"
 flat = true
 align = 1
+
+[node name="timeout" parent="." index="28" instance=ExtResource( 19 )]
 
 [connection signal="mouse_entered" from="change_name/change_name_button" to="." method="_on_change_name_button_mouse_entered"]
 

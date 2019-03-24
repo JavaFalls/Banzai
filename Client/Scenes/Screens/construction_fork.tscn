@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/construction_fork.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://assets/menu/main_menu/button_large.png" type="Texture" id=5]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=6]
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Entities/timeout.tscn" type="PackedScene" id=8]
 
 [node name="Node" type="Node"]
 
@@ -333,6 +334,8 @@ position = Vector2( 83, 139 )
 [node name="animation_bot2" parent="." index="5" instance=ExtResource( 7 )]
 
 position = Vector2( 326, 139 )
+
+[node name="timeout" parent="." index="6" instance=ExtResource( 8 )]
 
 [connection signal="mouse_entered" from="buttons/customize_player" to="." method="_on_customize_player_mouse_entered"]
 

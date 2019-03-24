@@ -60,6 +60,8 @@ func _ready():
 	self.add_child(t)
 	t.set_pause_mode(Node.PAUSE_MODE_STOP)
 	t.start()
+	
+	$timeout/Timer.connect("timeout", self, "timeout")
 
 # Called after game ends
 func game_end():
@@ -92,6 +94,11 @@ func send_nn_state():
 	output = int(output)
 	if(output != null):
 		game_state.set_predictions(output)
+
+func timeout():
+	get_tree().paused = true
+	yield($timeout, "resumed")
+	get_tree().paused = false
 
 # Popup Functions
 func keep_data():

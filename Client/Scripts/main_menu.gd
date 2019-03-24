@@ -20,30 +20,20 @@ func _ready():
 	get_node("Control/username").text = head.username
 	
 	$instructions/exit_instructions.connect("pressed", self, "exit_instructions")
-	
-### TEST ###
-	var player_id = head.player_ID
-	if player_id == -1:
-		player_id = 1
-	var bot_id = head.bot_ID
-	if bot_id == -1:
-		bot_id = 1
-############
-	_bot.load_colors_from_DB(bot_id)
+
+	_bot.load_colors_from_DB(head.bot_ID)
 
 func _input(event):
-	if event is InputEventMouse:
-		_timer.start()
-		if event is InputEventMouseMotion:
-			var look_at = get_tree().get_root().get_mouse_position() - _bot.position
-			if look_at.x > 0:
-				_bot.face_right()
-			else:
-				_bot.face_left()
-			if look_at.y > 0:
-				_bot.start_walking_forward()
-			else:
-				_bot.start_walking_backward()
+	if event is InputEventMouseMotion:
+		var look_at = get_tree().get_root().get_mouse_position() - _bot.position
+		if look_at.x > 0:
+			_bot.face_right()
+		else:
+			_bot.face_left()
+		if look_at.y > 0:
+			_bot.start_walking_forward()
+		else:
+			_bot.start_walking_backward()
 
 func _process(delta):
 	if Input.is_key_pressed(KEY_G) and Input.is_key_pressed(KEY_E) and Input.is_key_pressed(KEY_A) and Input.is_key_pressed(KEY_R) and Input.is_key_pressed(KEY_Y):
@@ -82,15 +72,7 @@ func button_hover_enter():
 	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
 
 func screen_idle_timeout():
-	fade()
 	get_node("logout_warning").hide()
-	get_node("timeout_warning").popup()
-	pass
-
-func restart_timer():
-	_timer.start()
-	unfade()
-	pass
 
 func logout():
 	fade()
@@ -114,8 +96,6 @@ func hover_logout_confirm(mouse_entered):
 		tween.start()
 
 func _on_logout_warning_confirmed():
-#	head.save_bots(head.bots)
-#	head.init_bots()
 	Menu_audio.menu_audio.stop()
 	weapon_creator.get_weapon_stats(weapon_creator.W_PRI_ZORROS_GLARE)["implemented"] = false
 	weapon_creator.get_weapon_stats(weapon_creator.W_SEC_ZORROS_WIT)["implemented"] = false

@@ -23,6 +23,8 @@ func _ready():
 	
 	# Set popup as the bottom node
 	move_child($exit, player.get_index())
+	
+	$timeout/Timer.connect("timeout", self, "timeout")
 
 func _input(event):
 	if Input.is_action_just_pressed("exit_arena"):
@@ -37,3 +39,8 @@ func _on_confirm_pressed():
 func _on_back_pressed():
 	get_tree().set_pause(false)
 	$exit.visible = false
+
+func timeout():
+	get_tree().paused = true
+	yield($timeout, "resumed")
+	get_tree().paused = false
