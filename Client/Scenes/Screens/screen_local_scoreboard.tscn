@@ -10,7 +10,8 @@
 [ext_resource path="res://assets/local_scoreboard/button_small.png" type="Texture" id=8]
 [ext_resource path="res://assets/local_scoreboard/button_small_hover.png" type="Texture" id=9]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=10]
-[ext_resource path="res://Scenes/Entities/timeout.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=11]
+
 
 [node name="screen_local_scoreboard" type="Node"]
 

@@ -5,7 +5,8 @@
 [ext_resource path="res://Scenes/game_state.tscn" type="PackedScene" id=3]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=4]
 [ext_resource path="res://Scenes/UI Nodes/ui_weapon_cooldowns.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Scenes/Entities/timeout.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=6]
+
 
 [sub_resource type="StyleBoxEmpty" id=1]
 

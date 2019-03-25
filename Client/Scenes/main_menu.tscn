@@ -13,7 +13,8 @@
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=11]
 [ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=12]
 [ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Scenes/Entities/timeout.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=14]
+
 
 [sub_resource type="Environment" id=1]
 

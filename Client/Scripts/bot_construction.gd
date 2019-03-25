@@ -6,7 +6,7 @@ onready var weapon_creator = get_tree().get_root().get_node("/root/weapon_creato
 
 onready var constructing_player = (head.construction == head.PLAYER)
 onready var name_choice_scene = preload("res://Scenes/name_choice.tscn")
-onready var timeout = preload("res://Scenes/Entities/timeout.tscn")
+onready var timeout = preload("res://Scenes/Screens/instance_scenes/timeout.tscn")
 
 const STATS_SPACE = "           "
 
@@ -180,6 +180,9 @@ func _on_change_name_button_mouse_entered():
 	
 func _on_change_name_button_mouse_exited():
 	$change_name.modulate = Color("#aaaaaa")
+
+func _on_advanced_options_pressed():
+	$nn_options.visible = true
 
 func button_hover_enter():
 	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
