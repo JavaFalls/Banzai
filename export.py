@@ -4,10 +4,7 @@ Script that automates the build process for the project Robo Dojo
 NOTES: Must be located in the directory that contains both the
        'Client' folder as well as the 'Custom Godot' folder
 
-KNOWN BUGS: A Batch file generated for starting the game from outside
-               of the directory containing the exe will not work
-               since the current directory is set to the location of
-               the batch file. (possible Godot bug)
+KNOWN BUGS: . . .
 """
 import os, shutil, sys
 
@@ -227,10 +224,20 @@ def initialize(build_debug=True):
         'cd bin',
         'mkdir Release'])
 
-   # Create build directory for debug version
+   # Create a batch file to start the release version
+      cmd(['cd bin',
+           'echo cd Release > Robo_Dojo.bat',
+           'echo start Robo_Dojo.exe >> Robo_Dojo.bat'])
+
    if build_debug:
+      # Create build directory for debug version
       cmd(['cd bin',
            'mkdir Debug'])
+
+      # Create a batch file to start the debug version
+      cmd(['cd bin',
+           'echo cd Debug > Robo_Dojo_Debug.bat',
+           'echo start Robo_Dojo.exe >> Robo_Dojo_Debug.bat'])
 
 def zip_directory(build_debug=True):
    # Compress directory to a zip archive
