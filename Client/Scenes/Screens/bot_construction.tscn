@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://Scripts/bot_construction.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -18,7 +18,8 @@
 [ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=16]
 [ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=17]
 [ext_resource path="res://Scenes/UI Nodes/text_scroll.gd" type="Script" id=18]
-[ext_resource path="res://Scenes/Entities/timeout.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Scenes/popups/nn_options.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=20]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -163,6 +164,47 @@ content_margin_left = -1.0
 content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=21]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=22]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=23]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=24]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=25]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="Theme" id=26]
+
+resource_local_to_scene = true
+default_font = ExtResource( 7 )
+_sections_unfolded = [ "Resource" ]
 
 [node name="Node" type="Node"]
 
@@ -514,9 +556,9 @@ material = SubResource( 6 )
 
 editor/display_folded = true
 margin_left = 14.0
-margin_top = 65.0
+margin_top = 56.0
 margin_right = 142.0
-margin_bottom = 85.0
+margin_bottom = 76.0
 colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0.827451, 0, 1, 1, 0, 1, 0.647059, 1, 0.921569, 1, 0, 1, 1, 0.513726, 0, 1, 1, 0.368627, 0.811765, 1, 0.6, 0.34902, 0, 1, 0.490196, 0.0980392, 0.2, 1 )
 indicator_offset = 0.3
 
@@ -528,9 +570,9 @@ material = SubResource( 7 )
 
 editor/display_folded = true
 margin_left = 14.0
-margin_top = 106.0
+margin_top = 89.0
 margin_right = 142.0
-margin_bottom = 126.0
+margin_bottom = 109.0
 _sections_unfolded = [ "Material" ]
 colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0.827451, 0, 1, 1, 0, 1, 0.647059, 1, 0.921569, 1, 0, 1, 1, 0.513726, 0, 1, 1, 0.368627, 0.811765, 1, 0.6, 0.34902, 0, 1, 0.490196, 0.0980392, 0.2, 1 )
 indicator_offset = 0.6
@@ -931,7 +973,47 @@ text = "NO"
 flat = true
 align = 1
 
-[node name="timeout" parent="." index="28" instance=ExtResource( 19 )]
+[node name="advanced_options" type="Button" parent="." index="28"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 51.0
+margin_top = 116.0
+margin_right = 106.0
+margin_bottom = 130.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/hover = SubResource( 21 )
+custom_styles/pressed = SubResource( 22 )
+custom_styles/focus = SubResource( 23 )
+custom_styles/disabled = SubResource( 24 )
+custom_styles/normal = SubResource( 25 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color_disabled = Color( 0.666667, 0.666667, 0.666667, 1 )
+custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Advanced"
+flat = true
+align = 1
+
+[node name="nn_options" parent="." index="29" instance=ExtResource( 19 )]
+
+visible = false
+theme = SubResource( 26 )
+
+[node name="timeout" parent="." index="30" instance=ExtResource( 20 )]
 
 [connection signal="mouse_entered" from="change_name/change_name_button" to="." method="_on_change_name_button_mouse_entered"]
 
@@ -962,6 +1044,8 @@ align = 1
 [connection signal="pressed" from="switch_description" to="." method="_on_switch_description_pressed"]
 
 [connection signal="pressed" from="confirm_finish/not_confirm" to="." method="_on_not_confirm_pressed"]
+
+[connection signal="pressed" from="advanced_options" to="." method="_on_advanced_options_pressed"]
 
 
 [editable path="color_scroll"]
