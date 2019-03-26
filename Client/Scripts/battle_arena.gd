@@ -22,6 +22,9 @@ onready var arena_end_popup = preload("res://Scenes/popups/arena_end_popup.tscn"
 onready var game_state      = get_node("game_state")
 onready var f               = File.new()
 onready var t               = Timer.new()
+onready var game_time       = get_node("game_time")
+onready var max_game_time   = 30
+onready var timer_label     = get_node("Panel/Label")
 
 # Get Opponent
 onready var opponent_bot_ID = get_opponent(head.bot_ID)
@@ -86,14 +89,20 @@ func _ready():
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.start()
+	game_time.set_wait_time(max_game_time)
+	game_time.start()
 
 func _process(delta):
 	self.get_node("UI_container/healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
 	self.get_node("UI_container/healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
+
 	if t.is_stopped():
 		send_nn_state(1)
 		# a number mod two to decide wich one gets set when
 		#send_nn_state(2) # pass bots number.
+		
+		# Print time to display
+		timer_label.text = str(int(game_time.get_time_left()))
 
 		t.start()
 
@@ -201,3 +210,13 @@ func load_bot():
 	output = head.Client.get_response()
 	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(head.bot_ID)))
 	return !(output == 'successful')
+
+func game_time_end():
+	if fighter1.hit_points > fighter2.hit_points:
+		fighter2.hit_points = 0
+		post_game()
+	else:
+		if fighter1.hit_points == fighter2.hit_points:
+			return
+		fighter1.hit_points = 0
+		post_game()

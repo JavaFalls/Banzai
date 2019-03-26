@@ -1,14 +1,16 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/battle_arena.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/arena_base.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/game_state.tscn" type="PackedScene" id=3]
-[ext_resource path="res://assets/health bars.png" type="Texture" id=4]
-[ext_resource path="res://assets/white block.png" type="Texture" id=5]
-[ext_resource path="res://Scenes/UI Nodes/ui_weapon_cooldowns.tscn" type="PackedScene" id=6]
-[ext_resource path="res://sounds/Sound_scripts/BattleAudio.gd" type="Script" id=7]
+[ext_resource path="res://assets/timer_shadow.png" type="Texture" id=4]
+[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=5]
+[ext_resource path="res://assets/health bars.png" type="Texture" id=6]
+[ext_resource path="res://assets/white block.png" type="Texture" id=7]
+[ext_resource path="res://Scenes/UI Nodes/ui_weapon_cooldowns.tscn" type="PackedScene" id=8]
+[ext_resource path="res://sounds/Sound_scripts/BattleAudio.gd" type="Script" id=9]
 
-[node name="battle_arena" type="Node2D"]
+[node name="battle_arena" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
@@ -17,7 +19,38 @@ _sections_unfolded = [ "Pause" ]
 
 [node name="game_state" parent="." index="1" instance=ExtResource( 3 )]
 
-[node name="UI_container" type="Node2D" parent="." index="2"]
+[node name="Panel" type="Sprite" parent="." index="2"]
+
+texture = ExtResource( 4 )
+_sections_unfolded = [ "Animation", "Material", "Offset", "Pause", "Region", "Theme", "Transform", "Visibility", "Z Index" ]
+
+[node name="Label" type="Label" parent="Panel" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 188.0
+margin_top = 20.0
+margin_right = 216.0
+margin_bottom = 36.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 5 )
+align = 1
+valign = 1
+clip_text = true
+uppercase = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Pause", "Theme", "custom_colors", "custom_styles" ]
+
+[node name="UI_container" type="Node2D" parent="." index="3"]
 
 z_index = 1
 _sections_unfolded = [ "Z Index" ]
@@ -25,7 +58,7 @@ _sections_unfolded = [ "Z Index" ]
 [node name="healthbar" type="Sprite" parent="UI_container" index="0"]
 
 position = Vector2( 200, 8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 _sections_unfolded = [ "Transform", "Z Index" ]
 
 [node name="health1" type="Sprite" parent="UI_container/healthbar" index="0"]
@@ -33,7 +66,7 @@ _sections_unfolded = [ "Transform", "Z Index" ]
 modulate = Color( 0, 1, 0, 1 )
 position = Vector2( -195.833, -8 )
 scale = Vector2( 11.6211, 1 )
-texture = ExtResource( 5 )
+texture = ExtResource( 7 )
 centered = false
 _sections_unfolded = [ "Animation", "Offset", "Transform", "Visibility" ]
 
@@ -43,11 +76,11 @@ modulate = Color( 0, 1, 0, 1 )
 position = Vector2( 195.319, 7.9668 )
 rotation = 3.14159
 scale = Vector2( 11.627, 0.990555 )
-texture = ExtResource( 5 )
+texture = ExtResource( 7 )
 centered = false
 _sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 
-[node name="fighter1_cooldowns" parent="UI_container" index="1" instance=ExtResource( 6 )]
+[node name="fighter1_cooldowns" parent="UI_container" index="1" instance=ExtResource( 8 )]
 
 margin_left = 120.0
 margin_top = 20.0
@@ -55,14 +88,14 @@ margin_right = 168.0
 margin_bottom = 36.0
 _sections_unfolded = [ "Pause", "Rect" ]
 
-[node name="fighter2_cooldowns" parent="UI_container" index="2" instance=ExtResource( 6 )]
+[node name="fighter2_cooldowns" parent="UI_container" index="2" instance=ExtResource( 8 )]
 
 margin_left = 232.0
 margin_top = 20.0
 margin_right = 280.0
 margin_bottom = 36.0
 
-[node name="BattleAudio" type="AudioStreamPlayer" parent="." index="3"]
+[node name="BattleAudio" type="AudioStreamPlayer" parent="." index="4"]
 
 stream = null
 volume_db = 0.0
@@ -70,8 +103,17 @@ pitch_scale = 1.0
 autoplay = false
 mix_target = 0
 bus = "Master"
-script = ExtResource( 7 )
+script = ExtResource( 9 )
+
+[node name="game_time" type="Timer" parent="." index="5"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
 
 [connection signal="finished" from="BattleAudio" to="BattleAudio" method="_on_BattleAudio_finished"]
+
+[connection signal="timeout" from="game_time" to="." method="game_time_end"]
 
 
