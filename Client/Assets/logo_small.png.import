@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tile_grey.png-6a26a35a34dafc7f3dc7b61eadcd1cdf.stex"
+path="res://.import/logo_small.png-cf3bffad9c1a3c7d760ecb2fc72d5b08.stex"
 
 [deps]
 
-source_file="res://Assets/menu/bot_construction/tile_grey.png"
-dest_files=[ "res://.import/tile_grey.png-6a26a35a34dafc7f3dc7b61eadcd1cdf.stex" ]
+source_file="res://Assets/logo_small.png"
+dest_files=[ "res://.import/logo_small.png-cf3bffad9c1a3c7d760ecb2fc72d5b08.stex" ]
 
 [params]
 
