@@ -47,8 +47,8 @@ func _ready():
 	load_bot()
 
 	# Initialize the bots
-	#fighter1 = bot_scene.instance()
-	fighter1 = player_scene.instance()
+	fighter1 = bot_scene.instance()
+	#fighter1 = player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
@@ -100,7 +100,7 @@ func _process(delta):
 		send_nn_state(1)
 		# a number mod two to decide wich one gets set when
 		#send_nn_state(2) # pass bots number.
-		
+
 		# Print time to display
 		timer_label.text = str(int(game_time.get_time_left()))
 
@@ -113,7 +113,7 @@ func post_game():
 	var popup_message
 	head.battle_winner_calc(fighter1.get_hit_points(), fighter2.get_hit_points())
 	var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
-	head.DB.update_bot(head.bot_ID, [head.DB.NULL_INT, head.DB.NULL_INT, bot_data["ranking"] + head.score_change, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_COLOR, head.DB.NULL_COLOR, head.DB.NULL_COLOR, head.DB.NULL_COLOR], "")
+	head.DB.update_bot(head.bot_ID, [head.DB.NULL_INT, head.DB.NULL_INT, bot_data["ranking"] + head.score_change, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_COLOR, head.DB.NULL_COLOR, head.DB.NULL_COLOR, ""], "")
 	# Remove destroyed bots from the arena:
 	if fighter1.hit_points <= 0:
 		fighter1.queue_free()
@@ -176,7 +176,7 @@ func send_nn_state(bot_number):
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 #	output = Vector2(1,1) # standin so that the nnserver doesn't have to be called.
-	
+
 
 	output = output.replacen("(", ",")
 	output = output.split_floats(",", 0)
@@ -203,7 +203,7 @@ func load_bot():
 	head.Client.send_request(message)
 	var output = head.Client.get_response()
 	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(opponent_bot_ID)))
-	
+
 	# Load Player bot into Neural Network
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
 	head.Client.send_request(message)

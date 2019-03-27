@@ -20,7 +20,7 @@ const DEFAULT_SECONDARY = 9
 const DEFAULT_PRIMARY_COLOR = Color(1, 1, 1)
 const DEFAULT_SECONDARY_COLOR = Color(1, 1, 1)
 const DEFAULT_ACCENT_COLOR = Color(1, 1, 1)
-const DEFAULT_LIGHT_COLOR = Color(1, 1, 1)
+const DEFAULT_ANIMATION = "B1" # Should match the value found at the ANIMATION_SET_B1 constant in the bot_animation.gd file
 
 # Weapons keys
 enum {PRIMARY, SECONDARY, ABILITY}
@@ -110,7 +110,7 @@ func play_stream(player, audio_index, option=options.OVERRIDE):
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
 	Input.set_custom_mouse_cursor(load("res://assets/pixel_cursor.png"), Input.CURSOR_ARROW, Vector2(15, 15))
-	
+
 	# Initialize audio players
 	add_child(AudioStreamPlayer.new())
 	ui1 = get_child(0)
@@ -187,7 +187,7 @@ func create_user():
 	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_PRIMARY_COLOR] = DEFAULT_PRIMARY_COLOR.to_rgba32()
 	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_SECONDARY_COLOR] = DEFAULT_SECONDARY_COLOR.to_rgba32()
 	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_ACCENT_COLOR] = DEFAULT_ACCENT_COLOR.to_rgba32()
-	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_LIGHT_COLOR] = DEFAULT_LIGHT_COLOR.to_rgba32()
+	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_ANIMATION] = DEFAULT_ANIMATION
 	bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, "v1")
 	player_bot_ID = bot_ID
 	model_ID = bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_MODEL_ID] # Since arrays are pass by reference, new_bot() is able to use the array like an OUT parameter to return the model_ID
@@ -204,13 +204,13 @@ func _test_DB():
 	print("DB.get_player(): ", DB.get_player(player_ID))
 	print("DB.update_player(): ", DB.update_player(player_ID, "NewName2000"))
 	print("Bot funcs:================================")
-	var botInsArgArray = [0, 1, 2, 3, Color(1, 1, 1, 1).to_rgba32(), Color(1, 1, 1, 1).to_rgba32(), Color(0, 0, 0, 1).to_rgba32(), Color(1, 0, 0, 1).to_rgba32()]
+	var botInsArgArray = [0, 1, 2, 3, Color(1, 1, 1, 1).to_rgba32(), Color(1, 1, 1, 1).to_rgba32(), Color(0, 0, 0, 1).to_rgba32(), "B1"]
 	bot_ID = DB.new_bot(player_ID, botInsArgArray, "mech9000")
 	print("bot_ID: ", bot_ID)
 	model_ID = botInsArgArray[0]
 	print("model_ID: ", model_ID)
 	print("DB.get_bot: ", DB.get_bot(bot_ID))
-	var botUpdArgArray = [player_ID, model_ID, 1000, 3, 0, 1, Color(0, 0, 0, 1).to_rgba32(), Color(1, 1, .5, 1).to_rgba32(), 0, Color(0.5, 0.5, 1, 1).to_rgba32()]
+	var botUpdArgArray = [player_ID, model_ID, 1000, 3, 0, 1, Color(0, 0, 0, 1).to_rgba32(), Color(1, 1, .5, 1).to_rgba32(), 0, "B1_ZORRO"]
 	print("DB.update_bot: ", DB.update_bot(bot_ID, botUpdArgArray, "mech9001"))
 	print("Model funcs:==============================")
 	model_ID = DB.new_model(player_ID, "generic_model.h5")

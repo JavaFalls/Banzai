@@ -13,10 +13,10 @@
 #include <iostream>
 #include <fstream>
 
-#define STRING_INT_SIZE        11                 // How long a string needs to be to hold an int that has been converted to a string, plus the null terminator
-#define BLOB_MAX               2147483647         // Max size of a BLOB (binary large object) in SQL Server
-#define FILENAME_GENERIC_MODEL "generic_model.h5" // Filename to use when storing a brand new network in the DBs
-#define FILEPATH_MODEL_FOLDER  "NeuralNetwork/models/"   // Folder used to store models
+#define STRING_INT_SIZE        11                      // How long a string needs to be to hold an int that has been converted to a string, plus the null terminator
+#define BLOB_MAX               2147483647              // Max size of a BLOB (binary large object) in SQL Server
+#define FILENAME_GENERIC_MODEL "generic_model.h5"      // Filename to use when storing a brand new network in the DBs
+#define FILEPATH_MODEL_FOLDER  "NeuralNetwork/models/" // Folder used to store models
 
 // Values used in place of nulls when putting data in the database
 # define NULL_COLOR 0
@@ -31,7 +31,7 @@
 #define NEW_BOT_ARGS_PRIMARY_COLOR 4
 #define NEW_BOT_ARGS_SECONDARY_COLOR 5
 #define NEW_BOT_ARGS_ACCENT_COLOR 6
-#define NEW_BOT_ARGS_LIGHT_COLOR 7
+#define NEW_BOT_ARGS_ANIMATION 7
 #define NEW_BOT_ARGS_ARRAY_SIZE 8
 #define UPDATE_BOT_ARGS_PLAYER_ID 0
 #define UPDATE_BOT_ARGS_MODEL_ID 1
@@ -42,7 +42,7 @@
 #define UPDATE_BOT_ARGS_PRIMARY_COLOR 6
 #define UPDATE_BOT_ARGS_SECONDARY_COLOR 7
 #define UPDATE_BOT_ARGS_ACCENT_COLOR 8
-#define UPDATE_BOT_ARGS_LIGHT_COLOR 9
+#define UPDATE_BOT_ARGS_ANIMATION 9
 #define UPDATE_BOT_ARGS_ARRAY_SIZE 10
 
 /***********************************************************************************************************
@@ -210,7 +210,7 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    const int PARAM_INSERT_PRIMARY_COLOR = 8;
    const int PARAM_INSERT_SECONDARY_COLOR = 9;
    const int PARAM_INSERT_ACCENT_COLOR = 10;
-   const int PARAM_INSERT_LIGHT_COLOR = 11;
+   const int PARAM_INSERT_ANIMATION = 11;
 
    SQLHSTMT sql_statement_new_bot;
    SQLHSTMT sql_statement_get_bot_ID;
@@ -223,14 +223,14 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    unsigned int primary_color = (unsigned int)new_bot_args[NEW_BOT_ARGS_PRIMARY_COLOR];
    unsigned int secondary_color = (unsigned int)new_bot_args[NEW_BOT_ARGS_SECONDARY_COLOR];
    unsigned int accent_color = (unsigned int)new_bot_args[NEW_BOT_ARGS_ACCENT_COLOR];
-   unsigned int light_color = (unsigned int)new_bot_args[NEW_BOT_ARGS_LIGHT_COLOR];
+   std::string animation = ((String)new_bot_args[NEW_BOT_ARGS_ANIMATION]).ascii().get_data();
 
    std::string string_name = name.ascii().get_data();
    std::string sql_get_new_bot_ID = "SELECT max(bot.bot_ID_PK)\n"
                      + (std::string)"  FROM javafalls.bot bot";
    std::string sql_code = "INSERT INTO javafalls.bot\n"
-           + (std::string)"            (player_ID_FK, model_ID_FK, ranking, name, primary_weapon, secondary_weapon, utility, primary_color, secondary_color, accent_color, light_color)\n"
-           + (std::string)"     VALUES (           ?,           ?,       ?,    ?,              ?,                ?,       ?,             ?,               ?,            ?,           ?)";
+           + (std::string)"            (player_ID_FK, model_ID_FK, ranking, name, primary_weapon, secondary_weapon, utility, primary_color, secondary_color, accent_color, animation)\n"
+           + (std::string)"     VALUES (           ?,           ?,       ?,    ?,              ?,                ?,       ?,             ?,               ?,            ?,         ?)";
 
    sql_statement_new_bot = create_command(sql_code);
    sql_statement_get_bot_ID = create_command(sql_get_new_bot_ID);
@@ -245,7 +245,7 @@ int DBConnector::new_bot(int player_ID, Array new_bot_args, String name) {
    bind_parameter(sql_statement_new_bot, PARAM_INSERT_PRIMARY_COLOR, (int *)&primary_color); // SQL Server does not support unsigned integers, so trick it into thinking the int is signed
    bind_parameter(sql_statement_new_bot, PARAM_INSERT_SECONDARY_COLOR, (int *)&secondary_color);
    bind_parameter(sql_statement_new_bot, PARAM_INSERT_ACCENT_COLOR, (int *)&accent_color);
-   bind_parameter(sql_statement_new_bot, PARAM_INSERT_LIGHT_COLOR, (int *)&light_color);
+   bind_parameter(sql_statement_new_bot, PARAM_INSERT_ANIMATION, &animation);
    if (model_ID <= 0) {
       // Model ID not provided, attempt to insert the model into the database ourselves
       new_bot_args[NEW_BOT_ARGS_MODEL_ID] = (Variant)new_model(player_ID, String(FILENAME_GENERIC_MODEL));
@@ -289,7 +289,7 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, Stri
    const int PARAM_UPDATE_PRIMARY_COLOR = 8;
    const int PARAM_UPDATE_SECONDARY_COLOR = 9;
    const int PARAM_UPDATE_ACCENT_COLOR = 10;
-   const int PARAM_UPDATE_LIGHT_COLOR = 11;
+   const int PARAM_UPDATE_ANIMATION = 11;
    const int PARAM_UPDATE_BOT_ID = 12;
 
    int player_ID = (int)update_bot_args[UPDATE_BOT_ARGS_PLAYER_ID];
@@ -302,21 +302,21 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, Stri
    unsigned int primary_color = (unsigned int)update_bot_args[UPDATE_BOT_ARGS_PRIMARY_COLOR];
    unsigned int secondary_color = (unsigned int)update_bot_args[UPDATE_BOT_ARGS_SECONDARY_COLOR];
    unsigned int accent_color = (unsigned int)update_bot_args[UPDATE_BOT_ARGS_ACCENT_COLOR];
-   unsigned int light_color = (unsigned int)update_bot_args[UPDATE_BOT_ARGS_LIGHT_COLOR];
+   std::string animation = ((String)update_bot_args[UPDATE_BOT_ARGS_ANIMATION]).ascii().get_data();
 
    SQLHSTMT sql_statement;
    std::string sql_code = "UPDATE javafalls.bot\n"
-           + (std::string)"   SET bot.player_ID_FK     = coalesce(nullif(?, -1),   bot.player_ID_FK)\n"
-           + (std::string)"     , bot.model_ID_FK      = coalesce(nullif(?, -1),   bot.model_ID_FK)\n"
-           + (std::string)"     , bot.ranking          = coalesce(nullif(?, -1),   bot.ranking)\n"
-           + (std::string)"     , bot.name             = coalesce(rtrim(ltrim(?)), bot.name)\n"
-           + (std::string)"     , bot.primary_weapon   = coalesce(nullif(?, -1),   bot.primary_weapon)\n"
-           + (std::string)"     , bot.secondary_weapon = coalesce(nullif(?, -1),   bot.secondary_weapon)\n"
-           + (std::string)"     , bot.utility          = coalesce(nullif(?, -1),   bot.utility)\n"
-           + (std::string)"     , bot.primary_color    = coalesce(nullif(?, 0),    bot.primary_color)\n"
-           + (std::string)"     , bot.secondary_color  = coalesce(nullif(?, 0),    bot.secondary_color)\n"
-           + (std::string)"     , bot.accent_color     = coalesce(nullif(?, 0),    bot.accent_color)\n"
-           + (std::string)"     , bot.light_color      = coalesce(nullif(?, 0),    bot.light_color)\n"
+           + (std::string)"   SET bot.player_ID_FK     = coalesce(nullif(?, -1),               bot.player_ID_FK)\n"
+           + (std::string)"     , bot.model_ID_FK      = coalesce(nullif(?, -1),               bot.model_ID_FK)\n"
+           + (std::string)"     , bot.ranking          = coalesce(nullif(?, -1),               bot.ranking)\n"
+           + (std::string)"     , bot.name             = coalesce(nullif(rtrim(ltrim(?)),''), bot.name)\n"
+           + (std::string)"     , bot.primary_weapon   = coalesce(nullif(?, -1),               bot.primary_weapon)\n"
+           + (std::string)"     , bot.secondary_weapon = coalesce(nullif(?, -1),               bot.secondary_weapon)\n"
+           + (std::string)"     , bot.utility          = coalesce(nullif(?, -1),               bot.utility)\n"
+           + (std::string)"     , bot.primary_color    = coalesce(nullif(?, 0),                bot.primary_color)\n"
+           + (std::string)"     , bot.secondary_color  = coalesce(nullif(?, 0),                bot.secondary_color)\n"
+           + (std::string)"     , bot.accent_color     = coalesce(nullif(?, 0),                bot.accent_color)\n"
+           + (std::string)"     , bot.animation        = coalesce(nullif(rtrim(ltrim(?)),''),  bot.animation)\n"
            + (std::string)" WHERE bot.bot_ID_PK = ?";
 
    sql_statement = create_command(sql_code);
@@ -331,7 +331,7 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, Stri
    bind_parameter(sql_statement, PARAM_UPDATE_PRIMARY_COLOR, (int *)&primary_color); // SQL Server does not support unsigned integers, so trick it into thinking the int is signed
    bind_parameter(sql_statement, PARAM_UPDATE_SECONDARY_COLOR, (int *)&secondary_color);
    bind_parameter(sql_statement, PARAM_UPDATE_ACCENT_COLOR, (int *)&accent_color);
-   bind_parameter(sql_statement, PARAM_UPDATE_LIGHT_COLOR, (int *)&light_color);
+   bind_parameter(sql_statement, PARAM_UPDATE_ANIMATION, &animation);
    execute(sql_statement);
    if (SQL_SUCCEEDED(last_return)) {
       if (model_file_name.length()) {
@@ -355,7 +355,8 @@ String DBConnector::get_bot(int bot_ID, String model_file_name) {
    sprintf(bot_ID_string, "%d", bot_ID);
    std::string sqlQuery = "SELECT bot.player_ID_FK, bot.model_ID_FK, bot.ranking, bot.name\n"
            + (std::string)"     , bot.primary_weapon, bot.secondary_weapon, bot.utility\n"
-           + (std::string)"     , bot.primary_color, bot.secondary_color, bot.accent_color, bot.light_color\n"
+           + (std::string)"     , bot.primary_color, bot.secondary_color, bot.accent_color\n"
+           + (std::string)"     , bot.animation\n"
            + (std::string)"  FROM javafalls.bot\n"
            + (std::string)" WHERE bot.bot_ID_PK = ?";
 
@@ -972,7 +973,7 @@ void DBConnector::_bind_methods() {
    BIND_CONSTANT(NEW_BOT_ARGS_PRIMARY_COLOR);
    BIND_CONSTANT(NEW_BOT_ARGS_SECONDARY_COLOR);
    BIND_CONSTANT(NEW_BOT_ARGS_ACCENT_COLOR);
-   BIND_CONSTANT(NEW_BOT_ARGS_LIGHT_COLOR);
+   BIND_CONSTANT(NEW_BOT_ARGS_ANIMATION);
    BIND_CONSTANT(NEW_BOT_ARGS_ARRAY_SIZE);
 
    BIND_CONSTANT(UPDATE_BOT_ARGS_PLAYER_ID);
@@ -984,7 +985,7 @@ void DBConnector::_bind_methods() {
    BIND_CONSTANT(UPDATE_BOT_ARGS_PRIMARY_COLOR);
    BIND_CONSTANT(UPDATE_BOT_ARGS_SECONDARY_COLOR);
    BIND_CONSTANT(UPDATE_BOT_ARGS_ACCENT_COLOR);
-   BIND_CONSTANT(UPDATE_BOT_ARGS_LIGHT_COLOR);
+   BIND_CONSTANT(UPDATE_BOT_ARGS_ANIMATION);
    BIND_CONSTANT(UPDATE_BOT_ARGS_ARRAY_SIZE);
 
    // Methods
