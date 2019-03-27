@@ -137,6 +137,7 @@ func load_scene(path):
 func launch_neural_network():
 	var pid
 	print("entered function")
+	print("Searching in directory: " + ProjectSettings.globalize_path('res://NeuralNetwork/'))
 	if dir.file_exists(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py')):
 		pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
 		print("Uncompiled Path: " + ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
@@ -144,6 +145,8 @@ func launch_neural_network():
 		if dir.file_exists(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.exe')):
 			pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.exe'))
 			print("Compiled Path: " + ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.exe'))
+		else:
+			print("nnserver not found")
 	print("finished function")
 	return pid
 

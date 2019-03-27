@@ -535,8 +535,8 @@ def process_message(message):
                 elif message["Game Mode"] == "Battle": # todo: dont load the player's bot only the opponent's bot
                         if   message["Opponent?"] == "Yes":
                                 # fighter2.model = load_bot("File_560.h5") # this works if File_560.h5 is present in the folder
-                                # fighter2.model = load_bot(message["File Name"]) # what we want to use
-                                fighter2.model = fighter1.model # temp fix
+                                fighter2.model = load_bot(message["File Name"]) # what we want to use
+                                # fighter2.model = fighter1.model # temp fix
 
                         # elif message["Opponent?"] == "No":
                                 # fighter1.model = load_bot("File_561.h5") 
