@@ -35,7 +35,6 @@ var loader = preload("res://Scenes/loading.tscn")
 var screen_size = OS.get_screen_size()
 var window_size = OS.get_window_size()
 
-var dir = Directory.new()
 
 # Username
 var username = ""
@@ -51,6 +50,8 @@ var player_ID = -1;
 var model_ID = -1;
 var player_bot_ID = -1;
 var bot_ID = -1;
+
+onready var dir = Directory.new()
 onready var DB = DBConnector.new()
 onready var pid = launch_neural_network()
 onready var Client = NNClient.new()
