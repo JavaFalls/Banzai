@@ -225,9 +225,9 @@ def initialize(build_debug=True):
         'mkdir Release'])
 
    # Create a batch file to start the release version
-      cmd(['cd bin',
-           'echo cd Release > Robo_Dojo.bat',
-           'echo start Robo_Dojo.exe >> Robo_Dojo.bat'])
+   cmd(['cd bin',
+        'echo cd Release > Robo_Dojo.bat',
+        'echo start Robo_Dojo.exe >> Robo_Dojo.bat'])
 
    if build_debug:
       # Create build directory for debug version
