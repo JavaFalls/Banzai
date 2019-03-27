@@ -28,7 +28,7 @@ func _ready():
 		$bot_left.visible = false
 		$bot_right.visible = false
 		$new_button.visible = false
-	
+
 	var player_bots = parse_json(head.DB.get_player_bots(head.player_ID))
 	var id = ""
 	for c in player_bots["data"][0]["player_bots"]:
@@ -45,29 +45,29 @@ func _ready():
 				id = ""
 		else:
 			id += c
-	
+
 	var is1 = get_node("item_scroll")
 	var is2 = get_node("item_scroll2")
 	var is3 = get_node("item_scroll3")
-	
+
 	is1.set_data_points(10, 16)
 	is1.set_items(w_pri)
 	is2.set_data_points(10, 16)
 	is2.set_items(w_sec)
 	is3.set_data_points(10, 16)
 	is3.set_items(w_abi)
-	
+
 	is1.connect("info_queried", self, "grab_info", [head.PRIMARY])
 	is2.connect("info_queried", self, "grab_info", [head.SECONDARY])
 	is3.connect("info_queried", self, "grab_info", [head.ABILITY])
 	is1.connect("shift", self, "weapon_changed", [head.PRIMARY])
 	is2.connect("shift", self, "weapon_changed", [head.SECONDARY])
 	is3.connect("shift", self, "weapon_changed", [head.ABILITY])
-	
+
 	$color_scroll.connect("color_changed", self, "set_display_bot_colors")
 	$color_scroll2.connect("color_changed", self, "set_display_bot_colors")
 	$color_scroll3.connect("color_changed", self, "set_display_bot_colors")
-	
+
 	if not bots.empty():
 		if constructing_player:
 			get_bot_info(bots[current])
@@ -77,7 +77,7 @@ func _ready():
 					current = i
 					get_bot_info(bots[current])
 					break
-	
+
 	$animation_bot.face_left()
 	randomize()
 
@@ -88,7 +88,7 @@ func _on_bot_left_pressed():
 	current = bots.size()-1 if current-1 < 0 else current-1
 	get_bot_info(bots[current])
 	grab_info(current_info_type)
-	
+
 func _on_bot_right_pressed():
 	update_current_bot()
 	current = 0 if current+1 >= bots.size() else current+1
@@ -99,7 +99,7 @@ func _on_bot_right_pressed():
 func _on_new_button_pressed():
 	var new_name = yield(change_name(), "completed")
 	var default_color = Color("#ffffffff").to_rgba32() # Default to white
-	if not head.DB.new_bot(head.player_ID, [0,0,0,0,default_color,default_color,default_color,0], new_name):
+	if not head.DB.new_bot(head.player_ID, [0,0,0,0,default_color,default_color,default_color,$animation_bot.ANIMATION_SET_B1], new_name):
 		print("Creating a new bot failed")
 	else:
 		# Get the newest bot
@@ -120,7 +120,7 @@ func _on_new_button_pressed():
 				id = ""
 			else:
 				id += c
-		
+
 	update_current_bot()
 	current = bots.size()-1
 	get_bot_info(bots[current])
@@ -129,7 +129,7 @@ func _on_new_button_pressed():
 func _on_test_button_pressed():
 	update_current_bot()
 	update_bots()
-	
+
 	if constructing_player:
 		head.player_bot_ID = bot_ids[current]
 	else:
@@ -139,15 +139,15 @@ func _on_test_button_pressed():
 func _on_finish_button_pressed():
 	$confirm_finish.visible = true
 	yield($confirm_finish/confirm, "pressed")
-	
+
 	update_current_bot()
 	update_bots()
-	
+
 	if constructing_player:
 		head.player_bot_ID = bot_ids[current]
 	else:
 		head.bot_ID = bot_ids[current]
-	
+
 	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
@@ -177,7 +177,7 @@ func _on_change_name_button_pressed():
 
 func _on_change_name_button_mouse_entered():
 	$change_name.modulate = Color("#ffffff")
-	
+
 func _on_change_name_button_mouse_exited():
 	$change_name.modulate = Color("#aaaaaa")
 
@@ -225,7 +225,7 @@ func weapon_changed(info_type):
 			$item_scroll2._on_info_button_pressed()
 		head.ABILITY:
 			$item_scroll3._on_info_button_pressed()
-	
+
 	var stream
 	match randi() % 15:
 		0:
@@ -256,7 +256,7 @@ func update_bots():
 					bots[i]["primary_color"],
 					bots[i]["secondary_color"],
 					bots[i]["accent_color"],
-					default_color
+					bots[i]["animation"]
 				],
 				bots[i]["name"]):
 			print("Updating bot_id %d failed with args:" % bot_ids[i])
@@ -269,6 +269,7 @@ func update_bots():
 			print("  primary_color:    %d" % bots[i]["primary_color"])
 			print("  secondary_color:  %d" % bots[i]["secondary_color"])
 			print("  accent_color:     %d" % bots[i]["accent_color"])
+			print("  animation:        %d" % bots[i]["animation"])
 			print("  name:             %d" % bots[i]["name"])
 
 # Display/organize data
@@ -336,6 +337,7 @@ func get_bot_info(bot_data):
 	$item_scroll.set_current(null, bot_data["primary_weapon"])
 	$item_scroll2.set_current(null, bot_data["secondary_weapon"])
 	$item_scroll3.set_current(null, bot_data["utility"])
+	$animation_bot.set_bot_type(bot_data["animation"])
 	$color_scroll.set_current(bot_data["primary_color"])
 	$color_scroll2.set_current(bot_data["secondary_color"])
 	$color_scroll3.set_current(bot_data["accent_color"])

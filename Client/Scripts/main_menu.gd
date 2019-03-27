@@ -41,6 +41,21 @@ func _process(delta):
 		weapon_creator.get_weapon_stats(weapon_creator.W_PRI_ZORROS_GLARE)["implemented"] = true
 		weapon_creator.get_weapon_stats(weapon_creator.W_SEC_ZORROS_WIT)["implemented"] = true
 		weapon_creator.get_weapon_stats(weapon_creator.W_ABI_ZORROS_HONOR)["implemented"] = true
+		_bot.set_bot_type(_bot.ANIMATION_SET_B1_ZORRO)
+		head.DB.update_bot(head.bot_ID,
+		                   [
+						    head.DB.NULL_INT, # UPDATE_BOT_ARGS_PLAYER_ID
+							head.DB.NULL_INT, # UPDATE_BOT_ARGS_MODEL_ID
+							head.DB.NULL_INT, # UPDATE_BOT_ARGS_RANKING
+							head.DB.NULL_INT, # UPDATE_BOT_ARGS_PRIMARY_WEAPON
+							head.DB.NULL_INT, # UPDATE_BOT_ARGS_SECONDARY_WEAPON
+							head.DB.NULL_INT, # UPDATE_BOT_ARGS_UTILITY
+							head.DB.NULL_COLOR, # UPDATE_BOT_ARGS_PRIMARY_COLOR
+							head.DB.NULL_COLOR, # UPDATE_BOT_ARGS_SECONDARY_COLOR
+							head.DB.NULL_COLOR, # UPDATE_BOT_ARGS_ACCENT_COLOR
+							_bot.ANIMATION_SET_B1_ZORRO # UPDATE_BOT_ARGS_ANIMATION
+						   ],
+						   "")
 	if ty34918jj:
 		var look_at = get_tree().get_root().get_mouse_position() - _bot.position
 		if look_at.x != 0 and look_at.y != 0:

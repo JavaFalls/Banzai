@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/scythe.png-e8f30a583c52cc67e10246af5ca2f33f.stex"
+path="res://.import/scythe.png-f0c9673803628a65992d867bedace337.stex"
 
 [deps]
 
-source_file="res://assets/weapons/scythe.png"
-dest_files=[ "res://.import/scythe.png-e8f30a583c52cc67e10246af5ca2f33f.stex" ]
+source_file="res://Assets/weapons/scythe.png"
+dest_files=[ "res://.import/scythe.png-f0c9673803628a65992d867bedace337.stex" ]
 
 [params]
 

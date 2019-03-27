@@ -2,19 +2,19 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/back.png-ea8109be60efccada52953131ad5a794.stex"
+path="res://.import/timer_shadow.png-7b62cd7af7102c16f845e6699ec6f36a.stex"
 
 [deps]
 
-source_file="res://Assets/bots/back.png"
-dest_files=[ "res://.import/back.png-ea8109be60efccada52953131ad5a794.stex" ]
+source_file="res://assets/timer_shadow.png"
+dest_files=[ "res://.import/timer_shadow.png-7b62cd7af7102c16f845e6699ec6f36a.stex" ]
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
-compress/normal_map=2
+compress/normal_map=0
 flags/repeat=0
 flags/filter=false
 flags/mipmaps=false

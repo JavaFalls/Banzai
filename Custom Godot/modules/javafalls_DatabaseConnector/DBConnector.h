@@ -95,7 +95,7 @@ private:
                                + (std::string)"SERVER=cssqlserver;"//TCP:172.16.2.5,1433;"
                                + (std::string)"UID=sei_JavaFallsUser;"
                                + (std::string)"PWD=HnjMk,IkoRftOlpOlpTgy32;"
-                               //+ (std::string)"Trusted_Connection=Yes;" // This line is needed if using windows authentication
+                               //+ (std::string)"Trusted_Connection=Yes;" // This line is needed if using windows authentication. This line must be commented out when not using windows authentication (as setting Trusted_Connection overrides setting UID and PWD).
                                + (std::string)"DATABASE=SEI_JavaFalls;"
                                + (std::string)"Language=us_english;"
                                + (std::string)"Encrypt=Yes;"
