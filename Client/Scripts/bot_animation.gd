@@ -9,9 +9,12 @@ const NP_BASE = "base_layer"
 const NP_PRIMARY_COLOR = "primary_color"
 const NP_SECONDARY_COLOR = "secondary_color"
 const NP_ACCENT_COLOR = "accent_color"
+const NP_BONUS = "bonus_layer"
+const NP_SHADOW = "Sprite"
 
 const ANIMATION_SET_HOVER_BOT = "hover_bot"
 const ANIMATION_SET_B1 = "B1"
+const ANIMATION_SET_B1_ZORRO = "B1_ZORRO"
 
 const ANIMATION_NONE = 0
 const ANIMATION_WALKING = 1
@@ -28,6 +31,8 @@ onready var layer_base = get_node(NP_BASE)
 onready var layer_primary_color = get_node(NP_PRIMARY_COLOR)
 onready var layer_secondary_color = get_node(NP_SECONDARY_COLOR)
 onready var layer_accent_color = get_node(NP_ACCENT_COLOR)
+onready var layer_bonus = get_node(NP_BONUS)
+onready var shadow = get_node(NP_SHADOW)
 
 # Godot Hooks:
 #-------------------------------------------------------------------------------
@@ -72,6 +77,10 @@ func load_colors_from_DB(bot_ID):
 		else:
 			accent_color = bot_dictionary["accent_color"]
 		
+		if typeof(bot_dictionary["animation"]) == TYPE_NIL:
+			set_bot_type(ANIMATION_SET_B1)
+		else:
+			set_bot_type(bot_dictionary["animation"])
 		set_primary_color(Color(primary_color))
 		set_secondary_color(Color(secondary_color))
 		set_accent_color(Color(accent_color))
@@ -99,10 +108,19 @@ func is_facing_right():
 # Refer to ANIMATION_SET_ constants when passing values to this function
 func set_bot_type(animation_set):
 	bot_type = animation_set
-	layer_base.animation = bot_type
-	layer_primary_color.animation = bot_type
-	layer_secondary_color.animation = bot_type
-	layer_accent_color.animation = bot_type
+	match bot_type:
+		ANIMATION_SET_B1_ZORRO:
+			layer_base.animation = ANIMATION_SET_B1
+			layer_primary_color.animation = ANIMATION_SET_B1
+			layer_secondary_color.animation = ANIMATION_SET_B1
+			layer_accent_color.animation = ANIMATION_SET_B1
+			layer_bonus.animation = ANIMATION_SET_B1_ZORRO
+		_:
+			layer_base.animation = bot_type
+			layer_primary_color.animation = bot_type
+			layer_secondary_color.animation = bot_type
+			layer_accent_color.animation = bot_type
+			layer_bonus.animation = bot_type
 
 # Animation Functions
 #-------------------------------------------------------------------------------
@@ -111,11 +129,15 @@ func face_left():
 	layer_primary_color.flip_h = false
 	layer_secondary_color.flip_h = false
 	layer_accent_color.flip_h = false
+	layer_bonus.flip_h = false
+	shadow.offset.x = 1
 func face_right():
 	layer_base.flip_h = true
 	layer_primary_color.flip_h = true
 	layer_secondary_color.flip_h = true
 	layer_accent_color.flip_h = true
+	layer_bonus.flip_h = true
+	shadow.offset.x = -1
 func start_walking_forward():
 	if (cur_animation != ANIMATION_WALKING):
 		animation_player.play(bot_type)

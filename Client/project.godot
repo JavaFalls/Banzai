@@ -10,10 +10,12 @@ config_version=3
 
 [application]
 
-config/name="Banzai"
+config/name="Robo Dojo"
 run/main_scene="res://Scenes/main.tscn"
-boot_splash/image="res://icon.png"
-config/icon="res://icon.png"
+boot_splash/image="res://Assets/logo_large.png"
+boot_splash/fullsize=false
+boot_splash/bg_color=Color( 0.0196078, 0.00784314, 0.0431373, 1 )
+config/icon="res://Assets/icon.png"
 
 [autoload]
 
@@ -89,6 +91,10 @@ ui_scroll_down=[ Object(InputEventMouseButton,"resource_local_to_scene":false,"r
 2d_physics/layer_1="MECH"
 2d_physics/layer_2="WEAP"
 2d_physics/layer_3="WALL"
+
+[logging]
+
+file_logging/enable_file_logging=true
 
 [rendering]
 

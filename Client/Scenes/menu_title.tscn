@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/menu_title.gd" type="Script" id=1]
 [ext_resource path="res://assets/local_scoreboard/background.png" type="Texture" id=2]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=3]
-[ext_resource path="res://Assets/title_text.png" type="Texture" id=4]
+[ext_resource path="res://Assets/logo_large.png" type="Texture" id=4]
 
 [node name="title_screen" type="Node" index="0"]
 
@@ -66,8 +66,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 400.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 54, 50 )
+margin_bottom = 30.0
+rect_min_size = Vector2( 400, 30 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -82,10 +82,11 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 77.0
-margin_top = 50.0
-margin_right = 322.0
-margin_bottom = 101.0
+margin_left = 10.0
+margin_top = 30.0
+margin_right = 390.0
+margin_bottom = 135.0
+rect_min_size = Vector2( 380, 105 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -93,7 +94,8 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 4
 size_flags_vertical = 1
 texture = ExtResource( 4 )
-stretch_mode = 0
+expand = true
+stretch_mode = 5
 _sections_unfolded = [ "Rect", "Size Flags" ]
 
 [node name="seperator" type="HSeparator" parent="Container/VBoxContainer" index="2"]
@@ -103,10 +105,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 101.0
+margin_top = 135.0
 margin_right = 400.0
-margin_bottom = 171.0
-rect_min_size = Vector2( 0, 70 )
+margin_bottom = 165.0
+rect_min_size = Vector2( 400, 30 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -122,9 +124,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 171.0
+margin_top = 165.0
 margin_right = 400.0
-margin_bottom = 185.0
+margin_bottom = 179.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2

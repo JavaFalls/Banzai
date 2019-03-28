@@ -47,7 +47,7 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[node name="nn_options" type="Control" index="0"]
+[node name="nn_options" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -84,7 +84,8 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-text = "Rewards - give the AI rewards for doing the following:"
+text = "Rewards - give the AI rewards for doing stuff.
+Bigger values multiply the rewards."
 align = 1
 valign = 1
 percent_visible = 1.0

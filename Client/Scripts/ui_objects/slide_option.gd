@@ -10,8 +10,6 @@ export(int) var min_value = 0
 export(int) var max_value = 10
 export(int, 0, 100) var step = 1
 export(int) var inital_value = 0
-export(bool) var number_type = true
-export(PoolStringArray) var values
 
 func _ready():
 	$slider.connect("value_changed", self, "display_value")
@@ -28,14 +26,8 @@ func _ready():
 	display_value($slider.value)
 
 func display_value(value):
-	if number_type:
-		$value.text = str(value)
-	else:
-		$value.text = values[value]
+	$value.text = str(value)
 
 # Get the value as a string
 func get_value():
-	if number_type:
-		return str($slider.value)
-	else:
-		return values[$slider.value]
+	return $slider.value

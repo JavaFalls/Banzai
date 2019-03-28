@@ -1,7 +1,7 @@
 """ To use the pywin32 headers, run this command in a terminal
         pip install pywin32                                     """
 import win32pipe, win32file, pywintypes
-import sys, math, json
+import sys, math, json, time
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import load_model
@@ -626,7 +626,10 @@ while not successful:
         except pywintypes.error as e:
                 if e.args[0] == 2:
                         print("Pipe not created.")
-                        input('Press enter to reconnect to client process')
+                        print("Reconnecting in 5 seconds...")
+                        startTime = time.time()
+                        while(time.time() - startTime < 5):
+                                pass
                 elif e.args[0] == 109:
                         print("Closed Pipe")
                         successful = True

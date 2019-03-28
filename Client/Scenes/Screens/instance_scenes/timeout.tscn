@@ -3,9 +3,16 @@
 [ext_resource path="res://Scripts/popups/timeout.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/popups/timeout_warning.tscn" type="PackedScene" id=2]
 
-[node name="timeout" type="Node" index="0"]
+[node name="timeout" type="CanvasLayer" index="0"]
 
+pause_mode = 2
+layer = 128
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 script = ExtResource( 1 )
+_sections_unfolded = [ "Pause" ]
 
 [node name="ColorRect" type="ColorRect" parent="." index="0"]
 

@@ -8,7 +8,6 @@
 [ext_resource path="res://sounds/Sound_scripts/arena.gd" type="Script" id=6]
 [ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=7]
 
-
 [sub_resource type="StyleBoxEmpty" id=1]
 
 content_margin_left = -1.0
@@ -79,7 +78,7 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[node name="world" type="Node2D"]
+[node name="world" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
@@ -233,7 +232,15 @@ bus = "Master"
 script = ExtResource( 6 )
 _sections_unfolded = [ "Material", "Pause", "Visibility" ]
 
-[node name="timeout" parent="." index="5" instance=ExtResource( 7 )]
+[node name="popup_layer" type="CanvasLayer" parent="." index="5"]
+
+layer = 2
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="timeout" parent="." index="6" instance=ExtResource( 7 )]
 
 [connection signal="pressed" from="exit/exit/confirm" to="." method="_on_confirm_pressed"]
 
