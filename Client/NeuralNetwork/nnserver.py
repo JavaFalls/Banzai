@@ -152,6 +152,15 @@ class DQN_agent:
         self.ptotal_damage_received_reward = 0
         self.total_health_received_reward = 0
         self.number_of_rewards = 0
+        
+        self.accuracy_magnitude        = 1
+        self.avoidance_magnitude       = 1
+        self.approach_magnitude        = 1
+        self.flee_magnitude            = 1
+        self.damage_dealt_magnitude    = 1
+        self.damage_received_magnitude = 1
+        self.health_received_magnitude = 1
+        self.melee_damage_magnitude    = 1
 
         self.model = self._build_model()
 
@@ -289,6 +298,36 @@ class DQN_agent:
         self.number_of_rewards = 0
         return
 
+    def set_rewards(self, str_rewards_magnitude):
+        rewards_magnitude = []
+        r_rewards_magnitude = []
+        str_rewards_magnitude = str_rewards_magnitude.replace("[","").replace("]","")
+        r_rewards_magnitude = str_rewards_magnitude.split(",")
+        for x in r_rewards_magnitude:
+                x = (int(x))/10
+                rewards_magnitude.append(x)
+                print(x)
+        
+        print(rewards_magnitude[0])
+        print(rewards_magnitude[1])
+        print(rewards_magnitude[2])
+        print(rewards_magnitude[3])
+        print(rewards_magnitude[4])
+        print(rewards_magnitude[5])
+        print(rewards_magnitude[6])
+        print(rewards_magnitude[7])
+
+        self.accuracy_magnitude        = rewards_magnitude[0]
+        self.avoidance_magnitude       = rewards_magnitude[1]
+        self.approach_magnitude        = rewards_magnitude[2]
+        self.flee_magnitude            = rewards_magnitude[3]
+        self.damage_dealt_magnitude    = rewards_magnitude[4]
+        self.damage_received_magnitude = rewards_magnitude[5]
+        self.health_received_magnitude = rewards_magnitude[6]
+        self.melee_damage_magnitude    = rewards_magnitude[7]
+            
+            
+
     def get_reward(self, gamestate, next_gamestate):
         # if gamestate[OPPONENT_POSITION_X] < .3:
         #         self.epsilon = 0
@@ -413,50 +452,50 @@ class DQN_agent:
         print("health_received_reward     ", health_received_reward)
         print("melee_damage_reward        ", melee_damage_reward)
 
-        # Accuracy
-        # new_reward += accuracy_reward
-        # reward_count += 1
-        # if accuracy_reward < 0:
-        #         negative_reward_count += 1
+        #Accuracy
+        new_reward += accuracy_reward * self.accuracy_magnitude
+        reward_count += 1
+        if accuracy_reward < 0:
+                negative_reward_count += 1
 
-        # Avoidance
-        # new_reward += avoidance_reward
-        # reward_count += 1
-        # if avoidance_reward < 0:
-        #         negative_reward_count += 1
+        #Avoidance
+        new_reward += avoidance_reward * self.avoidance_magnitude
+        reward_count += 1
+        if avoidance_reward < 0:
+                negative_reward_count += 1
 
-        # approach
-        new_reward += approach_reward
+        #Approach
+        new_reward += approach_reward * self.approach_magnitude
         reward_count += 1
         if approach_reward < 0:
                 negative_reward_count += 1
 
         # Flee
-        # new_reward += flee_reward
-        # reward_count += 1
-        # if flee_reward < 0:
-                # negative_reward_count += 1
+        new_reward += flee_reward * self.flee_magnitude
+        reward_count += 1
+        if flee_reward < 0:
+                negative_reward_count += 1
 
         # Deal Damage # probably isn't effective
-        # new_reward += damage_dealt_reward
-        # reward_count += 1
-        # if damage_dealt_reward < 0:
-        #         negative_reward_count += 1
+        new_reward += damage_dealt_reward * self.damage_dealt_magnitude
+        reward_count += 1
+        if damage_dealt_reward < 0:
+                negative_reward_count += 1
 
         # Damage Received # # probably isn't effective
-        # new_reward += damage_received_reward
-        # reward_count += 1
-        # if damage_received_reward < 0:
-        #         negative_reward_count += 1
+        new_reward += damage_received_reward * self.damage_received_magnitude
+        reward_count += 1
+        if damage_received_reward < 0:
+                negative_reward_count += 1
 
         # health received reward # probably isn't effective
-        # new_reward += health_received_reward
-        # reward_count += 1
-        # if health_received_reward < 0:
-        #         negative_reward_count += 1
+        new_reward += health_received_reward * self.health_received_magnitude
+        reward_count += 1
+        if health_received_reward < 0:
+                negative_reward_count += 1
 
         # melee_damage_reward
-        new_reward += melee_damage_reward
+        new_reward += melee_damage_reward * self.melee_damage_magnitude
         reward_count += 1
         if melee_damage_reward < 0:
                 negative_reward_count += 1
@@ -521,7 +560,6 @@ def process_message(message):
                 #fighter1.train_player(np.flip(output_list,1)) # train on player
                 fighter1.player_action = -1 # set it to invalid number so that it isn't used with regular bot's training state
                 output = fighter1.train( output_list ) # train and predict on bot
-
         elif message["Message Type"] == "Battle"  :
                 fighter1.epsilon = 0.1
                 fighter2.epsilon = 0.1
@@ -549,6 +587,9 @@ def process_message(message):
                 else:
                         return print("Invalid Game Mode")
                 pass
+        elif message["Message Type"] == "Set Rewards"   :
+                fighter1.set_rewards(message["Rewards"])
+                print("yo")
         elif message["Message Type"] == "Save"   :
                 fighter1.save_bot(message["File Name"])
                 fighter1.epsilon = 1
@@ -557,6 +598,7 @@ def process_message(message):
         else:
                 print("Message not recognized")
         return output
+
 
 
 fighter1 = DQN_agent(state_size, action_size)
@@ -621,7 +663,7 @@ while True:
                 break
         #print(request)
         #response = fighter1.train(request)
-        if(count % 109 == 0):
+        if(count % 1009 == 0):
             fighter1.graph_rewards()
         count+=1
         send_response(response) # send the action or actions or load successful message based on packet type

@@ -37,6 +37,6 @@ The Messages from Godot will be as follows:
 
    "{ "Message Type": "Kill", "Message": [gamestate], "Arena": "Battle" | "Train" }"
 
-### 4. Set Rewards
+### 6. Set Rewards
 
-   "{ "Message Type": "Set Rewards", "Message": "Game_state[]"}"
+   "{ "Message Type": "Set Rewards", "Rewards": "rewards_magnitude[]"}"
