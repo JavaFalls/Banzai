@@ -71,6 +71,7 @@ func _input(event):
 			prevent_messengers_to_zorro["messenger_carl"] = false
 			HELP = phase4point5
 			print(HELP) # I keep printing help
+			ty34918jj = true
 		elif event.scancode == KEY_ENTER and not prevent_messengers_to_zorro["messenger_carl"]:
 			zorro_is_coming()
 		else:
@@ -114,7 +115,6 @@ func button_hover_enter():
 func screen_idle_timeout():
 	get_node("logout_warning").hide()
 func zorro_is_coming():
-	ty34918jj = true
 	weapon_creator.get_weapon_stats(weapon_creator.W_PRI_ZORROS_GLARE)["implemented"] = true
 	weapon_creator.get_weapon_stats(weapon_creator.W_SEC_ZORROS_WIT)["implemented"] = true
 	weapon_creator.get_weapon_stats(weapon_creator.W_ABI_ZORROS_HONOR)["implemented"] = true
