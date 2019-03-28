@@ -23,7 +23,7 @@ onready var game_state      = get_node("game_state")
 onready var f               = File.new()
 onready var t               = Timer.new()
 onready var game_time       = get_node("game_time")
-onready var max_game_time   = 30
+onready var max_game_time   = 5 * 60
 onready var timer_label     = get_node("Panel/Label")
 
 # Get Opponent

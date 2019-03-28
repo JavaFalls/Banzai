@@ -21,7 +21,7 @@ func _ready():
 #	pass
 	
 func _input(event):
-	if event is InputEventKey and event.is_pressed() and head.DB.is_connection_open():
+	if event is InputEventKey and event.is_pressed() and head.DB.is_connection_open() and not Input.is_action_just_pressed("toggle_fullscreen"):
 		create_user()
 
 func create_user():
