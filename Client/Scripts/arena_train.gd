@@ -8,6 +8,7 @@ onready var bot_data = JSON.parse(
 									   "File_%s.h5" % str(head.bot_ID))).result["data"][0]
 #onready var bot_data = JSON.parse(head.DB.get_bot(1,"File_%s.h5" % str(1))).result["data"][0]# for seth and jonathan
 #onready var player_data = JSON.parse(head.DB.get_bot(1,"File_%s.h5" % str(1))).result["data"][0]# for seth and jonathan
+onready var nn_results = preload("res://Scenes/popups/nn_results.tscn")
 
 # The variables
 var fighter1                             # Player or his AI bot
@@ -98,7 +99,8 @@ func send_nn_state():
 func timeout():
 	get_tree().paused = true
 	yield($timeout, "resumed")
-	get_tree().paused = false
+	if not $exit.visible:
+		get_tree().paused = false
 
 # Popup Functions
 func keep_data():
@@ -122,8 +124,13 @@ func main_menu():
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 func _on_confirm_pressed():
-	get_tree().set_pause(false)
-	get_tree().change_scene("res://Scenes/main_menu.tscn")
+	$exit.visible = false
+	var results_popup
+	if nn_results.can_instance():
+		results_popup = nn_results.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
+	$popup_layer.add_child(results_popup)
+	results_popup.connect("resume", self, "exit_results", [results_popup])
+	results_popup.connect("leave", self, "exit_arena")
 
 func _on_back_pressed():
 	get_tree().set_pause(false)
@@ -146,3 +153,11 @@ func save_bot():
 	var output = head.Client.get_response()
 	head.DB.update_model_by_bot_id(head.bot_ID, 'File_%s.h5' % str(head.bot_ID))
 	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(head.bot_ID)))
+
+func exit_results(popup):
+	popup.queue_free()
+	get_tree().set_pause(false)
+
+func exit_arena():
+	get_tree().set_pause(false)
+	get_tree().change_scene("res://Scenes/main_menu.tscn")

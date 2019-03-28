@@ -15,7 +15,6 @@
 [ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=14]
 
-
 [sub_resource type="Environment" id=1]
 
 background_mode = 4
@@ -745,12 +744,35 @@ icon = ExtResource( 12 )
 flat = true
 align = 1
 
-[node name="instructions" parent="." index="5" instance=ExtResource( 13 )]
+[node name="time" type="Label" parent="." index="5"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 8.0
+margin_top = 152.0
+margin_right = 56.0
+margin_bottom = 166.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0.843137, 0.0784314, 0.0784314, 1 )
+text = "00:00:00"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="instructions" parent="." index="6" instance=ExtResource( 13 )]
 
 visible = false
 theme = SubResource( 6 )
 
-[node name="timeout" parent="." index="6" instance=ExtResource( 14 )]
+[node name="timeout" parent="." index="7" instance=ExtResource( 14 )]
 
 [connection signal="mouse_entered" from="Control/credits_button" to="." method="button_hover_enter"]
 

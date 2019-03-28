@@ -43,4 +43,5 @@ func _on_back_pressed():
 func timeout():
 	get_tree().paused = true
 	yield($timeout, "resumed")
-	get_tree().paused = false
+	if not $exit.visible:
+		get_tree().paused = false

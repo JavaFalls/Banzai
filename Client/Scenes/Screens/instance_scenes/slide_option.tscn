@@ -75,8 +75,6 @@ min_value = 0
 max_value = 10
 step = 1
 inital_value = 0
-number_type = true
-values = null
 
 [node name="option_name" type="Label" parent="." index="0"]
 

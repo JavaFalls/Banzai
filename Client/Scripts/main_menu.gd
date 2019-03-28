@@ -60,6 +60,9 @@ func _process(delta):
 		var look_at = get_tree().get_root().get_mouse_position() - _bot.position
 		if look_at.x != 0 and look_at.y != 0:
 			_bot.translate(look_at.normalized() * 3)
+	
+	var time = OS.get_time()
+	$time.text = "%02d:%02d:%02d" % [time["hour"]%12, time["minute"], time["second"]]
 
 """
 Various nodes' signal methods
