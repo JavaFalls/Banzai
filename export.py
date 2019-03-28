@@ -231,8 +231,9 @@ def initialize(build_debug=True):
 
    # Create a batch file to start both the game and the Neural Network
    cmd(['cd bin\\Release',
-        'echo start Robo_Dojo.exe > Robo_Dojo.bat',
-        'echo start NeuralNetwork\\nnserver.exe >> Robo_Dojo.bat'])
+        'echo start NeuralNetwork\\nnserver.exe > Robo_Dojo.bat',
+        'echo start Robo_Dojo.exe >> Robo_Dojo.bat',
+           'echo exit >> Robo_Dojo.bat'])
 
    if build_debug:
       # Create build directory for debug version
@@ -246,8 +247,9 @@ def initialize(build_debug=True):
 
       # Create a batch file to start both the game and the Neural Network
       cmd(['cd bin\\Debug',
-           'echo start Robo_Dojo.exe > Robo_Dojo.bat',
-           'echo start NeuralNetwork\\nnserver.exe >> Robo_Dojo.bat'])
+           'echo start NeuralNetwork\\nnserver.exe > Robo_Dojo.bat',
+           'echo start Robo_Dojo.exe >> Robo_Dojo.bat',
+           'echo exit >> Robo_Dojo.bat'])
 
 def zip_directory(build_debug=True):
    # Compress directory to a zip archive

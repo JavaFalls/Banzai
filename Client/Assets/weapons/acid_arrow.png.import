@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/acid_arrow.png-337e9e64d761629b309a511ba17ad313.stex"
+path="res://.import/acid_arrow.png-a49398097fd2ed016fd7418316d1e816.stex"
 
 [deps]
 
-source_file="res://assets/weapons/acid_arrow.png"
-dest_files=[ "res://.import/acid_arrow.png-337e9e64d761629b309a511ba17ad313.stex" ]
+source_file="res://Assets/weapons/acid_arrow.png"
+dest_files=[ "res://.import/acid_arrow.png-a49398097fd2ed016fd7418316d1e816.stex" ]
 
 [params]
 
