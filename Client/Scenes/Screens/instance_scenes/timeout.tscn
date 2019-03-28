@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/popups/timeout.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/popups/timeout_warning.tscn" type="PackedScene" id=2]
 
-[node name="timeout" type="CanvasLayer"]
+[node name="timeout" type="CanvasLayer" index="0"]
 
 pause_mode = 2
 layer = 128
@@ -39,7 +39,7 @@ margin_left = -7.62939e-06
 [node name="Timer" type="Timer" parent="." index="1"]
 
 process_mode = 1
-wait_time = 5.0
+wait_time = 180.0
 one_shot = true
 autostart = false
 

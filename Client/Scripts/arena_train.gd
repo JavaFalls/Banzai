@@ -129,8 +129,8 @@ func _on_confirm_pressed():
 	if nn_results.can_instance():
 		results_popup = nn_results.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
 	$popup_layer.add_child(results_popup)
-	results_popup.connect("go_back", self, "exit_results", [results_popup])
-	results_popup.connect("save", self, "exit_arena")
+	results_popup.connect("resume", self, "exit_results", [results_popup])
+	results_popup.connect("leave", self, "exit_arena")
 
 func _on_back_pressed():
 	get_tree().set_pause(false)
