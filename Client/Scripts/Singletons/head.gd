@@ -53,11 +53,8 @@ var bot_ID = -1;
 
 onready var dir = Directory.new()
 onready var DB = DBConnector.new()
-onready var hack = print("Database Connected")
 onready var pid = launch_neural_network()
-onready var hack2 = print("Neural Network Launched")
 onready var Client = NNClient.new()
-onready var hack3 = print("Neural Network Initialized")
 
 # Bot Info
 var bot = {
@@ -137,8 +134,6 @@ func load_scene(path):
 # Launch Neural Network
 func launch_neural_network():
 	var pid
-	print("entered function")
-	print("Searching in directory: " + ProjectSettings.globalize_path('res://NeuralNetwork/'))
 	if dir.file_exists(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py')):
 		pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
 		print("Uncompiled Path: " + ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
@@ -148,7 +143,6 @@ func launch_neural_network():
 			print("Compiled Path: " + ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.exe'))
 		else:
 			print("nnserver not found")
-	print("finished function")
 	return pid
 
 func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
