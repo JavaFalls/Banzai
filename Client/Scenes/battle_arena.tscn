@@ -10,7 +10,7 @@
 [ext_resource path="res://Scenes/UI Nodes/ui_weapon_cooldowns.tscn" type="PackedScene" id=8]
 [ext_resource path="res://sounds/Sound_scripts/BattleAudio.gd" type="Script" id=9]
 
-[node name="battle_arena" type="Node2D" index="0"]
+[node name="battle_arena" type="Node2D"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
