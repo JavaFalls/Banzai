@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/arrow_orange_left.png-8a0612dae0b889b7529fc8edcf566bd4.stex"
+path="res://.import/arrow_orange_left.png-2e1d5234ff4dbc825bc59e72f5154308.stex"
 
 [deps]
 
-source_file="res://Assets/menu/bot_construction/arrow_orange_left.png"
-dest_files=[ "res://.import/arrow_orange_left.png-8a0612dae0b889b7529fc8edcf566bd4.stex" ]
+source_file="res://assets/menu/bot_construction/arrow_orange_left.png"
+dest_files=[ "res://.import/arrow_orange_left.png-2e1d5234ff4dbc825bc59e72f5154308.stex" ]
 
 [params]
 

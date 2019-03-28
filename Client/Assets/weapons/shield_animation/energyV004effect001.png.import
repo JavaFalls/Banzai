@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/energyV004effect001.png-e52a4bde99375e2df04ba285f38ab5c3.stex"
+path="res://.import/energyV004effect001.png-7ade079d439c6a0fde0782dd5323f1e8.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/shield_animation/energyV004effect001.png"
-dest_files=[ "res://.import/energyV004effect001.png-e52a4bde99375e2df04ba285f38ab5c3.stex" ]
+source_file="res://assets/weapons/shield_animation/energyV004effect001.png"
+dest_files=[ "res://.import/energyV004effect001.png-7ade079d439c6a0fde0782dd5323f1e8.stex" ]
 
 [params]
 

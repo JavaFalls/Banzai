@@ -130,7 +130,7 @@ resource_local_to_scene = true
 default_font = ExtResource( 7 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="main_menu" type="Node" index="0"]
+[node name="main_menu" type="Node"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
@@ -744,12 +744,7 @@ icon = ExtResource( 12 )
 flat = true
 align = 1
 
-[node name="instructions" parent="." index="5" instance=ExtResource( 13 )]
-
-visible = false
-theme = SubResource( 6 )
-
-[node name="time" type="Label" parent="." index="6"]
+[node name="time" type="Label" parent="." index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -771,6 +766,11 @@ text = "00:00:00"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+
+[node name="instructions" parent="." index="6" instance=ExtResource( 13 )]
+
+visible = false
+theme = SubResource( 6 )
 
 [node name="timeout" parent="." index="7" instance=ExtResource( 14 )]
 
