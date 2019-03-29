@@ -25,6 +25,7 @@ func _input(event):
 		create_user()
 
 func create_user():
+	set_process_input(false) # Disable input for the menu_title node so that it doesn't recall create_user()
 	name_choice_screen.get_node("confirm_button/Label").text = "n\ne\nw\n\np\nl\na\ny\ne\nr"
 	add_child(name_choice_screen)
 	yield(name_choice_screen, "name_entered")
