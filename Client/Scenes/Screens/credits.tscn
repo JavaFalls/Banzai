@@ -11,7 +11,7 @@
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=10]
 
-[node name="credits" type="Node"]
+[node name="credits" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
@@ -39,7 +39,7 @@ size_flags_vertical = 4
 custom_fonts/font = ExtResource( 3 )
 text = "JavaFalls Programmers
 ------------
-Tobi Adengunloye
+Tobi Adegunloye
 Adam Baldwin
 Lloyd Bower - TL
 Seth Stevens
