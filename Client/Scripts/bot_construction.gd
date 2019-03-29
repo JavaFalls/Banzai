@@ -6,7 +6,6 @@ onready var weapon_creator = get_tree().get_root().get_node("/root/weapon_creato
 
 onready var constructing_player = (head.construction == head.PLAYER)
 onready var name_choice_scene = preload("res://Scenes/name_choice.tscn")
-onready var timeout = preload("res://Scenes/Screens/instance_scenes/timeout.tscn")
 
 const STATS_SPACE = "           "
 
@@ -211,7 +210,6 @@ func update_current_bot():
 func change_name():
 	var new_name = ""
 	if name_choice_scene.can_instance():
-		$timeout.queue_free()
 		$backlight/Light2D.enabled = false
 		var name_choice_node = name_choice_scene.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
 		name_choice_node.get_node("confirm_button/Label").text = "n\ne\nw\n\nb\no\nt"
@@ -220,10 +218,6 @@ func change_name():
 		new_name = name_choice_node.get_username()
 		name_choice_node.queue_free()
 		$backlight/Light2D.enabled = true
-		if timeout.can_instance():
-			add_child(timeout.instance(PackedScene.GEN_EDIT_STATE_DISABLED))
-		else:
-			print("Error: Timeout not instanced.")
 	return new_name
 
 func weapon_changed(info_type):

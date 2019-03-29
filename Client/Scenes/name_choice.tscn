@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://Scripts/name_choice.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -10,7 +10,6 @@
 [ext_resource path="res://Scenes/UI Nodes/text_scroll.gd" type="Script" id=8]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=9]
 [ext_resource path="res://Scenes/UI Nodes/slide_button.tscn" type="PackedScene" id=10]
-[ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=11]
 
 [sub_resource type="Curve2D" id=1]
 
@@ -222,7 +221,7 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 285.126, -0.830062, 0, 0, -410, -204 )
 }
 
-[node name="name_choice" type="Node" index="0"]
+[node name="name_choice" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -1120,8 +1119,6 @@ max_lines_visible = -1
 "buttons",
 ]]
 
-editor/display_folded = true
-
 [node name="slide_button10" parent="buttons1" index="0" instance=ExtResource( 10 )]
 
 position = Vector2( 2, 227 )
@@ -1375,8 +1372,6 @@ curve = SubResource( 30 )
 max_chars = 9
 box_width = 120
 duration = 2.0
-
-[node name="timeout" parent="." index="9" instance=ExtResource( 11 )]
 
 [connection signal="pressed" from="confirm_button" to="." method="start"]
 
