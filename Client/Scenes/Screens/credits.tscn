@@ -37,7 +37,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 3 )
-text = "JavaFalls Programmers
+text = "Programmers
 ------------
 Tobi Adegunloye
 Adam Baldwin
