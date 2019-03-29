@@ -21,6 +21,8 @@ var current = 0
 
 var current_info_type = 0
 
+var name_hover_color = Color("#ffffff")
+
 # Godot methods
 #------------------------------------------------
 func _ready():
@@ -82,6 +84,8 @@ func _ready():
 		$new_button.visible = false
 		$change_name.visible = false
 		$bot_name.text = head.username
+	elif head.player_bot_ID == bot_ids[current]:
+		$change_name/change_name_button.disabled = true
 
 # Signal methods
 #------------------------------------------------
@@ -90,12 +94,14 @@ func _on_bot_left_pressed():
 	current = bots.size()-1 if current-1 < 0 else current-1
 	get_bot_info(bots[current])
 	grab_info(current_info_type)
+	$change_name/change_name_button.disabled = (head.player_bot_ID == bot_ids[current])
 
 func _on_bot_right_pressed():
 	update_current_bot()
 	current = 0 if current+1 >= bots.size() else current+1
 	get_bot_info(bots[current])
 	grab_info(current_info_type)
+	$change_name/change_name_button.disabled = (head.player_bot_ID == bot_ids[current])
 
 # Entering a name
 func _on_new_button_pressed():
@@ -178,7 +184,8 @@ func _on_change_name_button_pressed():
 	update_current_bot()
 
 func _on_change_name_button_mouse_entered():
-	$change_name.modulate = Color("#ffffff")
+	if not $change_name/change_name_button.disabled:
+		$change_name.modulate = Color("#ffffff")
 
 func _on_change_name_button_mouse_exited():
 	$change_name.modulate = Color("#aaaaaa")

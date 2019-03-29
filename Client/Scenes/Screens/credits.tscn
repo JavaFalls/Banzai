@@ -11,7 +11,7 @@
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=10]
 
-[node name="credits" type="Node" index="0"]
+[node name="credits" type="Node"]
 
 script = ExtResource( 1 )
 
