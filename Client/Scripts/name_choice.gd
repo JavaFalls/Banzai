@@ -33,7 +33,7 @@ func _ready():
 				button.text = name_dictionary[name_index]["name"]
 			button.get_node("PathFollow2D/Button").connect("pressed", self, "select_name", [button.text, name_pos])
 			button.get_node("PathFollow2D/Button").connect("mouse_entered", self, "button_hover")
-			button.get_node("PathFollow2D/Button/NinePatchRect").modulate = Color("#aaaaaa")
+			button.get_node("PathFollow2D/Button/NinePatchRect").modulate = Color("#cecece")
 			button.duration = 1.0
 			button.delay = delay
 			delay += 0.15
