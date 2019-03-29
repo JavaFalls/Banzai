@@ -12,7 +12,6 @@
 [ext_resource path="res://Scenes/UI Nodes/slide_button.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=11]
 
-
 [sub_resource type="Curve2D" id=1]
 
 bake_interval = 5.0

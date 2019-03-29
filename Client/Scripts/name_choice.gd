@@ -4,6 +4,7 @@ extends Node
 onready var head = get_tree().get_root().get_node("/root/head")
 
 var sub_names = ["", "", ""]
+onready var name_section = head.name_section
 
 onready var names = get_node("names").get_children()
 
@@ -12,7 +13,6 @@ signal name_entered
 func _ready():
 	var delay = 1.0
 	var name_pos = 0 # for sub_names
-	var name_section = 1 # Which name section to grab names from
 	var raw_JSON
 	var name_dictionary
 	var name_index

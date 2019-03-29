@@ -24,11 +24,6 @@ var current_info_type = 0
 # Godot methods
 #------------------------------------------------
 func _ready():
-	if constructing_player:
-		$bot_left.visible = false
-		$bot_right.visible = false
-		$new_button.visible = false
-
 	var player_bots = parse_json(head.DB.get_player_bots(head.player_ID))
 	var id = ""
 	for c in player_bots["data"][0]["player_bots"]:
@@ -80,6 +75,13 @@ func _ready():
 
 	$animation_bot.face_left()
 	randomize()
+	
+	if constructing_player:
+		$bot_left.visible = false
+		$bot_right.visible = false
+		$new_button.visible = false
+		$change_name.visible = false
+		$bot_name.text = head.username
 
 # Signal methods
 #------------------------------------------------

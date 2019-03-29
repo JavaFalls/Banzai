@@ -22,6 +22,8 @@ var loader = preload("res://Scenes/loading.tscn")
 var screen_size = OS.get_screen_size()
 var window_size = OS.get_window_size()
 
+# Specify which names to use from DB
+var name_section = 1
 
 # Username
 var username = ""
