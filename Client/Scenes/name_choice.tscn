@@ -222,7 +222,7 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 285.126, -0.830062, 0, 0, -410, -204 )
 }
 
-[node name="name_choice" type="Node"]
+[node name="name_choice" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
@@ -1128,7 +1128,7 @@ position = Vector2( 2, 227 )
 curve = SubResource( 1 )
 _sections_unfolded = [ "Material" ]
 box_width = 120
-duration = 2.0
+duration = 1.0
 
 [node name="slide_button9" parent="buttons1" index="1" instance=ExtResource( 10 )]
 
@@ -1137,7 +1137,7 @@ curve = SubResource( 2 )
 _sections_unfolded = [ "Material" ]
 max_chars = 9
 box_width = 120
-duration = 2.0
+duration = 1.0
 
 [node name="slide_button8" parent="buttons1" index="2" instance=ExtResource( 10 )]
 
@@ -1146,7 +1146,7 @@ curve = SubResource( 3 )
 _sections_unfolded = [ "Material" ]
 max_chars = 9
 box_width = 120
-duration = 2.0
+duration = 1.0
 
 [node name="slide_button7" parent="buttons1" index="3" instance=ExtResource( 10 )]
 
@@ -1154,7 +1154,7 @@ position = Vector2( -118, 227 )
 curve = SubResource( 4 )
 max_chars = 9
 box_width = 120
-duration = 2.0
+duration = 1.0
 
 [node name="slide_button6" parent="buttons1" index="4" instance=ExtResource( 10 )]
 
@@ -1162,7 +1162,7 @@ position = Vector2( -158, 227 )
 curve = SubResource( 5 )
 max_chars = 9
 box_width = 120
-duration = 2.0
+duration = 1.0
 
 [node name="slide_button5" parent="buttons1" index="5" instance=ExtResource( 10 )]
 
@@ -1170,7 +1170,7 @@ position = Vector2( -198, 227 )
 curve = SubResource( 6 )
 max_chars = 9
 box_width = 120
-duration = 2.0
+duration = 1.0
 
 [node name="slide_button4" parent="buttons1" index="6" instance=ExtResource( 10 )]
 
@@ -1178,7 +1178,7 @@ position = Vector2( -238, 227 )
 curve = SubResource( 7 )
 max_chars = 9
 box_width = 120
-duration = 2.0
+duration = 1.0
 
 [node name="slide_button3" parent="buttons1" index="7" instance=ExtResource( 10 )]
 
@@ -1186,7 +1186,7 @@ position = Vector2( -278, 227 )
 curve = SubResource( 8 )
 max_chars = 9
 box_width = 120
-duration = 2.0
+duration = 1.0
 
 [node name="slide_button2" parent="buttons1" index="8" instance=ExtResource( 10 )]
 
@@ -1194,7 +1194,7 @@ position = Vector2( -318, 227 )
 curve = SubResource( 9 )
 max_chars = 9
 box_width = 120
-duration = 2.0
+duration = 1.0
 
 [node name="slide_button" parent="buttons1" index="9" instance=ExtResource( 10 )]
 
@@ -1202,7 +1202,7 @@ position = Vector2( -358, 227 )
 curve = SubResource( 10 )
 max_chars = 9
 box_width = 120
-duration = 2.0
+duration = 1.0
 
 [node name="buttons2" type="Node2D" parent="." index="7" groups=[
 "buttons",
