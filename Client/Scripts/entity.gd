@@ -12,7 +12,7 @@ var direction        = Vector2()     # Direction the entity is moving
 var primary_weapon   = null          # Weapon that goes in the first weapon slot
 var secondary_weapon = null          # Weapon that goes in the second weapon slot
 var ability          = null          # Weapon that goes in the third weapon slot
-var opponent         = KinematicBody # The bots' opponent
+var opponent         = null          # The bots' opponent
 var is_player        = 0        # Is the mech controlled by a player
 var relative_mouse   = Vector2()
 var psuedo_mouse     = Vector2(0,0)  # This is the players curser position/bot's predicted curser position
@@ -125,6 +125,13 @@ func _process(delta):
 		immobilized -= delta
 	if disabled > 0.0:
 		disabled -= delta
+	if opponent != null:
+		if opponent.global_position.y > global_position.y:
+			# Opponent is below us, so we need to be drawn behind the opponent
+			z_index = -1
+		else:
+			# Opponent is above us, so we need to be drawn on top of the opponent
+			z_index = 0
 
 func _physics_process(delta):
 	move_bot()
