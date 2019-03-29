@@ -28,6 +28,7 @@ func _ready():
 func _on_customize_player_pressed():
 	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
 	head.construction = head.PLAYER
+	head.name_section = 1 # Use player names
 	get_tree().change_scene(CUSTOMIZE_BOT_PATH)
 
 func _on_customize_player_mouse_entered():
@@ -42,6 +43,7 @@ func _on_customize_player_mouse_exited():
 func _on_customize_bot_pressed():
 	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
 	head.construction = head.BOT
+	head.name_section = 3 # Use bot names
 	get_tree().change_scene(CUSTOMIZE_BOT_PATH)
 
 func _on_customize_bot_mouse_entered():
