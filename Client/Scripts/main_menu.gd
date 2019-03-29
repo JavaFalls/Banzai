@@ -137,7 +137,6 @@ func zorro_is_coming():
 func logout():
 	fade()
 	get_node("logout_warning").popup()
-	head.name_section = 1 # Set name section to Usernames
 	pass
 
 func hover_logout_confirm(mouse_entered):

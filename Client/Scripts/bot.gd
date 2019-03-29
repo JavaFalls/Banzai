@@ -16,7 +16,7 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	get_node("Label").set_text(str(get_hit_points()))
+	get_node("Label").set_text("NN" + str(get_hit_points()))
 
 func set_bot_info():
 	if game_state.predicted_bot_aim_left == 1:

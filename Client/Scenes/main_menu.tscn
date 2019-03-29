@@ -130,7 +130,7 @@ resource_local_to_scene = true
 default_font = ExtResource( 7 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="main_menu" type="Node"]
+[node name="main_menu" type="Node" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
@@ -522,8 +522,9 @@ anchor_left = 0.27
 anchor_top = 0.89778
 anchor_right = 0.71
 anchor_bottom = 1.0
-margin_left = -7.62939e-06
+margin_left = 7.62939e-06
 margin_top = -0.00050354
+margin_right = 1.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
