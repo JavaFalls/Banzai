@@ -10,7 +10,7 @@ extents = Vector2( 5, 5 )
 
 [node name="mine" type="Area2D"]
 
-z_index = -1
+z_index = -2
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0

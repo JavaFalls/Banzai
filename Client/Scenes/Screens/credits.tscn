@@ -11,7 +11,7 @@
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=10]
 
-[node name="credits" type="Node" index="0"]
+[node name="credits" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -99,10 +99,11 @@ size_flags_vertical = 4
 custom_fonts/font = ExtResource( 3 )
 text = "Art
 ------------
-insert_name_here
-insert_name_here
-insert_name_here
-insert_name_here"
+Donggwan Oh
+Patrick Farley
+Leah Batayola
+Somer Blackwell
+"
 align = 1
 valign = 1
 percent_visible = 1.0
