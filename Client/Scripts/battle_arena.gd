@@ -58,6 +58,7 @@ func _ready():
 	get_node("UI_container/fighter1_cooldowns").init(bot_data["primary_weapon"], fighter1.primary_weapon,
 													 bot_data["secondary_weapon"], fighter1.secondary_weapon,
 													 bot_data["utility"], fighter1.ability)
+	get_node("UI_container/fighter1_name").text = bot_data["name"]
 	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 	#---------------------------------------------------------
 	fighter1.is_player = 1
@@ -72,6 +73,7 @@ func _ready():
 	get_node("UI_container/fighter2_cooldowns").init(opponent_data["primary_weapon"], fighter2.primary_weapon,
 													 opponent_data["secondary_weapon"], fighter2.secondary_weapon,
 													 opponent_data["utility"], fighter2.ability)
+	get_node("UI_container/fighter2_name").text = opponent_data["name"]
 	fighter2.get_node("animation_bot").load_colors_from_DB(opponent_bot_ID)
 	#---------------------------------------------------------
 
