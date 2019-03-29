@@ -27,6 +27,10 @@ onready var game_state      = get_node("game_state")
 onready var t               = Timer.new()
 
 func _ready():
+	
+#	load the player's ai model into nnserver
+	load_bot()
+	
 #	 The player's bot or AI
 	fighter1 = player_scene.instance()
 	self.add_child(fighter1)
@@ -56,6 +60,7 @@ func _ready():
 	fighter1.set_opponent(fighter2)
 	fighter2.set_opponent(fighter1)
 	
+	
 	t.set_wait_time(.01)
 	t.set_one_shot(true)
 	self.add_child(t)
@@ -78,8 +83,6 @@ func _process(delta):
 
 func _input(event):
 	if Input.is_action_just_pressed("exit_arena"):
-		save_bot()
-		print("bot saved", head.bot_ID)
 		if not get_tree().is_paused():
 			get_tree().set_pause(true)
 			$exit.visible = true
@@ -140,19 +143,12 @@ func _on_back_pressed():
 func load_bot():
 	var output = []
 	var message
-	message = '{ "Message Type":"Load", "Game Mode": "Train", "File Name": "File_%s.h5" }' % str(head.bot_ID)
+	# Load Player bot into Neural Network
+	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(head.bot_ID)))
-	return output == 'true'
-
-# Save Bot after training
-func save_bot():
-	var message = '{ "Message Type": "Save", "File Name": "File_%s.h5"}' % str(head.bot_ID)
-	head.Client.send_request(message)
-	var output = head.Client.get_response()
-	head.DB.update_model_by_bot_id(head.bot_ID, 'File_%s.h5' % str(head.bot_ID))
-	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(head.bot_ID)))
+	return !(output == 'successful')
 
 func exit_results(popup):
 	popup.queue_free()

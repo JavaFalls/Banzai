@@ -75,7 +75,6 @@ func get_training_state():
 	var game_state = []
 	game_state.append(self.player_action)
 	game_state.append(get_battle_state())
-	print(self.player_action,"======================")
 	return game_state
 
 func set_bot_state(bot):

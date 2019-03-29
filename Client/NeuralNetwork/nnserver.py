@@ -212,9 +212,13 @@ class DQN_agent:
     def save_bot(self, file_name = 'my_model.h5'): # remove the assigment when save gets sent from godot
         if 'nnserver.py' in __file__:
                 save_model(self.model, __file__.replace('nnserver.py', 'models/' + file_name))
+                # save_model(self.model, __file__.replace('nnserver.py', file_name))
+                print('1')
         else:
                 save_model(self.model, __file__.replace('nnserver.exe', 'models/' + file_name))
+                print('2')
         print("saved model: ", file_name)
+        print(__file__)
 
     def reshape(self, gamestate):
         input_list = []
@@ -573,16 +577,17 @@ def process_message(message):
                 elif message["Game Mode"] == "Battle": # todo: dont load the player's bot only the opponent's bot
                         if   message["Opponent?"] == "Yes":
                                 # fighter2.model = load_bot("File_560.h5") # this works if File_560.h5 is present in the folder
-                                # fighter2.model = load_bot(message["File Name"]) # what we want to use
-                                fighter2.model = fighter1.model # temp fix
-
-                        # elif message["Opponent?"] == "No":
+                                fighter2.model = load_bot(message["File Name"]) # what we want to use
+                                # fighter2.model = fighter1.model # temp fix
+                                print("Opponent Bot Loaded", message["File Name"])
+                        elif message["Opponent?"] == "No":
                                 # fighter1.model = load_bot("File_561.h5") 
-                                # fighter1.model = load_bot(message["File Name"]) # what we want to use
-
+                                fighter1.model = load_bot(message["File Name"]) # what we want to use
+                                print("Player Bot Loaded", message["File Name"])
+                                # print("message wants to load the players bot model into fighter1.model but i commented it out")
                         else:
                                 return print("Invalid Opponent")
-                        print("Player || Opponent Bot Loaded", message["File Name"])
+                        
                         return "successful"
                 else:
                         return print("Invalid Game Mode")
@@ -666,8 +671,8 @@ while True:
                 break
         #print(request)
         #response = fighter1.train(request)
-        if(count % 1009 == 0):
-            fighter1.graph_rewards()
+        # if(count % 1009 == 0):
+        #     fighter1.graph_rewards()
         count+=1
         send_response(response) # send the action or actions or load successful message based on packet type
         print("response: ", response)

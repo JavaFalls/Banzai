@@ -59,3 +59,5 @@ func no_pressed():
 #-------------------------------------------------------
 func save_model():
 	print("saving model")
+	head.save_bot()
+	

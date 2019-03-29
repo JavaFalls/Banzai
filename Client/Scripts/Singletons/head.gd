@@ -115,13 +115,13 @@ func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
 		battle_won = true
 	else:
 		battle_won = false
-	if hit_points_diff > 5:
+	if hit_points_diff > 250:
 		score_change = 5
 	elif hit_points_diff > 0:
 		score_change = 3
 	elif hit_points_diff == 0:
 		score_change = 0
-	elif hit_points_diff > -5:
+	elif hit_points_diff > -250:
 		score_change = -3
 	else:
 		score_change = -5
@@ -151,3 +151,11 @@ func create_user():
 	bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, username)
 	player_bot_ID = bot_ID
 	model_ID = bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_MODEL_ID] # Since arrays are pass by reference, new_bot() is able to use the array like an OUT parameter to return the model_ID
+	
+	# Save Bot after training
+func save_bot():
+	var message = '{ "Message Type": "Save", "File Name": "File_%s.h5"}' % str(bot_ID)
+	Client.send_request(message)
+	var output = Client.get_response()
+	DB.update_model_by_bot_id(bot_ID, 'File_%s.h5' % str(bot_ID))
+	dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(bot_ID)))
