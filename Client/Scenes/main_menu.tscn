@@ -130,7 +130,7 @@ resource_local_to_scene = true
 default_font = ExtResource( 7 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="main_menu" type="Node"]
+[node name="main_menu" type="Node" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
@@ -760,11 +760,12 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 7 )
-custom_colors/font_color = Color( 0.843137, 0.0784314, 0.0784314, 1 )
+custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 text = "00:00:00"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+_sections_unfolded = [ "custom_colors" ]
 
 [node name="instructions" parent="." index="6" instance=ExtResource( 13 )]
 
