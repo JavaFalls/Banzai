@@ -594,7 +594,8 @@ def process_message(message):
                 pass
         elif message["Message Type"] == "Set Rewards"   :
                 fighter1.set_rewards(message["Rewards"])
-                print("yo")
+        elif message["Message Type"] == "Graph Results"   :
+                fighter1.graph_rewards()
         elif message["Message Type"] == "Save"   :
                 fighter1.save_bot(message["File Name"])
                 fighter1.epsilon = 1
@@ -671,8 +672,6 @@ while True:
                 break
         #print(request)
         #response = fighter1.train(request)
-        # if(count % 1009 == 0):
-        #     fighter1.graph_rewards()
         count+=1
         send_response(response) # send the action or actions or load successful message based on packet type
         print("response: ", response)
