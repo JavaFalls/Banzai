@@ -55,6 +55,7 @@ func _ready():
 	# Get bot weapons from DB---------------------------------
 	print(bot_data)
 	fighter1.set_weapons(weapon_creator.create_weapon(bot_data["primary_weapon"]), weapon_creator.create_weapon(bot_data["secondary_weapon"]), weapon_creator.create_weapon(bot_data["utility"]))
+	get_node("UI_container/fighter1_cooldowns").fighter_num = 1
 	get_node("UI_container/fighter1_cooldowns").init(bot_data["primary_weapon"], fighter1.primary_weapon,
 													 bot_data["secondary_weapon"], fighter1.secondary_weapon,
 													 bot_data["utility"], fighter1.ability)
@@ -70,6 +71,7 @@ func _ready():
 	fighter2.set_name("fighter2")
 	# Get bot weapons from DB---------------------------------
 	fighter2.set_weapons(weapon_creator.create_weapon(opponent_data["primary_weapon"]), weapon_creator.create_weapon(opponent_data["secondary_weapon"]), weapon_creator.create_weapon(opponent_data["utility"]))
+	get_node("UI_container/fighter2_cooldowns").fighter_num = 2
 	get_node("UI_container/fighter2_cooldowns").init(opponent_data["primary_weapon"], fighter2.primary_weapon,
 													 opponent_data["secondary_weapon"], fighter2.secondary_weapon,
 													 opponent_data["utility"], fighter2.ability)

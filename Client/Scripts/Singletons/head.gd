@@ -54,19 +54,55 @@ enum options {
 enum sounds {
 	SCENE_CHANGE, BUTTON_HOVER,
 	BOT_CHANGE_1, BOT_CHANGE_2, BOT_CHANGE_3,
-	TEXT_SCROLL, GAME_START
+	TEXT_SCROLL, GAME_START,
+	PRIM1, PRIM2, PRIM3, PRIM4,
+	SEC1, SEC2, SEC3, SEC4, SEC5, SEC6, SEC7,
+	TECH1, TECH2, TECH3, TECH4, TECH5, TECH6, TECH7, TECH8, TECH9, TECH10, TECH11
 }
 onready var wavs = [
 	preload("res://sounds/ui/sci-fi_hacking_aliens_03.wav"),
 	preload("res://sounds/ui/sci-fi_beep_computer_ui_06.wav"),
+	
 	preload("res://sounds/ui/sci-fi_power_up_05.wav"),
 	preload("res://sounds/ui/sci-fi_power_up_07.wav"),
 	preload("res://sounds/ui/sci-fi_power_up_09.wav"),
+	
 	preload("res://sounds/ui/sci-fi_code_fail_04.wav"),
-	preload("res://sounds/ui/sci-fi_driod_robot_emote_beeps_05.wav")
+	preload("res://sounds/ui/sci-fi_driod_robot_emote_beeps_05.wav"),
+	
+	preload("res://sounds/weapons/primary/sci-fi_weapon_blaster_laser_boom_01.wav"),
+	preload("res://sounds/weapons/primary/sci-fi_weapon_blaster_laser_boom_02.wav"),
+	preload("res://sounds/weapons/primary/sci-fi_weapon_blaster_laser_boom_03.wav"),
+	preload("res://sounds/weapons/primary/sci-fi_weapon_blaster_laser_boom_04.wav"),
+	
+	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_boom_zap_04.wav"),
+	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_boom_zap_05.wav"),
+	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_boom_zap_06.wav"),
+	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_boom_zap_07.wav"),
+	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_boom_zap_08.wav"),
+	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_deep_drone_01.wav"),
+	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_deep_drone_02.wav"),
+	
+	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_01.wav"),
+	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_02.wav"),
+	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_03.wav"),
+	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_04.wav"),
+	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_05.wav"),
+	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_06.wav"),
+	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_07.wav"),
+	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_08.wav"),
+	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_09.wav"),
+	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_10.wav"),
+	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_11.wav"),
 ]
 var ui1
 var ui2
+var s_prim1
+var s_prim2
+var s_sec1
+var s_sec2
+var s_tech1
+var s_tech2
 
 func play_stream(player, audio_index, option=options.OVERRIDE):
 	if not player is AudioStreamPlayer:
@@ -98,6 +134,31 @@ func _ready():
 	ui2 = get_child(1)
 	ui2.set_stream(wavs[SCENE_CHANGE])
 	ui2.set_bus("UI")
+	
+	add_child(AudioStreamPlayer.new())
+	s_prim1 = get_child(2)
+	s_prim1.set_stream(wavs[PRIM1])
+	s_prim1.set_bus("Weapons")
+	add_child(AudioStreamPlayer.new())
+	s_prim2 = get_child(3)
+	s_prim2.set_stream(wavs[PRIM1])
+	s_prim2.set_bus("Weapons")
+	add_child(AudioStreamPlayer.new())
+	s_sec1 = get_child(4)
+	s_sec1.set_stream(wavs[SEC1])
+	s_sec1.set_bus("Weapons")
+	add_child(AudioStreamPlayer.new())
+	s_sec2 = get_child(5)
+	s_sec2.set_stream(wavs[SEC1])
+	s_sec2.set_bus("Weapons")
+	add_child(AudioStreamPlayer.new())
+	s_tech1 = get_child(6)
+	s_tech1.set_stream(wavs[TECH1])
+	s_tech1.set_bus("Weapons")
+	add_child(AudioStreamPlayer.new())
+	s_tech2 = get_child(7)
+	s_tech2.set_stream(wavs[TECH1])
+	s_tech2.set_bus("Weapons")
 	#_test_DB()
 
 func _input(event):

@@ -9,7 +9,7 @@
 custom_solver_bias = 0.0
 extents = Vector2( 9, 9 )
 
-[node name="bot" type="KinematicBody2D" index="0" groups=[
+[node name="bot" type="KinematicBody2D" groups=[
 "damageable",
 ]]
 
