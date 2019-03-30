@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/nn_chart.png-6e3a9fd0f0b13d78b718db2de38dcfc8.stex"
+path="res://.import/nn_chart.png-aa4fbad8abb17dd2c6bc27e4d4b7b485.stex"
 
 [deps]
 
-source_file="res://Assets/nn_chart.png"
-dest_files=[ "res://.import/nn_chart.png-6e3a9fd0f0b13d78b718db2de38dcfc8.stex" ]
+source_file="res://assets/nn_chart.png"
+dest_files=[ "res://.import/nn_chart.png-aa4fbad8abb17dd2c6bc27e4d4b7b485.stex" ]
 
 [params]
 
