@@ -57,7 +57,8 @@ enum sounds {
 	TEXT_SCROLL, GAME_START,
 	PRIM1, PRIM2, PRIM3, PRIM4,
 	SEC1, SEC2, SEC3, SEC4, SEC5, SEC6, SEC7,
-	TECH1, TECH2, TECH3, TECH4, TECH5, TECH6, TECH7, TECH8, TECH9, TECH10, TECH11
+	TECH1, TECH2, TECH3, TECH4, TECH5, TECH6, TECH7, TECH8, TECH9, TECH10, TECH11,
+	EXP1, EXP2, EXP3, EXP4, EXP5, EXP6
 }
 onready var wavs = [
 	preload("res://sounds/ui/sci-fi_hacking_aliens_03.wav"),
@@ -94,15 +95,16 @@ onready var wavs = [
 	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_09.wav"),
 	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_10.wav"),
 	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_11.wav"),
+	
+	preload("res://sounds/weapons/explosions/sci-fi_explosion_01.wav"),
+	preload("res://sounds/weapons/explosions/sci-fi_explosion_02.wav"),
+	preload("res://sounds/weapons/explosions/sci-fi_explosion_03.wav"),
+	preload("res://sounds/weapons/explosions/sci-fi_explosion_04.wav"),
+	preload("res://sounds/weapons/explosions/sci-fi_explosion_05.wav"),
+	preload("res://sounds/weapons/explosions/sci-fi_explosion_06.wav"),
 ]
 var ui1
 var ui2
-var s_prim1
-var s_prim2
-var s_sec1
-var s_sec2
-var s_tech1
-var s_tech2
 
 func play_stream(player, audio_index, option=options.OVERRIDE):
 	if not player is AudioStreamPlayer:
@@ -118,6 +120,17 @@ func play_stream(player, audio_index, option=options.OVERRIDE):
 				return
 	player.set_stream(wavs[audio_index])
 	player.play()
+
+func create_player(bus, db=0.0):
+	var asp = AudioStreamPlayer.new()
+	asp.set_bus(bus)
+	asp.volume_db = db
+	add_child(asp)
+	return asp
+
+func delete_player(player):
+	yield(player, "finished")
+	player.queue_free()
 #----------------
 # End Audio
 
@@ -134,31 +147,6 @@ func _ready():
 	ui2 = get_child(1)
 	ui2.set_stream(wavs[SCENE_CHANGE])
 	ui2.set_bus("UI")
-	
-	add_child(AudioStreamPlayer.new())
-	s_prim1 = get_child(2)
-	s_prim1.set_stream(wavs[PRIM1])
-	s_prim1.set_bus("Weapons")
-	add_child(AudioStreamPlayer.new())
-	s_prim2 = get_child(3)
-	s_prim2.set_stream(wavs[PRIM1])
-	s_prim2.set_bus("Weapons")
-	add_child(AudioStreamPlayer.new())
-	s_sec1 = get_child(4)
-	s_sec1.set_stream(wavs[SEC1])
-	s_sec1.set_bus("Weapons")
-	add_child(AudioStreamPlayer.new())
-	s_sec2 = get_child(5)
-	s_sec2.set_stream(wavs[SEC1])
-	s_sec2.set_bus("Weapons")
-	add_child(AudioStreamPlayer.new())
-	s_tech1 = get_child(6)
-	s_tech1.set_stream(wavs[TECH1])
-	s_tech1.set_bus("Weapons")
-	add_child(AudioStreamPlayer.new())
-	s_tech2 = get_child(7)
-	s_tech2.set_stream(wavs[TECH1])
-	s_tech2.set_bus("Weapons")
 	#_test_DB()
 
 func _input(event):

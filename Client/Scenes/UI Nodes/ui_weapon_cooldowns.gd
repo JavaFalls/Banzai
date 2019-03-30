@@ -60,22 +60,16 @@ func _process(delta):
 #-------------------------------------------------
 func primary_use():
 	primary_timer.start()
-	match fighter_num:
-		1:
-			head.play_stream(head.s_prim1, (randi()%4)+head.sounds.PRIM1)
-		2:
-			head.play_stream(head.s_prim2, (randi()%4)+head.sounds.PRIM1)
+	var sound = head.create_player("Weapons")
+	head.play_stream(sound, (randi()%4)+head.sounds.PRIM1)
+	head.delete_player(sound)
 func secondary_use():
 	secondary_timer.start()
-	match fighter_num:
-		1:
-			head.play_stream(head.s_sec1, (randi()%7)+head.sounds.SEC1)
-		2:
-			head.play_stream(head.s_sec2, (randi()%7)+head.sounds.SEC1)
+	var sound = head.create_player("Weapons")
+	head.play_stream(sound, (randi()%7)+head.sounds.SEC1)
+	head.delete_player(sound)
 func ability_use():
 	ability_timer.start()
-	match fighter_num:
-		1:
-			head.play_stream(head.s_tech1, (randi()%11)+head.sounds.TECH1)
-		2:
-			head.play_stream(head.s_tech2, (randi()%11)+head.sounds.TECH1)
+	var sound = head.create_player("Weapons")
+	head.play_stream(sound, (randi()%11)+head.sounds.TECH1)
+	head.delete_player(sound)
