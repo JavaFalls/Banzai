@@ -42,10 +42,10 @@ signal post_game
 
 func _ready():
 	#f.open('res://NeuralNetwork/gamestates', 3)
-
+	
 	# Load bots into the Neural Network
 	load_bot()
-
+	
 	# Initialize the bots
 	fighter1 = bot_scene.instance()
 	#fighter1 = player_scene.instance()
@@ -62,7 +62,7 @@ func _ready():
 	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 	#---------------------------------------------------------
 	fighter1.is_player = 1
-
+	
 	fighter2 = bot_scene.instance()
 	#fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
@@ -76,17 +76,17 @@ func _ready():
 	get_node("UI_container/fighter2_name").text = opponent_data["name"]
 	fighter2.get_node("animation_bot").load_colors_from_DB(opponent_bot_ID)
 	#---------------------------------------------------------
-
+	
 	# tell fighters who theyre opponent is
 	fighter1.set_opponent(fighter2)
 	fighter2.set_opponent(fighter1)
-
+	
 	# Connect signal for post game
 	fighter1.connect("game_end", self, "post_game")
 	fighter2.connect("game_end", self, "post_game")
-
+	
 	health = fighter1.get_hit_points()
-
+	
 	t.set_wait_time(.3)
 	t.set_one_shot(true)
 	self.add_child(t)
@@ -97,16 +97,22 @@ func _ready():
 func _process(delta):
 	self.get_node("UI_container/healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
 	self.get_node("UI_container/healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
-
+	
 	if t.is_stopped():
 		send_nn_state(1)
 		# a number mod two to decide wich one gets set when
 		#send_nn_state(2) # pass bots number.
-
+	
 		# Print time to display
 		timer_label.text = str(int(game_time.get_time_left()))
-
+	
 		t.start()
+
+func _input(event):
+	if event is InputEventKey:
+		if event.is_action("exit_arena") and not get_tree().is_paused():
+			get_tree().paused = true
+			$exit_layer/exit.visible = true
 
 
 # This function is called when one of the fighters hits zero hit_points
@@ -147,21 +153,21 @@ func get_opponent(bot_id):
 	var bot_data = JSON.parse(head.DB.get_bot(bot_id)).result["data"][0] # Get all bot data from Database
 	var lowest_rank = bot_data["ranking"]
 	var upper_rank  = bot_data["ranking"]
-
+	
 	# Search for opponents as long as the rank range is not exited
 	while (opponent == null) && ((lowest_rank != LOWER_LIMIT) || (upper_rank != UPPER_LIMIT)):
 		rank_width += 5
 		lowest_rank = (bot_data["ranking"] - rank_width)
 		upper_rank  = (bot_data["ranking"] + rank_width)
-
+	
 		if lowest_rank < LOWER_LIMIT:
 			lowest_rank = LOWER_LIMIT
 		if upper_rank > UPPER_LIMIT:
 			upper_rank = UPPER_LIMIT
-
+	
 		# Get possible opponents from the Database
 		var opponent_list = JSON.parse(head.DB.get_bot_range(bot_id, lowest_rank, upper_rank)).result["data"]
-
+	
 		if opponent_list.size() > 0:
 			randomize()
 			opponent = opponent_list[randi()%opponent_list.size()-1]["bot_ID_PK"]
@@ -178,8 +184,8 @@ func send_nn_state(bot_number):
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 #	output = Vector2(1,1) # standin so that the nnserver doesn't have to be called.
-
-
+	
+	
 	output = output.replacen("(", ",")
 	output = output.split_floats(",", 0)
 	for x in output:
@@ -205,7 +211,7 @@ func load_bot():
 	head.Client.send_request(message)
 	var output = head.Client.get_response()
 	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(opponent_bot_ID)))
-
+	
 	# Load Player bot into Neural Network
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
 	head.Client.send_request(message)
@@ -222,3 +228,14 @@ func game_time_end():
 			return
 		fighter1.hit_points = 0
 		post_game()
+		
+func exit_early():
+	head.battle_winner_calc(0, 500)
+	var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
+	head.DB.update_bot(head.bot_ID, [head.DB.NULL_INT, head.DB.NULL_INT, bot_data["ranking"] + head.score_change, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_COLOR, head.DB.NULL_COLOR, head.DB.NULL_COLOR, ""], "")
+	get_tree().paused = false
+	get_tree().change_scene("res://Scenes/main_menu.tscn")
+
+func dont_exit_early():
+	get_tree().paused = false
+	$exit_layer/exit.visible = false

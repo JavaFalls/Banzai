@@ -33,6 +33,7 @@ func _ready():
 				button.text = name_dictionary[name_index]["name"]
 			button.get_node("PathFollow2D/Button").connect("pressed", self, "select_name", [button.text, name_pos])
 			button.get_node("PathFollow2D/Button").connect("mouse_entered", self, "button_hover")
+			button.get_node("PathFollow2D/Button/NinePatchRect").modulate = Color("#cecece")
 			button.duration = 1.0
 			button.delay = delay
 			delay += 0.15
@@ -50,6 +51,9 @@ func get_username():
 
 var one_pass = false
 func select_name(text, position):
+	if sub_names[position] == "":
+		for button in get_tree().get_nodes_in_group("buttons")[position].get_children():
+			button.get_node("PathFollow2D/Button/NinePatchRect").modulate = Color("#ffffff")
 	sub_names[position] = text
 	names[position].text = text
 	if not one_pass and sub_names[0] != "" and sub_names[1] != "" and sub_names[2] != "":

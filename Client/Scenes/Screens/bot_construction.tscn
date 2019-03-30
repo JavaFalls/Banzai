@@ -1068,6 +1068,8 @@ theme = SubResource( 26 )
 
 [connection signal="pressed" from="confirm_finish/not_confirm" to="." method="_on_not_confirm_pressed"]
 
+[connection signal="mouse_entered" from="advanced_options" to="." method="button_hover_enter"]
+
 [connection signal="pressed" from="advanced_options" to="." method="_on_advanced_options_pressed"]
 
 
