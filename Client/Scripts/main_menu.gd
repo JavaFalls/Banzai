@@ -92,7 +92,9 @@ Various nodes' signal methods
 """
 
 func scene_change(button):
-	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
+	var sound = head.create_player("UI")
+	head.play_stream(sound, head.sounds.SCENE_CHANGE)
+	head.delete_player(sound)
 	
 	match (button):
 		"ranking":
@@ -110,7 +112,9 @@ func scene_change(button):
 	pass
 
 func button_hover_enter():
-	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
+	var sound = head.create_player("UI")
+	head.play_stream(sound, head.sounds.BUTTON_HOVER)
+	head.delete_player(sound)
 
 func screen_idle_timeout():
 	get_node("logout_warning").hide()

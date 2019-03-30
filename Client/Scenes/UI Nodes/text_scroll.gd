@@ -1,6 +1,7 @@
 extends Label
 
 var head
+var sound
 
 export(float, 0.0, 5.0) var delay = 0.1
 export(int, 1, 100) var step = 1
@@ -19,6 +20,7 @@ signal scroll_finished
 func _ready():
 	if play_sound:
 		head = get_tree().get_root().get_node("/root/head")
+		sound = head.create_player("UI")
 	set_process(false)
 
 func _process(delta):
@@ -37,10 +39,14 @@ func _process(delta):
 			tick_start = 0.0
 			
 			if play_sound:
-				head.play_stream(head.ui1, head.sounds.TEXT_SCROLL)
+				head.play_stream(sound, head.sounds.TEXT_SCROLL)
 	else:
 		emit_signal("scroll_finished")
 		set_process(false)
+
+func _exit_tree():
+	if typeof(sound) != TYPE_NIL:
+		head.delete_player(sound)
 
 # Text scrolling
 #----------------------------------------

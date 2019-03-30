@@ -103,8 +103,6 @@ onready var wavs = [
 	preload("res://sounds/weapons/explosions/sci-fi_explosion_05.wav"),
 	preload("res://sounds/weapons/explosions/sci-fi_explosion_06.wav"),
 ]
-var ui1
-var ui2
 
 func play_stream(player, audio_index, option=options.OVERRIDE):
 	if not player is AudioStreamPlayer:
@@ -137,16 +135,6 @@ func delete_player(player):
 func _ready():
 	OS.set_window_position(screen_size*0.5 - window_size*0.5)
 	Input.set_custom_mouse_cursor(load("res://assets/pixel_cursor.png"), Input.CURSOR_ARROW, Vector2(15, 15))
-
-	# Initialize audio players
-	add_child(AudioStreamPlayer.new())
-	ui1 = get_child(0)
-	ui1.set_stream(wavs[SCENE_CHANGE])
-	ui1.set_bus("UI")
-	add_child(AudioStreamPlayer.new())
-	ui2 = get_child(1)
-	ui2.set_stream(wavs[SCENE_CHANGE])
-	ui2.set_bus("UI")
 	#_test_DB()
 
 func _input(event):
