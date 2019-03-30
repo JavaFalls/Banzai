@@ -85,7 +85,7 @@ func _process(delta):
 			_bot.translate(look_at.normalized() * 3)
 	
 	var time = OS.get_time()
-	$time.text = "%02d:%02d:%02d" % [time["hour"]%12, time["minute"], time["second"]]
+	$time.text = "%02d:%02d:%02d" % [(12 if time["hour"]%12==0 else time["hour"]%12), time["minute"], time["second"]]
 
 """
 Various nodes' signal methods

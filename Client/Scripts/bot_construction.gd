@@ -6,7 +6,6 @@ onready var weapon_creator = get_tree().get_root().get_node("/root/weapon_creato
 
 onready var constructing_player = (head.construction == head.PLAYER)
 onready var name_choice_scene = preload("res://Scenes/name_choice.tscn")
-onready var timeout = preload("res://Scenes/Screens/instance_scenes/timeout.tscn")
 
 const STATS_SPACE = "           "
 
@@ -21,6 +20,8 @@ var current = 0
 
 var current_info_type = 0
 
+var name_hover_color = Color("#ffffff")
+
 # Godot methods
 #------------------------------------------------
 func _ready():
@@ -30,39 +31,40 @@ func _ready():
 		if c == ",":
 			if id != "":
 				# Get player bot or all other bots
-				if not constructing_player:
-					bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
-					bot_ids.append(id.to_int())
-				elif id.to_int() == head.player_bot_ID:
-					bots.append(parse_json(head.DB.get_bot(id.to_int()))["data"][0])
-					bot_ids.append(id.to_int())
+				var id_num = id.to_int()
+				if not constructing_player and id_num != head.player_bot_ID:
+					bots.append(parse_json(head.DB.get_bot(id_num))["data"][0])
+					bot_ids.append(id_num)
+				elif constructing_player and id_num == head.player_bot_ID:
+					bots.append(parse_json(head.DB.get_bot(id_num))["data"][0])
+					bot_ids.append(id_num)
 					break
 				id = ""
 		else:
 			id += c
-
+	
 	var is1 = get_node("item_scroll")
 	var is2 = get_node("item_scroll2")
 	var is3 = get_node("item_scroll3")
-
+	
 	is1.set_data_points(10, 16)
 	is1.set_items(w_pri)
 	is2.set_data_points(10, 16)
 	is2.set_items(w_sec)
 	is3.set_data_points(10, 16)
 	is3.set_items(w_abi)
-
+	
 	is1.connect("info_queried", self, "grab_info", [head.PRIMARY])
 	is2.connect("info_queried", self, "grab_info", [head.SECONDARY])
 	is3.connect("info_queried", self, "grab_info", [head.ABILITY])
 	is1.connect("shift", self, "weapon_changed", [head.PRIMARY])
 	is2.connect("shift", self, "weapon_changed", [head.SECONDARY])
 	is3.connect("shift", self, "weapon_changed", [head.ABILITY])
-
+	
 	$color_scroll.connect("color_changed", self, "set_display_bot_colors")
 	$color_scroll2.connect("color_changed", self, "set_display_bot_colors")
 	$color_scroll3.connect("color_changed", self, "set_display_bot_colors")
-
+	
 	if not bots.empty():
 		if constructing_player:
 			get_bot_info(bots[current])
@@ -72,7 +74,7 @@ func _ready():
 					current = i
 					get_bot_info(bots[current])
 					break
-
+	
 	$animation_bot.face_left()
 	randomize()
 	
@@ -122,7 +124,7 @@ func _on_new_button_pressed():
 				id = ""
 			else:
 				id += c
-
+	
 	update_current_bot()
 	current = bots.size()-1
 	get_bot_info(bots[current])
@@ -199,12 +201,10 @@ func update_current_bot():
 	bots[current]["primary_color"] = $color_scroll.get_selected_color().to_rgba32()
 	bots[current]["secondary_color"] = $color_scroll2.get_selected_color().to_rgba32()
 	bots[current]["accent_color"] = $color_scroll3.get_selected_color().to_rgba32()
-#	bots[current]["light_color"] = $color_scroll4.get_selected_color().to_rgba32()
 
 func change_name():
 	var new_name = ""
 	if name_choice_scene.can_instance():
-		$timeout.queue_free()
 		$backlight/Light2D.enabled = false
 		var name_choice_node = name_choice_scene.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
 		name_choice_node.get_node("confirm_button/Label").text = "n\ne\nw\n\nb\no\nt"
@@ -213,10 +213,6 @@ func change_name():
 		new_name = name_choice_node.get_username()
 		name_choice_node.queue_free()
 		$backlight/Light2D.enabled = true
-		if timeout.can_instance():
-			add_child(timeout.instance(PackedScene.GEN_EDIT_STATE_DISABLED))
-		else:
-			print("Error: Timeout not instanced.")
 	return new_name
 
 func weapon_changed(info_type):
@@ -343,7 +339,6 @@ func get_bot_info(bot_data):
 	$color_scroll.set_current(bot_data["primary_color"])
 	$color_scroll2.set_current(bot_data["secondary_color"])
 	$color_scroll3.set_current(bot_data["accent_color"])
-#	$color_scroll4.set_current(null, bot_data["light_color"])
 
 func set_display_bot_colors():
 	$animation_bot.set_primary_color($color_scroll.get_selected_color())

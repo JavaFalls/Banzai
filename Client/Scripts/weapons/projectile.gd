@@ -45,12 +45,12 @@ func _on_projectile_body_entered(body):
 				var boom = explosion.instance()
 				boom.id = id
 				boom.min_radius = 1.0 * scale.x
-				boom.max_radius = 3.0 * scale.x
+				boom.max_radius = 3.5 * scale.x
 				boom.expansion_rate = 50.0 * scale.x
-				boom.lifetime = 0.25
+				boom.lifetime = 0.15
 				boom.damage = damage
 				boom.position = global_position
-				boom.set_sprite(get_node("Sprite").texture)
+				#boom.set_sprite(get_node("Sprite").texture)
 				projectile_owner.get_parent().add_child(boom)
 				self.queue_free()
 			weapon_creator.W_PRI_RUBBER_BOW:
