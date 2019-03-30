@@ -98,7 +98,6 @@ func _ready():
 	ui2 = get_child(1)
 	ui2.set_stream(wavs[SCENE_CHANGE])
 	ui2.set_bus("UI")
-	#_test_DB()
 
 func _input(event):
 	if Input.is_action_just_pressed("toggle_fullscreen"):
