@@ -284,14 +284,12 @@ class DQN_agent:
 
         return self.action
     def graph_rewards(self):
-        fname = 'bleepboop.png' 
         plt.title('Rewards Graph')
         plt.ylabel('Rewards')
         plt.xlabel('Epoch')
         plt.plot(self.rewards)
         plt.legend(['Total Rewards' , 'epsilon' ], loc='lower right') # 'health_received_reward' 'accuracy_reward', 'avoidance_reward', 'approach_reward', 'flee_reward', 'damage_dealt_reward', 'damage_received_reward'
-        plt.savefig(fname, dpi = 180)
-        plt.close()
+        plt.show()
         self.rewards       = []
         self.reward_total  = 0
         self.total_accuracy_reward = 0
