@@ -1,7 +1,7 @@
 """ To use the pywin32 headers, run this command in a terminal
         pip install pywin32                                     """
 import win32pipe, win32file, pywintypes
-import sys, math, json, time
+import sys, math, json, time, os
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import load_model
@@ -601,6 +601,10 @@ def process_message(message):
                 fighter1.epsilon = 1
         elif message["Message Type"] == "Kill"   :
                 output = 109
+        elif message["Message Type"] == "Delete File":
+                file_path = f'models/{message["File Path"]}'
+                os.remove(__file__.replace('nnserver.py', file_path))
+                return "File Deleted"
         else:
                 print("Message not recognized")
         return output

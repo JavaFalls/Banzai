@@ -1,8 +1,7 @@
 extends Node2D
 
 # The Player and Bot
-onready var player_data = JSON.parse(
-	head.DB.get_bot(head.player_bot_ID, "File_%s.h5" % str(head.player_bot_ID))).result["data"][0]
+onready var player_data = JSON.parse(head.DB.get_bot(head.player_bot_ID)).result["data"][0]
 onready var bot_data = JSON.parse(
 					   head.DB.get_bot(head.bot_ID,
 									   "File_%s.h5" % str(head.bot_ID))).result["data"][0]
@@ -147,7 +146,9 @@ func load_bot():
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
 	head.Client.send_request(message)
 	output = head.Client.get_response()
-	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(head.bot_ID)))
+	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(head.bot_ID)
+	head.Client.send_request(message)
+	output = head.Client.get_response()
 	return !(output == 'successful')
 
 func exit_results(popup):

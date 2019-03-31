@@ -40,7 +40,6 @@ var model_ID = -1;
 var player_bot_ID = -1;
 var bot_ID = -1;
 
-onready var dir = Directory.new()
 onready var DB = DBConnector.new()
 onready var pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
 onready var Client = NNClient.new()
@@ -157,4 +156,6 @@ func save_bot():
 	Client.send_request(message)
 	var output = Client.get_response()
 	DB.update_model_by_bot_id(bot_ID, 'File_%s.h5' % str(bot_ID))
-	dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(bot_ID)))
+	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(bot_ID)
+	Client.send_request(message)
+	output = Client.get_response()
