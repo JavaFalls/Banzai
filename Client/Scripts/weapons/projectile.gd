@@ -4,6 +4,7 @@ extends Area2D
 
 # Constants:
 const FREEZE_DURATION = 0.5
+const DEFLECTOR_DAMAGE_REDUCTION = 0.5
 
 # Stat Variables:
 var        id       = -1
@@ -39,6 +40,8 @@ func _physics_process(delta):
 
 func _on_projectile_body_entered(body):
 	if (body.get_instance_id() != projectile_owner.get_instance_id()):
+		if body.is_in_group("deflector"):
+			deflect(body)
 		match id:
 			weapon_creator.W_PRI_EXPLODING_SHURIKEN:
 				# Create an explosion
@@ -52,14 +55,18 @@ func _on_projectile_body_entered(body):
 				boom.position = global_position
 				#boom.set_sprite(get_node("Sprite").texture)
 				projectile_owner.get_parent().add_child(boom)
-				self.queue_free()
+				if not body.is_in_group("deflector"):
+					self.queue_free() # Go ahead and free ourselves even if we hit something that wasn't damageable (like a wall)
 			weapon_creator.W_PRI_RUBBER_BOW:
 				# If we hit a fighter, act like a normal projectile, however, if we hit a wall,
 				# we need to bounce off of the wall. Body_entered does not provide enough information to
 				# know how to bounce, so the bounce is handled by shape_entered
 				if body.is_in_group("damageable"):
+					if body.is_in_group("deflector"):
+						deflect(body)
 					body.increment_hitpoints(damage)
-					self.queue_free()
+					if not body.is_in_group("deflector"):
+						self.queue_free() # Only free rubber_bow projectiles if we hit a damageable target (other projectiles free upon impact with a wall)
 			weapon_creator.W_ABI_FREEZE:
 				if body.is_in_group("damageable"):
 					# 'freeze' the target
@@ -69,17 +76,8 @@ func _on_projectile_body_entered(body):
 					var frozen = freeze.instance()
 					frozen.duration = FREEZE_DURATION
 					body.add_child(frozen)
-				self.queue_free()
-			weapon_creator.W_PRI_ZORROS_GLARE:
-				if body.is_in_group("damageable"):
-					body.increment_hitpoints(damage)
-					if (id == weapon_creator.W_PRI_ACID_BOW):
-						# Add acid effect
-						var deadly_acid = acid.instance()
-						deadly_acid.duration = 2.5
-						deadly_acid.frequency = 0.5
-						deadly_acid.damage = 1
-						body.add_child(deadly_acid)
+				if not body.is_in_group("deflector"):
+					self.queue_free()
 			_: # Default case (W_PRI_ACID_BOW, W_PRI_PRECISION_BOW, W_PRI_SCATTER_BOW)
 				if body.is_in_group("damageable"):
 					body.increment_hitpoints(damage)
@@ -90,7 +88,8 @@ func _on_projectile_body_entered(body):
 						deadly_acid.frequency = 0.5
 						deadly_acid.damage = 1
 						body.add_child(deadly_acid)
-				self.queue_free()
+				if not body.is_in_group("deflector"):
+					self.queue_free()
 
 # body_id - int ID of the body we hit
 # body - the body we hit
@@ -167,3 +166,16 @@ func _on_projectile_body_shape_entered(body_id, body, body_shape_ID, area_shape_
 #---------------------------------------------------------
 func set_sprite(value):
 	get_node("Sprite").texture = value
+
+# Reduces damage, and flips the projectiles direction
+# If the body is in group "deflector", call this function before call increment_hitpoints()
+func deflect(body):
+	damage = floor(damage * DEFLECTOR_DAMAGE_REDUCTION)
+	movement = -movement
+	rotation = movement.angle()
+	projectile_owner = body
+	#var deflected_projectile = self.duplicate()
+	#deflected_projectile.movement = -movement
+	#deflected_projectile.rotation = deflected_projectile.movement.angle()
+	#deflected_projectile.projectile_owner = body
+	#projectile_owner.get_parent().add_child(deflected_projectile)
