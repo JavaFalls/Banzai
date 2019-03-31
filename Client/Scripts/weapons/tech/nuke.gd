@@ -10,9 +10,6 @@ signal use # All weapons must have this signal so that cooldowns can be displaye
 #------------------------------------------------------------------------
 const FIRING_DISTANCE = 200 # How far, in pixels, the nuke travels from the bot
 const DISABLE_TIME = 1.0 # How long to disable and immoblize the bot after launching a nuke
-# Max and min coordinates for the Nuke's target
-const MAX_TARGET_COORDINATE = Vector2(425.0, 200.0)
-const MIN_TARGET_COORDINATE = Vector2(0.0, 0.0)
 
 # The variables
 #------------------------------------------------------------------------
@@ -24,7 +21,7 @@ var cooldown       = 0.0        # Time for using cooldown
 # Other variables:
 var cooldown_timer = Timer.new() # Timer for firing cooldown
 
-var nuke_missile = preload("res://Scenes/weapons/tech/nuke_missile.tscn")
+var nuke_missle = preload("res://Scenes/weapons/tech/nuke_missle.tscn")
 
 onready var bot = get_parent() # The bot that is holding the ability
 
@@ -41,20 +38,12 @@ func use():
 	# Only use if cooldown is finished
 	if cooldown_timer.is_stopped():
 		# Create a teleport_effect at the bots current location
-		var missile = nuke_missile.instance()
-		missile.damage = damage
-		missile.position = global_position
-		missile.scale = bot.scale
-		missile.target = (Vector2(cos(bot.aim_angle),sin(bot.aim_angle)) * FIRING_DISTANCE) + global_position
-		if missile.target.x > MAX_TARGET_COORDINATE.x:
-			missile.target.x = MAX_TARGET_COORDINATE.x
-		elif missile.target.x < MIN_TARGET_COORDINATE.x:
-			missile.target.x = MIN_TARGET_COORDINATE.x
-		if missile.target.y > MAX_TARGET_COORDINATE.y:
-			missile.target.y = MAX_TARGET_COORDINATE.y
-		elif missile.target.y < MIN_TARGET_COORDINATE.y:
-			missile.target.y = MIN_TARGET_COORDINATE.y
-		bot.get_parent().add_child(missile)
+		var missle = nuke_missle.instance()
+		missle.damage = damage
+		missle.position = global_position
+		missle.scale = bot.scale
+		missle.target = (Vector2(cos(bot.aim_angle),sin(bot.aim_angle)) * FIRING_DISTANCE) + global_position
+		bot.get_parent().add_child(missle)
 		bot.disabled += DISABLE_TIME
 		bot.immobilized += DISABLE_TIME
 		cooldown_timer.start()
