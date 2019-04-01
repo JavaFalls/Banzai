@@ -213,7 +213,7 @@ func load_bot():
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "Yes" }' % str(opponent_bot_ID)
 	head.Client.send_request(message)
 	output.append(head.Client.get_response())
-	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(head.bot_ID)
+	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(opponent_bot_ID)
 	head.Client.send_request(message)
 	output.append(head.Client.get_response())
 	
