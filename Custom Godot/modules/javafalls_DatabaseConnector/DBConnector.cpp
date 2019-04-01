@@ -22,6 +22,8 @@
 # define NULL_COLOR 0
 # define NULL_INT   -1
 
+# define PLAYER_BOT_NAME "Sensei" // The name used by player bots (bots that never get trained)
+
 // Constants to access arrays of arguments used when a function that needs to be usable by Godot exceeds 5 arguments
 // Godot has a bug that prevents binding of functions with 6 or more arguments
 #define NEW_BOT_ARGS_MODEL_ID 0
@@ -495,6 +497,7 @@ String DBConnector::get_bot_range(int bot_id, int min_score, int max_score) {
    std::string sql_query = "SELECT bot.bot_ID_PK, bot.ranking"
             + (std::string)"  FROM javafalls.bot"
             + (std::string)" WHERE bot.bot_ID_PK != ?"
+            + (std::string)"   AND bot.name != " + PLAYER_BOT_NAME
             + (std::string)"   AND bot.ranking BETWEEN ? AND ?";
    SQLHSTMT sql_statement = create_command(sql_query);
    bind_parameter(sql_statement, PARAM_BOT_ID, &bot_id);
