@@ -185,7 +185,7 @@ func create_user():
 	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_ACCENT_COLOR] = DEFAULT_ACCENT_COLOR.to_rgba32()
 	bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_ANIMATION] = DEFAULT_ANIMATION
 	bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, username)
-	player_bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, username)
+	player_bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, "Sensei")
 	model_ID = bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_MODEL_ID] # Since arrays are pass by reference, new_bot() is able to use the array like an OUT parameter to return the model_ID
 
 	# Save Bot after training
