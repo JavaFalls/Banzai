@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/spinner.png-f1256dbeed6ecd00ef2ec29851302c6d.stex"
+path="res://.import/spinner.png-a44b945e7312e1a297b85564f8d52b2d.stex"
 
 [deps]
 
-source_file="res://assets/spinner.png"
-dest_files=[ "res://.import/spinner.png-f1256dbeed6ecd00ef2ec29851302c6d.stex" ]
+source_file="res://Assets/spinner.png"
+dest_files=[ "res://.import/spinner.png-a44b945e7312e1a297b85564f8d52b2d.stex" ]
 
 [params]
 

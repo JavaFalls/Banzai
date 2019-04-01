@@ -40,7 +40,6 @@ var model_ID = -1;
 var player_bot_ID = -1;
 var bot_ID = -1;
 
-onready var dir = Directory.new()
 onready var DB = DBConnector.new()
 onready var pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
 onready var Client = NNClient.new()
@@ -63,19 +62,19 @@ enum sounds {
 onready var wavs = [
 	preload("res://sounds/ui/sci-fi_hacking_aliens_03.wav"),
 	preload("res://sounds/ui/sci-fi_beep_computer_ui_06.wav"),
-	
+
 	preload("res://sounds/ui/sci-fi_power_up_05.wav"),
 	preload("res://sounds/ui/sci-fi_power_up_07.wav"),
 	preload("res://sounds/ui/sci-fi_power_up_09.wav"),
-	
+
 	preload("res://sounds/ui/sci-fi_code_fail_04.wav"),
 	preload("res://sounds/ui/sci-fi_driod_robot_emote_beeps_05.wav"),
-	
+
 	preload("res://sounds/weapons/primary/sci-fi_weapon_blaster_laser_boom_01.wav"),
 	preload("res://sounds/weapons/primary/sci-fi_weapon_blaster_laser_boom_02.wav"),
 	preload("res://sounds/weapons/primary/sci-fi_weapon_blaster_laser_boom_03.wav"),
 	preload("res://sounds/weapons/primary/sci-fi_weapon_blaster_laser_boom_04.wav"),
-	
+
 	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_boom_zap_04.wav"),
 	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_boom_zap_05.wav"),
 	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_boom_zap_06.wav"),
@@ -83,7 +82,7 @@ onready var wavs = [
 	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_boom_zap_08.wav"),
 	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_deep_drone_01.wav"),
 	preload("res://sounds/weapons/secondary/sci-fi_weapon_blaster_laser_deep_drone_02.wav"),
-	
+
 	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_01.wav"),
 	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_02.wav"),
 	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_03.wav"),
@@ -95,7 +94,7 @@ onready var wavs = [
 	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_09.wav"),
 	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_10.wav"),
 	preload("res://sounds/weapons/tech/sci-fi_weapon_reload_11.wav"),
-	
+
 	preload("res://sounds/weapons/explosions/sci-fi_explosion_01.wav"),
 	preload("res://sounds/weapons/explosions/sci-fi_explosion_02.wav"),
 	preload("res://sounds/weapons/explosions/sci-fi_explosion_03.wav"),
@@ -188,11 +187,13 @@ func create_user():
 	bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, username)
 	player_bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, username)
 	model_ID = bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_MODEL_ID] # Since arrays are pass by reference, new_bot() is able to use the array like an OUT parameter to return the model_ID
-	
+
 	# Save Bot after training
 func save_bot():
 	var message = '{ "Message Type": "Save", "File Name": "File_%s.h5"}' % str(bot_ID)
 	Client.send_request(message)
 	var output = Client.get_response()
 	DB.update_model_by_bot_id(bot_ID, 'File_%s.h5' % str(bot_ID))
-	dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(bot_ID)))
+	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(bot_ID)
+	Client.send_request(message)
+	output = Client.get_response()

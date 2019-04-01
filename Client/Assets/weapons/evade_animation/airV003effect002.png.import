@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/airV003effect002.png-56c9028b2abc110be29e838336d6975a.stex"
+path="res://.import/airV003effect002.png-dd098cfd574a0d787998f13b88053feb.stex"
 
 [deps]
 
-source_file="res://assets/weapons/evade_animation/airV003effect002.png"
-dest_files=[ "res://.import/airV003effect002.png-56c9028b2abc110be29e838336d6975a.stex" ]
+source_file="res://Assets/weapons/evade_animation/airV003effect002.png"
+dest_files=[ "res://.import/airV003effect002.png-dd098cfd574a0d787998f13b88053feb.stex" ]
 
 [params]
 

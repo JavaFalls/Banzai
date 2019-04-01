@@ -49,7 +49,7 @@ func _on_customize_bot_pressed():
 	head.play_stream(sound, head.sounds.SCENE_CHANGE)
 	head.delete_player(sound)
 	head.construction = head.BOT
-	head.name_section = 3 # Use bot names
+	head.name_section = 1 # Use bot names
 	get_tree().change_scene(CUSTOMIZE_BOT_PATH)
 
 func _on_customize_bot_mouse_entered():

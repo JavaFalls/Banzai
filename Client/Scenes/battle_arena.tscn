@@ -97,6 +97,7 @@ _sections_unfolded = [ "Pause" ]
 
 [node name="Panel" type="Sprite" parent="." index="2"]
 
+z_index = -2
 texture = ExtResource( 4 )
 _sections_unfolded = [ "Animation", "Material", "Offset", "Pause", "Region", "Theme", "Transform", "Visibility", "Z Index" ]
 
