@@ -186,14 +186,15 @@ func send_nn_state(bot_number):
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 #	output = Vector2(1,1) # standin so that the nnserver doesn't have to be called.
-	
-	
-	output = output.replacen("(", ",")
-	output = output.split_floats(",", 0)
-	for x in output:
-		x = int(x)
-	game_state.set_predictions(output[0])
-	game_state.set_opponent_predictions(output[1])
+	print(output, "this is the output")
+
+	if output != "File Deleted":
+		output = output.replacen("(", ",")
+		output = output.split_floats(",", 0)
+		for x in output:
+			x = int(x)
+		game_state.set_predictions(output[0])
+		game_state.set_opponent_predictions(output[1])
 	#game_state.set_opponent_predictions(output)
 	return
 
