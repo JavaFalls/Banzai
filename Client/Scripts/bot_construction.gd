@@ -103,27 +103,12 @@ func _on_bot_right_pressed():
 func _on_new_button_pressed():
 	var new_name = yield(change_name(), "completed")
 	var default_color = Color("#ffffffff").to_rgba32() # Default to white
-	if not head.DB.new_bot(head.player_ID, [0,0,0,0,default_color,default_color,default_color,$animation_bot.ANIMATION_SET_B1], new_name):
+	var new_bot_id = head.DB.new_bot(head.player_ID, [0,0,0,0,default_color,default_color,default_color,$animation_bot.ANIMATION_SET_B1], new_name)
+	if new_bot_id == 0:
 		print("Creating a new bot failed")
 	else:
-		# Get the newest bot
-		var player_bots = parse_json(head.DB.get_player_bots(head.player_ID))
-		var id = ""
-		for c in player_bots["data"][0]["player_bots"]:
-			if c == ",":
-				var int_id = id.to_int()
-				var present = false
-				for bot_id in bot_ids:
-					if int_id == bot_id:
-						present = true
-						break
-				if not present:
-					bots.append(parse_json(head.DB.get_bot(int_id))["data"][0])
-					bot_ids.append(int_id)
-					break
-				id = ""
-			else:
-				id += c
+		bots.append(parse_json(head.DB.get_bot(new_bot_id))["data"][0])
+		bot_ids.append(new_bot_id)
 	
 	update_current_bot()
 	current = bots.size()-1
