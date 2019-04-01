@@ -224,7 +224,6 @@ func load_bot():
 	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(head.bot_ID)
 	head.Client.send_request(message)
 	output.append(head.Client.get_response())
-	return !(output == 'successful')
 
 func game_time_end():
 	if fighter1.hit_points > fighter2.hit_points:
