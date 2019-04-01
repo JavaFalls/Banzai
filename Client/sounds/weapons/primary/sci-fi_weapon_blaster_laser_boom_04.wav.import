@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/sci-fi_weapon_blaster_laser_boom_04.wav-2c5a51cc53c6d8f8ba807f625eed9ded.sample"
+
+[deps]
+
+source_file="res://sounds/weapons/primary/sci-fi_weapon_blaster_laser_boom_04.wav"
+dest_files=[ "res://.import/sci-fi_weapon_blaster_laser_boom_04.wav-2c5a51cc53c6d8f8ba807f625eed9ded.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=1

@@ -44,7 +44,9 @@ func _ready():
 		delay = initial_delay * (name_pos + 0.5)
 	
 	yield(get_tree().create_timer(1.0), "timeout")
-	head.play_stream(head.ui2, head.sounds.GAME_START)
+	var sound = head.create_player("UI")
+	head.play_stream(sound, head.sounds.GAME_START)
+	head.delete_player(sound)
 
 func get_username():
 	return sub_names[0] + " " + sub_names[1] + " " + sub_names[2]
@@ -63,8 +65,12 @@ func select_name(text, position):
 		one_pass = true
 
 func button_hover():
-	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
+	var sound = head.create_player("UI")
+	head.play_stream(sound, head.sounds.BUTTON_HOVER)
+	head.delete_player(sound)
 
 func start():
-	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE)
+	var sound = head.create_player("UI")
+	head.play_stream(sound, head.sounds.SCENE_CHANGE)
+	head.delete_player(sound)
 	emit_signal("name_entered")

@@ -146,7 +146,7 @@ func _on_new_button_pressed():
 func _on_test_button_pressed():
 	update_current_bot()
 	update_bots()
-
+	
 	if constructing_player:
 		head.player_bot_ID = bot_ids[current]
 	else:
@@ -156,16 +156,18 @@ func _on_test_button_pressed():
 func _on_finish_button_pressed():
 	$confirm_finish.visible = true
 	yield($confirm_finish/confirm, "pressed")
-
+	
 	update_current_bot()
 	update_bots()
-
+	
 	if constructing_player:
 		head.player_bot_ID = bot_ids[current]
 	else:
 		head.bot_ID = bot_ids[current]
-
-	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
+	
+	var sound = head.create_player("UI")
+	head.play_stream(sound, head.sounds.SCENE_CHANGE)
+	head.delete_player(sound)
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 func _on_switch_description_pressed():
@@ -202,7 +204,9 @@ func _on_advanced_options_pressed():
 	$nn_options.visible = true
 
 func button_hover_enter():
-	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
+	var sound = head.create_player("UI")
+	head.play_stream(sound, head.sounds.BUTTON_HOVER)
+	head.delete_player(sound)
 
 # Update local bots
 #------------------------------------------------
@@ -248,7 +252,9 @@ func weapon_changed(info_type):
 		_:
 			pass
 	if typeof(stream) != TYPE_NIL:
-		head.play_stream(head.ui2, stream)
+		var sound = head.create_player("UI")
+		head.play_stream(sound, stream)
+		head.delete_player(sound)
 
 # Update DB bots
 #------------------------------------------------

@@ -1,5 +1,8 @@
 extends Container
 
+onready var head = get_tree().get_root().get_node("/root/head")
+var fighter_num = 1
+
 # Constants
 #-------------------------------------------------
 const ICON_SIZE = 16 # Icon size, in pixels. Needed to know how big to make the cooldown rectangle
@@ -57,7 +60,16 @@ func _process(delta):
 #-------------------------------------------------
 func primary_use():
 	primary_timer.start()
+	var sound = head.create_player("Weapons")
+	head.play_stream(sound, (randi()%4)+head.sounds.PRIM1)
+	head.delete_player(sound)
 func secondary_use():
 	secondary_timer.start()
+	var sound = head.create_player("Weapons")
+	head.play_stream(sound, (randi()%7)+head.sounds.SEC1)
+	head.delete_player(sound)
 func ability_use():
 	ability_timer.start()
+	var sound = head.create_player("Weapons")
+	head.play_stream(sound, (randi()%11)+head.sounds.TECH1)
+	head.delete_player(sound)

@@ -37,6 +37,7 @@ func _ready():
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
 	fighter1.set_weapons(weapon_creator.create_weapon(player_data["primary_weapon"]), weapon_creator.create_weapon(player_data["secondary_weapon"]), weapon_creator.create_weapon(player_data["utility"]))
+	get_node("UI_container/fighter1_cooldowns").fighter_num = 1
 	get_node("UI_container/fighter1_cooldowns").init(player_data["primary_weapon"], fighter1.primary_weapon,
 													 player_data["secondary_weapon"], fighter1.secondary_weapon,
 													 player_data["utility"], fighter1.ability)
@@ -50,6 +51,7 @@ func _ready():
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
 	fighter2.set_weapons(weapon_creator.create_weapon(bot_data["primary_weapon"]), weapon_creator.create_weapon(bot_data["secondary_weapon"]), weapon_creator.create_weapon(bot_data["utility"]))
+	get_node("UI_container/fighter2_cooldowns").fighter_num = 2
 	get_node("UI_container/fighter2_cooldowns").init(bot_data["primary_weapon"], fighter2.primary_weapon,
 													 bot_data["secondary_weapon"], fighter2.secondary_weapon,
 													 bot_data["utility"], fighter2.ability)
@@ -149,7 +151,6 @@ func load_bot():
 	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(head.bot_ID)
 	head.Client.send_request(message)
 	output = head.Client.get_response()
-	return !(output == 'successful')
 
 func exit_results(popup):
 	popup.queue_free()

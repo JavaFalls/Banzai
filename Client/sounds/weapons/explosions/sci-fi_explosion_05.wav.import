@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/sci-fi_explosion_05.wav-4b7f3a901be91a6f7c0e61ba96fd8aec.sample"
+
+[deps]
+
+source_file="res://sounds/weapons/explosions/sci-fi_explosion_05.wav"
+dest_files=[ "res://.import/sci-fi_explosion_05.wav-4b7f3a901be91a6f7c0e61ba96fd8aec.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=1
