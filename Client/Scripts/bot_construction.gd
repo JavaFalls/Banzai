@@ -78,12 +78,18 @@ func _ready():
 	$animation_bot.face_left()
 	randomize()
 	
-	if constructing_player:
+	if bots.size() == 1:
 		$bot_left.visible = false
 		$bot_right.visible = false
+	else: 
+		$bot_left.visible = true
+		$bot_right.visible = true
+	
+	
+	if constructing_player:
 		$new_button.visible = false
 		$change_name.visible = false
-		$bot_name.text = head.username
+		$advanced_options.visible = false
 
 # Signal methods
 #------------------------------------------------
@@ -124,6 +130,13 @@ func _on_new_button_pressed():
 				id = ""
 			else:
 				id += c
+	
+	if bots.size() == 1:
+		$bot_left.visible = false
+		$bot_right.visible = false
+	else: 
+		$bot_left.visible = true
+		$bot_right.visible = true
 	
 	update_current_bot()
 	current = bots.size()-1
