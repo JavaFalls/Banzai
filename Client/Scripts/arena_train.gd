@@ -1,8 +1,7 @@
 extends Node2D
 
 # The Player and Bot
-onready var player_data = JSON.parse(
-	head.DB.get_bot(head.player_bot_ID, "File_%s.h5" % str(head.player_bot_ID))).result["data"][0]
+onready var player_data = JSON.parse(head.DB.get_bot(head.player_bot_ID)).result["data"][0]
 onready var bot_data = JSON.parse(
 					   head.DB.get_bot(head.bot_ID,
 									   "File_%s.h5" % str(head.bot_ID))).result["data"][0]
@@ -13,8 +12,8 @@ onready var nn_results = preload("res://Scenes/popups/nn_results.tscn")
 # The variables
 var fighter1                             # Player or his AI bot
 var fighter2                             # Opponent of player or AI bot
-var start_pos1 = Vector2(200,73)         # Where the first fighter spawns
-var start_pos2 = Vector2(200,175)        # Where the second fighter spawns
+var start_pos1 = Vector2(120,130)         # Where the first fighter spawns
+var start_pos2 = Vector2(280,130)        # Where the second fighter spawns
 
 var popup                                # Popup scene used when battle is over
 
@@ -38,6 +37,7 @@ func _ready():
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
 	fighter1.set_weapons(weapon_creator.create_weapon(player_data["primary_weapon"]), weapon_creator.create_weapon(player_data["secondary_weapon"]), weapon_creator.create_weapon(player_data["utility"]))
+	get_node("UI_container/fighter1_cooldowns").fighter_num = 1
 	get_node("UI_container/fighter1_cooldowns").init(player_data["primary_weapon"], fighter1.primary_weapon,
 													 player_data["secondary_weapon"], fighter1.secondary_weapon,
 													 player_data["utility"], fighter1.ability)
@@ -51,6 +51,7 @@ func _ready():
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
 	fighter2.set_weapons(weapon_creator.create_weapon(bot_data["primary_weapon"]), weapon_creator.create_weapon(bot_data["secondary_weapon"]), weapon_creator.create_weapon(bot_data["utility"]))
+	get_node("UI_container/fighter2_cooldowns").fighter_num = 2
 	get_node("UI_container/fighter2_cooldowns").init(bot_data["primary_weapon"], fighter2.primary_weapon,
 													 bot_data["secondary_weapon"], fighter2.secondary_weapon,
 													 bot_data["utility"], fighter2.ability)
@@ -149,8 +150,9 @@ func load_bot():
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
 	head.Client.send_request(message)
 	output = head.Client.get_response()
-	head.dir.remove(ProjectSettings.globalize_path('res://NeuralNetwork/models/File_%s.h5' % str(head.bot_ID)))
-	return !(output == 'successful')
+	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(head.bot_ID)
+	head.Client.send_request(message)
+	output = head.Client.get_response()
 
 func exit_results(popup):
 	popup.queue_free()

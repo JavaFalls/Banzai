@@ -38,6 +38,11 @@ func _ready():
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.start()
+	
+	var head = get_tree().get_root().get_node("/root/head")
+	var sound = head.create_player("Weapons", 1.5)
+	head.play_stream(sound, (randi()%6)+head.sounds.EXP1)
+	head.delete_player(sound)
 
 func _physics_process(delta):
 	# Expand the radius

@@ -81,11 +81,15 @@ func scoreboard_entry_down_on_click():
 	move_scoreboard_display(1)
 
 func _on_back_button_pressed():
-	head.play_stream(head.ui2, head.sounds.SCENE_CHANGE, head.options.WAIT)
+	var sound = head.create_player("UI")
+	head.play_stream(sound, head.sounds.SCENE_CHANGE)
+	head.delete_player(sound)
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 func button_hover():
-	head.play_stream(head.ui1, head.sounds.BUTTON_HOVER)
+	var sound = head.create_player("UI")
+	head.play_stream(sound, head.sounds.BUTTON_HOVER)
+	head.delete_player(sound)
 
 # Functions:
 #-------------------------------------------------------------------------------
