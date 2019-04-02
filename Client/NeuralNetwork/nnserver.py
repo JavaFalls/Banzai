@@ -289,7 +289,9 @@ class DQN_agent:
         plt.xlabel('Epoch')
         plt.plot(self.rewards)
         plt.legend(['Total Rewards' , 'epsilon' ], loc='lower right') # 'health_received_reward' 'accuracy_reward', 'avoidance_reward', 'approach_reward', 'flee_reward', 'damage_dealt_reward', 'damage_received_reward'
-        plt.show()
+        # plt.show()
+        plt.savefig('nn_chart.png')
+        plt.close()
         self.rewards       = []
         self.reward_total  = 0
         self.total_accuracy_reward = 0

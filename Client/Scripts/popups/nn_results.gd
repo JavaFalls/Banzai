@@ -29,9 +29,14 @@ func _ready():
 #		GImage_File.close();
 	
 	# Image in python has to be cleared or else it will plot more points on top of the previous image.
-	
+	var t = Timer.new() # timer allows the newest graph image to be written to disk before attempting to load it
+	t.set_wait_time(0.5)
+	t.set_one_shot(true)
+	self.add_child(t)
+	t.start()
+	yield(t, "timeout")
 	var img = ImageTexture.new()
-	img.load("res://assets/nn_chart.png")
+	img.load("res://nn_chart.png")
 	$results_texture.texture = img
 
 # Signal methods
