@@ -151,7 +151,6 @@ func load_bot():
 	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(head.bot_ID)
 	head.Client.send_request(message)
 	output = head.Client.get_response()
-	return !(output == 'successful')
 
 func exit_results(popup):
 	popup.queue_free()

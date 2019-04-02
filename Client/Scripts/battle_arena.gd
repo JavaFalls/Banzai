@@ -186,14 +186,15 @@ func send_nn_state(bot_number):
 	head.Client.send_request(message)
 	output = head.Client.get_response()
 #	output = Vector2(1,1) # standin so that the nnserver doesn't have to be called.
-	
-	
-	output = output.replacen("(", ",")
-	output = output.split_floats(",", 0)
-	for x in output:
-		x = int(x)
-	game_state.set_predictions(output[0])
-	game_state.set_opponent_predictions(output[1])
+	print(output, "this is the output")
+
+	if output != "File Deleted":
+		output = output.replacen("(", ",")
+		output = output.split_floats(",", 0)
+		for x in output:
+			x = int(x)
+		game_state.set_predictions(output[0])
+		game_state.set_opponent_predictions(output[1])
 	#game_state.set_opponent_predictions(output)
 	return
 
@@ -213,7 +214,7 @@ func load_bot():
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "Yes" }' % str(opponent_bot_ID)
 	head.Client.send_request(message)
 	output.append(head.Client.get_response())
-	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(head.bot_ID)
+	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(opponent_bot_ID)
 	head.Client.send_request(message)
 	output.append(head.Client.get_response())
 	
@@ -224,7 +225,6 @@ func load_bot():
 	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(head.bot_ID)
 	head.Client.send_request(message)
 	output.append(head.Client.get_response())
-	return !(output == 'successful')
 
 func game_time_end():
 	if fighter1.hit_points > fighter2.hit_points:

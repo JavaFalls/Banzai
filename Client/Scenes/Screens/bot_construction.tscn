@@ -206,7 +206,7 @@ resource_local_to_scene = true
 default_font = ExtResource( 7 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="Node" type="Node"]
+[node name="Node" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
