@@ -9,8 +9,8 @@ const LOWER_LIMIT = 0
 # The variables
 var fighter1                       # Player's fighter or AI
 var fighter2                       # Opponent
-var start_pos1 = Vector2(200,73)   # Where the first fighter spawns
-var start_pos2 = Vector2(200,175)  # Where the second fighter spawns
+var start_pos1 = Vector2(120,130)         # Where the first fighter spawns
+var start_pos2 = Vector2(280,130)        # Where the second fighter spawns
 var health                         # The starting health of a mech for use with HUD
 
 var popup                          # Popup scene used when battle is over
@@ -188,7 +188,7 @@ func send_nn_state(bot_number):
 #	output = Vector2(1,1) # standin so that the nnserver doesn't have to be called.
 	print(output, "this is the output")
 
-	if output != "File Deleted":
+	if output != "File Deleted" and output != "successful": # remove this once deleting the bots doesn't take so long
 		output = output.replacen("(", ",")
 		output = output.split_floats(",", 0)
 		for x in output:

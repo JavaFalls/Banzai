@@ -12,8 +12,8 @@ onready var nn_results = preload("res://Scenes/popups/nn_results.tscn")
 # The variables
 var fighter1                             # Player or his AI bot
 var fighter2                             # Opponent of player or AI bot
-var start_pos1 = Vector2(200,73)         # Where the first fighter spawns
-var start_pos2 = Vector2(200,175)        # Where the second fighter spawns
+var start_pos1 = Vector2(120,130)         # Where the first fighter spawns
+var start_pos2 = Vector2(280,130)        # Where the second fighter spawns
 
 var popup                                # Popup scene used when battle is over
 
