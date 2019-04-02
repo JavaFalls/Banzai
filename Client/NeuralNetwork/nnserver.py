@@ -155,8 +155,8 @@ class DQN_agent:
         
         self.accuracy_magnitude        = 1
         self.avoidance_magnitude       = 1
-        self.approach_magnitude        = 1
-        self.flee_magnitude            = 1
+        self.approach_magnitude        = 0
+        self.flee_magnitude            = 0
         self.damage_dealt_magnitude    = 1
         self.damage_received_magnitude = 1
         self.health_received_magnitude = 1
@@ -284,12 +284,14 @@ class DQN_agent:
 
         return self.action
     def graph_rewards(self):
+        fname = 'C:\\Users\\vaugh\\Desktop\\wonderwoman\\Banzai\\Client\\assets\\nn_chart.png'
         plt.title('Rewards Graph')
         plt.ylabel('Rewards')
         plt.xlabel('Epoch')
         plt.plot(self.rewards)
         plt.legend(['Total Rewards' , 'epsilon' ], loc='lower right') # 'health_received_reward' 'accuracy_reward', 'avoidance_reward', 'approach_reward', 'flee_reward', 'damage_dealt_reward', 'damage_received_reward'
-        plt.show()
+        plt.savefig(fname, dpi = 180)
+        plt.close()
         self.rewards       = []
         self.reward_total  = 0
         self.total_accuracy_reward = 0
@@ -302,6 +304,17 @@ class DQN_agent:
         self.number_of_rewards = 0
         return
 
+    def get_rewards(self):
+            output = []
+            output.append(self.accuracy_magnitude)
+            output.append(self.avoidance_magnitude)
+            output.append(self.approach_magnitude)
+            output.append(self.flee_magnitude)
+            output.append(self.damage_dealt_magnitude)
+            output.append(self.damage_received_magnitude)
+            output.append(self.health_received_magnitude)
+            output.append(self.melee_damage_magnitude)
+            return output
     def set_rewards(self, str_rewards_magnitude):
         rewards_magnitude = []
         r_rewards_magnitude = []
@@ -594,6 +607,8 @@ def process_message(message):
                 pass
         elif message["Message Type"] == "Set Rewards"   :
                 fighter1.set_rewards(message["Rewards"])
+        elif message["Message Type"] == "Get Rewards"   :
+                output = fighter1.get_rewards()
         elif message["Message Type"] == "Graph Results"   :
                 fighter1.graph_rewards()
         elif message["Message Type"] == "Save"   :

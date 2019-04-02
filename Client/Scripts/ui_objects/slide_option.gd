@@ -31,3 +31,7 @@ func display_value(value):
 # Get the value as a string
 func get_value():
 	return $slider.value
+
+func set_value(number):
+	$slider.value = number
+	
