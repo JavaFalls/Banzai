@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon_freeze.png-9eee6d9d5f0bb9b5aaf9f61dbd929ff2.stex"
+path="res://.import/icon_freeze.png-10bca68d50330f68408f1162b93e0925.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/icon_freeze.png"
-dest_files=[ "res://.import/icon_freeze.png-9eee6d9d5f0bb9b5aaf9f61dbd929ff2.stex" ]
+source_file="res://assets/weapons/icon_freeze.png"
+dest_files=[ "res://.import/icon_freeze.png-10bca68d50330f68408f1162b93e0925.stex" ]
 
 [params]
 
