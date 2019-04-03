@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/exploding_shuriken.png-692328f5fee192bc2f4b0c76bf149f7d.stex"
+path="res://.import/exploding_shuriken.png-d14abee5fb5d27f12775535358a1a4b5.stex"
 
 [deps]
 
-source_file="res://assets/weapons/exploding_shuriken.png"
-dest_files=[ "res://.import/exploding_shuriken.png-692328f5fee192bc2f4b0c76bf149f7d.stex" ]
+source_file="res://Assets/weapons/exploding_shuriken.png"
+dest_files=[ "res://.import/exploding_shuriken.png-d14abee5fb5d27f12775535358a1a4b5.stex" ]
 
 [params]
 
