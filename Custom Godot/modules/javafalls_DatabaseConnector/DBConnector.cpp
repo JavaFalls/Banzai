@@ -535,14 +535,13 @@ int DBConnector::get_min_score() {
 // Returns scoreboard information for the current top 10 bots
 String DBConnector::get_scoreboard_top_ten() {
    String return_value;
-   std::string sql_query = "SELECT bot_info.position, player.name, bot_info.ranking, bot_info.bot_ID_PK"
+   std::string sql_query = "SELECT bot_info.position, bot_info.name, bot_info.ranking, bot_info.bot_ID_PK"
             + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
-            + (std::string)"               bot.ranking,"
-            + (std::string)"               bot.bot_ID_PK, bot.player_ID_FK"
+            + (std::string)"               bot.name, bot.ranking,"
+            + (std::string)"               bot.bot_ID_PK"
             + (std::string)"          FROM javafalls.bot"
+            + (std::string)"         WHERE bot.name != '" + PLAYER_BOT_NAME + "'"
             + (std::string)"       ) bot_info"
-            + (std::string)"  JOIN javafalls.player"
-            + (std::string)"    ON player_ID_PK = bot_info.player_ID_FK"
             + (std::string)" WHERE bot_info.position <= 10"
             + (std::string)" ORDER BY bot_info.position";
    SQLHSTMT sql_statement = create_command(sql_query);
@@ -561,6 +560,7 @@ int DBConnector::get_scoreboard_position(int bot_id) {
             + (std::string)"               bot.ranking,"
             + (std::string)"               bot.bot_ID_PK, bot.player_ID_FK"
             + (std::string)"          FROM javafalls.bot"
+            + (std::string)"         WHERE bot.name != '" + PLAYER_BOT_NAME + "'"
             + (std::string)"       ) bot_info"
             + (std::string)" WHERE bot_info.bot_ID_PK = ?";
    SQLHSTMT sql_statement = create_command(sql_query);
@@ -577,14 +577,13 @@ String DBConnector::get_scoreboard_range(int min_position, int max_position) {
    const int PARAM_MAX_POSITION = 2;
 
    String return_value;
-   std::string sql_query = "SELECT bot_info.position, player.name, bot_info.ranking, bot_info.bot_ID_PK"
+   std::string sql_query = "SELECT bot_info.position, bot_info.name, bot_info.ranking, bot_info.bot_ID_PK"
             + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
-            + (std::string)"               bot.ranking,"
-            + (std::string)"               bot.bot_ID_PK, bot.player_ID_FK"
+            + (std::string)"               bot.name, bot.ranking,"
+            + (std::string)"               bot.bot_ID_PK"
             + (std::string)"          FROM javafalls.bot"
+            + (std::string)"         WHERE bot.name != '" + PLAYER_BOT_NAME + "'"
             + (std::string)"       ) bot_info"
-            + (std::string)"  JOIN javafalls.player"
-            + (std::string)"    ON player_ID_PK = bot_info.player_ID_FK"
             + (std::string)" WHERE bot_info.position BETWEEN ? AND ?"
             + (std::string)" ORDER BY bot_info.position";
    SQLHSTMT sql_statement = create_command(sql_query);
