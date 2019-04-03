@@ -11,7 +11,7 @@ signal use # All weapons must have this signal so that cooldowns can be displaye
 const FIRING_DISTANCE = 200 # How far, in pixels, the nuke travels from the bot
 const DISABLE_TIME = 1.0 # How long to disable and immoblize the bot after launching a nuke
 # Max and min coordinates for the Nuke's target
-const MAX_TARGET_COORDINATE = Vector2(425.0, 200.0)
+const MAX_TARGET_COORDINATE = Vector2(400.0, 225.0)
 const MIN_TARGET_COORDINATE = Vector2(0.0, 0.0)
 
 # The variables

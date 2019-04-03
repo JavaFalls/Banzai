@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/scoreboard_scripts/screen_local_scoreboard.gd" type="Script" id=1]
-[ext_resource path="res://assets/local_scoreboard/background.png" type="Texture" id=2]
+[ext_resource path="res://Assets/menu/main_menu/background.png" type="Texture" id=2]
 [ext_resource path="res://assets/local_scoreboard/light.png" type="Texture" id=3]
 [ext_resource path="res://assets/local_scoreboard/platform.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=5]
@@ -11,7 +11,6 @@
 [ext_resource path="res://assets/local_scoreboard/button_small_hover.png" type="Texture" id=9]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=10]
 [ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=11]
-
 
 [node name="screen_local_scoreboard" type="Node"]
 

@@ -1,11 +1,11 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/menu_title.gd" type="Script" id=1]
-[ext_resource path="res://assets/local_scoreboard/background.png" type="Texture" id=2]
+[ext_resource path="res://Assets/menu/main_menu/background.png" type="Texture" id=2]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=3]
 [ext_resource path="res://Assets/logo_large.png" type="Texture" id=4]
 
-[node name="title_screen" type="Node" index="0"]
+[node name="title_screen" type="Node"]
 
 script = ExtResource( 1 )
 
