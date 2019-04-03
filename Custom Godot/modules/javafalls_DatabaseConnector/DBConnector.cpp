@@ -497,7 +497,7 @@ String DBConnector::get_bot_range(int bot_id, int min_score, int max_score) {
    std::string sql_query = "SELECT bot.bot_ID_PK, bot.ranking"
             + (std::string)"  FROM javafalls.bot"
             + (std::string)" WHERE bot.bot_ID_PK != ?"
-            + (std::string)"   AND bot.name != " + PLAYER_BOT_NAME
+            + (std::string)"   AND bot.name != '" + PLAYER_BOT_NAME + "'"
             + (std::string)"   AND bot.ranking BETWEEN ? AND ?";
    SQLHSTMT sql_statement = create_command(sql_query);
    bind_parameter(sql_statement, PARAM_BOT_ID, &bot_id);

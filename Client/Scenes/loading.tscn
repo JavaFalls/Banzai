@@ -63,7 +63,9 @@ anti_aliasing_size = 1
 
 [node name="loading" type="Node" index="0"]
 
+pause_mode = 2
 script = ExtResource( 1 )
+_sections_unfolded = [ "Pause" ]
 
 [node name="background" type="Sprite" parent="." index="0"]
 

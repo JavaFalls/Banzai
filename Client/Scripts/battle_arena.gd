@@ -33,7 +33,7 @@ onready var opponent_bot_ID = get_opponent(head.bot_ID)
 onready var bot_data        = JSON.parse(
 				        head.DB.get_bot(head.bot_ID,
 								        "File_%s.h5" % str(head.bot_ID))).result["data"][0]
-onready var opponent_data   = JSON.parse(
+onready var opponent_data   = "" if opponent_bot_ID == null else JSON.parse(
 						head.DB.get_bot(opponent_bot_ID,
 										"File_%s.h5" % str(opponent_bot_ID))).result["data"][0]
 
@@ -41,9 +41,26 @@ onready var opponent_data   = JSON.parse(
 signal post_game
 
 func _ready():
+	# Make sure that we actually found an oppoent to fight
+	if opponent_bot_ID == null:
+		# No Opponent found! Display a popup and abort further processing
+		popup = arena_end_popup.instance()
+		add_child(popup) # Must add the popup as a child BEFORE calling init()
+		popup.init("No bots found to do battle against.",
+				   "Search",
+				   "Main Menu",
+				   self,
+				   "fight_again",
+				   self,
+				   "main_menu",
+				   "Search again for an opponent, or return to the main menu?")
+		return
+	
+	
 	#f.open('res://NeuralNetwork/gamestates', 3)
 	
 	# Load bots into the Neural Network
+	print("Calling load_bot() from _ready()!")
 	load_bot()
 	
 	# Initialize the bots
@@ -140,7 +157,7 @@ func post_game():
 		popup_message = "Your robot has been defeated, ranking " + String(head.score_change)
 	# Display battle over popup:
 	popup = arena_end_popup.instance()
-	self.add_child(popup)
+	self.add_child(popup) # Must add the popup as a child BEFORE calling init()
 
 	popup.init("Battle Has Ended", "Again?", "Main Menu", self, "fight_again", self, "main_menu", popup_message)
 
@@ -208,6 +225,7 @@ func main_menu():
 
 # Load Bot for Battle
 func load_bot():
+	print("load_bot() call!")
 	var message
 	var output = []
 	# Load Opponent bot into Neural Network

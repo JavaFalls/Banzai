@@ -28,6 +28,8 @@ CREATE TABLE javafalls.bot
     ranking       INT NOT NULL DEFAULT 0,
     primary_color INT NULL,
     secondary_color INT NULL,
+    accent_color int NULL,
+    animation varchar(30) NULL
     CONSTRAINT FK_bot_player_ID FOREIGN KEY (player_ID_FK)     
     REFERENCES javafalls.player (player_ID_PK)     
     ON DELETE NO ACTION    
