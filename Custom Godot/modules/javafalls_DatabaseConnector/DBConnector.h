@@ -174,6 +174,7 @@ public:
    //// Basic player management
    int new_player(String name);
    int update_player(int player_ID, String name);
+   int logout_player(int player_ID); // Sets the specified players logout time to the current time
    String get_player(int player_ID);
 
    //// Basic bot management
