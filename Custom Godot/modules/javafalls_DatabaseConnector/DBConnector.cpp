@@ -183,6 +183,27 @@ int DBConnector::update_player(int player_ID, String name) {
    destroy_command(sql_statement);
    return succeeded;
 }
+int DBConnector::logout_player(int player_ID) {
+   const int SQL_PARAM_PLAYER_ID = 1;
+   
+   int succeeded = FALSE;
+   std::string sql_code = "UPDATE javafalls.player"
+           + (std::string)"   SET player.datetime_logout = getdate()"
+           + (std::string)" WHERE player.player_ID_PK =  ?";
+   SQLHSTMT sql_statement = create_command(sql_code);
+   bind_parameter(sql_statement, SQL_PARAM_PLAYER_ID, &player_ID);
+   execute(sql_statement);
+   if (SQL_SUCCEEDED(last_return)) {
+      commit();
+      succeeded = TRUE;
+   }
+   else {
+      rollback();
+      succeeded = FALSE;
+   }
+   destroy_command(sql_statement);
+   return succeeded;
+}
 String DBConnector::get_player(int player_ID) {
    const int PARAM_PLAYER_ID = 1;
 
@@ -993,6 +1014,7 @@ void DBConnector::_bind_methods() {
    // Methods
    ClassDB::bind_method(D_METHOD("new_player", "name"), &DBConnector::new_player);
    ClassDB::bind_method(D_METHOD("update_player", "player_ID", "name"), &DBConnector::update_player);
+   ClassDB::bind_method(D_METHOD("logout_player", "player_ID"), &DBConnector::logout_player);
    ClassDB::bind_method(D_METHOD("get_player", "player_ID"), &DBConnector::get_player);
 
    ClassDB::bind_method(D_METHOD("new_bot", "player_ID", "new_bot_args", "name"), &DBConnector::new_bot);

@@ -13,7 +13,7 @@ var time_before
 
 func _ready():
 	label.text = format_text % timer.time_left
-	
+
 	connect("about_to_show", self, "timeout", [true])
 	timer.connect("timeout", self, "timeout", [false])
 	pass
@@ -32,5 +32,6 @@ func timeout(is_first):
 	else:
 #		head.save_bots(head.bots)
 #		head.init_bots()
-		get_tree().change_scene("res://Scenes/menu_title.tscn")
+		head.logout()
+		#get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
