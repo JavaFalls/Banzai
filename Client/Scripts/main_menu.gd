@@ -105,7 +105,7 @@ func scene_change(button):
 			get_tree().change_scene("res://Scenes/Screens/credits.tscn")
 		"train":
 			Menu_audio.menu_audio.stop()
-			get_tree().change_scene("res://Scenes/Load_training.tscn")
+			head.load_scene("res://Scenes/arena_train.tscn")
 		"fight":
 			Menu_audio.menu_audio.stop()
 			head.load_scene("res://Scenes/battle_arena.tscn")
