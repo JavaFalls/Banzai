@@ -168,7 +168,10 @@ func _on_switch_description_pressed():
 	else:
 		button.text = "stats"
 		$item_description/stats.visible = true
-	grab_info(current_info_type)
+	if unselected:
+		$item_scroll._on_info_button_pressed()
+	else:
+		grab_info(current_info_type)
 
 func _on_not_confirm_pressed():
 	$confirm_finish.visible = false
