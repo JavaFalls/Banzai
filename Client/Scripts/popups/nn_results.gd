@@ -9,15 +9,15 @@ signal leave
 signal resume
 
 func _ready():
-	var message = '{ "Message Type": "Graph Results"}'
-	head.Client.send_request(message)
+#	var message = '{ "Message Type": "Graph Results"}'
+#	head.Client.send_request(message)
 	get_node("results_texture").set_texture(ResourceLoader.load("res://assets/loading.png", "", true))
 	$save_button.connect("pressed", self, "save")
 	$rollback_button.connect("pressed", self, "rollback")
 	$back_button.connect("pressed", self, "resume")
 	$confirm/yes_button.connect("pressed", self, "yes_pressed")
 	$confirm/no_button.connect("pressed", self, "no_pressed")
-	
+
 #	var GImage_File = File.new();
 #
 #	if (GImage_File.file_exists("res://Figure_1.png")):
@@ -28,7 +28,7 @@ func _ready():
 #		new_img.create_from_image(g_texture);
 #
 #		GImage_File.close();
-	
+
 	# Image in python has to be cleared or else it will plot more points on top of the previous image.
 	var t = Timer.new() # timer allows the newest graph image to be written to disk before attempting to load it
 	t.set_wait_time(0.5)

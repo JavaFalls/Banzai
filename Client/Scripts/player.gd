@@ -61,4 +61,3 @@ func _physics_process(delta):
 			psuedo_aim_left  = 0
 	game_state.set_player_action(self)
 	
-	get_node("Label").set_text(str(get_hit_points()))

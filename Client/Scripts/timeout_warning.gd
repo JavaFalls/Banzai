@@ -16,6 +16,7 @@ func _ready():
 
 	connect("about_to_show", self, "timeout", [true])
 	timer.connect("timeout", self, "timeout", [false])
+	connect("popup_hide", self, "reset")
 	pass
 
 func _process(delta):
@@ -30,8 +31,8 @@ func timeout(is_first):
 		timer.start()
 		time_before = int(timer.wait_time)
 	else:
-#		head.save_bots(head.bots)
-#		head.init_bots()
 		head.logout()
-		#get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
+
+func reset():
+	$Timer.stop()

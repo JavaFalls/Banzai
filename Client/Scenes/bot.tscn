@@ -1,15 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/bot.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=2]
-[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 9, 9 )
 
-[node name="bot" type="KinematicBody2D" groups=[
+[node name="bot" type="KinematicBody2D" index="0" groups=[
 "damageable",
 ]]
 
@@ -31,27 +30,5 @@ __meta__ = {
 }
 
 [node name="projectile_container" type="Node" parent="." index="2"]
-
-[node name="Label" type="Label" parent="." index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = -24.0
-margin_top = -40.0
-margin_right = 24.0
-margin_bottom = -26.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = ExtResource( 3 )
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_fonts" ]
 
 
