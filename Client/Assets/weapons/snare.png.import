@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/snare.png-4eabdbbe54a0b4e78c3b34cf3cf7b316.stex"
+path="res://.import/snare.png-6418b620656cd5a0e7e8b5968d88d725.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/snare.png"
-dest_files=[ "res://.import/snare.png-4eabdbbe54a0b4e78c3b34cf3cf7b316.stex" ]
+source_file="res://assets/weapons/snare.png"
+dest_files=[ "res://.import/snare.png-6418b620656cd5a0e7e8b5968d88d725.stex" ]
 
 [params]
 
