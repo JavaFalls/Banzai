@@ -9,7 +9,7 @@ signal leave
 signal resume
 
 func _ready():
-	get_node("results_texture").set_texture(ResourceLoader.load("res://assets/nn_chart.png", "", true))
+	get_node("results_texture").set_texture(ResourceLoader.load("res://assets/loading.png", "", true))
 	$save_button.connect("pressed", self, "save")
 	$rollback_button.connect("pressed", self, "rollback")
 	$back_button.connect("pressed", self, "resume")
