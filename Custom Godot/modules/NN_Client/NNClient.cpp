@@ -1,6 +1,7 @@
 #include "NNClient.h"
 #include <Windows.h>
 #include <iostream>
+#include <cstdio>
 
 using namespace std;
 //***********************************************************************************************
@@ -136,6 +137,14 @@ int NNClient::close_response_handle()
 }
 
 //***********************************************************************************************
+//                               Delete a file from the filesystem                              *
+//***********************************************************************************************
+int NNClient::delete_file(String file_name)
+{
+   return std::remove((const char *)file_name.c_str());
+}
+
+//***********************************************************************************************
 //
 //***********************************************************************************************
 NNClient::NNClient()
@@ -175,4 +184,5 @@ void NNClient::_bind_methods()
    ClassDB::bind_method(D_METHOD("get_response"), &NNClient::get_response);
    ClassDB::bind_method(D_METHOD("close_request_handle"), &NNClient::close_request_handle);
    ClassDB::bind_method(D_METHOD("close_response_handle"), &NNClient::close_response_handle); 
+   ClassDB::bind_method(D_METHOD("delete_file", "file_name"), &NNClient::delete_file);
 }

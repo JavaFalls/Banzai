@@ -42,6 +42,7 @@ public:
    String get_response();
    int close_request_handle();
    int close_response_handle();
+   int delete_file(String file_name);
 
    NNClient();
    ~NNClient();
