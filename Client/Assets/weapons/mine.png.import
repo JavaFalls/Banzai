@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/mine.png-e88c214d1e5dadc5e2233470d0fe4a7c.stex"
+path="res://.import/mine.png-144a7b8bcebf56d2fb8d6bb4edef7699.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/mine.png"
-dest_files=[ "res://.import/mine.png-e88c214d1e5dadc5e2233470d0fe4a7c.stex" ]
+source_file="res://assets/weapons/mine.png"
+dest_files=[ "res://.import/mine.png-144a7b8bcebf56d2fb8d6bb4edef7699.stex" ]
 
 [params]
 
