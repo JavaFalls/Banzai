@@ -32,9 +32,9 @@ func _ready():
 	get_node("logout_warning").connect("popup_hide", self, "unfade")
 	get_node("logout_warning/button_face/Button").connect("mouse_entered", self, "hover_logout_confirm", [true])
 	get_node("logout_warning/button_face/Button").connect("mouse_exited", self, "hover_logout_confirm", [false])
-	
+
 	get_node("Control/username").text = head.username
-	
+
 	$instructions/exit_instructions.connect("pressed", self, "exit_instructions")
 
 	_bot.load_colors_from_DB(head.bot_ID)
@@ -83,7 +83,7 @@ func _process(delta):
 		var look_at = get_tree().get_root().get_mouse_position() - _bot.position
 		if look_at.x != 0 and look_at.y != 0:
 			_bot.translate(look_at.normalized() * 3)
-	
+
 	var time = OS.get_time()
 	$time.text = "%02d:%02d:%02d" % [(12 if time["hour"]%12==0 else time["hour"]%12), time["minute"], time["second"]]
 
@@ -95,7 +95,7 @@ func scene_change(button):
 	var sound = head.create_player("UI")
 	head.play_stream(sound, head.sounds.SCENE_CHANGE)
 	head.delete_player(sound)
-	
+
 	match (button):
 		"ranking":
 			get_tree().change_scene("res://Scenes/Screens/screen_local_scoreboard.tscn")
@@ -105,7 +105,7 @@ func scene_change(button):
 			get_tree().change_scene("res://Scenes/Screens/credits.tscn")
 		"train":
 			Menu_audio.menu_audio.stop()
-			get_tree().change_scene("res://Scenes/Load_training.tscn")
+			head.load_scene("res://Scenes/arena_train.tscn")
 		"fight":
 			Menu_audio.menu_audio.stop()
 			head.load_scene("res://Scenes/battle_arena.tscn")
@@ -162,10 +162,11 @@ func hover_logout_confirm(mouse_entered):
 
 func _on_logout_warning_confirmed():
 	Menu_audio.menu_audio.stop()
-	weapon_creator.get_weapon_stats(weapon_creator.W_PRI_ZORROS_GLARE)["implemented"] = false
-	weapon_creator.get_weapon_stats(weapon_creator.W_SEC_ZORROS_WIT)["implemented"] = false
-	weapon_creator.get_weapon_stats(weapon_creator.W_ABI_ZORROS_HONOR)["implemented"] = false
-	get_tree().change_scene("res://Scenes/menu_title.tscn")
+	#weapon_creator.get_weapon_stats(weapon_creator.W_PRI_ZORROS_GLARE)["implemented"] = false
+	#weapon_creator.get_weapon_stats(weapon_creator.W_SEC_ZORROS_WIT)["implemented"] = false
+	#weapon_creator.get_weapon_stats(weapon_creator.W_ABI_ZORROS_HONOR)["implemented"] = false
+	head.logout()
+	#get_tree().change_scene("res://Scenes/menu_title.tscn")
 	pass
 
 func _on_go_to_instructions_pressed():

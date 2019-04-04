@@ -188,6 +188,14 @@ func create_user():
 	player_bot_ID = DB.new_bot(player_ID, bot_insert_arg_array, "Sensei")
 	model_ID = bot_insert_arg_array[DBConnector.NEW_BOT_ARGS_MODEL_ID] # Since arrays are pass by reference, new_bot() is able to use the array like an OUT parameter to return the model_ID
 
+# Logs the user out and changes to the title scene
+func logout():
+	weapon_creator.get_weapon_stats(weapon_creator.W_PRI_ZORROS_GLARE)["implemented"] = false
+	weapon_creator.get_weapon_stats(weapon_creator.W_SEC_ZORROS_WIT)["implemented"] = false
+	weapon_creator.get_weapon_stats(weapon_creator.W_ABI_ZORROS_HONOR)["implemented"] = false
+	DB.logout_player(player_ID)
+	get_tree().change_scene("res://Scenes/menu_title.tscn")
+
 	# Save Bot after training
 func save_bot():
 	var message = '{ "Message Type": "Save", "File Name": "File_%s.h5"}' % str(bot_ID)
