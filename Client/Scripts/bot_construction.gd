@@ -170,6 +170,7 @@ func _on_switch_description_pressed():
 		$item_description/stats.visible = true
 	if unselected:
 		$item_scroll._on_info_button_pressed()
+		unselected = false
 	else:
 		grab_info(current_info_type)
 
