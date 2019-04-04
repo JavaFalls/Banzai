@@ -51,6 +51,7 @@ DBConnectionOverride.ODBCconString
 *.ODBCconString
 *.pck
 export.bat
+export_log.bat
 export_log.txt
 *.spec
 
