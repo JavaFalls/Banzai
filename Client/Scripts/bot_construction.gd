@@ -69,6 +69,7 @@ func _ready():
 		if constructing_player:
 			get_bot_info(bots[current])
 		else:
+			$test_button.visible = false
 			for i in range(bot_ids.size()):
 				if bot_ids[i] == head.bot_ID:
 					current = i
