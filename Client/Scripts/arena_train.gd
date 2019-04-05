@@ -86,6 +86,8 @@ func _process(delta):
 
 func _input(event):
 	if Input.is_action_just_pressed("exit_arena"):
+#		head.save_bot()
+#		exit_arena()
 		if not get_tree().is_paused():
 			get_tree().set_pause(true)
 			$exit.visible = true

@@ -611,7 +611,9 @@ def process_message(message):
         elif message["Message Type"] == "Get Rewards"   :
                 output = fighter1.get_rewards()
         elif message["Message Type"] == "Graph Results"   :
-                fighter1.graph_rewards()
+                #fighter1.graph_rewards()
+                print()
+                return "graphed"
         elif message["Message Type"] == "Save"   :
                 fighter1.save_bot(message["File Name"])
                 fighter1.epsilon = 1

@@ -14,10 +14,6 @@ func _process(delta):
 #		game_state.set_bot_state(self)
 		set_bot_info()
 
-
-func _physics_process(delta):
-	get_node("Label").set_text(str(get_hit_points()))
-
 func set_bot_info():
 	if game_state.predicted_bot_aim_left == 1:
 		aim_angle -= .075*PI

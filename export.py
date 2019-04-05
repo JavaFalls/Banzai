@@ -231,7 +231,9 @@ def initialize(build_debug=True):
 
    # Create a batch file to start both the game and the Neural Network
    cmd(['cd bin\\Release',
-        'echo start NeuralNetwork\\nnserver.exe > Robo_Dojo.bat',
+        'echo cd NeuralNetwork > Robo_Dojo.bat',
+        'echo start nnserver.exe >> Robo_Dojo.bat',
+        'echo cd .. >> Robo_Dojo.bat',
         'echo start Robo_Dojo.exe >> Robo_Dojo.bat',
            'echo exit >> Robo_Dojo.bat'])
 
@@ -247,7 +249,9 @@ def initialize(build_debug=True):
 
       # Create a batch file to start both the game and the Neural Network
       cmd(['cd bin\\Debug',
-           'echo start NeuralNetwork\\nnserver.exe > Robo_Dojo.bat',
+           'echo cd NeuralNetwork > Robo_Dojo.bat',
+           'echo start nnserver.exe >> Robo_Dojo.bat',
+           'echo cd .. >> Robo_Dojo.bat',
            'echo start Robo_Dojo.exe >> Robo_Dojo.bat',
            'echo exit >> Robo_Dojo.bat'])
 
