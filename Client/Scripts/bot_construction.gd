@@ -108,6 +108,7 @@ func _on_bot_right_pressed():
 
 # Entering a name
 func _on_new_button_pressed():
+	$new_button.release_focus()
 	var new_name = yield(change_name(), "completed")
 	var default_color = Color("#ffffffff").to_rgba32() # Default to white
 	var new_bot_id = head.DB.new_bot(head.player_ID, [0,0,0,0,default_color,default_color,default_color,$animation_bot.ANIMATION_SET_B1], new_name)
@@ -176,6 +177,7 @@ func _on_switch_description_mouse_exited():
 	$switch_description.modulate = Color("#aaaaaa")
 
 func _on_change_name_button_pressed():
+	$change_name/change_name_button.release_focus()
 	var new_name = yield(change_name(), "completed")
 	$bot_name.text = new_name
 	update_current_bot()
