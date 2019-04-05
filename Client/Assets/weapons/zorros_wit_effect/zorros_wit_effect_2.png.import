@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/zorros_wit_effect_2.png-6688a463a3d7c2f4688622ce14f2b417.stex"
+path="res://.import/zorros_wit_effect_2.png-ebf3a81757b27a9910e2f51e02d173ea.stex"
 
 [deps]
 
-source_file="res://assets/weapons/zorros_wit_effect/zorros_wit_effect_2.png"
-dest_files=[ "res://.import/zorros_wit_effect_2.png-6688a463a3d7c2f4688622ce14f2b417.stex" ]
+source_file="res://Assets/weapons/zorros_wit_effect/zorros_wit_effect_2.png"
+dest_files=[ "res://.import/zorros_wit_effect_2.png-ebf3a81757b27a9910e2f51e02d173ea.stex" ]
 
 [params]
 

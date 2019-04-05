@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/doublearrow_grey_right.png-096cb42aed60ba28d2f48b4e2d5d7825.stex"
+path="res://.import/doublearrow_grey_right.png-26f2dc07de88d4f6383c730baaa206f4.stex"
 
 [deps]
 
-source_file="res://assets/menu/bot_construction/doublearrow_grey_right.png"
-dest_files=[ "res://.import/doublearrow_grey_right.png-096cb42aed60ba28d2f48b4e2d5d7825.stex" ]
+source_file="res://Assets/menu/bot_construction/doublearrow_grey_right.png"
+dest_files=[ "res://.import/doublearrow_grey_right.png-26f2dc07de88d4f6383c730baaa206f4.stex" ]
 
 [params]
 
