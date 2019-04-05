@@ -56,6 +56,8 @@ func select_name(text, position):
 	if sub_names[position] == "":
 		for button in get_tree().get_nodes_in_group("buttons")[position].get_children():
 			button.get_node("PathFollow2D/Button/NinePatchRect").modulate = Color("#ffffff")
+		names[position].get_child(0).text = '+'
+		names[position].get_child(0).modulate = Color("#00d52b")
 	sub_names[position] = text
 	names[position].text = text
 	if not one_pass and sub_names[0] != "" and sub_names[1] != "" and sub_names[2] != "":
