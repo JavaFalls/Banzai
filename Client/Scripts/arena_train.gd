@@ -68,6 +68,7 @@ func _ready():
 	t.set_pause_mode(Node.PAUSE_MODE_STOP)
 	t.start()
 	
+	get_node("/root/loading").set_progress_bar(100)
 	$timeout/Timer.connect("timeout", self, "timeout")
 
 # Called after game ends
