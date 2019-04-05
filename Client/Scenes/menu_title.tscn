@@ -5,7 +5,7 @@
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=3]
 [ext_resource path="res://Assets/logo_large.png" type="Texture" id=4]
 
-[node name="title_screen" type="Node"]
+[node name="title_screen" type="Node" index="0"]
 
 script = ExtResource( 1 )
 

@@ -8,6 +8,10 @@ onready var _timer = get_node("timeout")
 onready var _tween = get_node("Tween")
 onready var _bot = $animation_bot
 
+var background_stuff_visible = false
+var background_tween
+var left_button_pressed = false
+
 var ty34918jj = false
 var prevent_messengers_to_zorro = { # Track if messenger is dead. If so, keep sending messengers.
 	'messenger_ferdinand': true,
@@ -38,6 +42,9 @@ func _ready():
 	$instructions/exit_instructions.connect("pressed", self, "exit_instructions")
 
 	_bot.load_colors_from_DB(head.bot_ID)
+	
+	background_tween = Tween.new()
+	$Control/background_animation.add_child(background_tween)
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -77,13 +84,38 @@ func _input(event):
 		else:
 			HELP = "not today..."
 			reincarnate()
+	
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.is_pressed():
+			left_button_pressed = true
+		if not event.is_pressed() and left_button_pressed:
+			left_button_pressed = false
+			if (
+				event.global_position.x < _bot.global_position.x + 15 and
+				event.global_position.x > _bot.global_position.x - 15 and
+				event.global_position.y < _bot.global_position.y + 15 and
+				event.global_position.y > _bot.global_position.y - 15
+			):
+				var back = $Control/background_animation
+				if not back.visible:
+					back.visible = true
+				if not background_stuff_visible:
+					background_tween.remove_all()
+					background_tween.interpolate_property(back, 'modulate:a', back.modulate.a, 1.0, 2.0*(1-back.modulate.a), Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
+					background_tween.start()
+					background_stuff_visible = true
+				else:
+					background_tween.remove_all()
+					background_tween.interpolate_property(back, 'modulate:a', back.modulate.a, 0.0, 2.0/(1+back.modulate.a), Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
+					background_tween.start()
+					background_stuff_visible = false
 
 func _process(delta):
 	if ty34918jj:
 		var look_at = get_tree().get_root().get_mouse_position() - _bot.position
 		if look_at.x != 0 and look_at.y != 0:
 			_bot.translate(look_at.normalized() * 3)
-
+	
 	var time = OS.get_time()
 	$time.text = "%02d:%02d:%02d" % [(12 if time["hour"]%12==0 else time["hour"]%12), time["minute"], time["second"]]
 

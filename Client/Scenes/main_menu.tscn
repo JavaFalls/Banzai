@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -6,14 +6,15 @@
 [ext_resource path="res://assets/menu/main_menu/panel_right.png" type="Texture" id=4]
 [ext_resource path="res://assets/menu/main_menu/backlight.png" type="Texture" id=5]
 [ext_resource path="res://assets/menu/main_menu/platform.png" type="Texture" id=6]
-[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=7]
-[ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=8]
-[ext_resource path="res://assets/menu/main_menu/button_large.png" type="Texture" id=9]
-[ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=10]
-[ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=11]
-[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=12]
-[ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/Screens/instance_scenes/extras/background_animation.tscn" type="PackedScene" id=7]
+[ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=8]
+[ext_resource path="res://assets/menu/main_menu/button_small.png" type="Texture" id=9]
+[ext_resource path="res://assets/menu/main_menu/button_large.png" type="Texture" id=10]
+[ext_resource path="res://themes/fonts/dpcomic.ttf" type="DynamicFontData" id=11]
+[ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=12]
+[ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=13]
+[ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=15]
 
 [sub_resource type="Environment" id=1]
 
@@ -100,7 +101,7 @@ size = 30
 use_mipmaps = false
 use_filter = false
 extra_spacing_char = 1
-font_data = ExtResource( 10 )
+font_data = ExtResource( 11 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
 [sub_resource type="StyleBoxEmpty" id=3]
@@ -127,7 +128,7 @@ content_margin_bottom = -1.0
 [sub_resource type="Theme" id=6]
 
 resource_local_to_scene = true
-default_font = ExtResource( 7 )
+default_font = ExtResource( 8 )
 _sections_unfolded = [ "Resource" ]
 
 [node name="main_menu" type="Node" index="0"]
@@ -227,7 +228,12 @@ _sections_unfolded = [ "Material", "Transform" ]
 
 environment = SubResource( 1 )
 
-[node name="credits_button" type="Button" parent="Control" index="1"]
+[node name="background_animation" parent="Control" index="1" instance=ExtResource( 7 )]
+
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+
+[node name="credits_button" type="Button" parent="Control" index="2"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -244,7 +250,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
 custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
@@ -273,10 +279,10 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="ranking_button" type="Button" parent="Control" index="2"]
+[node name="ranking_button" type="Button" parent="Control" index="3"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -293,7 +299,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
 custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
@@ -322,10 +328,10 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="custom_button" type="Button" parent="Control" index="3"]
+[node name="custom_button" type="Button" parent="Control" index="4"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -342,7 +348,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
 custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
@@ -370,9 +376,9 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 
-[node name="fight_button" type="Button" parent="Control" index="4"]
+[node name="fight_button" type="Button" parent="Control" index="5"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -389,7 +395,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
 custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
@@ -417,10 +423,10 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="train_button" type="Button" parent="Control" index="5"]
+[node name="train_button" type="Button" parent="Control" index="6"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -437,7 +443,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
 custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
@@ -465,10 +471,10 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 9 )
+texture = ExtResource( 10 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="logout_button" type="Button" parent="Control" index="6"]
+[node name="logout_button" type="Button" parent="Control" index="7"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -485,7 +491,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0.168627, 0.172549, 0.196078, 1 )
 custom_colors/font_color_hover = Color( 0.313726, 0.313726, 0.313726, 1 )
 toggle_mode = false
@@ -513,10 +519,10 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="username" type="Label" parent="Control" index="7"]
+[node name="username" type="Label" parent="Control" index="8"]
 
 anchor_left = 0.27
 anchor_top = 0.89778
@@ -530,14 +536,14 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 align = 1
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="title" type="Label" parent="Control" index="8"]
+[node name="title" type="Label" parent="Control" index="9"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -568,6 +574,7 @@ _sections_unfolded = [ "custom_fonts" ]
 
 [node name="logout_warning" type="Popup" parent="." index="1"]
 
+editor/display_folded = true
 visible = false
 anchor_left = 0.3
 anchor_top = 0.3
@@ -616,7 +623,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 custom_constants/line_spacing = 0
 text = "Are you sure you want to logout? Your profile will be unusable, and you have to start from scratch to play again."
 align = 1
@@ -681,7 +688,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -708,8 +715,9 @@ playback_speed = 1.0
 playback/active = false
 playback/repeat = false
 playback/speed = 1.0
+_sections_unfolded = [ "playback" ]
 
-[node name="animation_bot" parent="." index="3" instance=ExtResource( 11 )]
+[node name="animation_bot" parent="." index="3" instance=ExtResource( 12 )]
 
 position = Vector2( 198, 152 )
 
@@ -732,14 +740,14 @@ size_flags_vertical = 1
 custom_styles/hover = SubResource( 3 )
 custom_styles/pressed = SubResource( 4 )
 custom_styles/focus = SubResource( 5 )
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
 text = "Instructions"
-icon = ExtResource( 12 )
+icon = ExtResource( 13 )
 flat = true
 align = 1
 
@@ -759,7 +767,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 text = "00:00:00"
 percent_visible = 1.0
@@ -767,12 +775,12 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "custom_colors" ]
 
-[node name="instructions" parent="." index="6" instance=ExtResource( 13 )]
+[node name="instructions" parent="." index="6" instance=ExtResource( 14 )]
 
 visible = false
 theme = SubResource( 6 )
 
-[node name="timeout" parent="." index="7" instance=ExtResource( 14 )]
+[node name="timeout" parent="." index="7" instance=ExtResource( 15 )]
 
 [connection signal="mouse_entered" from="Control/credits_button" to="." method="button_hover_enter"]
 
