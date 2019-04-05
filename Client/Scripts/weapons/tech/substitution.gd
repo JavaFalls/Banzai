@@ -14,7 +14,7 @@ signal use # All weapons must have this signal so that cooldowns can be displaye
 var id
 var damage # unused by this weapon
 var cooldown = 0.0 # Time for using cooldown
-var duration       # How long it takes for the substitution to actually take place
+var duration = 0.5 # How long it takes for the substitution to actually take place
 
 # Other variables:
 var cooldown_timer = Timer.new() # Timer for firing cooldown
@@ -33,7 +33,7 @@ onready var bot = get_parent() # The bot that is holding the ability
 # Functions
 #------------------------------------------------------------------------
 func _ready():
-	duration = cooldown * 0.5
+	# duration = cooldown * 0.5
 	cooldown_timer.wait_time = cooldown
 	cooldown_timer.one_shot = true
 	add_child(cooldown_timer)

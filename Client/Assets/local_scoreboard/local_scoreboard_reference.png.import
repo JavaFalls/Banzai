@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/local_scoreboard_reference.png-578013a0f353b6cfa50718dc46fc05d6.stex"
+path="res://.import/local_scoreboard_reference.png-0c061197ebb92762464cccbcc9e898db.stex"
 
 [deps]
 
-source_file="res://assets/local_scoreboard/local_scoreboard_reference.png"
-dest_files=[ "res://.import/local_scoreboard_reference.png-578013a0f353b6cfa50718dc46fc05d6.stex" ]
+source_file="res://Assets/local_scoreboard/local_scoreboard_reference.png"
+dest_files=[ "res://.import/local_scoreboard_reference.png-0c061197ebb92762464cccbcc9e898db.stex" ]
 
 [params]
 
