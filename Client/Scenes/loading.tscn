@@ -61,7 +61,7 @@ shadow_size = 0
 anti_aliasing = true
 anti_aliasing_size = 1
 
-[node name="loading" type="Node" index="0"]
+[node name="loading" type="Node"]
 
 pause_mode = 2
 script = ExtResource( 1 )
@@ -104,6 +104,6 @@ value = 0.0
 exp_edit = false
 rounded = true
 percent_visible = true
-_sections_unfolded = [ "Percent" ]
+_sections_unfolded = [ "Percent", "custom_styles" ]
 
 

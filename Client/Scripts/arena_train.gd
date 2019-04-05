@@ -68,10 +68,13 @@ func _ready():
 	t.set_pause_mode(Node.PAUSE_MODE_STOP)
 	t.start()
 	
+	get_node("/root/loading").set_progress_bar(100)
 	$timeout/Timer.connect("timeout", self, "timeout")
 
 # Called after game ends
 func game_end():
+	var message = '{ "Message Type": "Graph Results"}'
+	head.Client.send_request(message)
 	popup = arena_end_popup.instance()
 	self.add_child(popup)
 	popup.init("Training Has Ended", "Yes", "No", self, "keep_data", self, "drop_data", "Would you like your robot to learn from this session?")
@@ -124,7 +127,7 @@ func final_popup():
 	popup.init("Training Has Ended", "Contiune", "Main Menu", self, "contiune_training", self, "main_menu", "Keep training or return to the main menu?")
 func contiune_training():
 	get_tree().paused = false
-	get_tree().change_scene("res://Scenes/Load_training.tscn")
+	head.load_scene("res://Scenes/arena_train.tscn")
 func main_menu():
 	get_tree().paused = false
 	get_tree().change_scene("res://Scenes/main_menu.tscn")

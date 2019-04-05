@@ -15,6 +15,9 @@ var health                         # The starting health of a mech for use with 
 
 var popup                          # Popup scene used when battle is over
 
+# The signal that is emitted when a fighter's hit_points reach zero
+signal post_game
+
 onready var player_scene    = preload("res://Scenes/player.tscn")
 onready var bot_scene       = preload("res://Scenes/bot.tscn")
 onready var dummy_scene     = preload("res://Scenes/dummy.tscn")
@@ -23,24 +26,22 @@ onready var game_state      = get_node("game_state")
 onready var f               = File.new()
 onready var t               = Timer.new()
 onready var game_time       = get_node("game_time")
-onready var max_game_time   = 5 * 60
+onready var max_game_time   = 0.1 * 60
 onready var timer_label     = get_node("Panel/Label")
 
 # Get Opponent
 onready var opponent_bot_ID = get_opponent(head.bot_ID)
-
-# Get bot information, and load bot models from the database
-onready var bot_data        = JSON.parse(
-				        head.DB.get_bot(head.bot_ID,
-								        "File_%s.h5" % str(head.bot_ID))).result["data"][0]
-onready var opponent_data   = "" if opponent_bot_ID == null else JSON.parse(
-						head.DB.get_bot(opponent_bot_ID,
-										"File_%s.h5" % str(opponent_bot_ID))).result["data"][0]
-
-# The signal that is emitted when a fighter's hit_points reach zero
-signal post_game
+# Find the "loading" scene so that we can notify it of our progress
+onready var scene_loading = get_node("/root/loading")
 
 func _ready():
+	get_tree().paused = true
+	var bot_data
+	var opponent_data
+	scene_loading.set_progress_bar(10)
+	yield(get_tree(),"idle_frame")
+	yield(get_tree(),"idle_frame")
+	
 	# Make sure that we actually found an oppoent to fight
 	if opponent_bot_ID == null:
 		# No Opponent found! Display a popup and abort further processing
@@ -55,22 +56,29 @@ func _ready():
 				   "main_menu",
 				   "Search again for an opponent, or return to the main menu?")
 		return
+	else:
+		# Get bot information, and load bot models from the database
+		bot_data = JSON.parse(head.DB.get_bot(head.bot_ID, "File_%s.h5" % str(head.bot_ID))).result["data"][0]
+		scene_loading.set_progress_bar(30)
+		yield(get_tree(),"idle_frame")
+		yield(get_tree(),"idle_frame")
+		opponent_data = JSON.parse(head.DB.get_bot(opponent_bot_ID, "File_%s.h5" % str(opponent_bot_ID))).result["data"][0]
+		scene_loading.set_progress_bar(50)
+		yield(get_tree(),"idle_frame")
+		yield(get_tree(),"idle_frame")
 	
 	
 	#f.open('res://NeuralNetwork/gamestates', 3)
 	
 	# Load bots into the Neural Network
-	print("Calling load_bot() from _ready()!")
 	load_bot()
 	
 	# Initialize the bots
 	fighter1 = bot_scene.instance()
-	#fighter1 = player_scene.instance()
 	self.add_child(fighter1)
 	fighter1.set_position(start_pos1)
 	fighter1.set_name("fighter1")
 	# Get bot weapons from DB---------------------------------
-	print(bot_data)
 	fighter1.set_weapons(weapon_creator.create_weapon(bot_data["primary_weapon"]), weapon_creator.create_weapon(bot_data["secondary_weapon"]), weapon_creator.create_weapon(bot_data["utility"]))
 	get_node("UI_container/fighter1_cooldowns").fighter_num = 1
 	get_node("UI_container/fighter1_cooldowns").init(bot_data["primary_weapon"], fighter1.primary_weapon,
@@ -80,9 +88,11 @@ func _ready():
 	fighter1.get_node("animation_bot").load_colors_from_DB(head.bot_ID)
 	#---------------------------------------------------------
 	fighter1.is_player = 1
+	scene_loading.set_progress_bar(95)
+	yield(get_tree(),"idle_frame")
+	yield(get_tree(),"idle_frame")
 	
 	fighter2 = bot_scene.instance()
-	#fighter2 = dummy_scene.instance()
 	self.add_child(fighter2)
 	fighter2.set_position(start_pos2)
 	fighter2.set_name("fighter2")
@@ -103,6 +113,9 @@ func _ready():
 	# Connect signal for post game
 	fighter1.connect("game_end", self, "post_game")
 	fighter2.connect("game_end", self, "post_game")
+	scene_loading.set_progress_bar(100)
+	yield(get_tree(),"idle_frame")
+	yield(get_tree(),"idle_frame")
 	
 	health = fighter1.get_hit_points()
 	
@@ -112,6 +125,7 @@ func _ready():
 	t.start()
 	game_time.set_wait_time(max_game_time)
 	game_time.start()
+	get_tree().paused = false
 
 func _process(delta):
 	self.get_node("UI_container/healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
@@ -136,19 +150,31 @@ func _input(event):
 
 # This function is called when one of the fighters hits zero hit_points
 func post_game():
+	# Last update to bots health
+	self.get_node("UI_container/healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
+	self.get_node("UI_container/healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
+	self.set_process(false) # We never process again (scene must be reloaded if another battle is desired)
+	# Notify that battle is over
 	self.emit_signal("post_game")
 	var popup_message
+	# Modify bot rankings
 	head.battle_winner_calc(fighter1.get_hit_points(), fighter2.get_hit_points())
 	var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
-	head.DB.update_bot(head.bot_ID, [head.DB.NULL_INT, head.DB.NULL_INT, bot_data["ranking"] + head.score_change, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_COLOR, head.DB.NULL_COLOR, head.DB.NULL_COLOR, ""], "")
+	var opponent_data = JSON.parse(head.DB.get_bot(opponent_bot_ID)).result["data"][0]
+	head.DB.update_bot(head.bot_ID, [DBConnector.NULL_INT, DBConnector.NULL_INT, bot_data["ranking"] + head.score_change, DBConnector.NULL_INT, DBConnector.NULL_INT, DBConnector.NULL_INT, DBConnector.NULL_COLOR, DBConnector.NULL_COLOR, DBConnector.NULL_COLOR, ""], "")
+	head.DB.update_bot(opponent_bot_ID, [DBConnector.NULL_INT, DBConnector.NULL_INT, opponent_data["ranking"] + (head.score_change * -0.5), DBConnector.NULL_INT, DBConnector.NULL_INT, DBConnector.NULL_INT, DBConnector.NULL_COLOR, DBConnector.NULL_COLOR, DBConnector.NULL_COLOR, ""], "")
 	# Remove destroyed bots from the arena:
 	if fighter1.hit_points <= 0:
 		fighter1.queue_free()
+		fighter1 = null
 	else:
+		fighter1.set_process(false)
 		fighter1.set_physics_process(false)
 	if fighter2.hit_points <= 0:
 		fighter2.queue_free()
+		fighter2 = null
 	else:
+		fighter2.set_process(false)
 		fighter2.set_physics_process(false)
 	# Prepare message:
 	if head.battle_won:
@@ -168,7 +194,6 @@ func post_game():
 func get_opponent(bot_id):
 	var opponent = null
 	var rank_width = 0
-	#var bot_data = JSON.parse(head.DB.get_bot(bot_id)).result["data"][0] # Get all bot data from Database
 	var bot_data = JSON.parse(head.DB.get_bot(bot_id)).result["data"][0] # Get all bot data from Database
 	var lowest_rank = bot_data["ranking"]
 	var upper_rank  = bot_data["ranking"]
@@ -219,13 +244,14 @@ func send_nn_state(bot_number):
 func fight_again():
 	get_tree().paused = false
 	head.load_scene("res://Scenes/battle_arena.tscn")
+	self.queue_free()
 func main_menu():
 	get_tree().paused = false
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
+	#self.queue_free()
 
 # Load Bot for Battle
 func load_bot():
-	print("load_bot() call!")
 	var message
 	var output = []
 	# Load Opponent bot into Neural Network
@@ -235,6 +261,9 @@ func load_bot():
 	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(opponent_bot_ID)
 	head.Client.send_request(message)
 	output.append(head.Client.get_response())
+	scene_loading.set_progress_bar(70)
+	yield(get_tree(),"idle_frame")
+	yield(get_tree(),"idle_frame")
 	
 	# Load Player bot into Neural Network
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
@@ -243,6 +272,9 @@ func load_bot():
 	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(head.bot_ID)
 	head.Client.send_request(message)
 	output.append(head.Client.get_response())
+	scene_loading.set_progress_bar(90)
+	yield(get_tree(),"idle_frame")
+	yield(get_tree(),"idle_frame")
 
 func game_time_end():
 	if fighter1.hit_points > fighter2.hit_points:
@@ -257,7 +289,7 @@ func game_time_end():
 func exit_early():
 	head.battle_winner_calc(0, 500)
 	var bot_data = JSON.parse(head.DB.get_bot(head.bot_ID)).result["data"][0]
-	head.DB.update_bot(head.bot_ID, [head.DB.NULL_INT, head.DB.NULL_INT, bot_data["ranking"] + head.score_change, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_INT, head.DB.NULL_COLOR, head.DB.NULL_COLOR, head.DB.NULL_COLOR, ""], "")
+	head.DB.update_bot(head.bot_ID, [DBConnector.NULL_INT, DBConnector.NULL_INT, bot_data["ranking"] + head.score_change, DBConnector.NULL_INT, DBConnector.NULL_INT, DBConnector.NULL_INT, DBConnector.NULL_COLOR, DBConnector.NULL_COLOR, DBConnector.NULL_COLOR, ""], "")
 	get_tree().paused = false
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 

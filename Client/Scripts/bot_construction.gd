@@ -18,8 +18,7 @@ var bots = [] # Both the id and its bot will have the same index
 var bot_ids = []
 var current = 0
 
-onready var current_info_type = head.PRIMARY
-var unselected = true # weapons are selected
+var current_info_type = 0
 
 var name_hover_color = Color("#ffffff")
 
@@ -77,6 +76,7 @@ func _ready():
 					break
 	
 	$animation_bot.face_left()
+	randomize()
 	
 	if bots.size() == 1:
 		$bot_left.visible = false
@@ -84,6 +84,7 @@ func _ready():
 	else: 
 		$bot_left.visible = true
 		$bot_right.visible = true
+	
 	
 	if constructing_player:
 		$new_button.visible = false
@@ -96,15 +97,13 @@ func _on_bot_left_pressed():
 	update_current_bot()
 	current = bots.size()-1 if current-1 < 0 else current-1
 	get_bot_info(bots[current])
-	if not unselected:
-		grab_info(current_info_type)
+	grab_info(current_info_type)
 
 func _on_bot_right_pressed():
 	update_current_bot()
 	current = 0 if current+1 >= bots.size() else current+1
 	get_bot_info(bots[current])
-	if not unselected:
-		grab_info(current_info_type)
+	grab_info(current_info_type)
 
 # Entering a name
 func _on_new_button_pressed():
@@ -123,10 +122,6 @@ func _on_new_button_pressed():
 	else: 
 		$bot_left.visible = true
 		$bot_right.visible = true
-	unselected = true
-	$item_scroll.deny_info()
-	$item_scroll2.deny_info()
-	$item_scroll3.deny_info()
 	
 	update_current_bot()
 	current = bots.size()-1
@@ -168,11 +163,7 @@ func _on_switch_description_pressed():
 	else:
 		button.text = "stats"
 		$item_description/stats.visible = true
-	if unselected:
-		$item_scroll._on_info_button_pressed()
-		unselected = false
-	else:
-		grab_info(current_info_type)
+	grab_info(current_info_type)
 
 func _on_not_confirm_pressed():
 	$confirm_finish.visible = false
@@ -338,8 +329,6 @@ func grab_info(info_type):
 					$item_scroll3.current_item()["info"]
 				))
 	current_info_type = info_type
-	if unselected:
-		unselected = false
 
 func reset_info():
 	$item_name.text = ""
