@@ -47,12 +47,17 @@ func _ready():
 	get_node(NP_SCOREBOARD_UP).connect("on_click", self, "scoreboard_entry_up_on_click")
 	get_node(NP_SCOREBOARD_DOWN).connect("on_click", self, "scoreboard_entry_down_on_click")
 
+### TEST ###
+	var bot_id = head.bot_ID
+	if bot_id == -1:
+		bot_id = 1
+############
 	# Initialize scoreboard
-	display_position = head.DB.get_scoreboard_position(head.bot_ID) - PLAYER_BOT_DEFAULT_DISPLAY_SPOT
+	display_position = head.DB.get_scoreboard_position(bot_id) - PLAYER_BOT_DEFAULT_DISPLAY_SPOT
 	if (display_position < MIN_DISPLAY_POSITION):
 		display_position = MIN_DISPLAY_POSITION
 	get_scoreboard_dictionary()
-	get_node(NP_PLAYER_BOT_GRAPHICS).load_colors_from_DB(head.bot_ID)
+	get_node(NP_PLAYER_BOT_GRAPHICS).load_colors_from_DB(bot_id)
 	update_player_bot_highlight()
 	update_scoreboard_ui()
 
@@ -133,7 +138,12 @@ func update_scoreboard_ui():
 func update_player_bot_highlight():
 	get_node(NP_PLAYER_HIGHLIGHT_POSITION).text = "Rank: " + String(head.DB.get_scoreboard_position(head.bot_ID))
 	
-	var score_raw_JSON = head.DB.get_bot(head.bot_ID)
+### TEST ###
+	var bot_id = head.bot_ID
+	if bot_id == -1:
+		bot_id = 1
+############
+	var score_raw_JSON = head.DB.get_bot(bot_id)
 	if (score_raw_JSON != ""):
 		get_node(NP_PLAYER_HIGHLIGHT_SCORE).text = "Score: " + String(JSON.parse(score_raw_JSON).result["data"][0]["ranking"])
 	pass
