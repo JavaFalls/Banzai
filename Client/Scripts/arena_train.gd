@@ -73,6 +73,8 @@ func _ready():
 
 # Called after game ends
 func game_end():
+	var message = '{ "Message Type": "Graph Results"}'
+	head.Client.send_request(message)
 	popup = arena_end_popup.instance()
 	self.add_child(popup)
 	popup.init("Training Has Ended", "Yes", "No", self, "keep_data", self, "drop_data", "Would you like your robot to learn from this session?")
