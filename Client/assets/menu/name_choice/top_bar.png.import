@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/top_bar.png-71f2e1770c93933d90d518371c2ca8b3.stex"
+path="res://.import/top_bar.png-6d4a3d9b7e07fecc2e9530acb631d1a3.stex"
 
 [deps]
 
-source_file="res://assets/menu/name_choice/top_bar.png"
-dest_files=[ "res://.import/top_bar.png-71f2e1770c93933d90d518371c2ca8b3.stex" ]
+source_file="res://Assets/menu/name_choice/top_bar.png"
+dest_files=[ "res://.import/top_bar.png-6d4a3d9b7e07fecc2e9530acb631d1a3.stex" ]
 
 [params]
 
