@@ -556,9 +556,9 @@ material = SubResource( 6 )
 
 editor/display_folded = true
 margin_left = 14.0
-margin_top = 54.0
+margin_top = 65.0
 margin_right = 142.0
-margin_bottom = 74.0
+margin_bottom = 85.0
 colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0.827451, 0, 1, 1, 0, 1, 0.647059, 1, 0.921569, 1, 0, 1, 1, 0.513726, 0, 1, 1, 0.368627, 0.811765, 1, 0.6, 0.34902, 0, 1, 0.490196, 0.0980392, 0.2, 1 )
 indicator_offset = 0.3
 
@@ -570,9 +570,9 @@ material = SubResource( 7 )
 
 editor/display_folded = true
 margin_left = 14.0
-margin_top = 84.0
+margin_top = 106.0
 margin_right = 142.0
-margin_bottom = 104.0
+margin_bottom = 126.0
 _sections_unfolded = [ "Material" ]
 colors = PoolColorArray( 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0.827451, 0, 1, 1, 0, 1, 0.647059, 1, 0.921569, 1, 0, 1, 1, 0.513726, 0, 1, 1, 0.368627, 0.811765, 1, 0.6, 0.34902, 0, 1, 0.490196, 0.0980392, 0.2, 1 )
 indicator_offset = 0.6
