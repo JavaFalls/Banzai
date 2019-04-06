@@ -121,7 +121,7 @@ func _ready():
 	
 	health = fighter1.get_hit_points()
 	
-	t.set_wait_time(.3)
+	t.set_wait_time(.05)
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.start()
