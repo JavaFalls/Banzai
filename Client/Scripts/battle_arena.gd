@@ -282,9 +282,12 @@ func game_time_end():
 		post_game()
 	else:
 		if fighter1.hit_points == fighter2.hit_points:
+			game_time.start()
+			timer_label.add_color_override("font_color", Color(1,0,0,1))
 			return
-		fighter1.hit_points = 0
-		post_game()
+		else:
+			fighter1.hit_points = 0
+			post_game()
 		
 func exit_early():
 	head.battle_winner_calc(0, 500)
