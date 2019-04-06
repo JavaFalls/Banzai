@@ -4,7 +4,7 @@ extends Node2D
 
 #Constants
 const UPPER_LIMIT = 1500
-const LOWER_LIMIT = 0
+const LOWER_LIMIT = -1500
 
 # The variables
 var fighter1                       # Player's fighter or AI
