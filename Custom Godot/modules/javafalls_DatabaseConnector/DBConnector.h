@@ -178,18 +178,22 @@ public:
    String get_player(int player_ID);
 
    //// Basic bot management
-   int new_bot(int player_ID, Array new_bot_args, String name); // See NEW_BOT_ARGS_ constants to know better what to pass for the array
-   int update_bot(int bot_ID, Array update_bot_args, String name, String model_file_name = ""); // See UPDATE_BOT_ARGS_ constants to know better what to pass for the array
+   int new_bot(int player_ID, Array new_bot_args, String name); // See NEW_BOT_ARGS_ constants (in .cpp file) to know better what to pass for the array)
+   int update_bot(int bot_ID, Array update_bot_args, String name, String model_file_name = ""); // See UPDATE_BOT_ARGS_ constants (in .cpp file)  to know better what to pass for the array
    String get_bot(int bot_ID, String model_file_name = "");
 
    //// Basic Model management
    int new_model(int player_ID, String model_file_name); // Returns the model_ID (a positive integer) of the newly stored model. Returns 0 if the model could not be inserted.
-   int update_model(int model_ID, String model_file_name);
-   int update_model_by_bot_id(int bot_id, String model_file_name);
    // get_model and get_model_by_bot_id are exceptions to the normal behavior of a get_ function, instead of returning a JSON string, these return whether or not they completed succesfully.
    // The AI_Model itself is placed in a file in the NeuralNetwork folder
+   int update_model(int model_ID, String model_file_name);
+   int update_model_by_bot_id(int bot_id, String model_file_name);
    int get_model(int model_ID, String model_file_name);
    int get_model_by_bot_id(int bot_id, String model_file_name);
+   int update_model_rewards(int model_ID, Array update_model_rewards_args); // See UPDATE_MODEL_REWARDS_ARGS_ constants (in .cpp file)  to know better what to pass for the array
+   int update_model_rewards_by_bot_id(int bot_ID, Array update_model_rewards_args);
+   String get_model_rewards(int model_id);
+   String get_model_rewards_by_bot_id(int bot_ID);
 
    //// Score related functions
    // Returns a list of ids for the bots found in a certain score range (excludes bot id sent to the function)

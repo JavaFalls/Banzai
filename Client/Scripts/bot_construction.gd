@@ -189,6 +189,8 @@ func _on_change_name_button_mouse_exited():
 	$change_name.modulate = Color("#aaaaaa")
 
 func _on_advanced_options_pressed():
+	$nn_options.model_ID = bots[current]["model_ID_FK"]
+	$nn_options.load_options_from_DB() # Must be called after $nn_options.model_ID is set
 	$nn_options.visible = true
 
 func button_hover_enter():

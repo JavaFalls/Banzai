@@ -46,6 +46,15 @@
 #define UPDATE_BOT_ARGS_ACCENT_COLOR 8
 #define UPDATE_BOT_ARGS_ANIMATION 9
 #define UPDATE_BOT_ARGS_ARRAY_SIZE 10
+#define UPDATE_MODEL_REWARDS_ARGS_ACCURACY 0
+#define UPDATE_MODEL_REWARDS_ARGS_AVOIDENCE 1
+#define UPDATE_MODEL_REWARDS_ARGS_APPROACH 2
+#define UPDATE_MODEL_REWARDS_ARGS_FLEE 3
+#define UPDATE_MODEL_REWARDS_ARGS_DAMAGE_DEALT 4
+#define UPDATE_MODEL_REWARDS_ARGS_DAMAGE_RECEIVED 5
+#define UPDATE_MODEL_REWARDS_ARGS_HEALTH_RECEIVED 6
+#define UPDATE_MODEL_REWARDS_ARGS_MELEE_DAMAGE 7
+#define UPDATE_MODEL_REWARDS_ARGS_SIZE 8
 
 /***********************************************************************************************************
 / Debug Control
@@ -315,6 +324,8 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, Stri
    const int PARAM_UPDATE_ANIMATION = 11;
    const int PARAM_UPDATE_BOT_ID = 12;
 
+   int succeeded;
+   
    int player_ID = (int)update_bot_args[UPDATE_BOT_ARGS_PLAYER_ID];
    int model_ID = (int)update_bot_args[UPDATE_BOT_ARGS_MODEL_ID];
    int ranking = (int)update_bot_args[UPDATE_BOT_ARGS_RANKING];
@@ -358,17 +369,19 @@ int DBConnector::update_bot(int bot_ID, Array update_bot_args, String name, Stri
    execute(sql_statement);
    if (SQL_SUCCEEDED(last_return)) {
       if (model_file_name.length()) {
-         update_model_by_bot_id(bot_ID, model_file_name); // Includes a commit or rollback
+         succeeded = update_model_by_bot_id(bot_ID, model_file_name); // Includes a commit or rollback
       }
       else {
          commit();
+         succeeded = 1;
       }
    }
    else {
       rollback();
+      succeeded = 0;
    }
    destroy_command(sql_statement);
-   return SQL_SUCCEEDED(last_return);
+   return succeeded;
 }
 String DBConnector::get_bot(int bot_ID, String model_file_name) {
    const int PARAM_QUERY_BOT_ID = 1;
@@ -436,26 +449,26 @@ int DBConnector::update_model(int model_ID, String model_file_name) {
    const int PARAM_UPDATE_MODEL = 1;
    const int PARAM_UPDATE_MODEL_ID = 2;
 
-   int return_value;
+   int succeeded;
    std::string sql_code = "UPDATE javafalls.ai_model\n"
           + (std::string)"   SET ai_model.model = ?\n"
           + (std::string)" WHERE ai_model.model_ID_PK = ?";
 
    SQLHSTMT sql_statement = create_command(sql_code);
    bind_parameter(sql_statement, PARAM_UPDATE_MODEL_ID, &model_ID);
-   if (return_value = store_model(sql_statement, PARAM_UPDATE_MODEL, model_file_name)) {
+   if (succeeded = store_model(sql_statement, PARAM_UPDATE_MODEL, model_file_name)) {
       commit();
    }
    else {
       rollback();
    }
-   return return_value;
+   return succeeded;
 }
 int DBConnector::update_model_by_bot_id(int bot_ID, String model_file_name) {
    const int PARAM_MODEL = 1;
    const int PARAM_BOT_ID = 2;
 
-   int return_value;
+   int succeeded;
    std::string sql_code = "UPDATE javafalls.ai_model\n"
            + (std::string)"   SET ai_model.model = ?\n"
            + (std::string)" WHERE ai_model.model_ID_PK = (SELECT bot.model_ID_FK\n"
@@ -475,13 +488,13 @@ int DBConnector::update_model_by_bot_id(int bot_ID, String model_file_name) {
    SQLHSTMT sql_statement = create_command(sql_code);
    bind_parameter(sql_statement, PARAM_BOT_ID, &bot_ID);
 
-   if (return_value = store_model(sql_statement, PARAM_MODEL, model_file_name)) {
+   if (succeeded = store_model(sql_statement, PARAM_MODEL, model_file_name)) {
       commit();
    }
    else {
       rollback();
    }
-   return return_value;
+   return succeeded;
 }
 int DBConnector::get_model(int model_ID, String model_file_name) {
    const int PARAM_QUERY_MODEL_ID = 1;
@@ -507,7 +520,116 @@ int DBConnector::get_model_by_bot_id(int bot_ID, String model_file_name) {
    bind_parameter(sql_statement, PARAM_QUERY_BOT_ID, &bot_ID);
    return get_model_by_sql(sql_statement, model_file_name);
 }
+int DBConnector::update_model_rewards(int model_ID, Array update_model_rewards_args) {
+   const int PARAM_UPDATE_ACCURACY = 1;
+   const int PARAM_UPDATE_AVOIDENCE = 2;
+   const int PARAM_UPDATE_APPROACH = 3;
+   const int PARAM_UPDATE_FLEE = 4;
+   const int PARAM_UPDATE_DAMAGE_DEALT = 5;
+   const int PARAM_UPDATE_DAMAGE_RECEIVED = 6;
+   const int PARAM_UPDATE_HEALTH_RECEIVED = 7;
+   const int PARAM_UPDATE_MELEE_DAMAGE = 8;
+   const int PARAM_UPDATE_MODEL_ID = 9;
+   
+   int succeeded = 0;
+   
+   int reward_accuracy = (int)update_model_rewards_args[UPDATE_MODEL_REWARDS_ARGS_ACCURACY];
+   int reward_avoidence = (int)update_model_rewards_args[UPDATE_MODEL_REWARDS_ARGS_AVOIDENCE];
+   int reward_approach = (int)update_model_rewards_args[UPDATE_MODEL_REWARDS_ARGS_APPROACH];
+   int reward_flee = (int)update_model_rewards_args[UPDATE_MODEL_REWARDS_ARGS_FLEE];
+   int reward_damage_dealt = (int)update_model_rewards_args[UPDATE_MODEL_REWARDS_ARGS_DAMAGE_DEALT];
+   int reward_damage_received = (int)update_model_rewards_args[UPDATE_MODEL_REWARDS_ARGS_DAMAGE_RECEIVED];
+   int reward_health_received = (int)update_model_rewards_args[UPDATE_MODEL_REWARDS_ARGS_HEALTH_RECEIVED];
+   int reward_melee_damage = (int)update_model_rewards_args[UPDATE_MODEL_REWARDS_ARGS_MELEE_DAMAGE];
 
+   SQLHSTMT sql_statement;
+   std::string sql_code = "UPDATE javafalls.ai_model\n"
+           + (std::string)"   SET ai_model.reward_accuracy        = coalesce(nullif(?, -1), ai_model.reward_accuracy)\n"
+           + (std::string)"     , ai_model.reward_avoidence       = coalesce(nullif(?, -1), ai_model.reward_avoidence)\n"
+           + (std::string)"     , ai_model.reward_approach        = coalesce(nullif(?, -1), ai_model.reward_approach)\n"
+           + (std::string)"     , ai_model.reward_flee            = coalesce(nullif(?, -1), ai_model.reward_flee)\n"
+           + (std::string)"     , ai_model.reward_damage_dealt    = coalesce(nullif(?, -1), ai_model.reward_damage_dealt)\n"
+           + (std::string)"     , ai_model.reward_damage_received = coalesce(nullif(?, -1), ai_model.reward_damage_received)\n"
+           + (std::string)"     , ai_model.reward_health_received = coalesce(nullif(?, -1), ai_model.reward_health_received)\n"
+           + (std::string)"     , ai_model.reward_melee_damage    = coalesce(nullif(?, -1), ai_model.reward_melee_damage)\n"
+           + (std::string)" WHERE ai_model.model_ID_PK = ?";
+
+   sql_statement = create_command(sql_code);
+   bind_parameter(sql_statement, PARAM_UPDATE_MODEL_ID, &model_ID);
+   bind_parameter(sql_statement, PARAM_UPDATE_ACCURACY, &reward_accuracy);
+   bind_parameter(sql_statement, PARAM_UPDATE_AVOIDENCE, &reward_avoidence);
+   bind_parameter(sql_statement, PARAM_UPDATE_APPROACH, &reward_approach);
+   bind_parameter(sql_statement, PARAM_UPDATE_FLEE, &reward_flee);
+   bind_parameter(sql_statement, PARAM_UPDATE_DAMAGE_DEALT, &reward_damage_dealt);
+   bind_parameter(sql_statement, PARAM_UPDATE_DAMAGE_RECEIVED, &reward_damage_received);
+   bind_parameter(sql_statement, PARAM_UPDATE_HEALTH_RECEIVED, &reward_health_received);
+   bind_parameter(sql_statement, PARAM_UPDATE_MELEE_DAMAGE, &reward_melee_damage);
+   execute(sql_statement);
+   if (SQL_SUCCEEDED(last_return)) {
+      commit();
+      succeeded = 1;
+   }
+   else {
+      rollback();
+      succeeded = 0;
+   }
+   destroy_command(sql_statement);
+   return succeeded;
+}
+int DBConnector::update_model_rewards_by_bot_id(int bot_ID, Array update_model_rewards_args) {
+   const int PARAM_QUERY_BOT_ID = 1;
+   
+   int model_ID;
+   
+   SQLHSTMT sql_statement;
+   std::string sql_code = "SELECT bot.model_ID_FK"
+           + (std::string)"  FROM javafalls.bot"
+           + (std::string)" WHERE bot.bot_ID_PK = ?";
+   
+   sql_statement = create_command(sql_code);
+   bind_parameter(sql_statement, PARAM_QUERY_BOT_ID, &bot_ID);
+   execute(sql_statement);
+   get_row(sql_statement);
+   model_ID = get_int_attribute(sql_statement, 1);
+   destroy_command(sql_statement);
+   return update_model_rewards(model_ID, update_model_rewards_args);
+}
+String DBConnector::get_model_rewards(int model_ID) {
+   const int PARAM_QUERY_MODEL_ID = 1;
+
+   String return_value;
+   std::string sqlQuery = "SELECT ai_model.reward_accuracy, ai_model.reward_avoidence\n"
+           + (std::string)"     , ai_model.reward_approach, ai_model.reward_flee\n"
+           + (std::string)"     , ai_model.reward_damage_dealt, ai_model.reward_damage_received\n"
+           + (std::string)"     , ai_model.reward_health_received, ai_model.reward_melee_damage\n"
+           + (std::string)"  FROM javafalls.ai_model\n"
+           + (std::string)" WHERE ai_model.model_ID_PK = ?";
+
+   SQLHSTMT sql_statement = create_command(sqlQuery);
+   bind_parameter(sql_statement, PARAM_QUERY_MODEL_ID, &model_ID);
+   execute(sql_statement);
+   return_value = get_results(sql_statement);
+   destroy_command(sql_statement);
+   return return_value;
+}
+String DBConnector::get_model_rewards_by_bot_id(int bot_ID) {
+   const int PARAM_QUERY_BOT_ID = 1;
+   
+   int model_ID;
+   
+   SQLHSTMT sql_statement;
+   std::string sql_code = "SELECT bot.model_ID_FK"
+           + (std::string)"  FROM javafalls.bot"
+           + (std::string)" WHERE bot.bot_ID_PK = ?";
+   
+   sql_statement = create_command(sql_code);
+   bind_parameter(sql_statement, PARAM_QUERY_BOT_ID, &bot_ID);
+   execute(sql_statement);
+   get_row(sql_statement);
+   model_ID = get_int_attribute(sql_statement, 1);
+   destroy_command(sql_statement);
+   return get_model_rewards(model_ID);
+}
 // Returns a list of ids for the bots found in a certain score range (excludes bot id sent to the function)
 String DBConnector::get_bot_range(int bot_id, int min_score, int max_score) {
    const int PARAM_BOT_ID = 1;
@@ -1011,6 +1133,16 @@ void DBConnector::_bind_methods() {
    BIND_CONSTANT(UPDATE_BOT_ARGS_ANIMATION);
    BIND_CONSTANT(UPDATE_BOT_ARGS_ARRAY_SIZE);
 
+   BIND_CONSTANT(UPDATE_MODEL_REWARDS_ARGS_ACCURACY);
+   BIND_CONSTANT(UPDATE_MODEL_REWARDS_ARGS_AVOIDENCE);
+   BIND_CONSTANT(UPDATE_MODEL_REWARDS_ARGS_APPROACH);
+   BIND_CONSTANT(UPDATE_MODEL_REWARDS_ARGS_FLEE);
+   BIND_CONSTANT(UPDATE_MODEL_REWARDS_ARGS_DAMAGE_DEALT);
+   BIND_CONSTANT(UPDATE_MODEL_REWARDS_ARGS_DAMAGE_RECEIVED);
+   BIND_CONSTANT(UPDATE_MODEL_REWARDS_ARGS_HEALTH_RECEIVED);
+   BIND_CONSTANT(UPDATE_MODEL_REWARDS_ARGS_MELEE_DAMAGE);
+   BIND_CONSTANT(UPDATE_MODEL_REWARDS_ARGS_SIZE);
+   
    // Methods
    ClassDB::bind_method(D_METHOD("new_player", "name"), &DBConnector::new_player);
    ClassDB::bind_method(D_METHOD("update_player", "player_ID", "name"), &DBConnector::update_player);
@@ -1026,6 +1158,10 @@ void DBConnector::_bind_methods() {
    ClassDB::bind_method(D_METHOD("update_model_by_bot_id", "bot_ID", "model_file_name"), &DBConnector::update_model_by_bot_id);
    ClassDB::bind_method(D_METHOD("get_model", "model_ID", "model_file_name"), &DBConnector::get_model);
    ClassDB::bind_method(D_METHOD("get_model_by_bot_id", "bot_ID", "model_file_name"), &DBConnector::get_model_by_bot_id);
+   ClassDB::bind_method(D_METHOD("update_model_rewards", "model_ID", "update_model_rewards_args"), &DBConnector::update_model_rewards);
+   ClassDB::bind_method(D_METHOD("update_model_rewards_by_bot_id", "bot_ID", "update_model_rewards_args"), &DBConnector::update_model_rewards_by_bot_id);
+   ClassDB::bind_method(D_METHOD("get_model_rewards", "model_ID"), &DBConnector::get_model_rewards);
+   ClassDB::bind_method(D_METHOD("get_model_rewards_by_bot_id", "bot_ID"), &DBConnector::get_model_rewards_by_bot_id);
 
    ClassDB::bind_method(D_METHOD("get_bot_range", "bot_id", "min_score", "max_score"), &DBConnector::get_bot_range);
    ClassDB::bind_method(D_METHOD("get_max_score"), &DBConnector::get_max_score);
