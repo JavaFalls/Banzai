@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/arrow_blue_right.png-375e292cf0334f2ebd9c54529116ece6.stex"
+path="res://.import/arrow_blue_right.png-fccc3adab1c1affd388b3a3676eff979.stex"
 
 [deps]
 
-source_file="res://assets/menu/bot_construction/arrow_blue_right.png"
-dest_files=[ "res://.import/arrow_blue_right.png-375e292cf0334f2ebd9c54529116ece6.stex" ]
+source_file="res://Assets/menu/bot_construction/arrow_blue_right.png"
+dest_files=[ "res://.import/arrow_blue_right.png-fccc3adab1c1affd388b3a3676eff979.stex" ]
 
 [params]
 

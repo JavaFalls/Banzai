@@ -1,32 +1,61 @@
 extends Control
 
+var model_ID # The ID of the model these options belong to
+
 func _ready():
-	var count = 0
-	var message
-	var output
-	var magnitude = []
 	$back_button.connect("pressed", self, "exit")
-	message = '{ "Message Type":"Get Rewards"}'
-	head.Client.send_request(message)
-	output = head.Client.get_response()
-	output = output.replace("[", " ")
-	output = output.replace("]", " ")
-	output = output.split_floats(",")
-	for x in output:
-		magnitude.append(int(x * 10))
-	for option in get_tree().get_nodes_in_group("ui_option"):
-		option.set_value(magnitude[count])
-		count += 1
-	
-	
 
 func exit():
-	var message
-	var output
-	var rewards = []
-	for option in get_tree().get_nodes_in_group("ui_option"):
-		rewards.append(option.get_value())
-	message = '{ "Message Type":"Set Rewards", "Rewards": "%s" }' % str(rewards)
-	head.Client.send_request(message)
-	output = head.Client.get_response()
+	store_options_in_DB()
 	self.visible = false
+
+
+func load_options_from_DB():
+	var rewards = JSON.parse(head.DB.get_model_rewards(model_ID)).result["data"][0]
+	for option in $VBoxContainer.get_children():
+		option.set_value(rewards[convert_name_to_column(option.option_name)])
+func store_options_in_DB():
+	var rewards = []
+	rewards.resize(DBConnector.UPDATE_MODEL_REWARDS_ARGS_SIZE)
+	for option in $VBoxContainer.get_children():
+		rewards[convert_name_to_index(option.option_name)] = option.get_value()
+	head.DB.update_model_rewards(model_ID, rewards)
+
+# Converts option names (that are displayed to the user) to the corresponding column name in the DB
+func convert_name_to_column(title):
+	match title.to_lower():
+		"accuracy":
+			return "reward_accuracy"
+		"avoidance":
+			return "reward_avoidence"
+		"approach":
+			return "reward_approach"
+		"flee":
+			return "reward_flee"
+		"deal damage":
+			return "reward_damage_dealt"
+		"receive damage":
+			return "reward_damage_received"
+		"receive health":
+			return "reward_health_received"
+		"melee damage":
+			return "reward_melee_damage"
+# Converts option names (that are displayed to the user) to the corresponding index used when calling DB.update_model_rewards()
+func convert_name_to_index(title):
+	match title.to_lower():
+		"accuracy":
+			return DBConnector.UPDATE_MODEL_REWARDS_ARGS_ACCURACY
+		"avoidance":
+			return DBConnector.UPDATE_MODEL_REWARDS_ARGS_AVOIDENCE
+		"approach":
+			return DBConnector.UPDATE_MODEL_REWARDS_ARGS_APPROACH
+		"flee":
+			return DBConnector.UPDATE_MODEL_REWARDS_ARGS_FLEE
+		"deal damage":
+			return DBConnector.UPDATE_MODEL_REWARDS_ARGS_DAMAGE_DEALT
+		"receive damage":
+			return DBConnector.UPDATE_MODEL_REWARDS_ARGS_DAMAGE_RECEIVED
+		"receive health":
+			return DBConnector.UPDATE_MODEL_REWARDS_ARGS_HEALTH_RECEIVED
+		"melee damage":
+			return DBConnector.UPDATE_MODEL_REWARDS_ARGS_MELEE_DAMAGE

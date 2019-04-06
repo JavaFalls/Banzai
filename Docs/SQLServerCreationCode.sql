@@ -9,16 +9,21 @@ CREATE TABLE javafalls.player
    (player_ID_PK int IDENTITY(1,1) PRIMARY KEY NOT NULL,  
     network_ID   int NULL,  
     name         VARCHAR(90) NULL,
-	datetime_login datetime NULL,
-	datetime_logout datetime NULL)
-ALTER TABLE javafalls.player ADD CONSTRAINT
-	DF_player_datetime_login DEFAULT getdate() FOR datetime_login
-GO
+    datetime_login datetime NULL DEFAULT getdate(),
+    datetime_logout datetime NULL)
 
 CREATE TABLE javafalls.ai_model
    (model_ID_PK  int IDENTITY(1,1) PRIMARY KEY NOT NULL,  
     player_ID_FK int NOT NULL,  
     model        varbinary(MAX) NOT NULL, -- varbinary(MAX) is SQL Server's equivalent to a BLOB
+    reward_accuracy int NOT NULL DEFAULT 10,
+    reward_avoidence int NOT NULL DEFAULT 10,
+    reward_approach int NOT NULL DEFAULT 0,
+    reward_flee int NOT NULL DEFAULT 0,
+    reward_damage_dealt int NOT NULL DEFAULT 10,
+    reward_damage_received int NOT NULL DEFAULT 10,
+    reward_health_received int NOT NULL DEFAULT 10,
+    reward_melee_damage int NOT NULL DEFAULT 10,
     CONSTRAINT FK_ai_model_player_ID FOREIGN KEY (player_ID_FK)     
     REFERENCES javafalls.player (player_ID_PK)     
     ON DELETE NO ACTION    

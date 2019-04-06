@@ -149,6 +149,25 @@ func _on_back_pressed():
 func load_bot():
 	var output = []
 	var message
+	# Load reward settings
+	# - Get rewards from the DB
+	var rewards_dictionary = JSON.parse(head.DB.get_model_rewards_by_bot_id(head.bot_ID)).result["data"][0]
+	# - Convert dictionary to a regular array
+	var rewards_array = []
+	rewards_array.append(rewards_dictionary["reward_accuracy"])
+	rewards_array.append(rewards_dictionary["reward_avoidence"])
+	rewards_array.append(rewards_dictionary["reward_approach"])
+	rewards_array.append(rewards_dictionary["reward_flee"])
+	rewards_array.append(rewards_dictionary["reward_damage_dealt"])
+	rewards_array.append(rewards_dictionary["reward_damage_received"])
+	rewards_array.append(rewards_dictionary["reward_health_received"])
+	rewards_array.append(rewards_dictionary["reward_melee_damage"])
+	
+	# - Send the rewards to the Neural Network
+	message = '{ "Message Type":"Set Rewards", "Rewards": "%s" }' % str(rewards_array)
+	head.Client.send_request(message)
+	output = head.Client.get_response()
+	
 	# Load Player bot into Neural Network
 	message = '{ "Message Type":"Load", "Game Mode": "Battle", "File Name": "File_%s.h5", "Opponent?": "No" }'  % str(head.bot_ID)
 	head.Client.send_request(message)
