@@ -75,6 +75,7 @@ min_value = 0
 max_value = 10
 step = 1
 inital_value = 0
+as_percentage = false
 
 [node name="option_name" type="Label" parent="." index="0"]
 
