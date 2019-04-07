@@ -136,6 +136,10 @@ func _on_confirm_pressed():
 	get_tree().set_pause(false)
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
+func _on_dont_save_pressed():
+	get_tree().set_pause(false)
+	get_tree().change_scene("res://Scenes/main_menu.tscn")
+
 func _on_back_pressed():
 	get_tree().set_pause(false)
 	$exit.visible = false
