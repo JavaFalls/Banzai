@@ -132,6 +132,11 @@ func _ready():
 	$exit_layer/nn_options/back_button.hide()
 	$exit_layer/nn_options/Label.hide()
 	$exit_layer/nn_options/Tween.connect("tween_completed", self, "exit_options")
+	if typeof(bot_data["model_ID_FK"]) == TYPE_REAL:
+		$exit_layer/nn_options.model_ID = int(bot_data["model_ID_FK"])
+	else:
+		$exit_layer/nn_options.model_ID = bot_data["model_ID_FK"]
+	$exit_layer/nn_options.load_options_from_DB()
 
 func _process(delta):
 	self.get_node("UI_container/healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
