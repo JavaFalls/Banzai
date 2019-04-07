@@ -10,6 +10,7 @@ var        damage   = 0
 var        id       = -1
 
 # Explosion variables
+var explosion_owner # The bot that caused this explosion
 var max_radius = 3.0 # The largest radius to reach, given in units of 4 pixels each
 var min_radius = 1.0 # The radius to start at, given in units of 4 pixels each
 var expansion_rate = 50.0 # How fast to expand per second, given in units of 4 pixels each
@@ -67,7 +68,10 @@ func _on_projectile_body_entered(body):
 				# Already damaged target, abort function
 				pass
 		# Damage target and add to array of damaged targets
-		body.increment_hitpoints(damage)
+		if body.get_instance_id() != explosion_owner.get_instance_id():
+			body.increment_hitpoints(damage)
+		else:
+			body.increment_hitpoints(floor(damage * 0.1))
 		things_I_already_hit.append(body.get_instance_id())
 
 # Functions:

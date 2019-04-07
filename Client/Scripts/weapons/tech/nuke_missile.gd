@@ -5,8 +5,8 @@ extends Node2D
 # Constants
 #const ACCELERATION = 500 # The rate, in pixels per second, that the nuke will acclerate upwards at every second
 #const ACCELERATION_TIME = 1.0 # The number of seconds for which acceleration will be applied
-const GRAVITY = -200 # Downward acceleration appiled to the missile
-const TRAVEL_TIME = 3.0 # How many seconds the missile is in the air for
+const GRAVITY = -400 # Downward acceleration appiled to the missile
+const TRAVEL_TIME = 1.5 # How many seconds the missile is in the air for
 
 const INITIAL_VELOCITY_Z = ((-GRAVITY) * 0.5) * TRAVEL_TIME # 0 = ((GRAVITY / 2) * (TRAVEL_TIME ^ 2)) + (TRAVEL_TIME * INITIAL_VELOCITY_Z)
  
@@ -16,6 +16,7 @@ const INITIAL_VELOCITY_Z = ((-GRAVITY) * 0.5) * TRAVEL_TIME # 0 = ((GRAVITY / 2)
 var damage = 0
 
 # Variables to set when instancing this scene
+var missile_owner # Bot that launced the missile
 var target = Vector2()
 
 # Variables for the scripts private use
@@ -56,30 +57,6 @@ func _process(delta):
 	$sprite_missile.rotation = atan(velocity.z / sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))) - PI
 	if velocity.x > 0:
 		$sprite_missile.rotation = -$sprite_missile.rotation
-	
-	#if time_before_fall <= 0.0:
-	#	if rising:
-	#		velocity_y -= ACCELERATION * delta
-	#	else:
-	#		velocity_y += ACCELERATION * delta * 2.0
-	#	position.y += velocity_y * delta
-	#	if position.y <= max_y and rising:
-	#		# Reached max height, start falling
-	#		rising = false
-	#		velocity_y = 0
-	#		get_node("Sprite").flip_h = true
-	#		position.x = target.x # Move to fall on target
-	#		time_before_fall = WAIT_TIME_BEFORE_FALL
-	#	elif position.y >= target.y and not rising:
-	#		# Target reached, explode:
-	#		var explosion = nuke_explosion.instance()
-	#		explosion.damage = damage
-	#		explosion.position = target
-	#		explosion.scale = scale
-	#		get_parent().add_child(explosion)
-	#		queue_free()
-	#else:
-	#	time_before_fall -= delta
 
 func _boom_timer_timeout():
 	# Target reached, explode:
@@ -87,5 +64,6 @@ func _boom_timer_timeout():
 	explosion.damage = damage
 	explosion.position = target
 	explosion.scale = scale
+	explosion.explosion_owner = missile_owner
 	get_parent().add_child(explosion)
 	queue_free()

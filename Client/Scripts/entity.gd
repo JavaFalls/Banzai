@@ -69,10 +69,11 @@ func get_trajectory():
 func increment_hitpoints(damage): # this decremements now because we make health go down.
 	if not shielded:
 		hit_points -= damage
-		var damage_text = preloaded_damage_text.instance()
-		damage_text.set_text(str(damage))
-		damage_text.position = global_position
-		get_parent().add_child(damage_text)
+		if damage != 0:
+			var damage_text = preloaded_damage_text.instance()
+			damage_text.set_text(str(damage))
+			damage_text.position = global_position
+			get_parent().add_child(damage_text)
 
 func set_opponent(new_opponent):
 	opponent = new_opponent

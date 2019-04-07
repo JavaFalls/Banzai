@@ -45,6 +45,7 @@ func use():
 		missile.damage = damage
 		missile.position = global_position
 		missile.scale = bot.scale
+		missile.missile_owner = bot
 		missile.target = (Vector2(cos(bot.aim_angle),sin(bot.aim_angle)) * FIRING_DISTANCE) + global_position
 		if missile.target.x > MAX_TARGET_COORDINATE.x:
 			missile.target.x = MAX_TARGET_COORDINATE.x
