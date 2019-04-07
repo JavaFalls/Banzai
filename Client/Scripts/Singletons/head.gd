@@ -142,7 +142,8 @@ func _input(event):
 
 func load_scene(path):
 	get_tree().change_scene_to(loader)
-	yield(get_tree(), "node_added")
+	while(yield(get_tree(), "node_added").get_name() != "loading"):
+		null # noop. Loop until the right node is returned
 	get_node("/root/loading").load_scene(path)
 
 func battle_winner_calc(fighter1_hit_points, fighter2_hit_points):
@@ -172,7 +173,7 @@ func create_user():
 	# player -> model -> bot
 
 	# 1. Create player
-	player_ID = DB.new_player(username)
+	player_ID = DB.new_player(OS.get_model_name())
 
 	# 2. Create model and bot
 	var bot_insert_arg_array = [0, 1, 2, 3, 4, 5, 6, 7]
