@@ -133,6 +133,8 @@ _sections_unfolded = [ "Pause" ]
 [node name="exit" type="Node2D" parent="." index="2"]
 
 pause_mode = 2
+editor/display_folded = true
+visible = false
 z_index = 2
 _sections_unfolded = [ "Pause", "Z Index" ]
 
