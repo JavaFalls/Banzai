@@ -29,7 +29,7 @@ func _process(delta):
 	
 #	label.rect_size.y = total_lines * (text_height + text_line_spacing)
 	
-	panel.rect_size = label.rect_size
+	panel.rect_size = label.rect_size + Vector2(2, 2)
 	panel.rect_global_position = $Panel.rect_global_position + start_position - Vector2(int(panel.rect_size.x/2), panel.rect_size.y)
 #	label.rect_global_position = panel.rect_global_position
 	if (panel.rect_global_position.x + panel.rect_size.x) > 400:
@@ -38,7 +38,19 @@ func _process(delta):
 		panel.rect_global_position.x = 0
 	if panel.rect_global_position.y < 0:
 		panel.rect_global_position.y = $Panel.rect_global_position.y + $Panel.rect_size.y
+	label.rect_global_position += Vector2(1, 1)
 	set_process(false)
+
+func _input(event):
+	if $PopupPanel.visible:
+		if event is InputEventMouseButton and event.is_pressed():
+			var button_pos = $Panel/Button.rect_global_position
+			var button_size = $Panel/Button.rect_size
+			var mouse_pos = get_tree().get_root().get_mouse_position()
+			if not (mouse_pos.x > button_pos.x and mouse_pos.x < button_pos.x + button_size.x and
+				mouse_pos.y > button_pos.y and mouse_pos.y < button_pos.y + button_size.y):
+				toggle_info(false)
+				$Panel/Button.set_pressed(false)
 
 func toggle_info(button_pressed):
 	if button_pressed:
