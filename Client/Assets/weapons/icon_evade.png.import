@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon_evade.png-44392d9dfed38637d3aca1336b8fc843.stex"
+path="res://.import/icon_evade.png-d686af165a861c06b19fa0270dcba837.stex"
 
 [deps]
 
-source_file="res://assets/weapons/icon_evade.png"
-dest_files=[ "res://.import/icon_evade.png-44392d9dfed38637d3aca1336b8fc843.stex" ]
+source_file="res://Assets/weapons/icon_evade.png"
+dest_files=[ "res://.import/icon_evade.png-d686af165a861c06b19fa0270dcba837.stex" ]
 
 [params]
 

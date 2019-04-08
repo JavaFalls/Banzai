@@ -1,7 +1,7 @@
 extends Node
 
 var menu_audio
-onready var loop = preload("res://sounds/Background Sounds/Track 1 - Loop 3 - Strings and Brass.wav")
+onready var loop = preload("res://sounds/Background Sounds/Track 3.wav")
 
 func _ready():
 	add_child(AudioStreamPlayer.new())

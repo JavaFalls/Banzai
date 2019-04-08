@@ -76,3 +76,7 @@ func start():
 	head.play_stream(sound, head.sounds.SCENE_CHANGE)
 	head.delete_player(sound)
 	emit_signal("name_entered")
+
+func _input(event):
+	if event.is_action_pressed("exit_arena"):
+		get_tree().change_scene("res://Scenes/menu_title.tscn")

@@ -1,0 +1,14 @@
+[remap]
+
+importer="Webm"
+type="VideoStreamWebm"
+path="res://.import/Credits.webm-b99eaf0e6d8a4a74361a8f605f1608d5.webmstr"
+
+[deps]
+
+source_file="res://video/Credits.webm"
+dest_files=[ "res://.import/Credits.webm-b99eaf0e6d8a4a74361a8f605f1608d5.webmstr" ]
+
+[params]
+
+loop=true
