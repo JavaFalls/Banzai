@@ -50,11 +50,11 @@ func set_bot_info():
 
 func set_opponent_info():
 	if game_state.predicted_opponent_aim_left == 1:
-		aim_angle -= .1*PI
+		aim_angle -= .075*PI
 		if aim_angle < -1*PI:
 			aim_angle += 2*PI
 	if game_state.predicted_opponent_aim_right == 1:
-		aim_angle += .1*PI
+		aim_angle += .075*PI
 		if aim_angle > PI:
 			aim_angle -= 2*PI
 

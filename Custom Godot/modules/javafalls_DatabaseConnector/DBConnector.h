@@ -214,6 +214,11 @@ public:
    String get_player_bots(int player_ID);
    // Get name parts for username login screen
    String get_name_parts(int section);
+   
+   //// Security Dangerous functions
+   // Changes the specified bot to be owned by the specified player.
+   // You the caller are fully responsible for ensuring you do not violate FK constraints when doing this (in other words, make sure new_player_ID already exists)
+   int change_bot_owner(int bot_ID, int new_player_ID);
 
    /******************************************************************************
    / SQL Command management

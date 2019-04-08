@@ -772,6 +772,46 @@ String DBConnector::get_name_parts(int section) {
    return return_value;
 }
 
+//// Security Dangerous functions
+// Changes the specified bot to be owned by the specified player.
+// You the caller are fully responsible for ensuring you do not violate FK constraints when doing this (in other words, make sure new_player_ID already exists)
+int DBConnector::change_bot_owner(int bot_ID, int new_player_ID) {
+   const int PARAM_UPDATE_BOT_PLAYER_ID = 1;
+   const int PARAM_UPDATE_BOT_BOT_ID = 2;
+   
+   const int PARAM_UPDATE_MODEL_PLAYER_ID = 1;
+   const int PARAM_UPDATE_MODEL_BOT_ID = 2;
+   
+   int succeeded_update_bot;
+   int succeeded_update_model;
+   std::string update_bot = "UPDATE javafalls.bot"
+             + (std::string)"   SET bot.player_ID_FK = ?"
+             + (std::string)" WHERE bot.bot_ID_PK = ?";
+   SQLHSTMT cmd_update_bot = create_command(update_bot);
+   bind_parameter(cmd_update_bot, PARAM_UPDATE_BOT_PLAYER_ID, &new_player_ID);
+   bind_parameter(cmd_update_bot, PARAM_UPDATE_BOT_BOT_ID, &bot_ID);
+   std::string update_model = "UPDATE javafalls.ai_model"
+               + (std::string)"   SET ai_model.player_ID_FK = ?"
+               + (std::string)" WHERE ai_model.model_ID_PK = (SELECT bot.model_ID_FK"
+               + (std::string)"                                 FROM javafalls.bot"
+               + (std::string)"                                WHERE bot.bot_ID_PK = ?)";
+   SQLHSTMT cmd_update_model = create_command(update_model);
+   bind_parameter(cmd_update_model, PARAM_UPDATE_MODEL_PLAYER_ID, &new_player_ID);
+   bind_parameter(cmd_update_model, PARAM_UPDATE_MODEL_BOT_ID, &bot_ID);
+   execute(cmd_update_bot);
+   succeeded_update_bot = SQL_SUCCEEDED(last_return);
+   execute(cmd_update_model);
+   succeeded_update_model = SQL_SUCCEEDED(last_return);
+   if (succeeded_update_bot && succeeded_update_model) {
+      commit();
+   } else {
+      rollback();
+   }
+   destroy_command(cmd_update_bot);
+   destroy_command(cmd_update_model);
+   return succeeded_update_bot && succeeded_update_model;
+}
+
 /***********************************************************************************************************
 / DB Interaction Helpers
 /***********************************************************************************************************/
@@ -779,7 +819,7 @@ String DBConnector::get_name_parts(int section) {
 // Params:
 //  sql_statement = A statement to insert the model into the database. Any and all bind parameters other then the model should already be bound.
 //  param_model   = The parameter number in the sql_statement that tells the code where to place the ai model into the query
-// Notes: store_model calls destory_command(sql_statement) when it is finished. So you do not need to (and should not) call destory_command yourself on the statement passed to store_model().
+// Notes: store_model calls destroy_command(sql_statement) when it is finished. So you do not need to (and should not) call destroy_command yourself on the statement passed to store_model().
 int DBConnector::store_model(SQLHSTMT sql_statement, int param_model, String model_file_name) {
    SQLCHAR       *file_data;
    SQLCHAR       *p_file_data; // Used to walk through the fileData
@@ -1173,6 +1213,8 @@ void DBConnector::_bind_methods() {
    ClassDB::bind_method(D_METHOD("get_player_bots", "player_ID"), &DBConnector::get_player_bots);
    ClassDB::bind_method(D_METHOD("get_name_parts", "section"), &DBConnector::get_name_parts);
 
+   ClassDB::bind_method(D_METHOD("change_bot_owner", "bot_ID", "new_player_ID"), &DBConnector::change_bot_owner);
+   
    ClassDB::bind_method(D_METHOD("open_connection"), &DBConnector::open_connection);
    ClassDB::bind_method(D_METHOD("close_connection"), &DBConnector::close_connection);
    ClassDB::bind_method(D_METHOD("is_connection_open"), &DBConnector::is_connection_open);
