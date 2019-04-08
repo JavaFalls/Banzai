@@ -1,7 +1,5 @@
 extends VideoPlayer
 
-var video = get_child(0)
-
 func _ready():
 	if(Menu_audio.menu_audio.playing):
 		Menu_audio.menu_audio.stop()
@@ -29,6 +27,10 @@ func _input(event):
 		time.stop()
 		active = false
 """
+
+func _process(delta):
+	if not is_playing():
+		exit()
 
 func exit():
 	get_tree().change_scene("res://Scenes/main_menu.tscn")

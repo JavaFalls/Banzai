@@ -28,11 +28,4 @@ bus = "Master"
 script = ExtResource( 2 )
 _sections_unfolded = [ "Material", "Pause", "Visibility" ]
 
-[node name="Timer" type="Timer" parent="." index="0"]
-
-process_mode = 1
-wait_time = 1.0
-one_shot = false
-autostart = false
-
 
