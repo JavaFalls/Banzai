@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/precision_bow.png-35f29538b26700bf4edbe31172584c49.stex"
+path="res://.import/precision_bow.png-821debc35752f750caeb91d72bccb5f7.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/precision_bow.png"
-dest_files=[ "res://.import/precision_bow.png-35f29538b26700bf4edbe31172584c49.stex" ]
+source_file="res://assets/weapons/precision_bow.png"
+dest_files=[ "res://.import/precision_bow.png-821debc35752f750caeb91d72bccb5f7.stex" ]
 
 [params]
 

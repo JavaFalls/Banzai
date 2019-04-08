@@ -25,6 +25,7 @@ var cycle_timer    = Timer.new() # Timer for healing the bot periodically
 var amt_healed = 0         # How much healing has already been done
 
 var regeneration_effect = preload("res://Scenes/weapons/tech/regeneration_effect.tscn")
+var heal_text = preload("res://Scenes/weapons/effects/damage_text.tscn")
 
 onready var bot = get_parent() # The bot that is holding the ability
 
@@ -55,6 +56,11 @@ func cycle_timer_timeout():
 	var regen_bubble = regeneration_effect.instance()
 	regen_bubble.position = global_position
 	bot.get_parent().add_child(regen_bubble)
+	var text = heal_text.instance()
+	text.set_text("1")
+	text.set_color(text.GREEN)
+	text.position = bot.global_position
+	bot.get_parent().add_child(text)
 	# Actual Heal
 	bot.hit_points += 1
 	amt_healed += 1

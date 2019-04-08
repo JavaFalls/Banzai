@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/backlight.png-efce1f1ea369200a84b3d53c40557740.stex"
+path="res://.import/backlight.png-4c5d8c4db85fdda0a8eb142af0f9bff4.stex"
 
 [deps]
 
-source_file="res://Assets/menu/main_menu/backlight.png"
-dest_files=[ "res://.import/backlight.png-efce1f1ea369200a84b3d53c40557740.stex" ]
+source_file="res://assets/menu/main_menu/backlight.png"
+dest_files=[ "res://.import/backlight.png-4c5d8c4db85fdda0a8eb142af0f9bff4.stex" ]
 
 [params]
 

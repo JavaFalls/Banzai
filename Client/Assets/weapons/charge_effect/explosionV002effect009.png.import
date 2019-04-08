@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/explosionV002effect009.png-9b36a173a844c4c6169012ad0bc3b9a6.stex"
+path="res://.import/explosionV002effect009.png-2d5c36bff5d1c5909f6d4afd8614912a.stex"
 
 [deps]
 
-source_file="res://Assets/weapons/charge_effect/explosionV002effect009.png"
-dest_files=[ "res://.import/explosionV002effect009.png-9b36a173a844c4c6169012ad0bc3b9a6.stex" ]
+source_file="res://assets/weapons/charge_effect/explosionV002effect009.png"
+dest_files=[ "res://.import/explosionV002effect009.png-2d5c36bff5d1c5909f6d4afd8614912a.stex" ]
 
 [params]
 

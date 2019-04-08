@@ -15,6 +15,8 @@ var health                         # The starting health of a mech for use with 
 
 var popup                          # Popup scene used when battle is over
 
+var options_visible = false
+
 # The signal that is emitted when a fighter's hit_points reach zero
 signal post_game
 
@@ -126,6 +128,15 @@ func _ready():
 	game_time.set_wait_time(max_game_time)
 	game_time.start()
 	get_tree().paused = false
+	
+	$exit_layer/nn_options/back_button.hide()
+	$exit_layer/nn_options/Label.hide()
+	$exit_layer/nn_options/Tween.connect("tween_completed", self, "exit_options")
+	if typeof(bot_data["model_ID_FK"]) == TYPE_REAL:
+		$exit_layer/nn_options.model_ID = int(bot_data["model_ID_FK"])
+	else:
+		$exit_layer/nn_options.model_ID = bot_data["model_ID_FK"]
+	$exit_layer/nn_options.load_options_from_DB()
 
 func _process(delta):
 	self.get_node("UI_container/healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
@@ -146,7 +157,28 @@ func _input(event):
 		if event.is_action("exit_arena") and not get_tree().is_paused():
 			get_tree().paused = true
 			$exit_layer/exit.visible = true
+		
+		if event.scancode == KEY_O and not event.is_echo():
+			var tween = $exit_layer/nn_options/Tween
+			var options = $exit_layer/nn_options
+			var options_alpha = 0.68
+			var remnant = (options_alpha-options.modulate.a)/options_alpha
+			
+			if not options_visible:
+				tween.remove_all()
+				tween.interpolate_property(options, "modulate:a", options.modulate.a, options_alpha, 1.0*remnant, Tween.TRANS_LINEAR, Tween.EASE_IN)
+				options.show()
+				tween.start()
+				options_visible = true
+			else:
+				tween.remove_all()
+				tween.interpolate_property(options, "modulate:a", options.modulate.a, 0.0, 1.0*abs(options_alpha-remnant), Tween.TRANS_LINEAR, Tween.EASE_OUT)
+				tween.start()
+				options_visible = false
 
+func exit_options(object, node_path):
+	if not options_visible:
+		$exit_layer/nn_options.exit()
 
 # This function is called when one of the fighters hits zero hit_points
 func post_game():

@@ -2,6 +2,9 @@
 # Text floats slowly upwards while fading away
 extends Node2D
 
+const RED = Color("ff1c1c")
+const GREEN = Color("23ff1c")
+
 var lifetime = 0.75
 var speed_y = -150
 
@@ -18,6 +21,8 @@ func _process(delta):
 
 func set_text(text):
 	$text.text = text
+func set_color(color):
+	$text.modulate = color
 
 func _on_Timer_timeout():
 	queue_free()

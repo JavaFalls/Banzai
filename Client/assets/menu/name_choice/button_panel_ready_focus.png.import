@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/button_panel_ready_focus.png-f0a0b47d6ade99fa9a5e53c2d0f1ab05.stex"
+path="res://.import/button_panel_ready_focus.png-78ea5d289719c135011549d240080f4a.stex"
 
 [deps]
 
-source_file="res://Assets/menu/name_choice/button_panel_ready_focus.png"
-dest_files=[ "res://.import/button_panel_ready_focus.png-f0a0b47d6ade99fa9a5e53c2d0f1ab05.stex" ]
+source_file="res://assets/menu/name_choice/button_panel_ready_focus.png"
+dest_files=[ "res://.import/button_panel_ready_focus.png-78ea5d289719c135011549d240080f4a.stex" ]
 
 [params]
 

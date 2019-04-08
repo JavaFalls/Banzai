@@ -97,16 +97,17 @@ func _input(event):
 				event.global_position.y > _bot.global_position.y - 15
 			):
 				var back = $Control/background_animation
+				var remnant = 1-back.modulate.a
 				if not back.visible:
 					back.visible = true
 				if not background_stuff_visible:
 					background_tween.remove_all()
-					background_tween.interpolate_property(back, 'modulate:a', back.modulate.a, 1.0, 2.0*(1-back.modulate.a), Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
+					background_tween.interpolate_property(back, 'modulate:a', back.modulate.a, 1.0, 2.0*remnant, Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
 					background_tween.start()
 					background_stuff_visible = true
 				else:
 					background_tween.remove_all()
-					background_tween.interpolate_property(back, 'modulate:a', back.modulate.a, 0.0, 2.0/(1+back.modulate.a), Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
+					background_tween.interpolate_property(back, 'modulate:a', back.modulate.a, 0.0, 2.0*abs(1-remnant), Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
 					background_tween.start()
 					background_stuff_visible = false
 

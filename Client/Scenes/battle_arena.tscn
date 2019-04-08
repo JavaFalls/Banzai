@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Scripts/battle_arena.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/arena_base.tscn" type="PackedScene" id=2]
@@ -9,7 +9,14 @@
 [ext_resource path="res://assets/white block.png" type="Texture" id=7]
 [ext_resource path="res://themes/fonts/dpcomic.tres" type="DynamicFont" id=8]
 [ext_resource path="res://Scenes/UI Nodes/ui_weapon_cooldowns.tscn" type="PackedScene" id=9]
-[ext_resource path="res://sounds/Sound_scripts/BattleAudio.gd" type="Script" id=10]
+[ext_resource path="res://Scenes/popups/nn_options.tscn" type="PackedScene" id=10]
+[ext_resource path="res://sounds/Sound_scripts/BattleAudio.gd" type="Script" id=11]
+
+[sub_resource type="Theme" id=12]
+
+resource_local_to_scene = true
+default_font = ExtResource( 8 )
+_sections_unfolded = [ "Resource" ]
 
 [sub_resource type="Theme" id=1]
 
@@ -234,7 +241,24 @@ rotation = 0.0
 scale = Vector2( 1, 1 )
 transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
-[node name="exit" type="ColorRect" parent="exit_layer" index="0"]
+[node name="nn_options" parent="exit_layer" index="0" instance=ExtResource( 10 )]
+
+pause_mode = 2
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+theme = SubResource( 12 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Tween" type="Tween" parent="exit_layer/nn_options" index="4"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="exit" type="ColorRect" parent="exit_layer" index="1"]
 
 pause_mode = 2
 visible = false
@@ -351,7 +375,7 @@ pitch_scale = 1.0
 autoplay = false
 mix_target = 0
 bus = "Master"
-script = ExtResource( 10 )
+script = ExtResource( 11 )
 
 [node name="game_time" type="Timer" parent="." index="6"]
 

@@ -62,7 +62,7 @@ func _physics_process(delta):
 # Function that is called when the ability is used
 func use():
 	# Only use if cooldown is finished
-	if cooldown_timer.is_stopped():
+	if cooldown_timer.is_stopped() and not charging:
 		# Charge effect
 		charging = true
 		charge_direction = Vector2(cos(bot.aim_angle),sin(bot.aim_angle))
