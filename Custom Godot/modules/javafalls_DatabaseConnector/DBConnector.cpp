@@ -678,10 +678,10 @@ int DBConnector::get_min_score() {
 // Returns scoreboard information for the current top 10 bots
 String DBConnector::get_scoreboard_top_ten() {
    String return_value;
-   std::string sql_query = "SELECT bot_info.position, bot_info.name, bot_info.ranking, bot_info.bot_ID_PK"
-            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
-            + (std::string)"               bot.name, bot.ranking,"
-            + (std::string)"               bot.bot_ID_PK"
+   std::string sql_query = "SELECT bot_info.position, bot_info.name, bot_info.ranking, bot_info.primary_color, bot_info.bot_ID_PK"
+            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position"
+            + (std::string)"             , bot.name, bot.ranking, bot.primary_color"
+            + (std::string)"             , bot.bot_ID_PK"
             + (std::string)"          FROM javafalls.bot"
             + (std::string)"         WHERE bot.name != '" + PLAYER_BOT_NAME + "'"
             + (std::string)"       ) bot_info"
@@ -699,9 +699,8 @@ int DBConnector::get_scoreboard_position(int bot_id) {
 
    int return_value;
    std::string sql_query = "SELECT bot_info.position"
-            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
-            + (std::string)"               bot.ranking,"
-            + (std::string)"               bot.bot_ID_PK, bot.player_ID_FK"
+            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position"
+            + (std::string)"             , bot.bot_ID_PK"
             + (std::string)"          FROM javafalls.bot"
             + (std::string)"         WHERE bot.name != '" + PLAYER_BOT_NAME + "'"
             + (std::string)"       ) bot_info"
@@ -720,10 +719,10 @@ String DBConnector::get_scoreboard_range(int min_position, int max_position) {
    const int PARAM_MAX_POSITION = 2;
 
    String return_value;
-   std::string sql_query = "SELECT bot_info.position, bot_info.name, bot_info.ranking, bot_info.bot_ID_PK"
-            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position,"
-            + (std::string)"               bot.name, bot.ranking,"
-            + (std::string)"               bot.bot_ID_PK"
+   std::string sql_query = "SELECT bot_info.position, bot_info.name, bot_info.ranking, bot_info.primary_color, bot_info.bot_ID_PK, bot_info.player_ID_FK"
+            + (std::string)"  FROM (SELECT ROW_NUMBER() OVER(ORDER BY bot.ranking DESC) AS position"
+            + (std::string)"             , bot.name, bot.ranking, bot.primary_color"
+            + (std::string)"             , bot.bot_ID_PK, bot.player_ID_FK"
             + (std::string)"          FROM javafalls.bot"
             + (std::string)"         WHERE bot.name != '" + PLAYER_BOT_NAME + "'"
             + (std::string)"       ) bot_info"

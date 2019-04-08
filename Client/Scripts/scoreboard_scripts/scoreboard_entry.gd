@@ -4,7 +4,6 @@ extends MarginContainer
 #  NP = "Node Path"
 #  FP = "File Path"
 #-------------------------------------------------------------------------------
-const NP_SPR_BANNER_TAG = "banner_tag"
 const NP_LBL_POSITION = "text/position"
 const NP_LBL_NAME = "text/name"
 const NP_LBL_SCORE = "text/score"
@@ -19,9 +18,10 @@ export(tag_type) var TAG_TYPE = TAG_TYPE_NORMAL
 
 export(Texture) var TEXTURE_TAG_UP
 export(Texture) var TEXTURE_TAG_DOWN
-export(Texture) var TEXTURE_TAG_BLUE
-export(Texture) var TEXTURE_TAG_RED
-export(Texture) var TEXTURE_TAG_GREEN
+export(Texture) var TEXTURE_TAG_WHITE
+#export(Texture) var TEXTURE_TAG_BLUE
+#export(Texture) var TEXTURE_TAG_RED
+#export(Texture) var TEXTURE_TAG_GREEN
 
 # Signals
 signal on_click()
@@ -39,11 +39,12 @@ func _ready():
 		self.mouse_filter = MOUSE_FILTER_STOP
 		match TAG_TYPE:
 			TAG_TYPE_UP:
-				get_node(NP_SPR_BANNER_TAG).texture = TEXTURE_TAG_UP
+				$banner_tag.texture = TEXTURE_TAG_UP
 			TAG_TYPE_DOWN:
-				get_node(NP_SPR_BANNER_TAG).texture = TEXTURE_TAG_DOWN
+				$banner_tag.texture = TEXTURE_TAG_DOWN
 	else:
 		self.mouse_filter = MOUSE_FILTER_IGNORE
+		$banner_tag.texture = TEXTURE_TAG_WHITE
 
 func _gui_input(event):
 	if event is InputEventMouseButton:
@@ -66,22 +67,24 @@ func _on_scoreboard_entry_mouse_exited():
 # Getters and setters
 #-------------------------------------------------------------------------------
 func get_tag_color():
-	match get_node(NP_SPR_BANNER_TAG).texture:
-		TEXTURE_TAG_BLUE:
-			return TAG_BLUE
-		TEXTURE_TAG_RED:
-			return TAG_RED
-		TEXTURE_TAG_GREEN:
-			return TAG_GREEN
+	return $banner_tag.modulate
+	#match $banner_tag.texture:
+	#	TEXTURE_TAG_BLUE:
+	#		return TAG_BLUE
+	#	TEXTURE_TAG_RED:
+	#		return TAG_RED
+	#	TEXTURE_TAG_GREEN:
+	#		return TAG_GREEN
 func set_tag_color(new_color):
-	if (TAG_TYPE == TAG_TYPE_NORMAL):
-		match new_color:
-			TAG_BLUE:
-				get_node(NP_SPR_BANNER_TAG).texture = TEXTURE_TAG_BLUE
-			TAG_RED:
-				get_node(NP_SPR_BANNER_TAG).texture = TEXTURE_TAG_RED
-			TAG_GREEN:
-				get_node(NP_SPR_BANNER_TAG).texture = TEXTURE_TAG_GREEN
+	#if (TAG_TYPE == TAG_TYPE_NORMAL):
+	$banner_tag.modulate = new_color
+		#match new_color:
+		#	TAG_BLUE:
+		#		$banner_tag.texture = TEXTURE_TAG_BLUE
+		#	TAG_RED:
+		#		$banner_tag.texture = TEXTURE_TAG_RED
+		#	TAG_GREEN:
+		#		$banner_tag.texture = TEXTURE_TAG_GREEN
 
 func get_position():
 	if (TAG_TYPE == TAG_TYPE_NORMAL):
