@@ -49,41 +49,6 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[sub_resource type="StyleBoxEmpty" id=12]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-
-[sub_resource type="StyleBoxEmpty" id=13]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-
-[sub_resource type="StyleBoxEmpty" id=14]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-
-[sub_resource type="StyleBoxEmpty" id=15]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-
-[sub_resource type="StyleBoxEmpty" id=16]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-
 [sub_resource type="StyleBoxEmpty" id=7]
 
 content_margin_left = -1.0
@@ -119,6 +84,41 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
+[sub_resource type="StyleBoxEmpty" id=12]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=14]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=15]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=16]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
 [node name="world" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
@@ -133,7 +133,6 @@ _sections_unfolded = [ "Pause" ]
 [node name="exit" type="Node2D" parent="." index="2"]
 
 pause_mode = 2
-editor/display_folded = true
 visible = false
 z_index = 2
 _sections_unfolded = [ "Pause", "Z Index" ]
@@ -171,7 +170,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-text = "Exitting the arena.
+text = "Exiting the arena.
 Do you want to save the current AI model?"
 align = 1
 valign = 1
@@ -229,11 +228,11 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/hover = SubResource( 12 )
-custom_styles/pressed = SubResource( 13 )
-custom_styles/focus = SubResource( 14 )
-custom_styles/disabled = SubResource( 15 )
-custom_styles/normal = SubResource( 16 )
+custom_styles/hover = SubResource( 7 )
+custom_styles/pressed = SubResource( 8 )
+custom_styles/focus = SubResource( 9 )
+custom_styles/disabled = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
 custom_colors/font_color_disabled = Color( 0.666667, 0.666667, 0.666667, 1 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
@@ -263,11 +262,11 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/hover = SubResource( 7 )
-custom_styles/pressed = SubResource( 8 )
-custom_styles/focus = SubResource( 9 )
-custom_styles/disabled = SubResource( 10 )
-custom_styles/normal = SubResource( 11 )
+custom_styles/hover = SubResource( 12 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/focus = SubResource( 14 )
+custom_styles/disabled = SubResource( 15 )
+custom_styles/normal = SubResource( 16 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 toggle_mode = false
