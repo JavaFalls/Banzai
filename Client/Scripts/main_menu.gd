@@ -11,6 +11,7 @@ onready var command_popup = get_node("Commands")
 
 # Every loaded bot is temporarily stored
 var bot_ids = []
+var bot_names = []
 var current = 0
 
 var commands_active = false
@@ -43,8 +44,6 @@ func _ready():
 	get_node("logout_warning").connect("popup_hide", self, "unfade")
 	get_node("logout_warning/button_face/Button").connect("mouse_entered", self, "hover_logout_confirm", [true])
 	get_node("logout_warning/button_face/Button").connect("mouse_exited", self, "hover_logout_confirm", [false])
-	
-	get_node("Control/username").text = head.username
 	
 	$instructions/exit_instructions.connect("pressed", self, "exit_instructions")
 	
@@ -256,11 +255,13 @@ func exit_instructions():
 func get_left_bot():
 	current = bot_ids.size()-1 if current-1 < 0 else current-1
 	head.bot_ID = bot_ids[current]
+	$Control/username.text = bot_names[current]
 	_bot.load_colors_from_DB(head.bot_ID)
 
 func get_right_bot():
 	current = 0 if current+1 >= bot_ids.size() else current+1
 	head.bot_ID = bot_ids[current]
+	$Control/username.text = bot_names[current]
 	_bot.load_colors_from_DB(head.bot_ID)
 
 func set_all_bot_ids():
@@ -272,6 +273,9 @@ func set_all_bot_ids():
 				var id_num = id.to_int()
 				if id_num != head.player_bot_ID:
 					bot_ids.append(id_num)
+					bot_names.append(parse_json(head.DB.get_bot(id_num))["data"][0]["name"])
+					if id_num == head.bot_ID:
+						$Control/username.text = bot_names.back()
 				id = ""
 		else:
 			id += c
