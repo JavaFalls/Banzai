@@ -140,6 +140,10 @@ func _process(delta):
 	
 	var time = OS.get_time()
 	$time.text = "%02d:%02d:%02d" % [(12 if time["hour"]%12==0 else time["hour"]%12), time["minute"], time["second"]]
+	
+	if head.refresh_bots:
+		set_all_bot_ids()
+		head.refresh_bots = false
 
 """
 Various nodes' signal methods
@@ -195,8 +199,6 @@ func zorro_is_coming():
 func logout():
 	fade()
 	get_node("logout_warning").popup()
-	head.name_section = 1 # Set name section to Usernames
-	head.show_bot_ids = false # Set ranking screen to bot score
 	pass
 
 func hover_logout_confirm(mouse_entered):
