@@ -29,13 +29,13 @@ func _ready():
 	var i = 1
 	for scoreboard_entry in _leaders.get_children():
 		scoreboard_entry.set_position(i)
-		match i % 3:
-			1:
-				scoreboard_entry.set_tag_color(scoreboard_entry.TAG_BLUE)
-			2:
-				scoreboard_entry.set_tag_color(scoreboard_entry.TAG_RED)
-			0:
-				scoreboard_entry.set_tag_color(scoreboard_entry.TAG_GREEN)
+		#match i % 3:
+		#	1:
+		#		scoreboard_entry.set_tag_color(scoreboard_entry.TAG_BLUE)
+		#	2:
+		#		scoreboard_entry.set_tag_color(scoreboard_entry.TAG_RED)
+		#	0:
+		#		scoreboard_entry.set_tag_color(scoreboard_entry.TAG_GREEN)
 		
 		i += 1
 
@@ -60,8 +60,10 @@ func request():
 			if (i < scoreboard_dictionary.size()):
 				scoreboard_entry.set_name(scoreboard_dictionary[i]["name"])
 				scoreboard_entry.set_score(scoreboard_dictionary[i]["ranking"])
+				scoreboard_entry.set_tag_color(Color(scoreboard_dictionary[i]["secondary_color"]) if typeof(scoreboard_dictionary[i]["secondary_color"]) == TYPE_INT else Color(int(scoreboard_dictionary[i]["secondary_color"])))
 			else: 
 				scoreboard_entry.set_name("")
 				scoreboard_entry.set_score("-")
+				scoreboard_entry.set_tag_color(Color(1,1,1,1))
 			
 			i += 1

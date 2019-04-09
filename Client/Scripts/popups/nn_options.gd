@@ -1,6 +1,8 @@
 extends Control
 
-var model_ID # The ID of the model these options belong to
+onready var head = get_tree().get_root().get_node("/root/head")
+
+var model_ID = 0# The ID of the model these options belong to
 
 func _ready():
 	$back_button.connect("pressed", self, "exit")

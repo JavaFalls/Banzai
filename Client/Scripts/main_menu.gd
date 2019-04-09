@@ -8,6 +8,10 @@ onready var _timer = get_node("timeout")
 onready var _tween = get_node("Tween")
 onready var _bot = $animation_bot
 
+# Every loaded bot is temporarily stored
+var bot_ids = []
+var current = 0
+
 var background_stuff_visible = false
 var background_tween
 var left_button_pressed = false
@@ -36,11 +40,18 @@ func _ready():
 	get_node("logout_warning").connect("popup_hide", self, "unfade")
 	get_node("logout_warning/button_face/Button").connect("mouse_entered", self, "hover_logout_confirm", [true])
 	get_node("logout_warning/button_face/Button").connect("mouse_exited", self, "hover_logout_confirm", [false])
-
+	
 	get_node("Control/username").text = head.username
-
+	
 	$instructions/exit_instructions.connect("pressed", self, "exit_instructions")
-
+	
+	set_all_bot_ids()
+	if bot_ids.size() < 2:
+		$get_left_bot.visible = false
+		$get_right_bot.visible = false
+	else:
+		$get_left_bot.connect("pressed", self, "get_left_bot")
+		$get_right_bot.connect("pressed", self, "get_right_bot")
 	_bot.load_colors_from_DB(head.bot_ID)
 	
 	background_tween = Tween.new()
@@ -97,16 +108,17 @@ func _input(event):
 				event.global_position.y > _bot.global_position.y - 15
 			):
 				var back = $Control/background_animation
+				var remnant = 1-back.modulate.a
 				if not back.visible:
 					back.visible = true
 				if not background_stuff_visible:
 					background_tween.remove_all()
-					background_tween.interpolate_property(back, 'modulate:a', back.modulate.a, 1.0, 2.0*(1-back.modulate.a), Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
+					background_tween.interpolate_property(back, 'modulate:a', back.modulate.a, 1.0, 2.0*remnant, Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
 					background_tween.start()
 					background_stuff_visible = true
 				else:
 					background_tween.remove_all()
-					background_tween.interpolate_property(back, 'modulate:a', back.modulate.a, 0.0, 2.0/(1+back.modulate.a), Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
+					background_tween.interpolate_property(back, 'modulate:a', back.modulate.a, 0.0, 2.0*abs(1-remnant), Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
 					background_tween.start()
 					background_stuff_visible = false
 
@@ -134,7 +146,7 @@ func scene_change(button):
 		"custom":
 			get_tree().change_scene("res://Scenes/Screens/construction_fork.tscn")
 		"credits":
-			get_tree().change_scene("res://Scenes/Screens/credits.tscn")
+			get_tree().change_scene("res://Scenes/creds.tscn")
 		"train":
 			Menu_audio.menu_audio.stop()
 			head.load_scene("res://Scenes/arena_train.tscn")
@@ -226,3 +238,28 @@ func unfade():
 func exit_instructions():
 	$instructions.visible = false
 	$Control/title.modulate = Color("#ffffff")
+
+# Bot selection
+#---------------------------------------
+func get_left_bot():
+	current = bot_ids.size()-1 if current-1 < 0 else current-1
+	head.bot_ID = bot_ids[current]
+	_bot.load_colors_from_DB(head.bot_ID)
+
+func get_right_bot():
+	current = 0 if current+1 >= bot_ids.size() else current+1
+	head.bot_ID = bot_ids[current]
+	_bot.load_colors_from_DB(head.bot_ID)
+
+func set_all_bot_ids():
+	var player_bots = parse_json(head.DB.get_player_bots(head.player_ID))
+	var id = ""
+	for c in player_bots["data"][0]["player_bots"]:
+		if c == ",":
+			if id != "":
+				var id_num = id.to_int()
+				if id_num != head.player_bot_ID:
+					bot_ids.append(id_num)
+				id = ""
+		else:
+			id += c

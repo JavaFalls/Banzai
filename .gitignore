@@ -54,6 +54,7 @@ export.bat
 export_log.bat
 export_log.txt
 *.spec
+*.pkf
 
 # Append Visual Studio gitignore file #
 #######################################

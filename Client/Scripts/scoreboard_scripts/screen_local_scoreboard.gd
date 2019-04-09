@@ -22,6 +22,10 @@ const MIN_DISPLAY_POSITION = 0 # The scoreboard won't scroll past this point
 const DB_GRAB_POSITIONS = 50 # How many positions to load around the current display position
 const MAX_SCOREBOARD_DICTIONARY_SIZE = DB_GRAB_POSITIONS + DB_GRAB_POSITIONS + 1
 
+const BOT_INDICATOR_X_POSITION = 270
+const BOT_INDICATOR_Y_OFFSET = 8
+const BOT_INDICATOR_Y_SIZE = 18
+
 # Exported values:
 #-------------------------------------------------------------------------------
 
@@ -33,9 +37,12 @@ var scoreboard_dictionary_index_offset # The difference between a bots actual po
 
 var display_position # The current smallest position number that is displayed on the scoreboard.- In other words, the scoreboard position of the bot display on the UP button banner
 
+var bot_indicators = Array()
+
 # Pre initialized variables
 #-------------------------------------------------------------------------------
 onready var scoreboard = get_node(NP_SCOREBOARD)
+onready var preloaded_owned_bot_indicator = preload("res://Scenes/Screens/instance_scenes/scoreboard_bot_indicator.tscn")
 
 # Godot Hooks:
 #-------------------------------------------------------------------------------
@@ -110,7 +117,12 @@ func update_scoreboard_ui():
 	# Check if we need to reload data from the DB
 	if (display_position < scoreboard_dictionary[0]["position"] || display_position + 11 > scoreboard_dictionary[scoreboard_dictionary_size - 1]["position"]):
 		get_scoreboard_dictionary()
-
+	
+	# Remove any prexisting owned bot indicators
+	for indicator in bot_indicators:
+		indicator.queue_free()
+	bot_indicators.clear()
+	
 	var i = display_position - scoreboard_dictionary_index_offset
 	for scoreboard_entry in scoreboard.get_children():
 		if (i >= 0 && i < scoreboard_dictionary_size):
@@ -118,20 +130,28 @@ func update_scoreboard_ui():
 			scoreboard_entry.set_position(scoreboard_dictionary[i]["position"])
 			scoreboard_entry.set_name(scoreboard_dictionary[i]["name"])
 			scoreboard_entry.set_score(scoreboard_dictionary[i]["ranking"])
+			scoreboard_entry.set_tag_color(Color(scoreboard_dictionary[i]["secondary_color"]) if typeof(scoreboard_dictionary[i]["secondary_color"]) == TYPE_INT else Color(int(scoreboard_dictionary[i]["secondary_color"])))
+			if scoreboard_dictionary[i]["player_ID_FK"] == head.player_ID:
+				var new_indicator = preloaded_owned_bot_indicator.instance()
+				bot_indicators.append(new_indicator)
+				add_child(new_indicator)
+				new_indicator.rect_position.x = BOT_INDICATOR_X_POSITION
+				new_indicator.rect_position.y = scoreboard_entry.get_global_rect().position.y
 		else:
 			# Position does not exist in the DB, so we need to display a blank banner
 			scoreboard_entry.set_position(i + scoreboard_dictionary_index_offset)
 			scoreboard_entry.set_name("")
 			scoreboard_entry.set_score("-")
-
-		match scoreboard_entry.get_position() % 3:
-			1:
-				scoreboard_entry.set_tag_color(scoreboard_entry.TAG_BLUE)
-			2:
-				scoreboard_entry.set_tag_color(scoreboard_entry.TAG_RED)
-			0:
-				scoreboard_entry.set_tag_color(scoreboard_entry.TAG_GREEN)
-
+			scoreboard_entry.set_tag_color(Color(1, 1, 1))
+		
+		#match scoreboard_entry.get_position() % 3:
+		#	1:
+		#		scoreboard_entry.set_tag_color(scoreboard_entry.TAG_BLUE)
+		#	2:
+		#		scoreboard_entry.set_tag_color(scoreboard_entry.TAG_RED)
+		#	0:
+		#		scoreboard_entry.set_tag_color(scoreboard_entry.TAG_GREEN)
+		
 		i += 1
 
 # Updates the player's bot information with the latest data from the database

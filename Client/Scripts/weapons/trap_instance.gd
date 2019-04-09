@@ -4,7 +4,7 @@
 extends Area2D
 
 # Constants
-const SNARE_DURATION = 1.00
+const SNARE_DURATION = 2.0
 
 # Stat Variables:
 var        id       = -1
@@ -41,6 +41,7 @@ func activate(target):
 			boom.lifetime = 0.20
 			boom.damage = damage
 			boom.position = global_position
+			boom.explosion_owner = bot
 			#boom.set_sprite(get_node("Sprite").texture)
 			bot.get_parent().add_child(boom)
 		weapon_creator.W_SEC_SNARE:

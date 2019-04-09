@@ -34,6 +34,7 @@ var last_known_location = Vector2() # This is the location data that the opponen
 var immobilized = 0.0 # How long the bot will be unable to move for. Used by the 'snare' and 'nuke' secondaries and the 'freeze' ability
 var disabled = 0.0 # How long the bot will be unable to attack. Used by the 'nuke' secondary and 'freeze' ability
 
+onready var preloaded_damage_text = preload("res://Scenes/weapons/effects/damage_text.tscn")
 
 signal game_end # The signal indicate the the arena match is over
 
@@ -68,6 +69,11 @@ func get_trajectory():
 func increment_hitpoints(damage): # this decremements now because we make health go down.
 	if not shielded:
 		hit_points -= damage
+		if damage != 0:
+			var damage_text = preloaded_damage_text.instance()
+			damage_text.set_text(str(damage))
+			damage_text.position = global_position
+			get_parent().add_child(damage_text)
 
 func set_opponent(new_opponent):
 	opponent = new_opponent

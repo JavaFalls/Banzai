@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/logo_large.png-b09851b48e04148c4a7e4a59b35f4366.stex"
+path="res://.import/logo_large.png-d28dca836be76265da22917b4d58297e.stex"
 
 [deps]
 
-source_file="res://Assets/logo_large.png"
-dest_files=[ "res://.import/logo_large.png-b09851b48e04148c4a7e4a59b35f4366.stex" ]
+source_file="res://assets/logo_large.png"
+dest_files=[ "res://.import/logo_large.png-d28dca836be76265da22917b4d58297e.stex" ]
 
 [params]
 

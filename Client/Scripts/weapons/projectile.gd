@@ -3,8 +3,10 @@
 extends Area2D
 
 # Constants:
-const FREEZE_DURATION = 0.5
+const FREEZE_DURATION = 1.0
 const DEFLECTOR_DAMAGE_REDUCTION = 0.5
+const NUMBER_OF_BOUNCES_BEFORE_DAMAGE_DROPS = 1
+const BOUNCE_DAMAGE_DROP = 1 # How much to drop the damage by at a time
 
 # Stat Variables:
 var        id       = -1
@@ -13,8 +15,9 @@ var        damage   = 0
 
 # Other variables:
 var        movement = Vector2()
+onready var bounces = 0 # Number of times the projectile has bounced. Used by rubber projectiles
 onready var projectile_owner = get_parent().get_parent().get_parent()
-onready var t = Timer.new()
+#onready var t = Timer.new()
 
 # Helper scenes
 onready var explosion = preload("res://Scenes/weapons/explosion.tscn") # Basic explosion that can be instanced.
@@ -23,20 +26,20 @@ onready var freeze = preload("res://Scenes/weapons/freeze_effect.tscn") # Freeze
 
 # Godot Hooks:
 #---------------------------------------------------------
-func _ready():
-	# Setup the timer
-	t.set_wait_time(5.0)
-	t.set_one_shot(true)
-	self.add_child(t)
-	t.start()
+#func _ready():
+#	# Setup the timer
+#	t.set_wait_time(5.0)
+#	t.set_one_shot(true)
+#	self.add_child(t)
+#	t.start()
 
 func _physics_process(delta):
 	self.global_position += movement*speed*delta                 # move the projectile
 	# Kill the projectile after the timer ends
 	if global_position.x <= -200 or global_position.x > 625 or global_position.y < -200 or global_position.y > 400:
 		queue_free()
-	elif t.is_stopped():
-		self.queue_free()
+	#elif t.is_stopped():
+	#	self.queue_free()
 
 func _on_projectile_body_entered(body):
 	if (body.get_instance_id() != projectile_owner.get_instance_id()):
@@ -53,6 +56,7 @@ func _on_projectile_body_entered(body):
 				boom.lifetime = 0.15
 				boom.damage = damage
 				boom.position = global_position
+				boom.explosion_owner = projectile_owner
 				#boom.set_sprite(get_node("Sprite").texture)
 				projectile_owner.get_parent().add_child(boom)
 				if not body.is_in_group("deflector"):
@@ -100,6 +104,14 @@ func _on_projectile_body_shape_entered(body_id, body, body_shape_ID, area_shape_
 		# Did we hit a wall? If so bounce
 		#if body.get_name().ends_with("wall"):
 		if body.is_in_group("wall"):
+			# Manage the number of times we bounce
+			bounces += 1
+			if bounces % NUMBER_OF_BOUNCES_BEFORE_DAMAGE_DROPS == 0:
+				damage -= BOUNCE_DAMAGE_DROP
+				if damage <= 0:
+					queue_free()
+					return
+			
 			# New Solution:-----------------------------
 			# We know that we are dealing with squares, therefore the possible normalized vector lines we can bounce off of are:
 			# VECTOR_SIDE_LEFT, VECTOR_SIDE_RIGHT, VECTOR_SIDE_TOP, VECTOR_SIDE_BOTTOM

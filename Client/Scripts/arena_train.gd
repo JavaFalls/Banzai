@@ -7,7 +7,6 @@ onready var bot_data = JSON.parse(
 									   "File_%s.h5" % str(head.bot_ID))).result["data"][0]
 #onready var bot_data = JSON.parse(head.DB.get_bot(1,"File_%s.h5" % str(1))).result["data"][0]# for seth and jonathan
 #onready var player_data = JSON.parse(head.DB.get_bot(1,"File_%s.h5" % str(1))).result["data"][0]# for seth and jonathan
-onready var nn_results = preload("res://Scenes/popups/nn_results.tscn")
 
 # The variables
 var fighter1                             # Player or his AI bot
@@ -133,13 +132,13 @@ func main_menu():
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 func _on_confirm_pressed():
-	$exit.visible = false
-	var results_popup
-	if nn_results.can_instance():
-		results_popup = nn_results.instance(PackedScene.GEN_EDIT_STATE_DISABLED)
-	$popup_layer.add_child(results_popup)
-	results_popup.connect("resume", self, "exit_results", [results_popup])
-	results_popup.connect("leave", self, "exit_arena")
+	head.save_bot()
+	get_tree().set_pause(false)
+	get_tree().change_scene("res://Scenes/main_menu.tscn")
+
+func _on_dont_save_pressed():
+	get_tree().set_pause(false)
+	get_tree().change_scene("res://Scenes/main_menu.tscn")
 
 func _on_back_pressed():
 	get_tree().set_pause(false)
@@ -175,11 +174,3 @@ func load_bot():
 	message = '{ "Message Type": "Delete File", "File Path": "File_%s.h5" }' % str(head.bot_ID)
 	head.Client.send_request(message)
 	output = head.Client.get_response()
-
-func exit_results(popup):
-	popup.queue_free()
-	get_tree().set_pause(false)
-
-func exit_arena():
-	get_tree().set_pause(false)
-	get_tree().change_scene("res://Scenes/main_menu.tscn")

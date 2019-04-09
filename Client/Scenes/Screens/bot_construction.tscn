@@ -206,7 +206,7 @@ resource_local_to_scene = true
 default_font = ExtResource( 7 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="Node" type="Node" index="0"]
+[node name="Node" type="Node"]
 
 script = ExtResource( 1 )
 
@@ -844,7 +844,65 @@ text = "desc"
 flat = true
 align = 1
 
-[node name="confirm_finish" type="ColorRect" parent="." index="27"]
+[node name="advanced_options" type="Button" parent="." index="27"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 302.0
+margin_top = 161.0
+margin_right = 371.0
+margin_bottom = 190.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/hover = SubResource( 11 )
+custom_styles/pressed = SubResource( 12 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/disabled = SubResource( 14 )
+custom_styles/normal = SubResource( 15 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color_disabled = Color( 0.666667, 0.666667, 0.666667, 1 )
+custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Advanced"
+flat = true
+align = 1
+_sections_unfolded = [ "Anchor", "Margin" ]
+
+[node name="NinePatchRect" type="NinePatchRect" parent="advanced_options" index="0"]
+
+show_behind_parent = true
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 69.0
+margin_bottom = 29.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 16 )
+patch_margin_left = 12
+patch_margin_top = 12
+patch_margin_right = 12
+patch_margin_bottom = 12
+_sections_unfolded = [ "Patch Margin", "Theme", "Visibility" ]
+
+[node name="confirm_finish" type="ColorRect" parent="." index="28"]
 
 editor/display_folded = true
 visible = false
@@ -922,11 +980,11 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/hover = SubResource( 11 )
-custom_styles/pressed = SubResource( 12 )
-custom_styles/focus = SubResource( 13 )
-custom_styles/disabled = SubResource( 14 )
-custom_styles/normal = SubResource( 15 )
+custom_styles/hover = SubResource( 16 )
+custom_styles/pressed = SubResource( 17 )
+custom_styles/focus = SubResource( 18 )
+custom_styles/disabled = SubResource( 19 )
+custom_styles/normal = SubResource( 20 )
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.345098, 0.886275, 0.380392, 1 )
@@ -956,11 +1014,11 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/hover = SubResource( 16 )
-custom_styles/pressed = SubResource( 17 )
-custom_styles/focus = SubResource( 18 )
-custom_styles/disabled = SubResource( 19 )
-custom_styles/normal = SubResource( 20 )
+custom_styles/hover = SubResource( 21 )
+custom_styles/pressed = SubResource( 22 )
+custom_styles/focus = SubResource( 23 )
+custom_styles/disabled = SubResource( 24 )
+custom_styles/normal = SubResource( 25 )
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.345098, 0.886275, 0.380392, 1 )
@@ -971,64 +1029,6 @@ group = null
 text = "NO"
 flat = true
 align = 1
-
-[node name="advanced_options" type="Button" parent="." index="28"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 302.0
-margin_top = 161.0
-margin_right = 371.0
-margin_bottom = 190.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-custom_styles/hover = SubResource( 21 )
-custom_styles/pressed = SubResource( 22 )
-custom_styles/focus = SubResource( 23 )
-custom_styles/disabled = SubResource( 24 )
-custom_styles/normal = SubResource( 25 )
-custom_fonts/font = ExtResource( 7 )
-custom_colors/font_color_disabled = Color( 0.666667, 0.666667, 0.666667, 1 )
-custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
-custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
-custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Advanced"
-flat = true
-align = 1
-_sections_unfolded = [ "Anchor", "Margin" ]
-
-[node name="NinePatchRect" type="NinePatchRect" parent="advanced_options" index="0"]
-
-show_behind_parent = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 69.0
-margin_bottom = 29.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-texture = ExtResource( 16 )
-patch_margin_left = 12
-patch_margin_top = 12
-patch_margin_right = 12
-patch_margin_bottom = 12
-_sections_unfolded = [ "Patch Margin", "Theme", "Visibility" ]
 
 [node name="nn_options" parent="." index="29" instance=ExtResource( 19 )]
 
@@ -1065,11 +1065,11 @@ theme = SubResource( 26 )
 
 [connection signal="pressed" from="switch_description" to="." method="_on_switch_description_pressed"]
 
-[connection signal="pressed" from="confirm_finish/not_confirm" to="." method="_on_not_confirm_pressed"]
-
 [connection signal="mouse_entered" from="advanced_options" to="." method="button_hover_enter"]
 
 [connection signal="pressed" from="advanced_options" to="." method="_on_advanced_options_pressed"]
+
+[connection signal="pressed" from="confirm_finish/not_confirm" to="." method="_on_not_confirm_pressed"]
 
 
 [editable path="color_scroll"]

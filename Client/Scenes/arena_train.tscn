@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Scripts/arena_train.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/arena_base.tscn" type="PackedScene" id=2]
@@ -84,7 +84,42 @@ content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
 
-[node name="world" type="Node2D"]
+[sub_resource type="StyleBoxEmpty" id=12]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=14]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=15]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[sub_resource type="StyleBoxEmpty" id=16]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+
+[node name="world" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Pause" ]
@@ -108,10 +143,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 143.0
+margin_left = 100.0
 margin_top = 13.0
-margin_right = 257.0
-margin_bottom = 72.0
+margin_right = 300.0
+margin_bottom = 116.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -127,17 +162,19 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 114.0
-margin_bottom = 33.0
+margin_right = 200.0
+margin_bottom = 57.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-text = "Exit the arena?"
+text = "Exiting the arena.
+Do you want to save the current AI model?"
 align = 1
 valign = 1
+autowrap = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -148,10 +185,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 3.0
-margin_top = 34.0
-margin_right = 54.0
-margin_bottom = 56.0
+margin_left = 7.0
+margin_top = 72.0
+margin_right = 58.0
+margin_bottom = 94.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -174,16 +211,16 @@ text = "Yes"
 flat = true
 align = 1
 
-[node name="back" type="Button" parent="exit/exit" index="2"]
+[node name="dont_save" type="Button" parent="exit/exit" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 60.0
-margin_top = 34.0
-margin_right = 111.0
-margin_bottom = 56.0
+margin_left = 63.0
+margin_top = 72.0
+margin_right = 137.0
+margin_bottom = 94.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -196,15 +233,50 @@ custom_styles/pressed = SubResource( 8 )
 custom_styles/focus = SubResource( 9 )
 custom_styles/disabled = SubResource( 10 )
 custom_styles/normal = SubResource( 11 )
+custom_colors/font_color_disabled = Color( 0.666667, 0.666667, 0.666667, 1 )
+custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Don't Save"
+flat = true
+align = 1
+
+[node name="back" type="Button" parent="exit/exit" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 142.0
+margin_top = 72.0
+margin_right = 193.0
+margin_bottom = 94.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/hover = SubResource( 12 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/focus = SubResource( 14 )
+custom_styles/disabled = SubResource( 15 )
+custom_styles/normal = SubResource( 16 )
 custom_colors/font_color = Color( 0.666667, 0.666667, 0.666667, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "No"
+text = "Back"
 flat = true
 align = 1
+_sections_unfolded = [ "Rect" ]
 
 [node name="UI_container" type="Node2D" parent="." index="3"]
 
@@ -238,17 +310,11 @@ bus = "Master"
 script = ExtResource( 6 )
 _sections_unfolded = [ "Material", "Pause", "Visibility" ]
 
-[node name="popup_layer" type="CanvasLayer" parent="." index="5"]
-
-layer = 2
-offset = Vector2( 0, 0 )
-rotation = 0.0
-scale = Vector2( 1, 1 )
-transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-
-[node name="timeout" parent="." index="6" instance=ExtResource( 7 )]
+[node name="timeout" parent="." index="5" instance=ExtResource( 7 )]
 
 [connection signal="pressed" from="exit/exit/confirm" to="." method="_on_confirm_pressed"]
+
+[connection signal="pressed" from="exit/exit/dont_save" to="." method="_on_dont_save_pressed"]
 
 [connection signal="pressed" from="exit/exit/back" to="." method="_on_back_pressed"]
 

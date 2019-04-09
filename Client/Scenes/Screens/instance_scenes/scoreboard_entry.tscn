@@ -1,14 +1,12 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/scoreboard_scripts/scoreboard_entry.gd" type="Script" id=1]
 [ext_resource path="res://assets/local_scoreboard/tag_large_up.png" type="Texture" id=2]
 [ext_resource path="res://assets/local_scoreboard/tag_large_down.png" type="Texture" id=3]
-[ext_resource path="res://assets/local_scoreboard/tag_large_blue.png" type="Texture" id=4]
-[ext_resource path="res://assets/local_scoreboard/tag_large_orange.png" type="Texture" id=5]
-[ext_resource path="res://assets/local_scoreboard/tag_large_green.png" type="Texture" id=6]
-[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=7]
+[ext_resource path="res://Assets/local_scoreboard/tag_large_white.png" type="Texture" id=4]
+[ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=5]
 
-[node name="scoreboard_entry" type="MarginContainer"]
+[node name="scoreboard_entry" type="MarginContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -27,13 +25,11 @@ custom_constants/margin_top = 0
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
 script = ExtResource( 1 )
-_sections_unfolded = [ "Margin", "Rect" ]
+_sections_unfolded = [ "Margin" ]
 TAG_TYPE = 0
 TEXTURE_TAG_UP = ExtResource( 2 )
 TEXTURE_TAG_DOWN = ExtResource( 3 )
-TEXTURE_TAG_BLUE = ExtResource( 4 )
-TEXTURE_TAG_RED = ExtResource( 5 )
-TEXTURE_TAG_GREEN = ExtResource( 6 )
+TEXTURE_TAG_WHITE = ExtResource( 4 )
 
 [node name="banner_tag" type="Sprite" parent="." index="0"]
 
@@ -73,7 +69,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-theme = ExtResource( 7 )
+theme = ExtResource( 5 )
 align = 1
 valign = 1
 percent_visible = 1.0
@@ -97,7 +93,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 3.0
-theme = ExtResource( 7 )
+theme = ExtResource( 5 )
 valign = 1
 clip_text = true
 percent_visible = 1.0
@@ -121,7 +117,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 10
 size_flags_vertical = 1
-theme = ExtResource( 7 )
+theme = ExtResource( 5 )
 text = "-"
 align = 1
 valign = 1
