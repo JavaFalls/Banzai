@@ -42,7 +42,17 @@ func process_command():
 				'change_name':
 					if atext.size() >= 2:
 						var bot = parse_json(head.DB.get_bot(head.bot_ID))["data"][0]
-						bot["name"] = atext[1]
+						var name = ''
+						var index = 1
+						var size = atext.size()
+						
+						while index < size:
+							if index >= 2:
+								name += ' '
+							name = name + atext[index]
+							index +=1
+							
+						bot["name"] = name
 						if head.DB.update_bot(
 							head.bot_ID,
 							[ bot["player_ID_FK"],
@@ -57,7 +67,7 @@ func process_command():
 							  bot["animation"] ],
 							bot["name"]):
 							refresh_bots()
-							print_success('I now bestow upon your bot the name ' + str(atext[1]))
+							print_success('I now bestow upon your bot the name ' + name)
 						else:
 							print_error('Ritual failed')
 					else:
