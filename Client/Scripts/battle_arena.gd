@@ -28,6 +28,8 @@ onready var t               = Timer.new()
 onready var game_time       = get_node("game_time")
 onready var max_game_time   = 1.5 * 60
 onready var timer_label     = get_node("Panel/Label")
+onready var plr_health_bar  = self.get_node("UI_container/healthbar/health1")
+onready var opp_health_bar  = self.get_node("UI_container/healthbar/health2")
 
 # Get Opponent
 onready var opponent_bot_ID = get_opponent(head.bot_ID)
@@ -128,8 +130,22 @@ func _ready():
 	get_tree().paused = false
 
 func _process(delta):
-	self.get_node("UI_container/healthbar").get_node("health1").set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
-	self.get_node("UI_container/healthbar").get_node("health2").set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
+	plr_health_bar.set_scale(Vector2(get_node("fighter1").get_hit_points()*11.6211/health,1))
+	opp_health_bar.set_scale(Vector2(get_node("fighter2").get_hit_points()*11.6211/health,1))
+
+	if opp_health_bar.get_scale().x < .25*11.6211:
+		opp_health_bar.set_modulate(Color(1,0,0,1))
+	elif opp_health_bar.get_scale().x < .66*11.6211:
+		opp_health_bar.set_modulate(Color(1,1,0,1))
+	else:
+		plr_health_bar.set_modulate(Color(0,1,0,1))
+	if plr_health_bar.get_scale().x < .25*11.6211:
+		plr_health_bar.set_modulate(Color(1,0,0,1))
+	elif plr_health_bar.get_scale().x < .66*11.6211:
+		plr_health_bar.set_modulate(Color(1,1,0,1))
+	else:
+		plr_health_bar.set_modulate(Color(0,1,0,1))
+
 	
 	if t.is_stopped():
 		send_nn_state(1)

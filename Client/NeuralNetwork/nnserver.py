@@ -579,8 +579,8 @@ def process_message(message):
                 fighter1.player_action = -1 # set it to invalid number so that it isn't used with regular bot's training state
                 output = fighter1.train( output_list ) # train and predict on bot
         elif message["Message Type"] == "Battle"  :
-                fighter1.epsilon = 0.25
-                fighter2.epsilon = 0.25
+                fighter1.epsilon = 0.5
+                fighter2.epsilon = 0.5
                 output = (fighter1.train(   reshape(message["Message"] , fighter1.get_state_size()) )), (fighter2.train(   reshape(message["Message"] , fighter2.get_state_size()) ))
                 # print((fighter2.model.predict(   reshape(message["Message"] , fighter2.get_state_size()) )))
         elif message["Message Type"] == "Load"   :
