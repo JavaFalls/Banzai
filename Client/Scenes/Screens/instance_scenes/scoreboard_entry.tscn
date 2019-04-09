@@ -6,7 +6,7 @@
 [ext_resource path="res://Assets/local_scoreboard/tag_large_white.png" type="Texture" id=4]
 [ext_resource path="res://themes/text_dpcomic.tres" type="Theme" id=5]
 
-[node name="scoreboard_entry" type="MarginContainer" index="0"]
+[node name="scoreboard_entry" type="MarginContainer"]
 
 anchor_left = 0.0
 anchor_top = 0.0

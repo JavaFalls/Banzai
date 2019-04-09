@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/3.png-ac056642c55150d8e0027e1a94381bd0.stex"
+path="res://.import/3.png-91ff97c692e7c0915c3133a5d670d478.stex"
 
 [deps]
 
-source_file="res://assets/weapons/deflector_animation/3.png"
-dest_files=[ "res://.import/3.png-ac056642c55150d8e0027e1a94381bd0.stex" ]
+source_file="res://Assets/weapons/deflector_animation/3.png"
+dest_files=[ "res://.import/3.png-91ff97c692e7c0915c3133a5d670d478.stex" ]
 
 [params]
 
