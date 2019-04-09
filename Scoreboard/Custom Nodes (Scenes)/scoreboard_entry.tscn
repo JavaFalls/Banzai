@@ -1,11 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Custom Nodes (Scenes)/scoreboard_entry.gd" type="Script" id=1]
-[ext_resource path="res://Graphics/leaderboard/tag_blue.png" type="Texture" id=2]
-[ext_resource path="res://Graphics/leaderboard/tag_orange.png" type="Texture" id=3]
-[ext_resource path="res://Graphics/leaderboard/tag_green.png" type="Texture" id=4]
+[ext_resource path="res://Graphics/leaderboard/tag_white.png" type="Texture" id=2]
 
-[node name="scoreboard_entry" type="MarginContainer" index="0"]
+[node name="scoreboard_entry" type="MarginContainer"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -25,9 +23,7 @@ custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
 script = ExtResource( 1 )
 _sections_unfolded = [ "Rect", "custom_constants" ]
-TEXTURE_TAG_BLUE = ExtResource( 2 )
-TEXTURE_TAG_RED = ExtResource( 3 )
-TEXTURE_TAG_GREEN = ExtResource( 4 )
+TEXTURE_TAG_WHITE = ExtResource( 2 )
 
 [node name="banner_tag" type="Sprite" parent="." index="0"]
 

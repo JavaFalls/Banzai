@@ -130,7 +130,7 @@ func update_scoreboard_ui():
 			scoreboard_entry.set_position(scoreboard_dictionary[i]["position"])
 			scoreboard_entry.set_name(scoreboard_dictionary[i]["name"])
 			scoreboard_entry.set_score(scoreboard_dictionary[i]["ranking"])
-			scoreboard_entry.set_tag_color(Color(scoreboard_dictionary[i]["primary_color"]) if typeof(scoreboard_dictionary[i]["primary_color"]) == TYPE_INT else Color(int(scoreboard_dictionary[i]["primary_color"])))
+			scoreboard_entry.set_tag_color(Color(scoreboard_dictionary[i]["secondary_color"]) if typeof(scoreboard_dictionary[i]["secondary_color"]) == TYPE_INT else Color(int(scoreboard_dictionary[i]["secondary_color"])))
 			if scoreboard_dictionary[i]["player_ID_FK"] == head.player_ID:
 				var new_indicator = preloaded_owned_bot_indicator.instance()
 				bot_indicators.append(new_indicator)

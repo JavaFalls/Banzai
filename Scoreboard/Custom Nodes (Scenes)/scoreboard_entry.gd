@@ -2,9 +2,10 @@ extends MarginContainer
 
 # Exported values:
 #-------------------------------------------------------------------------------
-export(Texture) var TEXTURE_TAG_BLUE
-export(Texture) var TEXTURE_TAG_RED
-export(Texture) var TEXTURE_TAG_GREEN
+export(Texture) var TEXTURE_TAG_WHITE
+#export(Texture) var TEXTURE_TAG_BLUE
+#export(Texture) var TEXTURE_TAG_RED
+#export(Texture) var TEXTURE_TAG_GREEN
 
 # Constants:
 #  NP = "Node Path"
@@ -27,22 +28,24 @@ func _ready():
 
 # Getters and setters
 #-------------------------------------------------------------------------------
-func get_tag_color():
-	match get_node(NP_SPR_BANNER_TAG).texture:
-		TEXTURE_TAG_BLUE:
-			return TAG_BLUE
-		TEXTURE_TAG_RED:
-			return TAG_RED
-		TEXTURE_TAG_GREEN:
-			return TAG_GREEN
+#func get_tag_color():
+#	#match get_node(NP_SPR_BANNER_TAG).texture:
+#		TEXTURE_TAG_BLUE:
+#			return TAG_BLUE
+#		TEXTURE_TAG_RED:
+#			return TAG_RED
+#		TEXTURE_TAG_GREEN:
+#			return TAG_GREEN
 func set_tag_color(new_color):
-	match new_color:
-		TAG_BLUE:
-			get_node(NP_SPR_BANNER_TAG).texture = TEXTURE_TAG_BLUE
-		TAG_RED:
-			get_node(NP_SPR_BANNER_TAG).texture = TEXTURE_TAG_RED
-		TAG_GREEN:
-			get_node(NP_SPR_BANNER_TAG).texture = TEXTURE_TAG_GREEN
+	$banner_tag.modulate = new_color
+#func set_tag_color(new_color):
+#	match new_color:
+#		TAG_BLUE:
+#			get_node(NP_SPR_BANNER_TAG).texture = TEXTURE_TAG_BLUE
+#		TAG_RED:
+#			get_node(NP_SPR_BANNER_TAG).texture = TEXTURE_TAG_RED
+#		TAG_GREEN:
+#			get_node(NP_SPR_BANNER_TAG).texture = TEXTURE_TAG_GREEN
 
 func get_position():
 	return get_node(NP_LBL_POSITION).text
