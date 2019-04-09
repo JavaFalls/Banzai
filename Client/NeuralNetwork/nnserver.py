@@ -155,8 +155,8 @@ class DQN_agent:
         
         self.accuracy_magnitude        = 1
         self.avoidance_magnitude       = 1
-        self.approach_magnitude        = 0
-        self.flee_magnitude            = 0
+        self.approach_magnitude        = .5
+        self.flee_magnitude            = .5
         self.damage_dealt_magnitude    = 1
         self.damage_received_magnitude = 1
         self.health_received_magnitude = 1
