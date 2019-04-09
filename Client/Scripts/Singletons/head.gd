@@ -40,6 +40,9 @@ var model_ID = -1;
 var player_bot_ID = -1;
 var bot_ID = -1;
 
+# Hidden Features
+var show_bot_ids = false
+
 onready var DB = DBConnector.new()
 onready var pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
 onready var Client = NNClient.new()

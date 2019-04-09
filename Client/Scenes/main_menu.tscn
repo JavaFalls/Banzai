@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Scripts/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu/main_menu/background.png" type="Texture" id=2]
@@ -17,8 +17,9 @@
 [ext_resource path="res://assets/menu/bot_construction/arrow_green_right.png" type="Texture" id=15]
 [ext_resource path="res://Scenes/Entities/animation_bot.tscn" type="PackedScene" id=16]
 [ext_resource path="res://assets/menu/bot_construction/doublearrow_grey_right.png" type="Texture" id=17]
-[ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=18]
-[ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Scenes/popups/commands.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Scenes/popups/instructions.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Scenes/Screens/instance_scenes/timeout.tscn" type="PackedScene" id=20]
 
 [sub_resource type="Environment" id=1]
 
@@ -135,7 +136,7 @@ resource_local_to_scene = true
 default_font = ExtResource( 8 )
 _sections_unfolded = [ "Resource" ]
 
-[node name="main_menu" type="Node" index="0"]
+[node name="main_menu" type="Node"]
 
 script = ExtResource( 1 )
 _sections_unfolded = [ "Margin" ]
@@ -705,12 +706,16 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "custom_colors" ]
 
-[node name="instructions" parent="." index="7" instance=ExtResource( 18 )]
+[node name="Commands" parent="." index="7" instance=ExtResource( 18 )]
+
+visible = false
+
+[node name="instructions" parent="." index="8" instance=ExtResource( 19 )]
 
 visible = false
 theme = SubResource( 6 )
 
-[node name="logout_warning" type="Popup" parent="." index="8"]
+[node name="logout_warning" type="Popup" parent="." index="9"]
 
 editor/display_folded = true
 visible = false
@@ -845,7 +850,7 @@ playback/active = false
 playback/repeat = false
 playback/speed = 1.0
 
-[node name="timeout" parent="." index="9" instance=ExtResource( 19 )]
+[node name="timeout" parent="." index="10" instance=ExtResource( 20 )]
 
 [connection signal="mouse_entered" from="Control/credits_button" to="." method="button_hover_enter"]
 

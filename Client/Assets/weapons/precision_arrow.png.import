@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/precision_arrow.png-316c737575f340f9244ac6701000f71d.stex"
+path="res://.import/precision_arrow.png-d530f42c28d43be7d50597517b394f8c.stex"
 
 [deps]
 
-source_file="res://assets/weapons/precision_arrow.png"
-dest_files=[ "res://.import/precision_arrow.png-316c737575f340f9244ac6701000f71d.stex" ]
+source_file="res://Assets/weapons/precision_arrow.png"
+dest_files=[ "res://.import/precision_arrow.png-d530f42c28d43be7d50597517b394f8c.stex" ]
 
 [params]
 

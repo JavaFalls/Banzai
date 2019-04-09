@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tag_large_white.png-720a9679621f8dc34eeea899110cea62.stex"
+path="res://.import/tag_large_white.png-c83779c7fd352d590dcc4dd3a84ec3e0.stex"
 
 [deps]
 
-source_file="res://assets/local_scoreboard/tag_large_white.png"
-dest_files=[ "res://.import/tag_large_white.png-720a9679621f8dc34eeea899110cea62.stex" ]
+source_file="res://Assets/local_scoreboard/tag_large_white.png"
+dest_files=[ "res://.import/tag_large_white.png-c83779c7fd352d590dcc4dd3a84ec3e0.stex" ]
 
 [params]
 

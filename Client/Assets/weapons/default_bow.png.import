@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/default_bow.png-a446594d295e5d2dc5035223ef8335e0.stex"
+path="res://.import/default_bow.png-bd499bf8d783aba3a163c07e51b5f571.stex"
 
 [deps]
 
-source_file="res://assets/weapons/default_bow.png"
-dest_files=[ "res://.import/default_bow.png-a446594d295e5d2dc5035223ef8335e0.stex" ]
+source_file="res://Assets/weapons/default_bow.png"
+dest_files=[ "res://.import/default_bow.png-bd499bf8d783aba3a163c07e51b5f571.stex" ]
 
 [params]
 

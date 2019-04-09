@@ -7,11 +7,14 @@ onready var _background = get_node("Control/MarginContainer/background")
 onready var _timer = get_node("timeout")
 onready var _tween = get_node("Tween")
 onready var _bot = $animation_bot
+onready var command_popup = get_node("Commands")
 
 # Every loaded bot is temporarily stored
 var bot_ids = []
 var bot_names = []
 var current = 0
+
+var commands_active = false
 
 var background_stuff_visible = false
 var background_tween
@@ -57,6 +60,14 @@ func _ready():
 	$Control/background_animation.add_child(background_tween)
 
 func _input(event):
+	if event.is_action_released("open_commands") and !commands_active:
+		command_popup.visible = true
+		command_popup.open()
+		commands_active = true
+	if event.is_action_released("exit_arena") and commands_active:
+		command_popup.visible = false
+		commands_active = false
+	
 	if event is InputEventMouseMotion:
 		var look_at = get_tree().get_root().get_mouse_position() - _bot.position
 		if look_at.x > 0:
@@ -185,6 +196,7 @@ func logout():
 	fade()
 	get_node("logout_warning").popup()
 	head.name_section = 1 # Set name section to Usernames
+	head.show_bot_ids = false # Set ranking screen to bot score
 	pass
 
 func hover_logout_confirm(mouse_entered):
