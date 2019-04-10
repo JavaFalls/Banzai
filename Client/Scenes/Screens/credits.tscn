@@ -39,12 +39,12 @@ size_flags_vertical = 4
 custom_fonts/font = ExtResource( 3 )
 text = "Programmers
 ------------
-Tobi Adegunloye
-Adam Baldwin
+Tobi Adegunloye - ATL
+Adam Baldwin - DB
 Lloyd Bower - TL
-Seth Stevens
-Jonathan Vaughn
-Alex Zacharias"
+Seth Stevens - CC
+Jonathan Vaughn - QA
+Alex Zacharias - UI"
 align = 1
 valign = 1
 percent_visible = 1.0
@@ -87,9 +87,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 204.0
-margin_top = 112.0
+margin_top = 101.0
 margin_right = 312.0
-margin_bottom = 211.0
+margin_bottom = 234.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -97,12 +97,13 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 3 )
-text = "Art
+text = "Artists
 ------------
 Donggwan Oh
 Patrick Farley
 Leah Batayola
 Somer Blackwell
+Anthony Saldivar
 "
 align = 1
 valign = 1
@@ -167,6 +168,7 @@ _sections_unfolded = [ "Visibility" ]
 
 [node name="backlight" type="Sprite" parent="." index="5"]
 
+visible = false
 modulate = Color( 0, 1, 0.105882, 0.466667 )
 position = Vector2( 69.2138, 185.683 )
 rotation = -1.57079
@@ -202,6 +204,7 @@ shadow_item_cull_mask = 1
 
 [node name="platform" type="Sprite" parent="." index="6"]
 
+visible = false
 position = Vector2( 146.731, 184.665 )
 rotation = -1.57079
 texture = ExtResource( 8 )
@@ -209,10 +212,37 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="animation_bot" parent="." index="7" instance=ExtResource( 9 )]
 
+visible = false
 position = Vector2( 116, 186 )
 rotation = -1.57079
 
 [node name="timeout" parent="." index="8" instance=ExtResource( 10 )]
+
+[node name="Label" type="Label" parent="." index="9"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 35.0
+margin_top = 158.0
+margin_right = 141.0
+margin_bottom = 206.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 3 )
+text = "Music
+------------
+Josh Kohr"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "custom_fonts" ]
 
 [connection signal="mouse_entered" from="back_button" to="." method="_on_back_button_mouse_entered"]
 
