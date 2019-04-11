@@ -39,6 +39,13 @@ func process_command():
 					else:
 						print_success('Bot IDs are now hidden, ranking screen is back to normal')
 						
+				'save':
+					head.save_battle = !head.save_battle
+					if head.save_battle:
+						print_success('Model is now saved during battles')
+					else:
+						print_success('Model is no longer saved during battles')
+						
 				'tab':
 					head.auto_battle = !head.auto_battle
 					if head.auto_battle:

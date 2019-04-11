@@ -44,6 +44,7 @@ var bot_ID = -1;
 var show_bot_ids = false
 var refresh_bots = false
 var auto_battle  = false
+var save_battle  = false
 
 onready var DB = DBConnector.new()
 onready var pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
