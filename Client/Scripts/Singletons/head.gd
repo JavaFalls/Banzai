@@ -43,6 +43,7 @@ var bot_ID = -1;
 # Hidden Features
 var show_bot_ids = false
 var refresh_bots = false
+var auto_battle  = false
 
 onready var DB = DBConnector.new()
 onready var pid = OS.shell_open(ProjectSettings.globalize_path('res://NeuralNetwork/nnserver.py'))
@@ -201,6 +202,7 @@ func logout():
 	DB.logout_player(player_ID)
 	name_section = 1     # Set name section to Usernames
 	show_bot_ids = false # Set ranking screen to bot score
+	auto_battle  = false # Disable auto battling
 	get_tree().change_scene("res://Scenes/menu_title.tscn")
 
 	# Save Bot after training

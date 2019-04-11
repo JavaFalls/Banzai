@@ -39,6 +39,13 @@ func process_command():
 					else:
 						print_success('Bot IDs are now hidden, ranking screen is back to normal')
 						
+				'tab':
+					head.auto_battle = !head.auto_battle
+					if head.auto_battle:
+						print_success('Auto battle has been activated')
+					else:
+						print_success('Auto battle has been deactivated')
+						
 				'change_name':
 					if atext.size() >= 2:
 						var bot = parse_json(head.DB.get_bot(head.bot_ID))["data"][0]
@@ -83,6 +90,8 @@ func process_command():
 		match text:
 			'hello':
 				print_success('Hello to you as well')
+			'geary':
+				print_success('A mysterious force awakens your inner Zorro')
 			_:
 				print_error('I don\'t understand what you\'re saying')
 
