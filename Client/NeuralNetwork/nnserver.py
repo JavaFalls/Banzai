@@ -155,8 +155,8 @@ class DQN_agent:
         
         self.accuracy_magnitude        = 1
         self.avoidance_magnitude       = 1
-        self.approach_magnitude        = .5
-        self.flee_magnitude            = .5
+        self.approach_magnitude        = 0
+        self.flee_magnitude            = 0
         self.damage_dealt_magnitude    = 1
         self.damage_received_magnitude = 1
         self.health_received_magnitude = 1
@@ -579,8 +579,8 @@ def process_message(message):
                 fighter1.player_action = -1 # set it to invalid number so that it isn't used with regular bot's training state
                 output = fighter1.train( output_list ) # train and predict on bot
         elif message["Message Type"] == "Battle"  :
-                fighter1.epsilon = 0.5
-                fighter2.epsilon = 0.5
+                fighter1.epsilon = 0.3
+                fighter2.epsilon = 0.3
                 output = (fighter1.train(   reshape(message["Message"] , fighter1.get_state_size()) )), (fighter2.train(   reshape(message["Message"] , fighter2.get_state_size()) ))
                 # print((fighter2.model.predict(   reshape(message["Message"] , fighter2.get_state_size()) )))
         elif message["Message Type"] == "Load"   :
