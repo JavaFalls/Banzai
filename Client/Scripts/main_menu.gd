@@ -160,7 +160,7 @@ func scene_change(button):
 		"custom":
 			get_tree().change_scene("res://Scenes/Screens/construction_fork.tscn")
 		"credits":
-			get_tree().change_scene("res://Scenes/creds.tscn")
+			get_tree().change_scene("res://Scenes/Screens/credits.tscn")
 		"train":
 			Menu_audio.menu_audio.stop()
 			head.load_scene("res://Scenes/arena_train.tscn")

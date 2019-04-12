@@ -1,8 +1,12 @@
 extends VideoPlayer
 
+onready var time = get_node('Timer')
+
 func _ready():
 	if(Menu_audio.menu_audio.playing):
 		Menu_audio.menu_audio.stop()
+	time.wait_time = 70
+	time.start()
 
 
 func _input(event):
@@ -28,9 +32,8 @@ func _input(event):
 		active = false
 """
 
-func _process(delta):
-	if not is_playing():
-		exit()
-
 func exit():
 	get_tree().change_scene("res://Scenes/main_menu.tscn")
+
+func _on_Timer_timeout():
+	exit()
