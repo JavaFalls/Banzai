@@ -92,7 +92,7 @@ func set_opponent_state(opponent):
 		self.opponent_position = opponent.get_position()
 	self.opponent_position[0]   = opponent_position[0] / 400
 	self.opponent_position[1]   = opponent_position[1] / 225
-	self.opponent_aim_angle     = (opponent.aim_angle-PI)/(-2*PI) # divide in order to normalize # this probably doesnt work ?
+	self.opponent_aim_angle     = 1-(opponent.aim_angle-PI)/(-2*PI) # divide in order to normalize # this probably doesnt work ?
 	self.opponent_health        = opponent.hit_points/1000
 	self.opponent_in_peril      = opponent.in_peril
 
