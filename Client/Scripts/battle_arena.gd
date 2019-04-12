@@ -49,6 +49,7 @@ func _ready():
 	# Make sure that we actually found an oppoent to fight
 	if opponent_bot_ID == null:
 		# No Opponent found! Display a popup and abort further processing
+		scene_loading.set_progress_bar(100)
 		popup = arena_end_popup.instance()
 		add_child(popup) # Must add the popup as a child BEFORE calling init()
 		popup.init("No bots found to do battle against.",
