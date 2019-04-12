@@ -10,6 +10,7 @@ signal use # All weapons must have this signal so that cooldowns can be displaye
 #------------------------------------------------------------------------
 const DURATION = 5.0 # How long, in seconds, the effect lasts
 const BOOST_AMOUNT = 2 # How much to boost stats by
+const ARMOUR_AMOUNT = 0.5 # How much to boost armour by
 
 # The variables
 #------------------------------------------------------------------------
@@ -49,6 +50,7 @@ func use():
 		bot.movement_speed *= BOOST_AMOUNT
 		bot.primary_weapon.damage *= BOOST_AMOUNT
 		bot.secondary_weapon.damage *= BOOST_AMOUNT
+		bot.armour -= ARMOUR_AMOUNT
 		duration_timer.start()
 		# Basic Weapon stuff
 		cooldown_timer.start()
@@ -62,3 +64,4 @@ func _duration_timer_timeout():
 	bot.movement_speed /= BOOST_AMOUNT
 	bot.primary_weapon.damage /= BOOST_AMOUNT
 	bot.secondary_weapon.damage /= BOOST_AMOUNT
+	bot.armour += ARMOUR_AMOUNT

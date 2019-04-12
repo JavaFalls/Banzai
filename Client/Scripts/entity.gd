@@ -29,6 +29,7 @@ var psuedo_aim_right = 0
 var ignore_movement_controls = false # When true, movement inputs from the bot are ignored, used by the 'charge' ability
 
 var shielded = false # When true, the bot takes no damage. Used by the 'shield' ability
+var armour = 1.0 # Percentage value that is multpied directly to damage taken. Value of 1.0 = no armour, full damage taken. Value of 0.0 = full armour, no damage taken. Used by 'Zorro's Honor'
 var invisible = false # When invisible, the opponents neural network receives incorrect data about the bots location. Used by 'zorro's wit'
 var last_known_location = Vector2() # This is the location data that the opponent's neural network receives when the bot is invisible. Used by 'zorro's wit'
 var immobilized = 0.0 # How long the bot will be unable to move for. Used by the 'snare' and 'nuke' secondaries and the 'freeze' ability
@@ -68,6 +69,7 @@ func get_trajectory():
 
 func increment_hitpoints(damage): # this decremements now because we make health go down.
 	if not shielded:
+		damage = floor(damage * armour)
 		hit_points -= damage
 		if damage != 0:
 			var damage_text = preloaded_damage_text.instance()
