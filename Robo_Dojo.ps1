@@ -2,7 +2,7 @@
 
 Set-Location ($env:USERPROFILE + "\Desktop")
 
-$RoboDojoPath = '\\csmain.studentnet.int\Classes\SE_Project\Software Expo\Final Projects\'
+$RoboDojoPath = '\\csmain.studentnet.int\Classes\SE_Project\Software Expo\Final Projects\2019\Robo_Dojo\'
 $CD           = (Get-Location).Path
 $NewRoboDojo  = [IO.Path]::GetFileNameWithoutExtension((Get-ChildItem $RoboDojoPath | where {$_.Name -like "*Robo_Dojo*" -and $_.Name -like "*.zip" -and $_.Name -notlike "*Scoreboard*" -and $_.Name -notlike "*Debug*"})[0])
 $LocalFiles   = (Get-ChildItem $CD | Where {$_.Name -like $NewRoboDojo -and $_.PSIsContainer})
