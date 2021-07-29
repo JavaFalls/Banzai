@@ -9,12 +9,12 @@ You are able to equip different weapons and abilities, and your model is able to
 
 ![image](https://user-images.githubusercontent.com/10810722/127567650-f10a3ea2-9be5-4483-b986-6db8e79e6c31.png)
 
-Configure Database:
+# **Configure Database:
+**
 
 
+# **To setup on a network:
+# **Run the Start_Robo_Dojo.bat file
 
-To setup on a network:
-Run the Start_Robo_Dojo.bat file
-
-To set up locally (for dev purposes):
-Run nnserver.py first, and then run the game. Confirm that the database is connected. 
+# **To set up locally (for dev purposes):
+**Run nnserver.py first, and then run the game. Confirm that the database is connected. 
